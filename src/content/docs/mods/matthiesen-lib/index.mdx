@@ -5,3 +5,89 @@ sidebar:
   order: 1
 ---
 
+## What is Matthiesen Lib?
+
+Matthiesen Lib is a lightweight Architectury-style library that enables mod developers to write shared code that works seamlessly across both **Fabric** and **NeoForge** mod loaders for Minecraft **1.21.1**. Instead of maintaining separate implementations for each platform, you can write your mod logic once in common code and let Matthiesen Lib handle the platform-specific details.
+
+:::note[For Regular Users]
+This library does nothing on its own - it's a developer tool. If a mod requires Matthiesen Lib, simply drop it in your `mods` folder alongside the mod that needs it.
+:::
+
+## Key Features
+
+Matthiesen Lib provides a unified API for:
+
+- **Content Registration** - Register blocks, items, block entities, sounds, creative tabs, and more from common code
+- **Command System** - Create cross-platform commands with a simple abstraction layer
+- **Permission System** - Unified permission validation across both platforms
+- **Client Screens** - Register client screens with platform-agnostic code
+- **Utility Classes** - ItemBuilder, screen abstractions, and other helpful utilities
+
+## Why Use Matthiesen Lib?
+
+### Write Once, Run Everywhere
+Instead of maintaining separate Fabric and NeoForge implementations:
+
+```java
+// With Matthiesen Lib - Write once in common code
+public static final RegistryBuilder REGISTRY = new MatthiesenLib.RegistryBuilder("mymod");
+
+public static final Supplier<Item> MY_ITEM = REGISTRY.registerItem(
+    "my_item",
+    () -> new Item(new Item.Properties())
+);
+```
+
+### Simplified Multi-Loader Development
+- **Automatic Namespace Prefixing** - The RegistryBuilder automatically adds your mod ID to all registered content
+- **Platform Abstraction** - Access platform-specific features through a common API
+- **Unified Initialization** - One initialization flow that works on both loaders
+
+## Quick Start
+
+To start using Matthiesen Lib in your mod:
+
+1. **Add the dependency** - See [Installation](/mods/matthiesen-lib/installation)
+2. **Create registry classes** - Extend the appropriate abstract registry classes
+3. **Register your content** - Use the registry instances to register items, blocks, etc.
+4. **Initialize registries** - Call the `init()` methods during mod startup
+
+```java
+package dev.matthiesen.common.mymod.registry;
+
+import dev.matthiesen.common.matthiesen_lib.registry.AbstractItemRegistry;
+import net.minecraft.world.item.Item;
+import java.util.function.Supplier;
+
+public class ItemRegistry extends AbstractItemRegistry {
+    private static final ItemRegistry INSTANCE = new ItemRegistry();
+
+    protected ItemRegistry() {
+        super("mymod");
+    }
+
+    public static void init() {}
+
+    public static final Supplier<Item> EXAMPLE_ITEM;
+
+    static {
+        EXAMPLE_ITEM = INSTANCE.register("example_item", 
+            () -> new Item(new Item.Properties()));
+    }
+}
+
+// In your mod initializer
+public class MyMod {
+    public void initialize() {
+        ItemRegistry.init();
+    }
+}
+```
+
+## Next Steps
+
+- [Installation Guide](/mods/matthiesen-lib/installation) - Add Matthiesen Lib to your project
+- [Registry Builder API](/mods/matthiesen-lib/registry-builder) - Learn about content registration
+- [Commands](/mods/matthiesen-lib/commands) - Create cross-platform commands
+- [Permissions](/mods/matthiesen-lib/permissions) - Implement permission checks
+

@@ -1,0 +1,237 @@
+---
+title: "Registry Builder"
+description: "Learn how to register content across platforms using the RegistryBuilder API"
+sidebar:
+  order: 3
+---
+
+## Overview
+
+The `RegistryBuilder` is the core API for registering content from common code that works on both Fabric and NeoForge. It provides a simple, unified interface for registering items, blocks, block entities, sounds, creative tabs, and more with automatic mod ID prefixing.
+
+## Creating a Registry
+
+Instead of creating a `RegistryBuilder` directly, extend the specific registry classes for better organization and type safety. Matthiesen Lib provides abstract registry classes for different content types:
+
+- `AbstractItemRegistry` - For registering items
+- `AbstractBlockRegistry` - For registering blocks
+- `AbstractMenuTypeRegistry` - For registering menu/container types
+- `AbstractCommandRegistry` - For registering commands
+- And more...
+
+### Example: Item Registry
+
+```java
+package dev.matthiesen.common.mymod.registry;
+
+import dev.matthiesen.common.matthiesen_lib.registry.AbstractItemRegistry;
+import net.minecraft.world.item.Item;
+import java.util.function.Supplier;
+
+public class ItemRegistry extends AbstractItemRegistry {
+    private static final ItemRegistry INSTANCE = new ItemRegistry();
+
+    protected ItemRegistry() {
+        super("mymod"); // Your mod ID
+    }
+
+    public static void init() {
+        // Called to trigger static initialization
+    }
+
+    // Register your items
+    public static final Supplier<Item> MY_ITEM;
+
+    static {
+        MY_ITEM = INSTANCE.register("my_item", () -> new Item(new Item.Properties()));
+    }
+}
+```
+
+The mod ID is automatically prefixed to all registered content, so you only need to provide the item/block name.
+
+## Registering Content
+
+### Items
+
+Register items by extending `AbstractItemRegistry`:
+
+```java
+import dev.matthiesen.common.matthiesen_lib.registry.AbstractItemRegistry;
+import net.minecraft.world.item.Item;
+import java.util.function.Supplier;
+
+public class ItemRegistry extends AbstractItemRegistry {
+    private static final ItemRegistry INSTANCE = new ItemRegistry();
+
+    protected ItemRegistry() {
+        super("mymod");
+    }
+
+    public static void init() {}
+
+    public static final Supplier<Item> EXAMPLE_ITEM;
+    public static final Supplier<Item> CUSTOM_ITEM;
+
+    static {
+        EXAMPLE_ITEM = INSTANCE.register("example_item", () -> new Item(new Item.Properties()));
+        CUSTOM_ITEM = INSTANCE.register("custom_item", CustomItem::new);
+    }
+}
+```
+
+In your mod initializer, call `ItemRegistry.init()` to trigger registration.
+
+### Blocks
+
+Register blocks by extending `AbstractBlockRegistry`:
+
+```java
+import dev.matthiesen.common.matthiesen_lib.registry.AbstractBlockRegistry;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockBehaviour;
+import java.util.function.Supplier;
+
+public class BlockRegistry extends AbstractBlockRegistry {
+    private static final BlockRegistry INSTANCE = new BlockRegistry();
+
+    protected BlockRegistry() {
+        super("mymod");
+    }
+
+    public static void init() {}
+
+    public static final Supplier<Block> EXAMPLE_BLOCK;
+
+    static {
+        EXAMPLE_BLOCK = INSTANCE.register("example_block", 
+            () -> new Block(BlockBehaviour.Properties.of()
+                .strength(3.0f, 3.0f)
+            )
+        );
+    }
+}
+```
+
+### Commands
+
+Register commands using `AbstractCommandRegistry`:
+
+```java
+import dev.matthiesen.common.matthiesen_lib.registry.AbstractCommandRegistry;
+
+public class CommandRegistry extends AbstractCommandRegistry {
+    private static final CommandRegistry INSTANCE = new CommandRegistry();
+
+    protected CommandRegistry() {
+        super();
+    }
+
+    public static void init() {}
+
+    static {
+        INSTANCE.register(new MyCommand());
+    }
+}
+```
+
+See the [Commands](/mods/matthiesen-lib/commands) page for details on creating commands.
+
+### Menu Types
+
+Register menu types for container screens using `AbstractMenuTypeRegistry`:
+
+```java
+import dev.matthiesen.common.matthiesen_lib.registry.AbstractMenuTypeRegistry;
+import net.minecraft.world.inventory.MenuType;
+import java.util.function.Supplier;
+
+public class MenuTypesRegistry extends AbstractMenuTypeRegistry {
+    private static final MenuTypesRegistry INSTANCE = new MenuTypesRegistry();
+
+    protected MenuTypesRegistry() {
+        super("mymod");
+    }
+
+    public static void init() {}
+
+    public static Supplier<MenuType<CustomMenu>> CUSTOM_MENU;
+    public static Supplier<MenuType<AnotherMenu>> ANOTHER_MENU;
+
+    static {
+        CUSTOM_MENU = INSTANCE.register("custom_menu", CustomMenuFactory::create);
+        ANOTHER_MENU = INSTANCE.register("another_menu", AnotherMenuFactory::create);
+    }
+}
+```
+
+## Best Practices
+
+### Use Suppliers
+Always use `Supplier<T>` for your registered content. This ensures lazy initialization and prevents null pointer exceptions:
+
+```java
+// Good
+public static final Supplier<Item> MY_ITEM;
+
+static {
+    MY_ITEM = INSTANCE.register("my_item", () -> new Item(new Item.Properties()));
+}
+
+// Avoid
+public static final Item MY_ITEM = INSTANCE.register(...).get(); // Don't call .get() during static init
+```
+
+### Naming Conventions
+- Use `snake_case` for registry names: `"gui_item"`, `"example_block"`
+- This automatically becomes `mymod:gui_item` in-game
+- Use descriptive names that clearly indicate what the item/block is
+
+### Organization
+Organize your registrations by type in dedicated registry classes:
+
+```java
+public class ItemRegistry extends AbstractItemRegistry {
+    // All item registrations
+}
+
+public class BlockRegistry extends AbstractBlockRegistry {
+    // All block registrations
+}
+
+public class MenuTypesRegistry extends AbstractMenuTypeRegistry {
+    // All menu type registrations
+}
+```
+
+### Initialization
+Make sure to call `init()` on all your registry classes during mod initialization to trigger static initialization:
+
+```java
+public class MyMod {
+    public void initialize() {
+        ItemRegistry.init();
+        BlockRegistry.init();
+        MenuTypesRegistry.init();
+        CommandRegistry.init();
+        PermissionRegistry.init();
+    }
+}
+```
+
+## Available Registry Classes
+
+| Registry Class | Purpose | Register Method |
+|----------------|---------|-----------------|
+| `AbstractItemRegistry` | Register items | `register(name, supplier)` |
+| `AbstractBlockRegistry` | Register blocks | `register(name, supplier)` |
+| `AbstractMenuTypeRegistry` | Register menu types | `register(name, supplier)` |
+| `AbstractCommandRegistry` | Register commands | `register(command)` |
+
+For other content types, check the Matthiesen Lib source code for additional registry classes.
+
+## Next Steps
+
+- [Commands](/mods/matthiesen-lib/commands) - Learn about the command system
+- [Permissions](/mods/matthiesen-lib/permissions) - Implement permission checks
+- [Utilities](/mods/matthiesen-lib/utilities) - Explore helper classes like ItemBuilder

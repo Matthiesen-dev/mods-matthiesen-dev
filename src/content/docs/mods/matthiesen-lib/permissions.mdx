@@ -1,0 +1,467 @@
+---
+title: "Permissions"
+description: "Implement unified permission checks across Fabric and NeoForge"
+sidebar:
+  order: 5
+---
+
+## Overview
+
+Matthiesen Lib provides a unified permission system that works consistently across both Fabric and NeoForge. The permission system is based on Cobblemon's permission architecture and provides a standardized way to define and check permissions for commands and other features.
+
+## Permission Levels
+
+The permission system uses five standard permission levels based on Minecraft's built-in levels:
+
+| Level | Name | Numerical Value | Description |
+|-------|------|----------------|-------------|
+| `NONE` | No permissions | 0 | All players, no special permissions required |
+| `SPAWN_PROTECTION_BYPASS` | Bypass spawn protection | 1 | Can bypass spawn protection |
+| `CHEAT_COMMANDS_AND_COMMAND_BLOCKS` | Cheats & command blocks | 2 | Can use cheat commands and command blocks |
+| `MULTIPLAYER_MANAGEMENT` | Multiplayer management | 3 | Can manage multiplayer features (kick, ban) |
+| `ALL_COMMANDS` | All commands | 4 | Full operator access, all commands |
+
+## Creating Permissions
+
+### Extending AbstractPermission with Custom Namespace
+
+The recommended pattern is to extend `AbstractPermission` and override the namespace methods:
+
+```java
+import dev.matthiesen.common.matthiesen_lib.permission.AbstractPermission;
+import dev.matthiesen.common.matthiesen_lib.permission.PermissionLevel;
+
+public class MyModPermission extends AbstractPermission {
+    
+    public MyModPermission(String node, PermissionLevel level) {
+        super(node, level);
+    }
+    
+    @Override
+    protected String getModId() {
+        return "mymod"; // Your mod ID
+    }
+    
+    @Override
+    protected String getPermissionNamespace() {
+        return "MyMod"; // Display name for permission system
+    }
+}
+```
+
+This pattern provides:
+- Consistent mod ID across all permissions
+- Custom permission namespace for display
+- Type safety and easier maintenance
+
+## Registering Permissions
+
+Create a `PermissionRegistry` class to organize and register all your mod's permissions:
+
+```java
+package dev.matthiesen.common.mymod.registry;
+
+import dev.matthiesen.common.matthiesen_lib.MatthiesenLib;
+import dev.matthiesen.common.matthiesen_lib.permission.*;
+import net.minecraft.commands.CommandSourceStack;
+
+public class PermissionRegistry {
+    // Define permissions - values can come from config
+    public static Permission MY_COMMAND = register("command.mycommand", 2);
+    public static Permission ADMIN_COMMAND = register("command.admin", 3);
+    public static Permission RELOAD_COMMAND = register("command.reload", 4);
+    
+    public static void init() {}
+    
+    // Helper method to check permissions
+    public static boolean checkPermission(CommandSourceStack source, Permission permission) {
+        return MatthiesenLib.getPermissionValidator().hasPermission(source, permission);
+    }
+    
+    // Convert integer to PermissionLevel
+    public static PermissionLevel toPermLevel(int permLevel) {
+        for (PermissionLevel value : PermissionLevel.values()) {
+            if (value.ordinal() == permLevel) {
+                return value;
+            }
+        }
+        return PermissionLevel.CHEAT_COMMANDS_AND_COMMAND_BLOCKS;
+    }
+    
+    // Register a permission
+    private static Permission register(String node, int level) {
+        var newPermission = new AbstractPermission(node, toPermLevel(level)) {
+            @Override
+            protected String getModId() {
+                return "mymod";
+            }
+            
+            @Override
+            protected String getPermissionNamespace() {
+                return "MyMod";
+            }
+        };
+        MatthiesenLib.registerPermission(newPermission);
+        return newPermission;
+    }
+}
+```
+
+Then initialize in your mod:
+
+```java
+public class MyMod {
+    public void initialize() {
+        PermissionRegistry.init();
+    }
+}
+```
+
+## Checking Permissions
+
+### Using the Helper Method
+
+The recommended approach is to use the `checkPermission` helper method from your PermissionRegistry:
+
+```java
+import net.minecraft.commands.CommandSourceStack;
+
+public void performAction(CommandSourceStack source) {
+    if (PermissionRegistry.checkPermission(source, MyPermissions.ADMIN_COMMAND)) {
+        // Permission granted, execute action
+    } else {
+        // Permission denied
+        source.sendFailure(Component.literal("You don't have permission!"));
+    }
+}
+```
+
+This method handles both player and non-player command sources (console, command blocks).
+
+### Direct Player Permission Check
+
+If you specifically need to check a player:
+
+```java
+import dev.matthiesen.common.matthiesen_lib.MatthiesenLib;
+import net.minecraft.server.level.ServerPlayer;
+
+public void performAction(ServerPlayer player) {
+    boolean hasPermission = MatthiesenLib.getPermissionValidator()
+        .hasPermission(player, MyPermissions.ADMIN_COMMAND);
+    
+    if (hasPermission) {
+        // Player has permission, execute action
+    } else {
+        // Player doesn't have permission
+        player.sendSystemMessage(Component.literal("You don't have permission!"));
+    }
+}
+```
+
+### In Commands
+
+Use the permission check helper in command requirements:
+
+```java
+import com.mojang.brigadier.CommandDispatcher;
+import dev.matthiesen.common.matthiesen_lib.command.AbstractCommand;
+import dev.matthiesen.common.mymod.registry.PermissionRegistry;
+import net.minecraft.commands.CommandSourceStack;
+import net.minecraft.commands.Commands;
+
+public class AdminCommand extends AbstractCommand {
+    @Override
+    public void register(CommandDispatcher<CommandSourceStack> dispatcher, 
+                        CommandBuildContext registry, 
+                        Commands.CommandSelection context) {
+        dispatcher.register(
+            Commands.literal("admin")
+                .requires(src -> PermissionRegistry.checkPermission(
+                    src, 
+                    PermissionRegistry.ADMIN_COMMAND
+                ))
+                .executes(this::action)
+        );
+    }
+    
+    @Override
+    public int action(CommandContext<CommandSourceStack> context) {
+        // Command implementation
+        return 1;
+    }
+}
+```
+
+The `checkPermission` method automatically handles:
+- Player permission checks via the permission validator
+- Console/command block access (typically allowed)
+- Non-player entities
+
+### With Fallback to Permission Level
+
+Check permission with fallback to vanilla permission level:
+
+```java
+public boolean canUseFeature(ServerPlayer player) {
+    // Check custom permission first
+    if (MatthiesenLib.getPermissionValidator()
+            .hasPermission(player, MyModPermissions.SPECIAL_FEATURE)) {
+        return true;
+    }
+    
+    // Fallback to vanilla permission level
+    return player.hasPermissions(2); // Level 2 or higher
+}
+```
+
+## Permission Validators
+
+### Default Validator
+
+By default, Matthiesen Lib uses a vanilla Minecraft permission validator that checks operator levels. This works out of the box on both Fabric and NeoForge.
+
+### Platform-Specific Validators
+
+On Fabric, if the Fabric Permissions API is available, it will automatically be used for enhanced permission support.
+
+### Custom Validators
+
+You can implement your own permission validator:
+
+```java
+import dev.matthiesen.common.matthiesen_lib.core.interfaces.MatthiesenLibPermissionValidator;
+import dev.matthiesen.common.matthiesen_lib.permission.Permission;
+import net.minecraft.server.level.ServerPlayer;
+
+public class CustomPermissionValidator implements MatthiesenLibPermissionValidator {
+    
+    @Override
+    public void initialize() {
+        // Initialize your permission system
+    }
+    
+    @Override
+    public boolean hasPermission(ServerPlayer player, Permission permission) {
+        // Implement your custom permission check logic
+        // For example, check against a database or file system
+        return checkCustomPermissionSystem(player, permission);
+    }
+    
+    private boolean checkCustomPermissionSystem(ServerPlayer player, Permission permission) {
+        // Your custom logic here
+        return false;
+    }
+}
+
+// Set your custom validator
+MatthiesenLib.setPermissionValidator(new CustomPermissionValidator());
+```
+
+## Complete Example
+
+Here's a complete example showing permission definition, registration, and usage:
+
+```java
+// ========== PermissionRegistry.java ==========
+package com.example.mymod.registry;
+
+import dev.matthiesen.common.matthiesen_lib.MatthiesenLib;
+import dev.matthiesen.common.matthiesen_lib.permission.*;
+import net.minecraft.commands.CommandSourceStack;
+
+public class PermissionRegistry {
+    // Define permissions with configurable levels
+    public static Permission MOVE_TUTOR = register("command.move-tutor", 0);
+    public static Permission MOVE_TUTOR_OTHER = register("command.move-tutor.other", 2);
+    public static Permission MOVE_TUTOR_RELOAD = register("command.move-tutor.reload", 4);
+    
+    public static void init() {}
+    
+    public static boolean checkPermission(CommandSourceStack source, Permission permission) {
+        return MatthiesenLib.getPermissionValidator().hasPermission(source, permission);
+    }
+    
+    public static PermissionLevel toPermLevel(int permLevel) {
+        for (PermissionLevel value : PermissionLevel.values()) {
+            if (value.ordinal() == permLevel) {
+                return value;
+            }
+        }
+        return PermissionLevel.CHEAT_COMMANDS_AND_COMMAND_BLOCKS;
+    }
+    
+    private static Permission register(String node, int level) {
+        var newPermission = new AbstractPermission(node, toPermLevel(level)) {
+            @Override
+            protected String getModId() {
+                return "mymod";
+            }
+            
+            @Override
+            protected String getPermissionNamespace() {
+                return "MyMod";
+            }
+        };
+        MatthiesenLib.registerPermission(newPermission);
+        return newPermission;
+    }
+}
+
+// ========== MoveTutorCommand.java ==========
+package com.example.mymod.commands;
+
+import com.mojang.brigadier.CommandDispatcher;
+import com.mojang.brigadier.context.CommandContext;
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import dev.matthiesen.common.matthiesen_lib.command.AbstractCommand;
+import dev.matthiesen.common.mymod.registry.PermissionRegistry;
+import net.minecraft.commands.CommandBuildContext;
+import net.minecraft.commands.CommandSourceStack;
+import net.minecraft.commands.Commands;
+import net.minecraft.commands.arguments.EntityArgument;
+import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerPlayer;
+
+public class MoveTutorCommand extends AbstractCommand {
+    
+    @Override
+    public void register(CommandDispatcher<CommandSourceStack> dispatcher,
+                        CommandBuildContext registry,
+                        Commands.CommandSelection context) {
+        dispatcher.register(
+            Commands.literal("move-tutor")
+                .requires(src -> PermissionRegistry.checkPermission(
+                    src, 
+                    PermissionRegistry.MOVE_TUTOR
+                ))
+                .executes(this::action)
+                .then(
+                    Commands.literal("other")
+                        .requires(src -> PermissionRegistry.checkPermission(
+                            src, 
+                            PermissionRegistry.MOVE_TUTOR_OTHER
+                        ))
+                        .then(
+                            Commands.argument("player", EntityArgument.player())
+                                .executes(this::other)
+                        )
+                )
+                .then(
+                    Commands.literal("reload")
+                        .requires(src -> PermissionRegistry.checkPermission(
+                            src, 
+                            PermissionRegistry.MOVE_TUTOR_RELOAD
+                        ))
+                        .executes(this::reload)
+                )
+        );
+    }
+    
+    @Override
+    public int action(CommandContext<CommandSourceStack> ctx) {
+        ServerPlayer player = ctx.getSource().getPlayer();
+        if (player == null) return 0;
+        
+        // Open GUI for player
+        openTutorGui(player);
+        return 1;
+    }
+    
+    private int other(CommandContext<CommandSourceStack> ctx) throws CommandSyntaxException {
+        ServerPlayer player = ctx.getSource().getPlayer();
+        ServerPlayer targetPlayer = EntityArgument.getPlayer(ctx, "player");
+        
+        openTutorGui(targetPlayer);
+        
+        if (player != null) {
+            player.sendSystemMessage(
+                Component.translatable("mymod.cmd.openedForOther", 
+                    targetPlayer.getDisplayName().getString())
+            );
+        }
+        return 1;
+    }
+    
+    private int reload(CommandContext<CommandSourceStack> ctx) {
+        ServerPlayer player = ctx.getSource().getPlayer();
+        
+        MyMod.loadConfig();
+        
+        if (player != null) {
+            player.sendSystemMessage(Component.translatable("mymod.cmd.configReloaded"));
+        }
+        return 1;
+    }
+    
+    private void openTutorGui(ServerPlayer player) {
+        // GUI opening logic
+    }
+}
+
+// ========== MyMod.java ==========
+package com.example.mymod;
+
+import dev.matthiesen.common.mymod.registry.PermissionRegistry;
+import dev.matthiesen.common.mymod.registry.CommandRegistry;
+
+public class MyMod {
+    public void initialize() {
+        // Register permissions first
+        PermissionRegistry.init();
+        
+        // Then register commands
+        CommandRegistry.init();
+    }
+}
+```
+
+## Best Practices
+
+### Naming Conventions
+Use descriptive, hierarchical permission names:
+- `mymod.command.admin` - Admin command access
+- `mymod.command.user.teleport` - Teleport command
+- `mymod.feature.fly` - Flying feature
+- `mymod.bypass.cooldown` - Bypass cooldowns
+
+### Permission Levels
+Choose appropriate permission levels:
+- Use `NONE` for features all players should access
+- Use `CHEAT_COMMANDS_AND_COMMAND_BLOCKS` for player convenience features
+- Use `MULTIPLAYER_MANAGEMENT` for administrative features
+- Use `ALL_COMMANDS` sparingly, only for critical server management
+
+### Organization
+Group related permissions in dedicated classes:
+
+```java
+public class AdminPermissions {
+    // All admin-related permissions
+}
+
+public class CommandPermissions {
+    // All command-related permissions
+}
+
+public class FeaturePermissions {
+    // All feature-related permissions
+}
+```
+
+### Documentation
+Document your permissions for server administrators:
+
+```java
+/**
+ * Permission to use the teleport command.
+ * Default level: CHEAT_COMMANDS_AND_COMMAND_BLOCKS (2)
+ * Literal: mymod.command.teleport
+ */
+public static final Permission TELEPORT = ...
+```
+
+## Next Steps
+
+- [Commands](/mods/matthiesen-lib/commands) - Use permissions in commands
+- [Registry Builder](/mods/matthiesen-lib/registry-builder) - Register game content

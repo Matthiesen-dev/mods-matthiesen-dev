@@ -1,0 +1,464 @@
+---
+title: "Commands"
+description: "Create cross-platform commands using the unified command system"
+sidebar:
+  order: 4
+---
+
+## Overview
+
+Matthiesen Lib provides a unified command system through the `AbstractCommand` class, allowing you to write commands once that work on both Fabric and NeoForge. The system abstracts away platform-specific command registration while providing full access to Minecraft's brigadier command system.
+
+## Creating a Command
+
+To create a command, extend `AbstractCommand` and implement the required methods:
+
+```java
+import com.mojang.brigadier.CommandDispatcher;
+import com.mojang.brigadier.context.CommandContext;
+import dev.matthiesen.common.matthiesen_lib.command.AbstractCommand;
+import net.minecraft.commands.CommandBuildContext;
+import net.minecraft.commands.CommandSourceStack;
+import net.minecraft.commands.Commands;
+import net.minecraft.network.chat.Component;
+
+public class HelloCommand extends AbstractCommand {
+    
+    @Override
+    public void register(CommandDispatcher<CommandSourceStack> dispatcher, 
+                        CommandBuildContext registry, 
+                        Commands.CommandSelection context) {
+        dispatcher.register(
+            Commands.literal("hello")
+                .executes(this::action)
+        );
+    }
+    
+    @Override
+    public int action(CommandContext<CommandSourceStack> context) {
+        CommandSourceStack source = context.getSource();
+        source.sendSuccess(
+            () -> Component.literal("Hello, World!"),
+            false
+        );
+        return 1; // Success
+    }
+}
+```
+
+## Registering Commands
+
+Register your commands using `AbstractCommandRegistry`:
+
+```java
+package dev.matthiesen.common.mymod.registry;
+
+import dev.matthiesen.common.matthiesen_lib.registry.AbstractCommandRegistry;
+import dev.matthiesen.common.mymod.commands.MyCommand;
+
+public class CommandRegistry extends AbstractCommandRegistry {
+    private static final CommandRegistry INSTANCE = new CommandRegistry();
+
+    protected CommandRegistry() {
+        super();
+    }
+
+    public static void init() {}
+
+    static {
+        INSTANCE.register(new MyCommand());
+        INSTANCE.register(new AnotherCommand());
+    }
+}
+```
+
+Then call `CommandRegistry.init()` in your mod initializer to trigger registration.
+
+## Command Structure
+
+### The register() Method
+
+This method is where you define your command structure using Brigadier:
+
+```java
+@Override
+public void register(CommandDispatcher<CommandSourceStack> dispatcher, 
+                    CommandBuildContext registry, 
+                    Commands.CommandSelection context) {
+    dispatcher.register(
+        Commands.literal("mycommand")
+            .then(Commands.argument("player", EntityArgument.player())
+                .executes(this::action)
+            )
+    );
+}
+```
+
+**Parameters:**
+- `dispatcher` - The Brigadier command dispatcher
+- `registry` - The command build context for accessing registries
+- `context` - The command selection context (client/server/all)
+
+### The action() Method
+
+This method executes when the command is run:
+
+```java
+@Override
+public int action(CommandContext<CommandSourceStack> context) {
+    // Your command logic here
+    return 1; // Return 1 for success, 0 for failure
+}
+```
+
+**Return Values:**
+- `1` (or any positive number) - Command executed successfully
+- `0` - Command failed
+
+## Command Examples
+
+### Simple Command
+
+A basic command with no arguments:
+
+```java
+public class PingCommand extends AbstractCommand {
+    @Override
+    public void register(CommandDispatcher<CommandSourceStack> dispatcher, 
+                        CommandBuildContext registry, 
+                        Commands.CommandSelection context) {
+        dispatcher.register(
+            Commands.literal("ping")
+                .executes(this::action)
+        );
+    }
+    
+    @Override
+    public int action(CommandContext<CommandSourceStack> context) {
+        context.getSource().sendSuccess(
+            () -> Component.literal("Pong!"),
+            false
+        );
+        return 1;
+    }
+}
+```
+
+### Command with Arguments
+
+A command that takes a player argument:
+
+```java
+import com.mojang.brigadier.arguments.StringArgumentType;
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import net.minecraft.commands.arguments.EntityArgument;
+import net.minecraft.server.level.ServerPlayer;
+
+public class HealCommand extends AbstractCommand {
+    @Override
+    public void register(CommandDispatcher<CommandSourceStack> dispatcher, 
+                        CommandBuildContext registry, 
+                        Commands.CommandSelection context) {
+        dispatcher.register(
+            Commands.literal("heal")
+                .requires(source -> source.hasPermission(2)) // Requires op level 2
+                .then(Commands.argument("player", EntityArgument.player())
+                    .executes(this::action)
+                )
+        );
+    }
+    
+    @Override
+    public int action(CommandContext<CommandSourceStack> context) {
+        try {
+            ServerPlayer player = EntityArgument.getPlayer(context, "player");
+            player.setHealth(player.getMaxHealth());
+            
+            context.getSource().sendSuccess(
+                () -> Component.literal("Healed " + player.getName().getString()),
+                true
+            );
+            return 1;
+        } catch (CommandSyntaxException e) {
+            context.getSource().sendFailure(Component.literal("Player not found"));
+            return 0;
+        }
+    }
+}
+```
+
+### Command with Multiple Subcommands
+
+A command with multiple branches:
+
+```java
+import com.mojang.brigadier.CommandDispatcher;
+import com.mojang.brigadier.context.CommandContext;
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import dev.matthiesen.common.matthiesen_lib.command.AbstractCommand;
+import net.minecraft.commands.CommandBuildContext;
+import net.minecraft.commands.CommandSourceStack;
+import net.minecraft.commands.Commands;
+import net.minecraft.commands.arguments.EntityArgument;
+import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerPlayer;
+
+public class MyCommand extends AbstractCommand {
+    
+    @Override
+    public void register(CommandDispatcher<CommandSourceStack> dispatcher, 
+                        CommandBuildContext registry, 
+                        Commands.CommandSelection context) {
+        dispatcher.register(
+            Commands.literal("mycommand")
+                .requires(src -> PermissionRegistry.checkPermission(
+                    src, 
+                    MyPermissions.BASE_PERMISSION
+                ))
+                .executes(this::action)
+                .then(
+                    Commands.literal("other")
+                        .requires(src -> PermissionRegistry.checkPermission(
+                            src, 
+                            MyPermissions.OTHER_PERMISSION
+                        ))
+                        .then(
+                            Commands.argument("player", EntityArgument.player())
+                                .executes(this::other)
+                        )
+                )
+                .then(
+                    Commands.literal("reload")
+                        .requires(src -> PermissionRegistry.checkPermission(
+                            src, 
+                            MyPermissions.RELOAD_PERMISSION
+                        ))
+                        .executes(this::reload)
+                )
+        );
+    }
+    
+    @Override
+    public int action(CommandContext<CommandSourceStack> ctx) {
+        ServerPlayer player = ctx.getSource().getPlayer();
+        if (player == null) return 0;
+        
+        player.sendSystemMessage(Component.literal("Command executed!"));
+        return 1;
+    }
+    
+    private int other(CommandContext<CommandSourceStack> ctx) throws CommandSyntaxException {
+        ServerPlayer player = ctx.getSource().getPlayer();
+        ServerPlayer targetPlayer = EntityArgument.getPlayer(ctx, "player");
+        
+        // Do something with targetPlayer
+        
+        if (player != null) {
+            player.sendSystemMessage(
+                Component.translatable("mymod.cmd.openedForOther", 
+                    targetPlayer.getDisplayName().getString())
+            );
+        }
+        return 1;
+    }
+    
+    private int reload(CommandContext<CommandSourceStack> ctx) {
+        ServerPlayer player = ctx.getSource().getPlayer();
+        
+        // Reload configuration
+        MyMod.loadConfig();
+        
+        if (player != null) {
+            player.sendSystemMessage(Component.translatable("mymod.cmd.configReloaded"));
+        }
+        return 1;
+    }
+}
+```
+
+### Command with Custom Arguments
+
+Using different argument types:
+
+```java
+import com.mojang.brigadier.arguments.IntegerArgumentType;
+import com.mojang.brigadier.arguments.StringArgumentType;
+
+public class GiveCommand extends AbstractCommand {
+    @Override
+    public void register(CommandDispatcher<CommandSourceStack> dispatcher, 
+                        CommandBuildContext registry, 
+                        Commands.CommandSelection context) {
+        dispatcher.register(
+            Commands.literal("give")
+                .requires(source -> source.hasPermission(2))
+                .then(Commands.argument("player", EntityArgument.player())
+                    .then(Commands.argument("item", StringArgumentType.string())
+                        .then(Commands.argument("amount", IntegerArgumentType.integer(1, 64))
+                            .executes(this::action)
+                        )
+                    )
+                )
+        );
+    }
+    
+    @Override
+    public int action(CommandContext<CommandSourceStack> context) {
+        try {
+            ServerPlayer player = EntityArgument.getPlayer(context, "player");
+            String itemName = StringArgumentType.getString(context, "item");
+            int amount = IntegerArgumentType.getInteger(context, "amount");
+            
+            // Give item logic here
+            
+            context.getSource().sendSuccess(
+                () -> Component.literal("Gave " + amount + "x " + itemName + 
+                                      " to " + player.getName().getString()),
+                true
+            );
+            return 1;
+        } catch (CommandSyntaxException e) {
+            context.getSource().sendFailure(Component.literal("Invalid arguments"));
+            return 0;
+        }
+    }
+}
+```
+
+## Permission Integration
+
+Commands integrate with the permission system using a helper method in your PermissionRegistry:
+
+```java
+package dev.matthiesen.common.mymod.registry;
+
+import dev.matthiesen.common.matthiesen_lib.MatthiesenLib;
+import dev.matthiesen.common.matthiesen_lib.permission.Permission;
+import net.minecraft.commands.CommandSourceStack;
+
+public class PermissionRegistry {
+    // Define permissions
+    public static Permission MY_COMMAND = register("command.mycommand", 2);
+    public static Permission OTHER_PERMISSION = register("command.mycommand.other", 3);
+    
+    public static void init() {}
+    
+    // Helper method to check permissions
+    public static boolean checkPermission(CommandSourceStack source, Permission permission) {
+        return MatthiesenLib.getPermissionValidator().hasPermission(source, permission);
+    }
+    
+    private static Permission register(String node, int level) {
+        var newPermission = new AbstractPermission(node, toPermLevel(level)) {
+            @Override
+            protected String getModId() {
+                return "mymod";
+            }
+        };
+        MatthiesenLib.registerPermission(newPermission);
+        return newPermission;
+    }
+    
+    public static PermissionLevel toPermLevel(int permLevel) {
+        for (PermissionLevel value : PermissionLevel.values()) {
+            if (value.ordinal() == permLevel) {
+                return value;
+            }
+        }
+        return PermissionLevel.CHEAT_COMMANDS_AND_COMMAND_BLOCKS;
+    }
+}
+```
+
+Then use it in your commands:
+
+```java
+public class MyCommand extends AbstractCommand {
+    @Override
+    public void register(CommandDispatcher<CommandSourceStack> dispatcher, 
+                        CommandBuildContext registry, 
+                        Commands.CommandSelection context) {
+        dispatcher.register(
+            Commands.literal("mycommand")
+                .requires(src -> PermissionRegistry.checkPermission(
+                    src, 
+                    PermissionRegistry.MY_COMMAND
+                ))
+                .executes(this::action)
+        );
+    }
+    
+    @Override
+    public int action(CommandContext<CommandSourceStack> context) {
+        context.getSource().sendSuccess(
+            () -> Component.literal("Command executed!"),
+            false
+        );
+        return 1;
+    }
+}
+```
+
+## Best Practices
+
+### Return Appropriate Values
+- Return `1` for successful command execution
+- Return `0` for failures
+- You can return higher values to indicate different success levels
+
+### Use Proper Permission Levels
+```java
+.requires(source -> source.hasPermission(level))
+```
+- `0` - All players
+- `1` - Bypass spawn protection
+- `2` - Cheats/command blocks
+- `3` - Multiplayer management
+- `4` - All commands (server operators)
+
+### Handle Exceptions
+Always catch `CommandSyntaxException` when working with arguments:
+
+```java
+try {
+    ServerPlayer player = EntityArgument.getPlayer(context, "player");
+    // Use player
+} catch (CommandSyntaxException e) {
+    context.getSource().sendFailure(Component.literal("Error message"));
+    return 0;
+}
+```
+
+### Provide Feedback
+Always send feedback to the command source:
+
+```java
+// Success message (broadcast to ops)
+context.getSource().sendSuccess(
+    () -> Component.literal("Success!"),
+    true  // true = broadcast to ops
+);
+
+// Failure message
+context.getSource().sendFailure(Component.literal("Failed!"));
+```
+
+### Use Suggestions
+Help players with tab completion:
+
+```java
+Commands.argument("item", StringArgumentType.string())
+    .suggests((context, builder) -> {
+        // Add suggestions
+        builder.suggest("diamond");
+        builder.suggest("gold");
+        builder.suggest("iron");
+        return builder.buildFuture();
+    })
+```
+
+## Next Steps
+
+- [Permissions](/mods/matthiesen-lib/permissions) - Learn about the permission system
+- [Registry Builder](/mods/matthiesen-lib/registry-builder) - Register game content
+- Check Minecraft's [brigadier documentation](https://github.com/Mojang/brigadier) for advanced command patterns

@@ -1,0 +1,179 @@
+---
+title: "Installation"
+description: "How to add Matthiesen Lib as a dependency to your Minecraft mod project"
+sidebar:
+  order: 2
+---
+
+## Adding Matthiesen Lib to Your Project
+
+Matthiesen Lib is available through the [Matthiesen Dev Maven](https://maven.matthiesen.dev/) repository. Follow the instructions below to add it to your Gradle project.
+
+:::caution[Maven Central Versions Deprecated]
+While artifacts exist on Maven Central, they are no longer being updated. Always use the Matthiesen Dev Maven repository for the latest versions.
+:::
+
+## Prerequisites
+
+- Minecraft 1.21.1
+- Java 21 or higher
+- Fabric Loader 0.17.2+ (for Fabric)
+- NeoForge 21.1.182+ (for NeoForge)
+
+## Gradle Configuration
+
+### Step 1: Add the Repository
+
+Add the Matthiesen Dev Maven repository to your `build.gradle` or `build.gradle.kts`:
+
+```kotlin
+repositories {
+    maven("https://maven.matthiesen.dev/releases") {
+        name = "devMatthiesenMaven-releases"
+        content {
+            includeGroup("dev.matthiesen")
+        }
+    }
+    // For Snapshot versions, also include the snapshots repository
+    maven("https://maven.matthiesen.dev/snapshots") {
+        name = "devMatthiesenMaven-snapshots"
+        content {
+            includeGroup("dev.matthiesen")
+        }
+    }
+}
+```
+
+### Step 2: Add Version to gradle.properties
+
+Add the Matthiesen Lib version to your `gradle.properties` file:
+
+```properties
+matthiesen_lib_version=1.1.0
+```
+
+:::tip[Finding the Latest Version]
+Visit [Matthiesen Dev Maven](https://maven.matthiesen.dev/) to find the latest version for your platform.
+:::
+
+### Step 3: Add Dependencies
+
+The dependency you need depends on your project structure:
+
+#### For Common/Shared Code
+
+If you're writing multi-loader code in a common module:
+
+```kotlin
+dependencies {
+    modImplementation("dev.matthiesen:matthiesen-lib-common:${property("matthiesen_lib_version")}") { 
+        isTransitive = false 
+    }
+}
+```
+
+#### For Fabric-Specific Code
+
+In your Fabric module:
+
+```kotlin
+dependencies {
+    modImplementation("dev.matthiesen:matthiesen-lib-fabric:${property("matthiesen_lib_version")}")
+}
+```
+
+#### For NeoForge-Specific Code
+
+In your NeoForge module:
+
+```kotlin
+dependencies {
+    modImplementation("dev.matthiesen:matthiesen-lib-neoforge:${property("matthiesen_lib_version")}")
+}
+```
+
+#### Complete Multi-Loader Example
+
+For a typical Architectury-style multi-loader setup:
+
+```kotlin
+// In common/build.gradle.kts
+dependencies {
+    modImplementation("dev.matthiesen:matthiesen-lib-common:${property("matthiesen_lib_version")}") { 
+        isTransitive = false 
+    }
+}
+
+// In fabric/build.gradle.kts
+dependencies {
+    modImplementation("dev.matthiesen:matthiesen-lib-fabric:${property("matthiesen_lib_version")}") { 
+        isTransitive = false 
+    }
+}
+
+// In neoforge/build.gradle.kts  
+dependencies {
+    modImplementation("dev.matthiesen:matthiesen-lib-neoforge:${property("matthiesen_lib_version")}") { 
+        isTransitive = false 
+    }
+}
+```
+
+## Declaring as a Dependency
+
+Make sure to declare Matthiesen Lib as a dependency in your mod metadata files so users know they need it.
+
+### For Fabric (fabric.mod.json)
+
+```json
+{
+  "depends": {
+    "matthiesen_lib": ">=1.1.0"
+  }
+}
+```
+
+### For NeoForge (neoforge.mods.toml)
+
+```toml
+[[dependencies.yourmodid]]
+modId = "matthiesen_lib"
+type = "required"
+versionRange = "[1.1.0,)"
+ordering = "AFTER"
+side = "BOTH"
+```
+
+## Verification
+
+After adding the dependency, sync your Gradle project. You should now be able to import Matthiesen Lib classes:
+
+```java
+import dev.matthiesen.common.matthiesen_lib.MatthiesenLib;
+import dev.matthiesen.common.matthiesen_lib.MatthiesenLib.RegistryBuilder;
+```
+
+## Troubleshooting
+
+### Dependency Not Found
+
+If Gradle can't find the dependency:
+1. Verify the repository URL is correct
+2. Check that you've included the correct group (`dev.matthiesen`)
+3. Ensure the version exists on Maven by visiting [maven.matthiesen.dev](https://maven.matthiesen.dev/)
+4. Try invalidating caches and restarting your IDE
+
+### Version Conflicts
+
+If you encounter version conflicts:
+1. Ensure all modules use the same version of Matthiesen Lib
+2. Check that your Minecraft version is compatible (1.21.1)
+3. Verify your loader versions meet the minimum requirements
+
+## Next Steps
+
+Now that you have Matthiesen Lib installed, learn how to use it:
+
+- [Registry Builder API](/mods/matthiesen-lib/registry-builder) - Register content from common code
+- [Commands](/mods/matthiesen-lib/commands) - Create cross-platform commands
+- [Permissions](/mods/matthiesen-lib/permissions) - Implement permission validation
