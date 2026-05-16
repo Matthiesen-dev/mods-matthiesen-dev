@@ -6,20 +6,27 @@ import starlight from '@astrojs/starlight';
 export default defineConfig({
 	integrations: [
 		starlight({
-			title: 'My Docs',
-			social: [{ icon: 'github', label: 'GitHub', href: 'https://github.com/withastro/starlight' }],
+			title: "Adam Matthiesen's MC Development",
+			social: [
+				{ icon: 'github', label: 'GitHub', href: 'https://github.com/Matthiesen-dev' },
+				{ icon: 'discord', label: 'Discord', href: 'https://discord.gg/4ePfVRgexS' },
+			],
 			sidebar: [
 				{
-					label: 'Guides',
-					items: [
-						// Each item here is one entry in the navigation menu.
-						{ label: 'Example Guide', slug: 'guides/example' },
-					],
+					label: 'Introduction',
+					link: '/'
 				},
 				{
-					label: 'Reference',
-					items: [{ autogenerate: { directory: 'reference' } }],
-				},
+					label: 'Mods',
+					items: [
+						{
+							label: 'Matthiesen Lib',
+							items: [
+								{ autogenerate: { directory: "mods/matthiesen-lib" } }
+							]
+						}
+					]
+				}
 			],
 		}),
 	],
