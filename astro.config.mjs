@@ -4,9 +4,11 @@ import starlight from '@astrojs/starlight';
 
 // https://astro.build/config
 export default defineConfig({
+	site: 'https://mods.matthiesen.dev/',
 	integrations: [
 		starlight({
 			title: "Adam Matthiesen's MC Development",
+			description: "Documentation for Adam Matthiesen's Minecraft mods and libraries.",
 			social: [
 				{ icon: 'github', label: 'GitHub', href: 'https://github.com/Matthiesen-dev' },
 				{ icon: 'discord', label: 'Discord', href: 'https://discord.gg/4ePfVRgexS' },
