@@ -1,0 +1,544 @@
+---
+title: "Client-Side Features"
+description: "Register screens, renderers, HUD layers, and custom block outlines with platform-agnostic code"
+sidebar:
+  order: 8
+---
+
+## Overview
+
+Matthiesen Lib provides client-side abstractions for common Minecraft rendering and UI tasks. All client-side features work identically on **Fabric** and **NeoForge**, abstracting away platform-specific registration events and API differences.
+
+:::note[Client-Side Only]
+The `MatthiesenLibClient` class should only be used in client-side code. Make sure to separate your client initialization from your common/server code.
+:::
+
+## Menu Screen Registration
+
+Register custom menu screens that open when players interact with your custom menus.
+
+### Quick Example
+
+```java
+// In your common client class
+public class MyModCommonClient {
+    public static void registerMenuScreens() {
+        MatthiesenLibClient.registerMenuScreens(registry -> {
+            registry.register(MenuTypesRegistry.MY_MENU, MyMenuScreen::new);
+            registry.register(MenuTypesRegistry.ANOTHER_MENU, AnotherScreen::new);
+        });
+    }
+}
+```
+
+### Single Screen Registration
+
+Register a single screen using a `Supplier<MenuType>`:
+
+```java
+MatthiesenLibClient.registerMenuScreen(
+    MenuTypesRegistry.CONFIRMATION_SCREEN,
+    ConfirmationScreen::new
+);
+```
+
+Or using a direct `MenuType` reference:
+
+```java
+MatthiesenLibClient.registerMenuScreen(
+    menuType,  // Direct MenuType reference
+    MyScreen::new
+);
+```
+
+### Multiple Screens Registration
+
+Register multiple screens at once:
+
+```java
+MatthiesenLibClient.registerMenuScreens(registry -> {
+    registry.register(MenuTypesRegistry.CONFIRMATION_SCREEN, ConfirmationScreen::new);
+    registry.register(MenuTypesRegistry.SELECT_MOVE_SCREEN, SelectMoveScreen::new);
+    registry.register(MenuTypesRegistry.POKEMON_SELECTION_SCREEN, PokemonSelectionScreen::new);
+});
+```
+
+### Creating Custom Screens
+
+Matthiesen Lib provides `AbstractSimpleScreen` for screens that only need a background texture:
+
+```java
+public class MyCustomScreen extends AbstractSimpleScreen<MyCustomMenu> {
+    private static final ResourceLocation BACKGROUND = 
+        ResourceLocation.fromNamespaceAndPath("mymod", "textures/gui/my_screen.png");
+
+    public MyCustomScreen(MyCustomMenu menu, Inventory inventory, Component title) {
+        super(menu, inventory, title);
+    }
+
+    @Override
+    protected int getBgWidth() {
+        return 176;  // Width of your texture
+    }
+
+    @Override
+    protected int getBgHeight() {
+        return 166;  // Height of your texture
+    }
+
+    @Override
+    protected ResourceLocation getBackgroundTexture() {
+        return BACKGROUND;
+    }
+
+    @Override
+    public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
+        super.render(guiGraphics, mouseX, mouseY, partialTick);
+        // Add custom rendering here
+    }
+}
+```
+
+Benefits of `AbstractSimpleScreen`:
+- Automatically handles background rendering
+- Suppresses default container and inventory labels
+- Provides standard render flow
+
+## Entity Renderer Registration
+
+Register custom renderers for entities and block entities.
+
+### Entity Renderer
+
+```java
+MatthiesenLibClient.registerEntityRenderers(registry -> {
+    registry.registerEntityRenderer(
+        EntityTypeRegistry.MY_CUSTOM_ENTITY,
+        MyEntityRenderer::new
+    );
+});
+```
+
+Or register a single entity renderer:
+
+```java
+MatthiesenLibClient.registerEntityRenderer(
+    EntityTypeRegistry.MY_CUSTOM_ENTITY,
+    MyEntityRenderer::new
+);
+```
+
+### Block Entity Renderer
+
+```java
+MatthiesenLibClient.registerEntityRenderers(registry -> {
+    registry.registerBlockEntityRenderer(
+        BlockEntityTypeRegistry.MY_BLOCK_ENTITY,
+        MyBlockEntityRenderer::new
+    );
+});
+```
+
+Or register a single block entity renderer:
+
+```java
+MatthiesenLibClient.registerBlockEntityRenderer(
+    BlockEntityTypeRegistry.MY_BLOCK_ENTITY,
+    MyBlockEntityRenderer::new
+);
+```
+
+### Multiple Renderers
+
+Register both entity and block entity renderers together:
+
+```java
+MatthiesenLibClient.registerEntityRenderers(registry -> {
+    // Entity renderers
+    registry.registerEntityRenderer(
+        EntityTypeRegistry.CUSTOM_PROJECTILE,
+        CustomProjectileRenderer::new
+    );
+    
+    // Block entity renderers
+    registry.registerBlockEntityRenderer(
+        BlockEntityTypeRegistry.CUSTOM_CHEST,
+        CustomChestRenderer::new
+    );
+    
+    registry.registerBlockEntityRenderer(
+        BlockEntityTypeRegistry.CUSTOM_SIGN,
+        CustomSignRenderer::new
+    );
+});
+```
+
+## HUD Layer Registration
+
+Add custom HUD layers that render on top of (or below) vanilla HUD elements.
+
+### Register Above All Other Layers
+
+```java
+MatthiesenLibClient.registerHudLayer(
+    ResourceLocation.fromNamespaceAndPath("mymod", "status_display"),
+    (guiGraphics, deltaTracker) -> {
+        // Your HUD rendering logic
+        int screenWidth = guiGraphics.guiWidth();
+        int screenHeight = guiGraphics.guiHeight();
+        
+        guiGraphics.drawString(
+            Minecraft.getInstance().font,
+            "Custom HUD",
+            10, 10,
+            0xFFFFFF
+        );
+    }
+);
+```
+
+### Register with Specific Ordering
+
+```java
+MatthiesenLibClient.registerHudLayers(registrar -> {
+    // Render below the chat
+    registrar.registerBelow(
+        NeoForgeVanillaGuiLayers.CHAT,
+        ResourceLocation.fromNamespaceAndPath("mymod", "chat_background"),
+        (guiGraphics, deltaTracker) -> {
+            // Render a custom background behind chat
+        }
+    );
+    
+    // Render above the hotbar
+    registrar.registerAbove(
+        NeoForgeVanillaGuiLayers.HOTBAR,
+        ResourceLocation.fromNamespaceAndPath("mymod", "hotbar_overlay"),
+        (guiGraphics, deltaTracker) -> {
+            // Render custom hotbar overlay
+        }
+    );
+    
+    // Render at the very top
+    registrar.registerAboveAll(
+        ResourceLocation.fromNamespaceAndPath("mymod", "top_overlay"),
+        (guiGraphics, deltaTracker) -> {
+            // Always renders on top of everything
+        }
+    );
+    
+    // Render at the very bottom
+    registrar.registerBelowAll(
+        ResourceLocation.fromNamespaceAndPath("mymod", "bottom_overlay"),
+        (guiGraphics, deltaTracker) -> {
+            // Always renders below everything
+        }
+    );
+});
+```
+
+### Explicit Ordering
+
+```java
+MatthiesenLibClient.registerHudLayer(
+    MatthiesenLibHudOrdering.BEFORE,  // Ordering mode
+    NeoForgeVanillaGuiLayers.CHAT,     // Reference layer
+    ResourceLocation.fromNamespaceAndPath("mymod", "my_layer"),
+    (guiGraphics, deltaTracker) -> {
+        // Render before chat
+    }
+);
+
+// Or render after a specific layer
+MatthiesenLibClient.registerHudLayer(
+    MatthiesenLibHudOrdering.AFTER,
+    NeoForgeVanillaGuiLayers.HOTBAR,
+    ResourceLocation.fromNamespaceAndPath("mymod", "my_layer"),
+    (guiGraphics, deltaTracker) -> {
+        // Render after hotbar
+    }
+);
+```
+
+### Available Vanilla Layers
+
+Use `NeoForgeVanillaGuiLayers` constants for ordering:
+
+- `CAMERA_OVERLAYS` - Fire, water, pumpkin overlays
+- `CROSSHAIR` - Crosshair
+- `HOTBAR` - Hotbar and selected item
+- `JUMP_METER` - Horse jump meter
+- `EXPERIENCE_BAR` - XP bar
+- `PLAYER_HEALTH` - Health hearts
+- `ARMOR_LEVEL` - Armor icons
+- `FOOD_LEVEL` - Food/hunger bar
+- `VEHICLE_HEALTH` - Mount health
+- `AIR_LEVEL` - Air bubbles
+- `SELECTED_ITEM_NAME` - Item name tooltip
+- `SPECTATOR_TOOLTIP` - Spectator mode tooltips
+- `EXPERIENCE_LEVEL` - XP level number
+- `EFFECTS` - Status effects
+- `BOSS_OVERLAY` - Boss health bars
+- `SLEEP_OVERLAY` - Sleep overlay
+- `DEMO_OVERLAY` - Demo mode overlay
+- `DEBUG_OVERLAY` - F3 debug screen
+- `SCOREBOARD_SIDEBAR` - Scoreboard
+- `OVERLAY_MESSAGE` - Action bar messages
+- `TITLE` - Title/subtitle text
+- `CHAT` - Chat window
+- `TAB_LIST` - Player list (Tab)
+- `SUBTITLE_OVERLAY` - Subtitles
+- `SAVING_INDICATOR` - Saving world indicator
+
+### Complete HUD Example
+
+```java
+public class MyModCommonClient {
+    public static void registerHudLayers() {
+        MatthiesenLibClient.registerHudLayers(registrar -> {
+            // Status display in top-left corner
+            registrar.registerAbove(
+                NeoForgeVanillaGuiLayers.HOTBAR,
+                ResourceLocation.fromNamespaceAndPath("mymod", "status_hud"),
+                (guiGraphics, deltaTracker) -> {
+                    Minecraft mc = Minecraft.getInstance();
+                    if (mc.player == null) return;
+                    
+                    int x = 10;
+                    int y = 10;
+                    
+                    guiGraphics.drawString(
+                        mc.font,
+                        "Mana: " + getPlayerMana(mc.player),
+                        x, y,
+                        0x00FFFF
+                    );
+                }
+            );
+        });
+    }
+}
+```
+
+## Block Outline Listeners
+
+Customize the block selection outline (the box that appears when you look at a block).
+
+### Basic Example
+
+```java
+MatthiesenLibClient.registerBlockOutlineListener(context -> {
+    BlockPos pos = context.blockHitResult().getBlockPos();
+    BlockState state = context.level().getBlockState(pos);
+    
+    // Only customize for specific blocks
+    if (!(state.getBlock() instanceof MyCustomBlock)) {
+        return true;  // Keep vanilla outline
+    }
+    
+    // Render custom outline
+    VoxelShape shape = state.getShape(context.level(), pos);
+    
+    double x = pos.getX() - context.camera().getPosition().x();
+    double y = pos.getY() - context.camera().getPosition().y();
+    double z = pos.getZ() - context.camera().getPosition().z();
+    
+    LevelRenderer.renderVoxelShape(
+        context.poseStack(),
+        context.multiBufferSource().getBuffer(RenderType.lines()),
+        shape,
+        x, y, z,
+        1.0F, 0.0F, 0.0F, 0.8F,  // Red outline
+        false
+    );
+    
+    return false;  // Cancel vanilla outline
+});
+```
+
+### Multi-Block Outline
+
+Highlight multiple blocks as a group:
+
+```java
+MatthiesenLibClient.registerBlockOutlineListener(context -> {
+    BlockPos basePos = MyLogic.findMultiBlockBase(
+        context.level(),
+        context.blockHitResult().getBlockPos()
+    );
+    
+    if (basePos == null) {
+        return true;  // Not a multi-block, use vanilla outline
+    }
+    
+    // Get all positions in the multi-block structure
+    List<BlockPos> positions = MyLogic.getMultiBlockPositions(basePos);
+    
+    for (BlockPos pos : positions) {
+        BlockState state = context.level().getBlockState(pos);
+        VoxelShape shape = state.getShape(context.level(), pos);
+        
+        double x = pos.getX() - context.camera().getPosition().x();
+        double y = pos.getY() - context.camera().getPosition().y();
+        double z = pos.getZ() - context.camera().getPosition().z();
+        
+        LevelRenderer.renderVoxelShape(
+            context.poseStack(),
+            context.multiBufferSource().getBuffer(RenderType.lines()),
+            shape,
+            x, y, z,
+            0.0F, 1.0F, 0.0F, 0.6F,  // Green outline
+            false
+        );
+    }
+    
+    return false;  // Cancel vanilla outline
+});
+```
+
+### Context Information
+
+The `MatthiesenLibBlockOutlineContext` provides:
+
+- `level()` - The client level
+- `blockHitResult()` - The block being looked at
+- `poseStack()` - The pose stack for rendering
+- `camera()` - The camera for position calculations
+- `multiBufferSource()` - The buffer source for rendering
+
+Return `true` to keep vanilla outline, `false` to cancel it.
+
+## Client Initialization Pattern
+
+Here's a complete example showing how to structure client-side initialization:
+
+```java
+package dev.example.mymod;
+
+import dev.matthiesen.common.matthiesen_lib.MatthiesenLibClient;
+import dev.example.mymod.registry.MenuTypesRegistry;
+import dev.example.mymod.ui.client.*;
+
+public class MyModCommonClient {
+    public static void initialize() {
+        MyModConstants.createInfoLog("Initializing client logic");
+    }
+    
+    public static void registerMenuScreens() {
+        MatthiesenLibClient.registerMenuScreens(registry -> {
+            registry.register(MenuTypesRegistry.MY_MENU, MyMenuScreen::new);
+            registry.register(MenuTypesRegistry.SETTINGS_MENU, SettingsScreen::new);
+        });
+    }
+    
+    public static void registerEntityRenderers() {
+        MatthiesenLibClient.registerEntityRenderers(registry -> {
+            registry.registerEntityRenderer(
+                EntityTypeRegistry.MY_ENTITY,
+                MyEntityRenderer::new
+            );
+            
+            registry.registerBlockEntityRenderer(
+                BlockEntityTypeRegistry.MY_BLOCK_ENTITY,
+                MyBlockEntityRenderer::new
+            );
+        });
+    }
+    
+    public static void registerHudLayers() {
+        MatthiesenLibClient.registerHudLayers(registrar -> {
+            registrar.registerAbove(
+                NeoForgeVanillaGuiLayers.HOTBAR,
+                ResourceLocation.fromNamespaceAndPath("mymod", "status_hud"),
+                (guiGraphics, deltaTracker) -> {
+                    // Custom HUD rendering
+                }
+            );
+        });
+    }
+    
+    public static void registerBlockOutlines() {
+        MatthiesenLibClient.registerBlockOutlineListener(context -> {
+            // Custom block outline logic
+            return true;
+        });
+    }
+}
+```
+
+Then call these methods from your platform-specific client initializers:
+
+**Fabric:**
+```java
+public class MyModFabricClient implements ClientModInitializer {
+    @Override
+    public void onInitializeClient() {
+        MyModCommonClient.initialize();
+        MyModCommonClient.registerMenuScreens();
+        MyModCommonClient.registerEntityRenderers();
+        MyModCommonClient.registerHudLayers();
+        MyModCommonClient.registerBlockOutlines();
+    }
+}
+```
+
+**NeoForge:**
+```java
+public class MyModNeoForgeClient {
+    public MyModNeoForgeClient(IEventBus modEventBus, ModContainer modContainer) {
+        MyModCommonClient.initialize();
+        MyModCommonClient.registerMenuScreens();
+        MyModCommonClient.registerEntityRenderers();
+        MyModCommonClient.registerHudLayers();
+        MyModCommonClient.registerBlockOutlines();
+    }
+}
+```
+
+## Best Practices
+
+### Separate Client and Common Code
+
+Always keep client-only code separate from common code. Use separate packages:
+
+- `common/` - Server and client code
+- `common/.../ui/client/` - Client-only UI code
+- `fabric/` or `neoforge/` - Platform-specific initialization
+
+### Use Suppliers for Lazy Registration
+
+When registering content, use `Supplier` references to avoid initialization order issues:
+
+```java
+// Good - uses Supplier
+MatthiesenLibClient.registerMenuScreen(
+    MenuTypesRegistry.MY_MENU,  // Supplier<MenuType>
+    MyScreen::new
+);
+
+// Also good - direct reference when you know it's initialized
+MatthiesenLibClient.registerMenuScreen(
+    myMenuType,  // Direct MenuType
+    MyScreen::new
+);
+```
+
+### Check for Client-Side Environment
+
+Some methods should only run on the client:
+
+```java
+if (level.isClientSide()) {
+    // Safe to use client-only code here
+}
+```
+
+### Test on Both Platforms
+
+Always test your client-side features on both Fabric and NeoForge to ensure they work identically.
+
+## Related
+
+- [Registry Builder](/mods/matthiesen-lib/registry-builder) - Register game content
+- [Utilities](/mods/matthiesen-lib/utilities) - AbstractSimpleScreen and other utilities
+- [Getting Started](/mods/matthiesen-lib/) - Main documentation
