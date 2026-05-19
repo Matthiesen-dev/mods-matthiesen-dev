@@ -15,9 +15,15 @@ Instead of creating a `RegistryBuilder` directly, extend the specific registry c
 
 - `AbstractItemRegistry` - For registering items
 - `AbstractBlockRegistry` - For registering blocks
+- `AbstractBlockEntityRegistry` - For registering block entity types
 - `AbstractMenuTypeRegistry` - For registering menu/container types
 - `AbstractCommandRegistry` - For registering commands
-- And more...
+- `AbstractSoundRegistry` - For registering sound events
+- `AbstractCreativeModeTabRegistry` - For registering creative mode tabs
+- `AbstractDataComponentTypeRegistry` - For registering custom data component types
+- `AbstractCriteriaTriggerRegistry` - For registering advancement criterion triggers
+- `AbstractStatsRegistry` - For registering custom statistics
+- `AbstractEntityEffectRegistry` - For registering enchantment entity effects
 
 ### Example: Item Registry
 
@@ -165,6 +171,189 @@ public class MenuTypesRegistry extends AbstractMenuTypeRegistry {
 }
 ```
 
+### Sound Events
+
+Register custom sounds using `AbstractSoundRegistry`:
+
+```java
+import dev.matthiesen.common.matthiesen_lib.registry.AbstractSoundRegistry;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.core.registries.BuiltInRegistries;
+import java.util.function.Supplier;
+
+public class SoundRegistry extends AbstractSoundRegistry {
+    private static final SoundRegistry INSTANCE = new SoundRegistry();
+
+    protected SoundRegistry() {
+        super("mymod");
+    }
+
+    public static void init() {}
+
+    public static Supplier<SoundEvent> MY_SOUND;
+
+    static {
+        MY_SOUND = INSTANCE.register("my_sound", 
+            () -> SoundEvent.createVariableRangeEvent(
+                ResourceLocation.fromNamespaceAndPath("mymod", "my_sound")
+            )
+        );
+    }
+}
+```
+
+### Creative Mode Tabs
+
+Register custom creative mode tabs using `AbstractCreativeModeTabRegistry`:
+
+```java
+import dev.matthiesen.common.matthiesen_lib.registry.AbstractCreativeModeTabRegistry;
+import dev.matthiesen.common.matthiesen_lib.MatthiesenLib;
+import net.minecraft.world.item.CreativeModeTab;
+import java.util.function.Supplier;
+
+public class CreativeTabRegistry extends AbstractCreativeModeTabRegistry {
+    private static final CreativeTabRegistry INSTANCE = new CreativeTabRegistry();
+
+    protected CreativeTabRegistry() {
+        super("mymod");
+    }
+
+    public static void init() {}
+
+    public static Supplier<CreativeModeTab> MY_TAB;
+
+    static {
+        MY_TAB = INSTANCE.register("my_tab", () -> 
+            new MatthiesenLib.RegistryBuilder("mymod").newCreativeTabBuilder()
+                .title(Component.translatable("itemGroup.mymod.my_tab"))
+                .icon(() -> new ItemStack(ItemRegistry.MY_ITEM.get()))
+                .displayItems((parameters, output) -> {
+                    output.accept(ItemRegistry.MY_ITEM.get());
+                    output.accept(ItemRegistry.ANOTHER_ITEM.get());
+                })
+                .build()
+        );
+    }
+}
+```
+
+### Block Entities
+
+Register block entity types using `AbstractBlockEntityRegistry`:
+
+```java
+import dev.matthiesen.common.matthiesen_lib.registry.AbstractBlockEntityRegistry;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import java.util.function.Supplier;
+
+public class BlockEntityRegistry extends AbstractBlockEntityRegistry {
+    private static final BlockEntityRegistry INSTANCE = new BlockEntityRegistry();
+
+    protected BlockEntityRegistry() {
+        super("mymod");
+    }
+
+    public static void init() {}
+
+    public static Supplier<BlockEntityType<MyBlockEntity>> MY_BLOCK_ENTITY;
+
+    static {
+        MY_BLOCK_ENTITY = INSTANCE.register("my_block_entity",
+            () -> BlockEntityType.Builder.of(
+                MyBlockEntity::new,
+                BlockRegistry.MY_BLOCK.get()
+            ).build(null)
+        );
+    }
+}
+```
+
+### Data Component Types
+
+Register custom data component types for item NBT data:
+
+```java
+import dev.matthiesen.common.matthiesen_lib.registry.AbstractDataComponentTypeRegistry;
+import net.minecraft.core.component.DataComponentType;
+import java.util.function.Supplier;
+
+public class DataComponentRegistry extends AbstractDataComponentTypeRegistry {
+    private static final DataComponentRegistry INSTANCE = new DataComponentRegistry();
+
+    protected DataComponentRegistry() {
+        super("mymod");
+    }
+
+    public static void init() {}
+
+    public static Supplier<DataComponentType<Integer>> MY_COMPONENT;
+
+    static {
+        MY_COMPONENT = INSTANCE.register("my_component",
+            () -> DataComponentType.<Integer>builder()
+                .persistent(Codec.INT)
+                .networkSynchronized(ByteBufCodecs.VAR_INT)
+                .build()
+        );
+    }
+}
+```
+
+### Criterion Triggers
+
+Register custom advancement criterion triggers:
+
+```java
+import dev.matthiesen.common.matthiesen_lib.registry.AbstractCriteriaTriggerRegistry;
+import net.minecraft.advancements.CriterionTrigger;
+import java.util.function.Supplier;
+
+public class CriteriaTriggerRegistry extends AbstractCriteriaTriggerRegistry {
+    private static final CriteriaTriggerRegistry INSTANCE = new CriteriaTriggerRegistry();
+
+    protected CriteriaTriggerRegistry() {
+        super("mymod");
+    }
+
+    public static void init() {}
+
+    public static Supplier<CriterionTrigger<MyTrigger.TriggerInstance>> MY_TRIGGER;
+
+    static {
+        MY_TRIGGER = INSTANCE.register("my_trigger", () -> new MyTrigger());
+    }
+}
+```
+
+### Custom Statistics
+
+Register custom statistics for player tracking:
+
+```java
+import dev.matthiesen.common.matthiesen_lib.registry.AbstractStatsRegistry;
+import net.minecraft.resources.ResourceLocation;
+import java.util.function.Supplier;
+
+public class StatsRegistry extends AbstractStatsRegistry {
+    private static final StatsRegistry INSTANCE = new StatsRegistry();
+
+    protected StatsRegistry() {
+        super("mymod");
+    }
+
+    public static void init() {}
+
+    public static Supplier<ResourceLocation> MY_STAT;
+
+    static {
+        MY_STAT = INSTANCE.register("my_stat",
+            () -> ResourceLocation.fromNamespaceAndPath("mymod", "my_stat")
+        );
+    }
+}
+```
+
 ## Best Practices
 
 ### Use Suppliers
@@ -225,10 +414,15 @@ public class MyMod {
 |----------------|---------|-----------------|
 | `AbstractItemRegistry` | Register items | `register(name, supplier)` |
 | `AbstractBlockRegistry` | Register blocks | `register(name, supplier)` |
+| `AbstractBlockEntityRegistry` | Register block entity types | `register(name, supplier)` |
 | `AbstractMenuTypeRegistry` | Register menu types | `register(name, supplier)` |
+| `AbstractSoundRegistry` | Register sound events | `register(name, supplier)` |
+| `AbstractCreativeModeTabRegistry` | Register creative mode tabs | `register(name, supplier)` |
+| `AbstractDataComponentTypeRegistry` | Register data component types | `register(name, supplier)` |
+| `AbstractCriteriaTriggerRegistry` | Register criterion triggers | `register(name, supplier)` |
+| `AbstractStatsRegistry` | Register custom statistics | `register(name, supplier)` |
+| `AbstractEntityEffectRegistry` | Register enchantment entity effects | `register(name, supplier)` |
 | `AbstractCommandRegistry` | Register commands | `register(command)` |
-
-For other content types, check the Matthiesen Lib source code for additional registry classes.
 
 ## Next Steps
 

@@ -1,0 +1,319 @@
+---
+title: "Embers Text API Integration"
+description: "Send immersive messages to players using Ember's Text API through a cross-platform abstraction layer"
+sidebar:
+  order: 7
+---
+
+## Overview
+
+Matthiesen Lib provides a platform-agnostic compatibility layer for **Ember's Text API**. It works identically on both **Fabric** and **NeoForge**, abstracting away platform differences and version variations in the Ember API.
+
+:::note[Optional Dependency]
+Ember's Text API is optional. Always check that the compatibility layer is available before using it.
+:::
+
+## Quick Start
+
+Access the compatibility layer through the parser system:
+
+```java
+MatthiesenLibTextParser parser = MatthiesenLib.getTextParser(MatthiesenLibBuiltInTextParsers.EMBER);
+MatthiesenLibEmbersTextParserCompat compat = parser.getEmbersCompat();
+
+if (compat != null) {
+    compat.sendMessage(player, "Hello World", 100f);
+}
+```
+
+This sends a simple text message to the player for 100 ticks (5 seconds).
+
+## Getting Started
+
+### Obtaining the Compatibility Layer
+
+The Ember's Text API compatibility layer is accessed through the text parser system:
+
+```java
+MatthiesenLibTextParser parser = MatthiesenLib.getTextParser(MatthiesenLibBuiltInTextParsers.EMBER);
+MatthiesenLibEmbersTextParserCompat compat = parser.getEmbersCompat();
+```
+
+**Important:** Always check that the result is not null before using it:
+
+```java
+if (compat != null) {
+    // Use compat layer...
+} else {
+    // Ember's Text API is not installed
+    // Fall back to vanilla chat or other notification method
+}
+```
+
+### Customized Message with Inline Builder
+
+```java
+MatthiesenLibTextParser parser = MatthiesenLib.getTextParser(MatthiesenLibBuiltInTextParsers.EMBER);
+MatthiesenLibEmbersTextParserCompat compat = parser.getEmbersCompat();
+
+if (compat != null) {
+    compat.sendMessage(player, "Customized Message", 100f, builder -> builder
+        .anchor(MatthiesenLibImmersiveMessageBuilder.TextAnchor.TOP_CENTER)
+        .align(MatthiesenLibImmersiveMessageBuilder.TextAlign.CENTER)
+        .scale(1.5f)
+        .shadow(true)
+        .fadeInTicks(10)
+        .fadeOutTicks(20));
+}
+```
+
+The `builder -> ...` overload creates a new builder internally so you do not need to pre-create one.
+
+## API Reference
+
+### MatthiesenLibEmbersTextParserCompat
+
+Main interface for sending immersive messages.
+
+#### Basic Message Methods
+
+| Method | Description |
+|--------|-------------|
+| `sendMessage(ServerPlayer, Component, float)` | Send a message using a Minecraft `Component` |
+| `sendMessage(ServerPlayer, String, float)` | Send a message using plain text (string) |
+
+#### Customized Message Methods
+
+| Method | Description |
+|--------|-------------|
+| `sendMessage(ServerPlayer, Component, float, Builder)` | Send a Component message with custom formatting via builder |
+| `sendMessage(ServerPlayer, Component, float, Consumer<Builder>)` | Send a Component message with inline builder configuration (`builder -> ...`) |
+| `sendMessage(ServerPlayer, String, float, Builder)` | Send a message with custom formatting via builder |
+| `sendMessage(ServerPlayer, String, float, Consumer<Builder>)` | Send a message with inline builder configuration (`builder -> ...`) |
+
+#### Update Message Methods
+
+| Method | Description |
+|--------|-------------|
+| `sendUpdateMessage(ServerPlayer, String, Component, float)` | Update an existing message by ID using a Component |
+| `sendUpdateMessage(ServerPlayer, String, Component, float, Builder)` | Update a Component message with custom formatting |
+| `sendUpdateMessage(ServerPlayer, String, Component, float, Consumer<Builder>)` | Update a Component message with inline builder configuration |
+| `sendUpdateMessage(ServerPlayer, String, String, float)` | Update an existing message by ID using plain text |
+| `sendUpdateMessage(ServerPlayer, String, String, float, Builder)` | Update an existing message with custom formatting |
+| `sendUpdateMessage(ServerPlayer, String, String, float, Consumer<Builder>)` | Update a message with inline builder configuration |
+
+#### Message Control Methods
+
+| Method | Description |
+|--------|-------------|
+| `sendCloseMessage(ServerPlayer, String)` | Close a specific message by ID |
+| `sendCloseAllMessages(ServerPlayer)` | Close all active messages for a player |
+
+### MatthiesenLibImmersiveMessageBuilder
+
+Fluent builder for configuring message appearance and behavior.
+
+#### Factory Method
+
+```java
+MatthiesenLibImmersiveMessageBuilder builder = MatthiesenLibImmersiveMessageBuilder.create();
+```
+
+#### Configuration Methods
+
+| Method | Parameter(s) | Description | Default |
+|--------|-------------|-------------|---------|
+| `anchor(TextAnchor)` | Screen position | Where the message appears | `TOP_CENTER` |
+| `align(TextAlign)` | Horizontal alignment | Text alignment relative to anchor | `CENTER` |
+| `offset(float, float)` | X, Y pixels | Pixel offset from anchor point | `(0, 55)` |
+| `scale(float)` | Scale multiplier | Text size (1.0 = normal) | `1.0` |
+| `shadow(boolean)` | Enable/disable | Render text shadows | `true` |
+| `background(boolean)` | Enable/disable | Show background panel | `false` |
+| `fadeInTicks(int)` | Ticks (20 = 1s) | Duration to fade in | `0` |
+| `fadeOutTicks(int)` | Ticks (20 = 1s) | Duration to fade out | `0` |
+| `typewriter(float)` | Chars/tick | Typewriter effect speed | Disabled |
+| `typewriter(float, boolean)` | Speed, center | Typewriter with centering | Disabled |
+| `wrap(int)` | Width in pixels | Text wrap width | Disabled |
+
+#### Enum Types
+
+##### TextAnchor
+
+Screen positions (3×3 grid):
+- `TOP_LEFT`, `TOP_CENTER`, `TOP_RIGHT`
+- `MIDDLE_LEFT`, `MIDDLE`, `MIDDLE_RIGHT`
+- `BOTTOM_LEFT`, `BOTTOM_CENTER`, `BOTTOM_RIGHT`
+
+##### TextAlign
+
+Horizontal alignment relative to anchor:
+- `LEFT` – align text left
+- `CENTER` – center text (default)
+- `RIGHT` – align text right
+
+## Examples
+
+### Example 1: Top-Center Status Message
+
+```java
+MatthiesenLibTextParser parser = MatthiesenLib.getTextParser(MatthiesenLibBuiltInTextParsers.EMBER);
+MatthiesenLibEmbersTextParserCompat compat = parser.getEmbersCompat();
+
+if (compat != null) {
+    compat.sendMessage(player, "Your quest has been updated!", 80f);
+}
+```
+
+Appears at the top-center by default.
+
+### Example 2: Large, Centered, Glowing Message
+
+```java
+MatthiesenLibTextParser parser = MatthiesenLib.getTextParser(MatthiesenLibBuiltInTextParsers.EMBER);
+MatthiesenLibEmbersTextParserCompat compat = parser.getEmbersCompat();
+
+if (compat != null) {
+    MatthiesenLibImmersiveMessageBuilder builder = MatthiesenLibImmersiveMessageBuilder.create()
+        .anchor(MatthiesenLibImmersiveMessageBuilder.TextAnchor.MIDDLE)
+        .scale(2.0f)
+        .shadow(true)
+        .fadeInTicks(5)
+        .fadeOutTicks(10);
+
+    compat.sendMessage(player, "Victory!", 120f, builder);
+}
+```
+
+Appears at the center with double size, fades in/out gracefully.
+
+### Example 3: Styled Component Message with Inline Builder
+
+```java
+MatthiesenLibTextParser parser = MatthiesenLib.getTextParser(MatthiesenLibBuiltInTextParsers.EMBER);
+MatthiesenLibEmbersTextParserCompat compat = parser.getEmbersCompat();
+
+if (compat != null) {
+    Component msg = Component.literal("Dungeon Cleared!")
+        .withStyle(ChatFormatting.GOLD)
+        .withStyle(ChatFormatting.BOLD);
+
+    compat.sendMessage(player, msg, 120f, builder -> builder
+        .anchor(MatthiesenLibImmersiveMessageBuilder.TextAnchor.MIDDLE)
+        .scale(1.8f)
+        .fadeInTicks(6)
+        .fadeOutTicks(10));
+}
+```
+
+### Example 4: Typewriter Effect
+
+```java
+MatthiesenLibTextParser parser = MatthiesenLib.getTextParser(MatthiesenLibBuiltInTextParsers.EMBER);
+MatthiesenLibEmbersTextParserCompat compat = parser.getEmbersCompat();
+
+if (compat != null) {
+    MatthiesenLibImmersiveMessageBuilder builder = MatthiesenLibImmersiveMessageBuilder.create()
+        .typewriter(0.5f, true)  // 0.5 chars per tick, centered while typing
+        .offset(0f, 150f)
+        .anchor(MatthiesenLibImmersiveMessageBuilder.TextAnchor.BOTTOM_CENTER);
+
+    compat.sendMessage(player, "A mysterious force awakens...", 200f, builder);
+}
+```
+
+### Example 5: Updating an Existing Message
+
+```java
+MatthiesenLibTextParser parser = MatthiesenLib.getTextParser(MatthiesenLibBuiltInTextParsers.EMBER);
+MatthiesenLibEmbersTextParserCompat compat = parser.getEmbersCompat();
+
+if (compat != null) {
+    // Send initial message with an ID
+    compat.sendMessage(player, "progress_message", "Loading: 0%", 100f);
+    
+    // Later, update the message
+    compat.sendUpdateMessage(player, "progress_message", "Loading: 50%", 100f);
+    
+    // Close the message when done
+    compat.sendCloseMessage(player, "progress_message");
+}
+```
+
+### Example 6: Multiple Styled Messages
+
+```java
+MatthiesenLibTextParser parser = MatthiesenLib.getTextParser(MatthiesenLibBuiltInTextParsers.EMBER);
+MatthiesenLibEmbersTextParserCompat compat = parser.getEmbersCompat();
+
+if (compat != null) {
+    // Title message at center
+    compat.sendMessage(player, "Boss Defeated!", 140f, builder -> builder
+        .anchor(MatthiesenLibImmersiveMessageBuilder.TextAnchor.MIDDLE)
+        .scale(2.5f)
+        .fadeInTicks(10)
+        .fadeOutTicks(20));
+
+    // Subtitle message below center
+    compat.sendMessage(player, "+500 XP", 120f, builder -> builder
+        .anchor(MatthiesenLibImmersiveMessageBuilder.TextAnchor.MIDDLE)
+        .offset(0f, 50f)
+        .scale(1.2f)
+        .fadeInTicks(15)
+        .fadeOutTicks(15));
+}
+```
+
+## Best Practices
+
+### Always Check for Availability
+
+Since Ember's Text API is an optional dependency, always check if the compatibility layer is available:
+
+```java
+MatthiesenLibEmbersTextParserCompat compat = MatthiesenLib.getTextParser(MatthiesenLibBuiltInTextParsers.EMBER).getEmbersCompat();
+if (compat != null) {
+    // Use Ember's Text API
+} else {
+    // Fall back to vanilla chat messages
+    player.sendSystemMessage(Component.literal("Your message here"));
+}
+```
+
+### Use Appropriate Durations
+
+- **Short notifications** (80-100 ticks / 4-5 seconds): Quick status updates
+- **Medium messages** (120-160 ticks / 6-8 seconds): Quest updates, achievements
+- **Long messages** (200+ ticks / 10+ seconds): Important story beats, tutorials
+
+### Consider Fade Timing
+
+Add fade effects to make messages feel more polished:
+
+```java
+builder -> builder
+    .fadeInTicks(10)   // 0.5 second fade in
+    .fadeOutTicks(20)  // 1 second fade out
+```
+
+### Position Messages Appropriately
+
+- `TOP_CENTER`: Status updates, quest notifications
+- `MIDDLE`: Critical announcements, boss defeats, story beats
+- `BOTTOM_CENTER`: Hints, tips, subtitles
+- `TOP_LEFT/RIGHT`, `BOTTOM_LEFT/RIGHT`: Persistent HUD elements
+
+### Use Message IDs for Updates
+
+When you need to update a message multiple times, use a unique ID:
+
+```java
+String messageId = "player_status_" + player.getUUID();
+compat.sendMessage(player, messageId, "Health: 20/20", 100f);
+// Later...
+compat.sendUpdateMessage(player, messageId, "Health: 15/20", 100f);
+```
+
+## Related
+
+- [Commands](/mods/matthiesen-lib/commands) - Create commands that can send messages
+- [Utilities](/mods/matthiesen-lib/utilities) - Other helpful utilities
