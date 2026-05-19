@@ -18,27 +18,39 @@ const { modrinth, github, minecraftVersion, fabric, neoforge } = Astro.props;
 <div class="not-content">
     <div class="meta-content">
         <div class="meta-row">
-            <div class="meta-label">MC Version</div>
+            <div class="meta-label">Minecraft Version</div>
             <div class="meta-value version-value">
                 <div class="version-box">{minecraftVersion}</div>
             </div>
         </div>
 
         <div class="meta-row">
-            <div class="meta-label">Mod Loaders</div>
+            <div class="meta-label">Supported Loaders</div>
             <div class="meta-value loaders-value">
                 {
                     fabric && (
-                        <span class="loader-icon" data-tooltip="Fabric">
+                        <a
+                            href="https://fabricmc.net/"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="loader-icon"
+                            data-tooltip="Fabric"
+                        >
                             <Fabric />
-                        </span>
+                        </a>
                     )
                 }
                 {
                     neoforge && (
-                        <span class="loader-icon" data-tooltip="NeoForge">
+                        <a
+                            href="https://neoforged.net/"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="loader-icon"
+                            data-tooltip="NeoForge"
+                        >
                             <NeoForge />
-                        </span>
+                        </a>
                     )
                 }
             </div>
@@ -83,9 +95,9 @@ const { modrinth, github, minecraftVersion, fabric, neoforge } = Astro.props;
     .meta-content {
         display: flex;
         flex-direction: column;
-        gap: 6px;
+        gap: 12px;
         background: linear-gradient(135deg, #c6c6c6 0%, #8b8b8b 100%);
-        padding: 10px 14px;
+        padding: 20px 24px;
         border-top: 3px solid #ffffff;
         border-left: 3px solid #ffffff;
         border-right: 3px solid #373737;
@@ -103,8 +115,8 @@ const { modrinth, github, minecraftVersion, fabric, neoforge } = Astro.props;
     .meta-row {
         display: flex;
         align-items: center;
-        gap: 8px;
-        padding: 4px 0;
+        gap: 16px;
+        padding: 8px 0;
         border-bottom: 1px solid rgba(55, 55, 55, 0.3);
     }
 
@@ -117,7 +129,7 @@ const { modrinth, github, minecraftVersion, fabric, neoforge } = Astro.props;
         font-size: 1rem;
         color: #3f3f3f;
         text-shadow: 1px 1px 0 rgba(255, 255, 255, 0.3);
-        min-width: 140px;
+        min-width: 220px;
         font-weight: bold;
         text-transform: uppercase;
         letter-spacing: 0.5px;
