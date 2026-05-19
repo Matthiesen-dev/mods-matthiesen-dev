@@ -5,6 +5,8 @@ sidebar:
   order: 7
 ---
 
+import ReadMore from '../../../../components/ReadMore.astro';
+
 ## Overview
 
 Matthiesen Lib provides a platform-agnostic compatibility layer for **Ember's Text API**. It works identically on both **Fabric** and **NeoForge**, abstracting away platform differences and version variations in the Ember API.
@@ -315,5 +317,9 @@ compat.sendUpdateMessage(player, messageId, "Health: 15/20", 100f);
 
 ## Related
 
-- [Commands](/mods/matthiesen-lib/commands) - Create commands that can send messages
-- [Utilities](/mods/matthiesen-lib/utilities) - Other helpful utilities
+<ReadMore>Learn how to set up Matthiesen Lib in your development environment with the [Installation Guide](/mods/matthiesen-lib/installation).</ReadMore>
+<ReadMore>Explore the [Registry Builder API](/mods/matthiesen-lib/registry-builder) to see how to register content from common code.</ReadMore>
+<ReadMore>Check out the [Commands](/mods/matthiesen-lib/commands) page to learn how to create cross-platform commands.</ReadMore>
+<ReadMore>Find out how to implement permissions with the [Permissions](/mods/matthiesen-lib/permissions) system.</ReadMore>
+<ReadMore>Discover how to register client-side features like screens and renderers in the [Client-Side Features](/mods/matthiesen-lib/client-features) section.</ReadMore>
+<ReadMore>Utilize helpful utilities like the ItemBuilder in the [Utilities](/mods/matthiesen-lib/utilities) section.</ReadMore>

@@ -37,7 +37,6 @@ switch (collection) {
     class="recipes-list not-content"
     style="display: flex; flex-direction: column; gap: 32px;"
 >
-    {allCraftingRecipes.length > 0 && <h2>Crafting Recipes</h2>}
     {
         allCraftingRecipes.length > 0 &&
             allCraftingRecipes.map((recipe) => (
@@ -51,7 +50,6 @@ switch (collection) {
             ))
     }
 
-    {allSmithingRecipes.length > 0 && <h2>Smithing Recipes</h2>}
     {
         allSmithingRecipes.length > 0 &&
             allSmithingRecipes.map((recipe) => (
