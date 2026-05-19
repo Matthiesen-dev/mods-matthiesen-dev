@@ -1,0 +1,43 @@
+---
+interface Props {
+    repository: string;
+    snapshot?: boolean;
+    settings?: {
+        name?: string;
+        color?: string;
+        prefix?: string;
+        filter?: string;
+    };
+}
+
+const baseURL = "https://maven.matthiesen.dev";
+const releasesApiPath = "/api/badge/latest/releases/%repository%";
+const snapshotsApiPath = "/api/badge/latest/snapshots/%repository%";
+const apiPath = Astro.props.snapshot ? snapshotsApiPath : releasesApiPath;
+
+const { repository, settings } = Astro.props;
+const badgeURL = `${baseURL}${apiPath.replace("%repository%", repository)}`;
+const urlEncodedSettings = settings
+    ? Object.entries(settings)
+          .filter(([_, value]) => value !== undefined)
+          .map(
+              ([key, value]) =>
+                  `${encodeURIComponent(key)}=${encodeURIComponent(value!)}`,
+          )
+          .join("&")
+    : "";
+
+const finalURL = urlEncodedSettings
+    ? `${badgeURL}?${urlEncodedSettings}`
+    : badgeURL;
+
+const hrefBaseUrl = "https://maven.matthiesen.dev/#/";
+const hrefPath = Astro.props.snapshot
+    ? `snapshots/${repository}`
+    : `releases/${repository}`;
+const finalHref = `${hrefBaseUrl}${hrefPath}`;
+---
+
+<a href={finalHref} target="_blank" rel="noopener noreferrer">
+    <img src={finalURL} />
+</a>

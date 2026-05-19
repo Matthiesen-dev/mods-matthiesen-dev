@@ -6,6 +6,7 @@ sidebar:
 ---
 
 import ReadMore from '~/components/ReadMore.astro';
+import MavenBadge from '~/components/MavenBadge.astro';
 
 ## Adding Matthiesen Lib to Your Project
 
@@ -57,6 +58,18 @@ matthiesen_lib_version=1.1.0
 :::tip[Finding the Latest Version]
 Visit [Matthiesen Dev Maven](https://maven.matthiesen.dev/) to find the latest version for your platform.
 :::
+
+| Current Release Versions |
+| ------- |
+| <MavenBadge repository='dev/matthiesen/matthiesen-lib-common' settings={{ name: "matthiesen-lib-common" }} /> |
+| <MavenBadge repository='dev/matthiesen/matthiesen-lib-fabric' settings={{ name: "matthiesen-lib-fabric" }} /> |
+| <MavenBadge repository='dev/matthiesen/matthiesen-lib-neoforge' settings={{ name: "matthiesen-lib-neoforge" }} /> |
+
+| Current Snapshot Versions |
+| ------- |
+| <MavenBadge repository='dev/matthiesen/matthiesen-lib-common' settings={{ name: "matthiesen-lib-common", color: "FFA500" }} snapshot /> |
+| <MavenBadge repository='dev/matthiesen/matthiesen-lib-fabric' settings={{ name: "matthiesen-lib-fabric", color: "FFA500" }} snapshot /> |
+| <MavenBadge repository='dev/matthiesen/matthiesen-lib-neoforge' settings={{ name: "matthiesen-lib-neoforge", color: "FFA500" }} snapshot /> |
 
 ### Step 3: Add Dependencies
 
