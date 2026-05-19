@@ -6,12 +6,13 @@ next:
   link: /cobblemon-escape-rope/configuration
   label: "Configuration"
 sidebar:
-  label: Overview
+  label: Getting Started
   order: 1
 ---
 
 import ModMeta from '~/components/ModMeta.astro';
 import ReadMore from '~/components/ReadMore.astro';
+import Deps from '~/components/Deps.astro';
 
 <ModMeta 
   minecraftVersion='1.21.1'
@@ -19,6 +20,8 @@ import ReadMore from '~/components/ReadMore.astro';
   modrinth='cobblemon-escape-rope'
   fabric neoforge
 />
+
+<Deps cobblemon architecturyApi />
 
 A lightweight Cobblemon add-on that adds an **Escape Rope** item for returning to the last safe place where you were under open sky.
 
@@ -30,7 +33,7 @@ A lightweight Cobblemon add-on that adds an **Escape Rope** item for returning t
 - Applies a configurable use time, cooldown, and item consumption behavior.
 - Tries to find a safe nearby landing spot using a configurable search radius.
 
-## Requirements
+## Dependencies
 
 - [Cobblemon 1.7.3+1.21.1](https://modrinth.com/mod/cobblemon)
 - [Architectury API for 1.21.1](https://modrinth.com/mod/architectury-api)

@@ -6,12 +6,13 @@ next:
   link: /cobblemon-pc-on-a-stick/recipes
   label: "Crafting Recipes"
 sidebar:
-  label: Overview
+  label: Getting Started
   order: 1
 ---
 
 import ModMeta from '~/components/ModMeta.astro';
 import ReadMore from '~/components/ReadMore.astro';
+import Deps from '~/components/Deps.astro';
 
 <ModMeta 
   minecraftVersion='1.21.1'
@@ -20,12 +21,14 @@ import ReadMore from '~/components/ReadMore.astro';
   neoforge
 />
 
+<Deps cobblemon />
+
 Built using the [Crafting on a Stick](https://modrinth.com/mod/crafting-on-a-stick) API, this mod is a super simple addon mod for Crafting on a Stick and Cobblemon to bring your PC with you on a Stick!
 
-Requirements:
-- NeoForge (Crafting on a Stick only has NeoForge versions)
-- Cobblemon
-- Crafting on a Stick
+## Dependencies
+
+- [Cobblemon 1.7.3+1.21.1](https://modrinth.com/mod/cobblemon)
+- [Crafting on a Stick](https://modrinth.com/mod/crafting-on-a-stick)
 
 ## See Also
 

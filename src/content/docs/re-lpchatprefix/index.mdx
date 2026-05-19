@@ -4,11 +4,12 @@ description: Re LPChatPrefix is a mod that adds LuckPerms prefix/suffix support 
 prev: false
 next: false
 sidebar:
-  label: Overview
+  label: Getting Started
   order: 1
 ---
 
 import ModMeta from '~/components/ModMeta.astro';
+import Deps from '~/components/Deps.astro';
 
 <ModMeta 
   minecraftVersion='1.21.1'
@@ -16,6 +17,8 @@ import ModMeta from '~/components/ModMeta.astro';
   modrinth='re-lpchatprefix'
   neoforge
 />
+
+<Deps luckPerms />
 
 This is a simple Server-Sided mod that gives you LuckPerms prefix/suffix support for usernames 
 in your chat messages and join/leave messages with Adventure's MiniMessage support in NeoForge

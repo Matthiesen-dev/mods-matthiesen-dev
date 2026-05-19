@@ -4,11 +4,12 @@ description: Vanity Plates is a mod that allows users to assign "vanity" prefixe
 prev: false
 next: false
 sidebar:
-  label: Overview
+  label: Getting Started
   order: 1
 ---
 
 import ModMeta from '~/components/ModMeta.astro';
+import Deps from '~/components/Deps.astro';
 
 <ModMeta 
   minecraftVersion='1.21.1'
@@ -16,6 +17,8 @@ import ModMeta from '~/components/ModMeta.astro';
   modrinth='vanity-plates'
   fabric neoforge
 />
+
+<Deps gooeyLibs luckPerms />
 
 A simple Server-side mod for "vanity" prefixes that users can assign via a friendly and easy to use in-game GUI.
 

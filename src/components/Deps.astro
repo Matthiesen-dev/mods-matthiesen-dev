@@ -1,0 +1,199 @@
+---
+import ArchitecturyApi from "~/assets/deps/architectury-api.svg";
+import Cobblemon from "~/assets/deps/cobblemon.svg";
+import GeckoLib from "~/assets/deps/geckolib.svg";
+import GooeyLibs from "~/assets/deps/gooeylibs.svg";
+import GooeyLibsOptional from "~/assets/deps/gooeylibs_optional.svg";
+import LuckPerms from "~/assets/deps/luckperms.svg";
+import MatthiesenLib from "~/assets/deps/matthiesenLib.svg";
+
+interface Props {
+    architecturyApi?: boolean;
+    cobblemon?: boolean;
+    geckoLib?: boolean;
+    gooeyLibs?: boolean;
+    gooeyLibsOptional?: boolean;
+    luckPerms?: boolean;
+    matthiesenLib?: boolean;
+}
+
+const {
+    architecturyApi,
+    cobblemon,
+    geckoLib,
+    gooeyLibs,
+    gooeyLibsOptional,
+    luckPerms,
+    matthiesenLib,
+} = Astro.props;
+---
+
+<div class="deps-container not-content">
+    <div class="deps">
+        {
+            architecturyApi && (
+                <a
+                    href="https://modrinth.com/mod/architectury-api"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="dep-icon"
+                    data-tooltip="Architectury API"
+                >
+                    <ArchitecturyApi />
+                </a>
+            )
+        }
+        {
+            cobblemon && (
+                <a
+                    href="https://modrinth.com/mod/cobblemon"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="dep-icon"
+                    data-tooltip="Cobblemon"
+                >
+                    <Cobblemon />
+                </a>
+            )
+        }
+        {
+            geckoLib && (
+                <a
+                    href="https://modrinth.com/mod/geckolib"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="dep-icon"
+                    data-tooltip="GeckoLib"
+                >
+                    <GeckoLib />
+                </a>
+            )
+        }
+        {
+            gooeyLibs && (
+                <a
+                    href="https://modrinth.com/mod/gooeylibs"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="dep-icon"
+                    data-tooltip="GooeyLibs"
+                >
+                    <GooeyLibs />
+                </a>
+            )
+        }
+        {
+            gooeyLibsOptional && (
+                <a
+                    href="https://modrinth.com/mod/gooeylibs"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="dep-icon"
+                    data-tooltip="GooeyLibs (Optional)"
+                >
+                    <GooeyLibsOptional />
+                </a>
+            )
+        }
+        {
+            luckPerms && (
+                <a
+                    href="https://modrinth.com/mod/luckperms"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="dep-icon"
+                    data-tooltip="LuckPerms"
+                >
+                    <LuckPerms />
+                </a>
+            )
+        }
+        {
+            matthiesenLib && (
+                <a
+                    href="https://modrinth.com/mod/matthiesen-lib"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="dep-icon"
+                    data-tooltip="MatthiesenLib"
+                >
+                    <MatthiesenLib />
+                </a>
+            )
+        }
+    </div>
+</div>
+
+<style>
+    .deps-container {
+        margin-top: 1rem;
+    }
+
+    .deps {
+        display: flex;
+        gap: 0.5rem;
+        margin-top: 0.5rem;
+    }
+
+    .dep-icon {
+        position: relative;
+        display: inline-flex;
+        cursor: pointer;
+    }
+
+    .dep-icon::after {
+        content: attr(data-tooltip);
+        position: absolute;
+        bottom: 100%;
+        left: 50%;
+        transform: translateX(-50%) translateY(-4px);
+        background-color: rgba(0, 0, 0, 0.9);
+        color: #fff;
+        padding: 2px 6px;
+        border-radius: 4px;
+        font-size: 0.75rem;
+        white-space: nowrap;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.2s ease-in-out;
+    }
+
+    .dep-icon:hover::after {
+        opacity: 1;
+    }
+
+    .dep-icon[data-tooltip]:hover::after {
+        content: attr(data-tooltip);
+        position: absolute;
+        bottom: 100%;
+        left: 50%;
+        transform: translateX(-50%) translateY(-8px);
+        padding: 6px 10px;
+        background: linear-gradient(180deg, #100010 0%, #100010 100%);
+        border: 2px solid;
+        border-color: #5000ff #2800aa #2800aa #5000ff;
+        color: #ffffff;
+        font-family: "Minecraft", monospace, sans-serif;
+        font-size: 14px;
+        pointer-events: none;
+        z-index: 10000;
+        white-space: nowrap;
+        text-shadow: 2px 2px 0px rgba(0, 0, 0, 0.8);
+        box-shadow:
+            inset 0 0 0 1px rgba(80, 0, 255, 0.4),
+            0 4px 8px rgba(0, 0, 0, 0.6);
+        image-rendering: pixelated;
+        animation: tooltipFadeIn 0.15s ease;
+    }
+
+    @keyframes tooltipFadeIn {
+        from {
+            opacity: 0;
+            transform: translateX(-50%) translateY(-4px);
+        }
+        to {
+            opacity: 1;
+            transform: translateX(-50%) translateY(-8px);
+        }
+    }
+</style>

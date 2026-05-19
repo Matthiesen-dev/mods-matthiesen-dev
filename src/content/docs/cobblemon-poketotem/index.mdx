@@ -4,11 +4,12 @@ description: Cobblemon PokeTotems is a mod that adds PokeTotems to Cobblemon, al
 prev: false
 next: false
 sidebar:
-  label: Overview
+  label: Getting Started
   order: 1
 ---
 
 import ModMeta from '~/components/ModMeta.astro';
+import Deps from '~/components/Deps.astro';
 
 <ModMeta 
   minecraftVersion='1.21.1'
@@ -16,6 +17,8 @@ import ModMeta from '~/components/ModMeta.astro';
   modrinth='cobblemon-poketotem'
   fabric neoforge
 />
+
+<Deps cobblemon gooeyLibs />
 
 This is a Server-Side only mod that adds PokeTotems to the game. PokeTotems are item versions of Pokemon.
 There is two versions of PokeTotems, Normal and Clones.
@@ -30,7 +33,7 @@ the server-owner has not restricted the permissions for `/totemtopoke` and `/tot
 If you are planning on creating custom loot rewards using the Totems, it is recommended to use 
 the Cloned PokeTotems instead of the Normal PokeTotems. 
 
-## Requirements
+## Dependencies
 
 - [Cobblemon v1.7.3+](https://modrinth.com/mod/cobblemon/)
 - [GooeyLibs v3.1.1-1.21.x+](https://modrinth.com/mod/gooeylibs)

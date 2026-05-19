@@ -4,11 +4,12 @@ description: Cobblemon Move Tutor is a mod that adds a new NPC to your Cobblemon
 prev: false
 next: false
 sidebar:
-  label: Overview
+  label: Getting Started
   order: 1
 ---
 
 import ModMeta from '~/components/ModMeta.astro';
+import Deps from '~/components/Deps.astro';
 
 <ModMeta 
   minecraftVersion='1.21.1'
@@ -17,11 +18,13 @@ import ModMeta from '~/components/ModMeta.astro';
   fabric neoforge
 />
 
+<Deps cobblemon matthiesenLib />
+
 This mod adds a new NPC to your Cobblemon world that can teach your Pokemon new moves. The Move Tutor, set to spawn 
 near Minecraft villages, offers a variety of moves that your Pokemon can learn, enhancing their abilities and making 
 them more versatile in battles.
 
-## Requirements
+## Dependencies
 - [Cobblemon](https://modrinth.com/mod/cobblemon)
 - [Matthiesen Lib](https://modrinth.com/mod/matthiesen-lib)
 
