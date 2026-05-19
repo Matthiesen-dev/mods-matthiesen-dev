@@ -6,9 +6,15 @@ sidebar:
   order: 1
 ---
 
-import ModInfo from '../../../../components/ModInfo.astro';
+import ModMeta from '../../../../components/ModMeta.astro';
 
-<ModInfo modrinthId="cobblemon-boosters" githubRepo="cobblemon-boosters" />
+<ModMeta 
+  minecraftVersion='1.21.1'
+  github='cobblemon-boosters'
+  modrinth='cobblemon-boosters'
+  fabric neoforge
+/>
+
 
 This is a Server side mod that adds different types of timed boosters to your server. These boosters can be used to increase the 
 chances of finding Shiny Pokemon, or increases the catch rate!

@@ -6,9 +6,14 @@ sidebar:
   order: 1
 ---
 
-import ModInfo from '../../../../components/ModInfo.astro';
+import ModMeta from '../../../../components/ModMeta.astro';
 
-<ModInfo modrinthId="cobblemon-pokestops" githubRepo="cobblemon-pokestops" />
+<ModMeta 
+  minecraftVersion='1.21.1'
+  github='cobblemon-pokestops'
+  modrinth='cobblemon-pokestops'
+  fabric neoforge
+/>
 
 This mod adds Pokemon GO inspired Pokestops to Cobblemon. Pokestops can be used to get items, and they have a cooldown period after being used.
 **Currently, Pokestops require someone with admin/creative permissions to place them**, but in the future, we plan to add Pokestop world generation as well.
