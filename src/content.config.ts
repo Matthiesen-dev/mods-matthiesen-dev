@@ -7,7 +7,7 @@ import { z } from 'astro/zod';
 const craftingRecipes = defineCollection({
 	// Use the glob loader to find individual json files
 	loader: glob({
-		base: './src/content/crafting-recipes',
+		base: './src/content/recipes/crafting',
 		pattern: '**/*.json'
 	}),
 	schema: z.object({
@@ -30,7 +30,7 @@ const craftingRecipes = defineCollection({
 
 const smithingRecipes = defineCollection({
 	loader: glob({
-		base: './src/content/smithing-recipes',
+		base: './src/content/recipes/smithing',
 		pattern: '**/*.json'
 	}),
 	schema: z.object({
