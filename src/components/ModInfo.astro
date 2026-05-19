@@ -1,0 +1,45 @@
+---
+import Github from "../assets/github.svg";
+import Modrinth from "../assets/modrinth.svg";
+
+interface Props {
+    modrinthId: string;
+    githubRepo: string;
+}
+
+const { modrinthId, githubRepo } = Astro.props;
+---
+
+<div class="mod-info">
+    <a
+        href={`https://modrinth.com/mod/${modrinthId}`}
+        target="_blank"
+        rel="noopener noreferrer"
+    >
+        <Modrinth />
+    </a>
+    <a
+        href={`https://github.com/matthiesen-dev/${githubRepo}`}
+        target="_blank"
+        rel="noopener noreferrer"
+    >
+        <Github />
+    </a>
+</div>
+
+<style>
+    .mod-info {
+        display: flex;
+        gap: 0.25rem;
+    }
+
+    .mod-info a {
+        padding: 0.5rem 0.5rem;
+        color: white;
+        text-decoration: none;
+        border-radius: 4px;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+</style>

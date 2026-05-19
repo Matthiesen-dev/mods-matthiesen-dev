@@ -1,0 +1,21 @@
+{
+    "name": "Escape Rope",
+    "description": "Let's the player return to the last safe place where they were under open sky.",
+    "modFilter": "cobblemon_escape_rope",
+    "ingredients": [
+        "string",
+        "string",
+        "string",
+        "string",
+        "ender_pearl",
+        "string",
+        "string",
+        "string",
+        "string"
+    ],
+    "resultItem": {
+        "modId": "cobblemon_escape_rope",
+        "itemId": "escape_rope"
+    },
+    "resultCount": 1
+}

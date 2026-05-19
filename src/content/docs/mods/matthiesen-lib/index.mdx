@@ -5,6 +5,10 @@ sidebar:
   order: 1
 ---
 
+import ModInfo from '../../../../components/ModInfo.astro';
+
+<ModInfo modrinthId="matthiesen-lib" githubRepo="matthiesen-lib" />
+
 ## What is Matthiesen Lib?
 
 Matthiesen Lib is a lightweight Architectury-style library that enables mod developers to write shared code that works seamlessly across both **Fabric** and **NeoForge** mod loaders for Minecraft **1.21.1**. Instead of maintaining separate implementations for each platform, you can write your mod logic once in common code and let Matthiesen Lib handle the platform-specific details.
@@ -12,8 +16,6 @@ Matthiesen Lib is a lightweight Architectury-style library that enables mod deve
 :::note[For Regular Users]
 This library does nothing on its own - it's a developer tool. If a mod requires Matthiesen Lib, simply drop it in your `mods` folder alongside the mod that needs it.
 :::
-
-Available on [Modrinth](https://modrinth.com/mod/matthiesen-lib) and [GitHub](https://github.com/Matthiesen-dev/matthiesen-lib)
 
 ## Key Features
 

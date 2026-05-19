@@ -16,7 +16,6 @@ const ingredientStringOrObject = z.union([
 ]);
 
 const craftingRecipes = defineCollection({
-	// Use the glob loader to find individual json files
 	loader: glob({
 		base: './src/content/recipes/crafting',
 		pattern: '**/*.json'
