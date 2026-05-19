@@ -30,6 +30,7 @@ export default defineConfig({
 				src: "./src/assets/logo.png",
 			},
 			favicon: "favicon.svg",
+			pagination: false,
 			head: HEAD_CONFIG,
 			sidebar: [
 				{
