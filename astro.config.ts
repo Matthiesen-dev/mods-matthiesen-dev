@@ -23,6 +23,9 @@ export default defineConfig({
 			components: {
 				SocialIcons: './src/utils/SocialIcons.astro'
 			},
+			customCss: [
+				"./src/styles/starlight.css",
+			],
 			logo: {
 				src: "./src/assets/logo.png",
 			},
