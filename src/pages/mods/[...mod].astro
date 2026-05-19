@@ -1,0 +1,40 @@
+---
+import type { GetStaticPaths, InferGetStaticPropsType } from "astro";
+
+export const getStaticPaths = (() => {
+    const allModFiles = import.meta.glob("../../content/docs/**/*.mdx");
+    const paths = Object.keys(allModFiles)
+        .map((filePath) => {
+            const match = filePath.match(/\/content\/docs\/(.*)\.mdx$/);
+            if (match) {
+                return { params: { mod: match[1].split("/") } };
+            }
+            return null;
+        })
+        .filter((p): p is { params: { mod: string[] } } => p !== null);
+    return paths
+        .filter((p) => p.params.mod.join("/") !== "index")
+        .map(({ params }) => ({
+            mod: params.mod.join("/").replace("/index", ""),
+        }))
+        .map(({ mod }) => ({
+            params: { mod },
+            props: { modPath: mod },
+        }));
+}) satisfies GetStaticPaths;
+
+type Props = InferGetStaticPropsType<typeof getStaticPaths>;
+
+const { modPath } = Astro.props as Props;
+---
+
+{/* Redirect from /mods/... to /... */}
+<html>
+    <head>
+        <meta http-equiv="refresh" content={`0; url=/${modPath}`} />
+        <title>Redirecting...</title>
+    </head>
+    <body>
+        <p>Redirecting to <a href={`/${modPath}`}>/{modPath}</a>...</p>
+    </body>
+</html>

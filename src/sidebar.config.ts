@@ -1,44 +1,44 @@
 export const LIBRARY_MODS = [
     {
         name: 'Matthiesen Lib',
-        docs: 'mods/matthiesen-lib'
+        docs: 'matthiesen-lib'
     }
 ];
 
 export const COBBLEMON_MODS = [
     {
         name: 'Boosters',
-        docs: 'mods/cobblemon-boosters',
+        docs: 'cobblemon-boosters',
         badge: "Server"
     },
     {
         name: 'Breathers',
-        docs: 'mods/cobblemon-breathers'
+        docs: 'cobblemon-breathers'
     },
     {
         name: 'Escape Rope',
-        docs: 'mods/cobblemon-escape-rope'
+        docs: 'cobblemon-escape-rope'
     },
     {
         name: 'LP NPC Compat',
-        docs: 'mods/cobblemon-luckperms-npc-compat',
+        docs: 'cobblemon-luckperms-npc-compat',
         badge: "Server"
     },
     {
         name: 'Move Tutor',
-        docs: 'mods/cobblemon-move-tutor'
+        docs: 'cobblemon-move-tutor'
     },
     {
         name: 'PC-on-a-stick',
-        docs: 'mods/cobblemon-pc-on-a-stick'
+        docs: 'cobblemon-pc-on-a-stick'
     },
     {
         name: 'Pokestops',
-        docs: 'mods/cobblemon-pokestops'
+        docs: 'cobblemon-pokestops'
     },
     {
         name: 'PokeTotem',
-        docs: 'mods/cobblemon-poketotem',
+        docs: 'cobblemon-poketotem',
         badge: "Server"
     },
 ];
@@ -46,12 +46,12 @@ export const COBBLEMON_MODS = [
 export const MISC_MODS = [
     {
         name: 'Re-LPChatPrefix',
-        docs: 'mods/re-lpchatprefix',
+        docs: 're-lpchatprefix',
         badge: "Server"
     },
     {
         name: 'Vanity Plates',
-        docs: 'mods/vanity-plates',
+        docs: 'vanity-plates',
         badge: "Server"
     }
 ];
