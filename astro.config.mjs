@@ -1,6 +1,7 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
 import starlight from '@astrojs/starlight';
+import starlightSocialIcons from './src/utils/socialIcons';
 
 const COBBLEMON_MODS = [
 	{
@@ -52,6 +53,10 @@ const MISC_MODS = [
 export default defineConfig({
 	site: 'https://mods.matthiesen.dev/',
 	integrations: [
+		starlightSocialIcons({
+			modrinth: 'https://modrinth.com/user/Adammatthiesen',
+			maven: 'https://maven.matthiesen.dev/'
+		}),
 		starlight({
 			title: "Adam Matthiesen's MC Development",
 			description: "Documentation for Adam Matthiesen's Minecraft mods and libraries.",
@@ -59,6 +64,9 @@ export default defineConfig({
 				{ icon: 'github', label: 'GitHub', href: 'https://github.com/Matthiesen-dev' },
 				{ icon: 'discord', label: 'Discord', href: 'https://discord.gg/4ePfVRgexS' },
 			],
+			components: {
+				SocialIcons: './src/utils/SocialIcons.astro'
+			},
 			sidebar: [
 				{
 					label: 'Introduction',
