@@ -4,6 +4,17 @@ import { docsSchema } from '@astrojs/starlight/schema';
 import { glob } from 'astro/loaders';
 import { z } from 'astro/zod';
 
+const itemStringOrObject = z.union([
+	z.string(),
+	z.object({ modId: z.string(), itemId: z.string() })
+]);
+
+const ingredientStringOrObject = z.union([
+	z.string(),
+	z.object({ modId: z.string(), itemId: z.string() }),
+	z.null()
+]);
+
 const craftingRecipes = defineCollection({
 	// Use the glob loader to find individual json files
 	loader: glob({
@@ -15,15 +26,8 @@ const craftingRecipes = defineCollection({
 		description: z.string().optional(),
 		modFilter: z.string(),
 		// Validate an array of exactly 9 elements for the 3x3 layout
-		ingredients: z.array(z.union([
-			z.string(),
-			z.object({ modId: z.string(), itemId: z.string() }),
-			z.null()
-		])).length(9),
-		resultItem: z.union([
-			z.string(),
-			z.object({ modId: z.string(), itemId: z.string() })
-		]),
+		ingredients: z.array(ingredientStringOrObject).length(9),
+		resultItem: itemStringOrObject,
 		resultCount: z.number().optional().default(1),
 	}),
 });
@@ -37,23 +41,10 @@ const smithingRecipes = defineCollection({
 		name: z.string(),
 		description: z.string().optional(),
 		modFilter: z.string(),
-		template: z.union([
-			z.string(),
-			z.object({ modId: z.string(), itemId: z.string() }),
-			z.null()
-		]).optional(),
-		baseItem: z.union([
-			z.string(),
-			z.object({ modId: z.string(), itemId: z.string() })
-		]),
-		additionItem: z.union([
-			z.string(),
-			z.object({ modId: z.string(), itemId: z.string() })
-		]),
-		resultItem: z.union([
-			z.string(),
-			z.object({ modId: z.string(), itemId: z.string() })
-		]),
+		template: ingredientStringOrObject.optional(),
+		baseItem: itemStringOrObject,
+		additionItem: itemStringOrObject,
+		resultItem: itemStringOrObject,
 	}),
 });
 
