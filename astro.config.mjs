@@ -67,6 +67,50 @@ export default defineConfig({
 			components: {
 				SocialIcons: './src/utils/SocialIcons.astro'
 			},
+			logo: {
+				src: "./src/assets/logo.png",
+			},
+			favicon: "favicon.svg",
+			head: [
+				{
+					tag: 'link',
+					attrs: {
+						rel: 'icon',
+						type: "image/png",
+						sizes: "96x96",
+						href: "/favicon-96x96.png"
+					},
+				},
+				{
+					tag: 'link',
+					attrs: {
+						rel: 'shortcut icon',
+						href: "/favicon.ico"
+					}
+				},
+				{
+					tag: 'link',
+					attrs: {
+						rel: 'apple-touch-icon',
+						sizes: "180x180",
+						href: "/apple-touch-icon.png"
+					}
+				},
+				{
+					tag: 'meta',
+					attrs: {
+						name: 'apple-mobile-web-app-title',
+						content: "Adam's MC Dev"
+					}
+				},
+				{
+					tag: 'link',
+					attrs: {
+						rel: 'manifest',
+						href: "/site.webmanifest"
+					}
+				}
+			],
 			sidebar: [
 				{
 					label: 'Introduction',
