@@ -1,0 +1,58 @@
+---
+title: Breathers Configuration
+description: Configuration options for Cobblemon Breathers.
+sidebar:
+  label: Configuration
+  order: 2
+---
+
+This mod is highly configurable, allowing you to adjust many aspects of the ReBreathers and their Enchantments.
+
+**Configuration File Location:** `<minecraft_directory>/config/cobblemon_breathers/config.json`
+
+The default configuration for the ReBreathers is as follows:
+
+```json
+{
+  "reBreatherItemConfig": {
+    "airSupplyRecovery": 50,
+    "effectsConfig": {
+      "showAmbient": false,
+      "visible": false
+    },
+    "maxAirConfig": {
+      "mk1": 300,
+      "mk2": 600,
+      "mk3": 1200
+    }
+  },
+  "breatherUpgradeEnchantConfig": {
+    "disableEnchantmentEffect": false,
+    "levelOneAirAddition": 200,
+    "levelTwoAirAddition": 800,
+    "levelThreeAirAddition": 2000
+  },
+  "hudConfig": {
+    "disableInGameOverlay": false
+  }
+}
+```
+
+### Configuration Options
+
+- **`reBreatherItemConfig`:** This section contains the configuration options for the ReBreather items.
+  - **`airSupplyRecovery`:** The amount of air supply recovered when the player finds an air bubble while using a ReBreather. (Default: 50 per second)
+  - **`effectsConfig`:** This section contains the configuration options for the effects granted by the ReBreathers.
+    - **`showAmbient`:** Whether to show the ambient particles for the effects. (Default: false)
+    - **`visible`:** Whether to show the particles for the effects. (Default: false)
+  - **`maxAirConfig`:** This section contains the configuration options for the maximum air supply provided by each tier of ReBreather.
+    - **`mk1`:** The maximum air supply provided by the ReBreather Mk1. (Default: 300 seconds)
+    - **`mk2`:** The maximum air supply provided by the ReBreather Mk2. (Default: 600 seconds)
+    - **`mk3`:** The maximum air supply provided by the ReBreather Mk3. (Default: 1200 seconds)
+- **`breatherUpgradeEnchantConfig`:** This section contains the configuration options for the ReBreather Upgrade enchantment.
+  - **`disableEnchantmentEffect`:** Whether to disable the enchantment. (Default: false)
+  - **`levelOneAirAddition`:** The amount of air supply added by the ReBreather Upgrade I enchantment. (Default: 200 seconds)
+  - **`levelTwoAirAddition`:** The amount of air supply added by the ReBreather Upgrade II enchantment. (Default: 800 seconds)
+  - **`levelThreeAirAddition`:** The amount of air supply added by the ReBreather Upgrade III enchantment. (Default: 2000 seconds)
+- **`hudConfig`:** This section contains the configuration options for the in-game overlay that shows the remaining air supply while using a ReBreather.
+  - **`disableInGameOverlay`:** Whether to disable the in-game overlay. (Default: false)

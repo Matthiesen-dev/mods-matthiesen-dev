@@ -1,9 +1,0 @@
-{
-    "name": "Netherite Pickaxe",
-    "description": "Upgrade a diamond pickaxe to netherite using a smithing table.",
-    "template": "netherite_upgrade_smithing_template",
-    "baseItem": "diamond_pickaxe",
-    "additionItem": "netherite_ingot",
-    "resultItem": "netherite_pickaxe",
-    "modFilter": "minecraft"
-}

@@ -1,0 +1,21 @@
+{
+    "name": "ReBreather Mk3",
+    "description": "Allows the player to breathe underwater for an extended period of time.",
+    "template": {
+        "modId": "minecraft",
+        "itemId": "conduit"
+    },
+    "baseItem": {
+        "modId": "cobblemon_breathers",
+        "itemId": "rebreather_mk2"
+    },
+    "additionItem": {
+        "modId": "minecraft",
+        "itemId": "netherite_ingot"
+    },
+    "resultItem": {
+        "modId": "cobblemon_breathers",
+        "itemId": "rebreather_mk3"
+    },
+    "modFilter": "cobblemon_breathers"
+}
