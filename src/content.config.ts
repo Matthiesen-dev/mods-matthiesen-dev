@@ -15,35 +15,32 @@ const ingredientStringOrObject = z.union([
 	z.null()
 ]);
 
+const baseRecipeSchema = z.object({
+	name: z.string(),
+	description: z.string().optional(),
+	modFilter: z.string(),
+	resultItem: itemStringOrObject,
+	resultCount: z.number().optional().default(1),
+});
+
+const recipeLoader = (path: string) => glob({
+	base: `./src/content/recipes/${path}`,
+	pattern: '**/*.json'
+})
+
 const craftingRecipes = defineCollection({
-	loader: glob({
-		base: './src/content/recipes/crafting',
-		pattern: '**/*.json'
-	}),
-	schema: z.object({
-		name: z.string(),
-		description: z.string().optional(),
-		modFilter: z.string(),
-		// Validate an array of exactly 9 elements for the 3x3 layout
-		ingredients: z.array(ingredientStringOrObject).length(9),
-		resultItem: itemStringOrObject,
-		resultCount: z.number().optional().default(1),
-	}),
+	loader: recipeLoader('crafting'),
+	schema: baseRecipeSchema.extend({
+		ingredients: z.array(ingredientStringOrObject).length(9)
+	})
 });
 
 const smithingRecipes = defineCollection({
-	loader: glob({
-		base: './src/content/recipes/smithing',
-		pattern: '**/*.json'
-	}),
-	schema: z.object({
-		name: z.string(),
-		description: z.string().optional(),
-		modFilter: z.string(),
+	loader: recipeLoader('smithing'),
+	schema: baseRecipeSchema.extend({
 		template: ingredientStringOrObject.optional(),
 		baseItem: itemStringOrObject,
 		additionItem: itemStringOrObject,
-		resultItem: itemStringOrObject,
 	}),
 });
 
