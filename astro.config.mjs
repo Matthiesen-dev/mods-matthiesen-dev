@@ -2,6 +2,52 @@
 import { defineConfig } from 'astro/config';
 import starlight from '@astrojs/starlight';
 
+const COBBLEMON_MODS = [
+	{
+		name: 'Boosters',
+		docs: 'mods/cobblemon-boosters'
+	},
+	{
+		name: 'Breathers',
+		docs: 'mods/cobblemon-breathers'
+	},
+	{
+		name: 'Escape Rope',
+		docs: 'mods/cobblemon-escape-rope'
+	},
+	{
+		name: 'Luckperms NPC Compat',
+		docs: 'mods/cobblemon-luckperms-npc-compat'
+	},
+	{
+		name: 'Move Tutor',
+		docs: 'mods/cobblemon-move-tutor'
+	},
+	{
+		name: 'PC-on-a-stick',
+		docs: 'mods/cobblemon-pc-on-a-stick'
+	},
+	{
+		name: 'Pokestops',
+		docs: 'mods/cobblemon-pokestops'
+	},
+	{
+		name: 'PokeTotem',
+		docs: 'mods/cobblemon-poketotem'
+	},
+];
+
+const MISC_MODS = [
+	{
+		name: 'Re-LPChatPrefix',
+		docs: 'mods/re-lpchatprefix'
+	},
+	{
+		name: 'Vanity Plates',
+		docs: 'mods/vanity-plates'
+	}
+];
+
 // https://astro.build/config
 export default defineConfig({
 	site: 'https://mods.matthiesen.dev/',
@@ -19,15 +65,33 @@ export default defineConfig({
 					link: '/'
 				},
 				{
-					label: 'Mods',
+					label: 'Libraries',
 					items: [
 						{
 							label: 'Matthiesen Lib',
 							items: [
-								{ autogenerate: { directory: "mods/matthiesen-lib" } }
+								{ autogenerate: { directory: 'mods/matthiesen-lib', collapsed: true } }
 							]
 						}
 					]
+				},
+				{
+					label: 'Cobblemon Mods',
+					items: COBBLEMON_MODS.map(mod => ({
+						label: mod.name,
+						items: [
+							{ autogenerate: { directory: mod.docs, collapsed: true } }
+						]
+					}))
+				},
+				{
+					label: 'Misc Mods',
+					items: MISC_MODS.map(mod => ({
+						label: mod.name,
+						items: [
+							{ autogenerate: { directory: mod.docs, collapsed: true } }
+						]
+					}))
 				}
 			],
 		}),
