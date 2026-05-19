@@ -1,0 +1,70 @@
+---
+interface Props {
+    modelPath: string;
+}
+
+const { modelPath } = Astro.props;
+---
+
+<div id="canvas-container" data-model-path={modelPath}></div>
+
+<style>
+    #canvas-container {
+        width: 100%;
+        height: 500px;
+        background: #111;
+    }
+</style>
+
+<script>
+    import * as THREE from "three";
+    import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
+
+    const container = document.getElementById("canvas-container");
+    if (container) {
+        // Setup Scene, Camera, Renderer
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(
+            75,
+            container.clientWidth / container.clientHeight,
+            0.1,
+            1000,
+        );
+        const renderer = new THREE.WebGLRenderer({ antialias: true });
+
+        renderer.setSize(container.clientWidth, container.clientHeight);
+        container.appendChild(renderer.domElement);
+
+        // Add basic ambient and directional lighting to view the model
+        const ambientLight = new THREE.AmbientLight(0xffffff, 1.5);
+        scene.add(ambientLight);
+
+        const modelPath = container.getAttribute("data-model-path");
+        if (!modelPath) {
+            console.error("Model path not provided!");
+            return;
+        }
+
+        // Load the Blockbench model from the /public directory
+        const loader = new GLTFLoader();
+        loader.load(modelPath, (gltf) => {
+            const model = gltf.scene;
+            scene.add(model);
+        });
+
+        camera.position.z = 5;
+
+        function animate() {
+            requestAnimationFrame(animate);
+            renderer.render(scene, camera);
+        }
+        animate();
+
+        // Handle resizing dynamically
+        window.addEventListener("resize", () => {
+            camera.aspect = container.clientWidth / container.clientHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(container.clientWidth, container.clientHeight);
+        });
+    }
+</script>
