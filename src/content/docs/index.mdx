@@ -1,37 +1,18 @@
 ---
 title: Introduction
 description: Adam Matthiesen's MC Development documentation.
+prev: false
+next: false
 ---
 
-import { Card, CardGrid, LinkCard, Badge } from '@astrojs/starlight/components';
+import { Badge } from '@astrojs/starlight/components';
 
 Welcome to my Minecraft development documentation! Here you'll find mods, datapacks, and other resources I've created for Modded Minecraft. Whether you're a seasoned modder or just getting started, I hope you find something useful here.
 
+:::note[Server-Side Mods]
+If a mod has a <Badge text="Server" variant="tip" /> badge, it means it's a server-side mod and does not need to be installed on the client. Just put it in your server's `mods` folder and you're good to go!
+:::
+
 Mods are listed in the sidebar on the left. Each mod has its own documentation with installation instructions, features, and more. If you're interested in my development process or want to contribute, check out the links at the bottom of this page.
 
-### Notes
-
-All mods are developed for Minecraft 1.21.1 and may require specific mod loaders (Fabric or NeoForge). Be sure to check the requirements for each mod before installing.
-
-If a mod has a <Badge text="Server" variant="tip" /> badge, it means it's a server-side mod and does not need to be installed on the client. Just put it in your server's `mods` folder and you're good to go!
-
-## Links
-
-<CardGrid stagger>
-
-<LinkCard 
-	title="Adam's Mods on Modrinth" 
-	description="Check out my mods on Modrinth, where I share my latest creations and updates." 
-	href="https://modrinth.com/user/AdamMatthiesen" />
-
-<LinkCard
-	title="Adam's Modding Github"
-	description="Check out the open source code for my projects!"
-	href="https://github.com/Matthiesen-dev" />
-
-<LinkCard
-	title="Matthiesen Dev Maven" 
-	description="Explore my Maven repository for Java projects and dependencies."
-	href="https://maven.matthiesen.dev" />
-
-</CardGrid>
+[![Adammatthiesen's Modrinth Overview](https://modfolio.creeperkatze.dev/modrinth/user/Adammatthiesen?maxProjects=10)](https://modrinth.com/user/Adammatthiesen)
