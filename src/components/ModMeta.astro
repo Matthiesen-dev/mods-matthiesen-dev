@@ -1,6 +1,8 @@
 ---
 import Fabric from "../assets/fabric.svg";
 import NeoForge from "../assets/neoforge.svg";
+import FabricUnsupported from "../assets/fabric_unsupported.svg";
+import NeoForgeUnsupported from "../assets/neoforge_unsupported.svg";
 import Modrinth from "../assets/modrinth.svg";
 import Github from "../assets/github.svg";
 
@@ -25,10 +27,10 @@ const { modrinth, github, minecraftVersion, fabric, neoforge } = Astro.props;
         </div>
 
         <div class="meta-row">
-            <div class="meta-label">Supported Loaders</div>
+            <div class="meta-label">Mod Loaders</div>
             <div class="meta-value loaders-value">
                 {
-                    fabric && (
+                    fabric ? (
                         <a
                             href="https://fabricmc.net/"
                             target="_blank"
@@ -38,10 +40,20 @@ const { modrinth, github, minecraftVersion, fabric, neoforge } = Astro.props;
                         >
                             <Fabric />
                         </a>
+                    ) : (
+                        <a
+                            href="https://fabricmc.net/"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="loader-icon"
+                            data-tooltip="Fabric (Unsupported)"
+                        >
+                            <FabricUnsupported />
+                        </a>
                     )
                 }
                 {
-                    neoforge && (
+                    neoforge ? (
                         <a
                             href="https://neoforged.net/"
                             target="_blank"
@@ -51,13 +63,23 @@ const { modrinth, github, minecraftVersion, fabric, neoforge } = Astro.props;
                         >
                             <NeoForge />
                         </a>
+                    ) : (
+                        <a
+                            href="https://neoforged.net/"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="loader-icon"
+                            data-tooltip="NeoForge (Unsupported)"
+                        >
+                            <NeoForgeUnsupported />
+                        </a>
                     )
                 }
             </div>
         </div>
 
         <div class="meta-row">
-            <div class="meta-label">Links</div>
+            <div class="meta-label">External Links</div>
             <div class="meta-value links-value">
                 <a
                     href={`https://modrinth.com/mod/${modrinth}`}
