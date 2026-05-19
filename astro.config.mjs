@@ -65,7 +65,7 @@ export default defineConfig({
 					link: '/'
 				},
 				{
-					label: 'Libraries',
+					label: 'Library Mods',
 					items: [
 						{
 							label: 'Matthiesen Lib',
