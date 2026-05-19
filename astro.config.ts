@@ -1,6 +1,6 @@
 import { defineConfig } from 'astro/config';
 import starlight from '@astrojs/starlight';
-import starlightSocialIcons from './src/utils/socialIcons';
+import starlightSocialIcons from './src/plugins/socialIcons';
 import { buildSidebarItems, COBBLEMON_MODS, LIBRARY_MODS, MISC_MODS } from './src/sidebar.config';
 import { HEAD_CONFIG } from './src/head.config';
 
@@ -21,7 +21,7 @@ export default defineConfig({
 				{ icon: 'discord', label: 'Discord', href: 'https://discord.gg/4ePfVRgexS' },
 			],
 			components: {
-				SocialIcons: './src/utils/SocialIcons.astro'
+				SocialIcons: './src/components/starlight/SocialIcons.astro'
 			},
 			customCss: [
 				"./src/styles/starlight.css",
