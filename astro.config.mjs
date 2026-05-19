@@ -69,6 +69,7 @@ export default defineConfig({
 					items: [
 						{
 							label: 'Matthiesen Lib',
+							collapsed: true,
 							items: [
 								{ autogenerate: { directory: 'mods/matthiesen-lib', collapsed: true } }
 							]
@@ -79,6 +80,7 @@ export default defineConfig({
 					label: 'Cobblemon Mods',
 					items: COBBLEMON_MODS.map(mod => ({
 						label: mod.name,
+						collapsed: true,
 						items: [
 							{ autogenerate: { directory: mod.docs, collapsed: true } }
 						]
@@ -88,6 +90,7 @@ export default defineConfig({
 					label: 'Misc Mods',
 					items: MISC_MODS.map(mod => ({
 						label: mod.name,
+						collapsed: true,
 						items: [
 							{ autogenerate: { directory: mod.docs, collapsed: true } }
 						]
