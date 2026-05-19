@@ -1,0 +1,24 @@
+{
+    "name": "PC on a Stick (Uncrafting)",
+    "description": "Allows the player to uncraft a PC on a Stick back into a regular PC and a stick.",
+    "modFilter": "cobblemon_pc_on_a_stick",
+    "ingredients": [
+        null,
+        null,
+        null,
+        null,
+        {
+            "modId": "cobblemon_pc_on_a_stick",
+            "itemId": "pc_on_a_stick"
+        },
+        null,
+        null,
+        null,
+        null
+    ],
+    "resultItem": {
+        "modId": "cobblemon",
+        "itemId": "pc"
+    },
+    "resultCount": 1
+}

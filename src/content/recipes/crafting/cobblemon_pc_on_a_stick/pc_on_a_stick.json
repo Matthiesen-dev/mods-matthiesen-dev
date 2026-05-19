@@ -1,0 +1,24 @@
+{
+    "name": "PC on a Stick",
+    "description": "A stick with a PC attached to it.",
+    "modFilter": "cobblemon_pc_on_a_stick",
+    "ingredients": [
+        null,
+        null,
+        {
+            "modId": "cobblemon",
+            "itemId": "pc"
+        },
+        null,
+        "stick",
+        null,
+        null,
+        null,
+        null
+    ],
+    "resultItem": {
+        "modId": "cobblemon_pc_on_a_stick",
+        "itemId": "pc_on_a_stick"
+    },
+    "resultCount": 1
+}
