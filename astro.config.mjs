@@ -6,7 +6,8 @@ import starlightSocialIcons from './src/utils/socialIcons';
 const COBBLEMON_MODS = [
 	{
 		name: 'Boosters',
-		docs: 'mods/cobblemon-boosters'
+		docs: 'mods/cobblemon-boosters',
+		badge: "Server"
 	},
 	{
 		name: 'Breathers',
@@ -17,8 +18,9 @@ const COBBLEMON_MODS = [
 		docs: 'mods/cobblemon-escape-rope'
 	},
 	{
-		name: 'Luckperms NPC Compat',
-		docs: 'mods/cobblemon-luckperms-npc-compat'
+		name: 'LP NPC Compat',
+		docs: 'mods/cobblemon-luckperms-npc-compat',
+		badge: "Server"
 	},
 	{
 		name: 'Move Tutor',
@@ -34,18 +36,21 @@ const COBBLEMON_MODS = [
 	},
 	{
 		name: 'PokeTotem',
-		docs: 'mods/cobblemon-poketotem'
+		docs: 'mods/cobblemon-poketotem',
+		badge: "Server"
 	},
 ];
 
 const MISC_MODS = [
 	{
 		name: 'Re-LPChatPrefix',
-		docs: 'mods/re-lpchatprefix'
+		docs: 'mods/re-lpchatprefix',
+		badge: "Server"
 	},
 	{
 		name: 'Vanity Plates',
-		docs: 'mods/vanity-plates'
+		docs: 'mods/vanity-plates',
+		badge: "Server"
 	}
 ];
 
@@ -133,6 +138,12 @@ export default defineConfig({
 					items: COBBLEMON_MODS.map(mod => ({
 						label: mod.name,
 						collapsed: true,
+						...(mod.badge ? {
+							badge: {
+								text: mod.badge,
+								variant: "tip"
+							}
+						} : {}),
 						items: [
 							{ autogenerate: { directory: mod.docs, collapsed: true } }
 						]
@@ -143,6 +154,12 @@ export default defineConfig({
 					items: MISC_MODS.map(mod => ({
 						label: mod.name,
 						collapsed: true,
+						...(mod.badge ? {
+							badge: {
+								text: mod.badge,
+								variant: "tip"
+							}
+						} : {}),
 						items: [
 							{ autogenerate: { directory: mod.docs, collapsed: true } }
 						]
