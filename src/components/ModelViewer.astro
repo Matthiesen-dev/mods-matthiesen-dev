@@ -4,9 +4,12 @@ interface Props {
 }
 
 const { modelPath } = Astro.props;
+
+const basePath = "/models/";
+const fullModelPath = `${basePath}${modelPath}`;
 ---
 
-<div id="canvas-container" data-model-path={modelPath}></div>
+<div id="canvas-container" data-model-path={fullModelPath}></div>
 
 <style>
     #canvas-container {
