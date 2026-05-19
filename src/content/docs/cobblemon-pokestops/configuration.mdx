@@ -1,0 +1,57 @@
+---
+title: Pokestops Configuration
+description: Configuration options for Cobblemon Pokestops.
+prev: 
+  link: /cobblemon-pokestops
+  label: "Overview"
+next: false
+sidebar:
+  label: Configuration
+  order: 2
+---
+
+The cooldown time and rewards can be configured in the mod's configuration file. This allows server owners to customize the
+Pokestop experience to fit their server's needs. The configuration file can be found in the server's config directory after installing the mod.
+
+- **Default config location:** `<server_dir>/config/cobblemon_pokestops/config.json`
+
+### Default Configuration Example
+
+```json
+{
+  "enableGlobalBroadcast": false,
+  "localBroadcastRadius": 50.0,
+  "pokestopCooldownSeconds": 300,
+  "wingedstopCooldownSeconds": 300,
+  "pokeballStopCooldownSeconds": 300,
+  "healingStopCooldownSeconds": 600,
+  "extraRarities": [
+    "cobblemon:master_ball",
+    "cobblemon:acient_origin_ball",
+    "cobblemon:ability_capsule",
+    "cobblemon:max_revive",
+    "cobblemon:hyper_potion",
+    "cobblemon:ultra_ball",
+    "cobblemon:master_rod"
+  ]
+}
+```
+
+### Configuration Options
+
+- `enableGlobalBroadcast`: If true, all players will receive a message when a Pokestop is used. If false, only players within the local broadcast radius will receive the message.
+- `localBroadcastRadius`: The radius (in blocks) within which players will receive a message when a Pokestop is used if global broadcast is disabled.
+- `pokestopCooldownSeconds`: The cooldown time (in seconds) for Pokestops after being used.
+- `wingedstopCooldownSeconds`: The cooldown time (in seconds) for Wingedstops after being used.
+- `pokeballStopCooldownSeconds`: The cooldown time (in seconds) for Pokeball Stops after being used.
+- `healingStopCooldownSeconds`: The cooldown time (in seconds) for Healing Stops after being used.
+- `extraRarities`: A list of additional items list that defines items as "Rare" for the purpose of the Pokestop rewards. These items are used for determining the rarity of rewards given by Pokestops for usage in the rarity broadcast message.
+
+### LootTable Configuration
+
+The rewards given by Pokestops are determined by a loot table. The default loot table can be found in the mod's [resources directory](https://github.com/Matthiesen-dev/cobblemon-pokestops/tree/main/common/src/generated/data/cobblemon_pokestops/loot_table/gameplay), and server owners can create their own custom loot tables to further customize the rewards.
+
+**Datapack Loot Table Locations:**
+- **PokeStop:** `/data/cobblemon_pokestops/loot_table/gameplay/pokestop_loot.json`
+- **WingedStop:** `/data/cobblemon_pokestops/loot_table/gameplay/wingedstop_loot.json`
+- **Pokeball Stop:** `/data/cobblemon_pokestops/loot_table/gameplay/pokeballstop_loot.json`
