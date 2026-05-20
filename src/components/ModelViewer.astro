@@ -1,73 +1,1191 @@
 ---
-interface Props {
-    modelPath: string;
+interface ViewerModel {
+    name: string;
+    path: string;
+    animation?: string;
 }
 
-const { modelPath } = Astro.props;
+interface Props {
+    models: ViewerModel[];
+    height?: string;
+    hideAnimationTools?: boolean;
+}
+
+const {
+    models = [],
+    height = "500px",
+    hideAnimationTools = false,
+} = Astro.props;
+
+const hasModels = models.length > 0;
+const showAnimationTools = !hideAnimationTools;
 
 const basePath = "/models/";
-const fullModelPath = `${basePath}${modelPath}`;
+const resolveModelPath = (path: string) => {
+    if (
+        path.startsWith("/") ||
+        path.startsWith("http://") ||
+        path.startsWith("https://")
+    ) {
+        return path;
+    }
+    return `${basePath}${path}`;
+};
+
+const serializedModels = JSON.stringify(
+    models.map((model) => ({
+        ...model,
+        fullPath: resolveModelPath(model.path),
+    })),
+);
 ---
 
-<div id="canvas-container" data-model-path={fullModelPath}></div>
+<div
+    class="model-viewer not-content"
+    data-model-viewer
+    data-models={serializedModels}
+    data-enable-animation-tools={showAnimationTools}
+>
+    <div class="viewer-header">
+        <div class="viewer-title">3D Model Viewer</div>
+        <div class="viewer-subtitle">
+            Preview and inspect block, item, and entity models
+        </div>
+    </div>
+
+    <div class="viewer-toolbar">
+        <div class="viewer-controls">
+        <label class="viewer-select-label">Model</label>
+        <div class="custom-select model-select-wrap" data-model-dropdown>
+            <button
+                type="button"
+                class="custom-select-trigger"
+                data-model-trigger
+                aria-expanded="false"
+                disabled={!hasModels}
+            >
+                {models[0]?.name || "Select model"}
+            </button>
+            <div class="custom-select-menu" data-model-menu hidden>
+                {
+                    models.map((model, index) => (
+                        <button
+                            type="button"
+                            class="custom-select-option"
+                            data-model-index={index}
+                        >
+                            {model.name}
+                        </button>
+                    ))
+                }
+            </div>
+        </div>
+            <button
+                type="button"
+                data-angle-control="left"
+                disabled={!hasModels}>Left</button
+            >
+            <button
+                type="button"
+                data-angle-control="right"
+                disabled={!hasModels}>Right</button
+            >
+            <button type="button" data-angle-control="up" disabled={!hasModels}
+                >Up</button
+            >
+            <button
+                type="button"
+                data-angle-control="down"
+                disabled={!hasModels}>Down</button
+            >
+            <button
+                type="button"
+                data-angle-control="reset"
+                disabled={!hasModels}>Reset</button
+            >
+        </div>
+        {
+            showAnimationTools && (
+                <span class="viewer-toolbar-separator"></span>
+                <div class="animation-controls">
+                    <label class="viewer-select-label">Animations</label>
+                    <div
+                        class="custom-select animation-select-wrap"
+                        data-animation-dropdown
+                        hidden
+                    >
+                        <button
+                            type="button"
+                            class="custom-select-trigger"
+                            data-animation-trigger
+                            aria-expanded="false"
+                        >
+                            Select animation
+                        </button>
+                        <div
+                            class="custom-select-menu"
+                            data-animation-menu
+                            hidden
+                        />
+                    </div>
+                    <button
+                        type="button"
+                        class="animation-label-toggle"
+                        data-animation-full-names-toggle
+                        aria-pressed="false"
+                    >
+                        Full names
+                    </button>
+                </div>
+            )
+        }
+    </div>
+
+    <div
+        class="canvas-container"
+        style={`height: ${height};`}
+        data-canvas-container
+    >
+        <div class="viewer-hint">Drag to orbit • Scroll to zoom</div>
+        <div
+            class:list={["viewer-status", !hasModels && "is-visible"]}
+            data-viewer-status
+        >
+            {!hasModels ? "No models available for this page." : ""}
+        </div>
+    </div>
+</div>
 
 <style>
-    #canvas-container {
+    .model-viewer {
+        display: flex;
+        flex-direction: column;
+        gap: 0.9rem;
+        padding: 1rem;
+        border-radius: 12px;
+        border: 1px solid rgba(120, 176, 255, 0.35);
+        background:
+            radial-gradient(
+                circle at 20% 0%,
+                rgba(43, 82, 140, 0.35),
+                transparent 45%
+            ),
+            linear-gradient(
+                180deg,
+                rgba(20, 24, 36, 0.9),
+                rgba(10, 12, 18, 0.95)
+            );
+        box-shadow:
+            0 12px 30px rgba(0, 0, 0, 0.35),
+            inset 0 0 0 1px rgba(255, 255, 255, 0.03);
+    }
+
+    .viewer-header {
+        display: flex;
+        flex-direction: column;
+        gap: 0.2rem;
+    }
+
+    .viewer-title {
+        font-size: 0.95rem;
+        font-weight: 700;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+        color: #cfe3ff;
+    }
+
+    .viewer-subtitle {
+        font-size: 0.82rem;
+        color: rgba(225, 233, 245, 0.72);
+    }
+
+    .viewer-toolbar {
+        display: flex;
+        flex-direction: column;
         width: 100%;
-        height: 500px;
-        background: #111;
+        gap: 0.25rem;
+        padding: 0.65rem;
+        border: 1px solid rgba(130, 140, 160, 0.25);
+        border-radius: 10px;
+        background: rgba(7, 10, 18, 0.55);
+    }
+
+    .viewer-toolbar-separator {
+        border: none;
+        border-top: 1px solid rgba(130, 140, 160, 0.25);
+        margin: 0.5rem 0;
+    }
+
+    .viewer-select-label {
+        font-size: 0.84rem;
+        color: #d6e2ff;
+        font-weight: 600;
+        letter-spacing: 0.03em;
+    }
+
+    .custom-select-trigger,
+    .viewer-controls button,
+    .animation-label-toggle {
+        background: linear-gradient(180deg, #1f2736, #151c2a);
+        color: #f4f7ff;
+        border: 1px solid rgba(138, 166, 214, 0.35);
+        border-radius: 7px;
+        padding: 0.38rem 0.65rem;
+        font-size: 0.85rem;
+        line-height: 1.2;
+        box-sizing: border-box;
+        transition:
+            border-color 0.15s ease,
+            transform 0.15s ease,
+            background 0.15s ease;
+    }
+
+    .custom-select {
+        position: relative;
+        min-width: 190px;
+    }
+
+    .model-select-wrap {
+        width: 190px;
+    }
+
+    .animation-select-wrap {
+        width: min(250px, calc(100vw - 8rem));
+    }
+
+    .custom-select-trigger {
+        width: 100%;
+        text-align: left;
+        cursor: pointer;
+        padding-right: 2rem;
+        position: relative;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .custom-select-trigger::after {
+        content: "▼";
+        position: absolute;
+        right: 0.7rem;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 0.62rem;
+        opacity: 0.85;
+        pointer-events: none;
+    }
+
+    .custom-select-menu {
+        position: absolute;
+        top: calc(100% + 0.35rem);
+        left: 0;
+        min-width: 100%;
+        width: max-content;
+        max-width: min(520px, calc(100vw - 3rem));
+        z-index: 200;
+        background: linear-gradient(180deg, #11192a, #0b1220);
+        border: 1px solid rgba(138, 166, 214, 0.45);
+        border-radius: 8px;
+        box-shadow: 0 14px 26px rgba(0, 0, 0, 0.38);
+        overflow: hidden;
+        max-height: 240px;
+        overflow-y: auto;
+        backdrop-filter: blur(3px);
+    }
+
+    .model-viewer :global(.custom-select-option) {
+        display: block;
+        width: 100%;
+        text-align: left;
+        appearance: none;
+        -webkit-appearance: none;
+        background: transparent;
+        color: #e9f2ff;
+        border: none;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+        padding: 0.48rem 0.65rem;
+        font-size: 0.84rem;
+        font-family: inherit;
+        line-height: 1.25;
+        cursor: pointer;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .model-viewer :global(.custom-select-option:last-child) {
+        border-bottom: none;
+    }
+
+    .model-viewer :global(.custom-select-option:hover),
+    .model-viewer :global(.custom-select-option:focus) {
+        outline: none;
+        background: rgba(93, 142, 230, 0.3);
+        color: #ffffff;
+    }
+
+    .model-viewer :global(.custom-select-option.is-selected) {
+        background: rgba(93, 142, 230, 0.4);
+        color: #ffffff;
+    }
+
+    .viewer-controls {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 0.4rem;
+    }
+
+    .animation-controls {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.4rem;
+        align-items: center;
+    }
+
+    .animation-label-toggle {
+        display: inline-block;
+        font-family: inherit;
+        white-space: nowrap;
+        cursor: pointer;
+        transition:
+            border-color 0.15s ease,
+            transform 0.15s ease,
+            background 0.15s ease,
+            box-shadow 0.15s ease;
+    }
+
+    .animation-label-toggle:hover {
+        transform: translateY(-1px);
+        background: linear-gradient(180deg, #273246, #1b2436);
+        border-color: rgba(170, 214, 255, 0.6);
+    }
+
+    .animation-label-toggle:focus {
+        outline: none;
+        border-color: rgba(170, 214, 255, 0.85);
+    }
+
+    .animation-label-toggle[aria-pressed="true"] {
+        background: linear-gradient(180deg, #31538a, #25406c);
+        border-color: rgba(170, 214, 255, 0.88);
+        box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.12);
+    }
+
+    .animation-label-toggle:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+        transform: none;
+    }
+
+    .viewer-controls button {
+        cursor: pointer;
+    }
+
+    .custom-select-trigger:focus,
+    .viewer-controls button:focus {
+        outline: none;
+        border-color: rgba(170, 214, 255, 0.85);
+    }
+
+    .viewer-controls button:hover {
+        transform: translateY(-1px);
+        background: linear-gradient(180deg, #273246, #1b2436);
+        border-color: rgba(170, 214, 255, 0.6);
+    }
+
+    .custom-select-trigger:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+    }
+
+    .canvas-container {
+        position: relative;
+        width: 100%;
+        min-height: 320px;
+        background:
+            radial-gradient(
+                circle at center,
+                rgba(38, 56, 92, 0.25),
+                rgba(3, 6, 12, 0.96) 60%
+            ),
+            #05080f;
+        border: 1px solid rgba(129, 163, 225, 0.35);
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow:
+            inset 0 0 0 1px rgba(255, 255, 255, 0.03),
+            0 10px 22px rgba(0, 0, 0, 0.3);
+    }
+
+    .viewer-hint {
+        position: absolute;
+        top: 0.6rem;
+        right: 0.65rem;
+        z-index: 2;
+        padding: 0.3rem 0.55rem;
+        border-radius: 999px;
+        border: 1px solid rgba(136, 167, 222, 0.3);
+        background: rgba(10, 15, 28, 0.68);
+        color: rgba(222, 235, 255, 0.82);
+        font-size: 0.72rem;
+        letter-spacing: 0.02em;
+        backdrop-filter: blur(2px);
+        pointer-events: none;
+    }
+
+    .viewer-status {
+        position: absolute;
+        inset: 0;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        padding: 1rem;
+        text-align: center;
+        z-index: 3;
+        background: rgba(6, 10, 18, 0.72);
+        color: rgba(229, 238, 255, 0.96);
+        font-size: 0.92rem;
+        font-weight: 600;
+        letter-spacing: 0.01em;
+        pointer-events: none;
+    }
+
+    .viewer-status.is-visible {
+        display: flex;
+    }
+
+    :global(html[data-theme="light"]) .model-viewer {
+        border-color: rgba(77, 112, 171, 0.28);
+        background:
+            radial-gradient(
+                circle at 20% 0%,
+                rgba(97, 141, 207, 0.18),
+                transparent 45%
+            ),
+            linear-gradient(
+                180deg,
+                rgba(233, 238, 247, 0.96),
+                rgba(220, 228, 242, 0.94)
+            );
+        box-shadow:
+            0 10px 24px rgba(42, 55, 78, 0.18),
+            inset 0 0 0 1px rgba(255, 255, 255, 0.45);
+    }
+
+    :global(html[data-theme="light"]) .viewer-title {
+        color: #19355f;
+    }
+
+    :global(html[data-theme="light"]) .viewer-subtitle {
+        color: rgba(28, 44, 74, 0.7);
+    }
+
+    :global(html[data-theme="light"]) .viewer-toolbar {
+        border-color: rgba(78, 105, 156, 0.24);
+        background: rgba(244, 248, 255, 0.78);
+    }
+
+    :global(html[data-theme="light"]) .viewer-select-label {
+        color: #1d385f;
+    }
+
+    :global(html[data-theme="light"]) .custom-select-trigger,
+    :global(html[data-theme="light"]) .viewer-controls button,
+    :global(html[data-theme="light"]) .animation-label-toggle {
+        background: linear-gradient(180deg, #f4f8ff, #e6eefb);
+        color: #10284b;
+        border-color: rgba(78, 105, 156, 0.35);
+    }
+
+    :global(html[data-theme="light"]) .animation-label-toggle:hover {
+        background: linear-gradient(180deg, #edf4ff, #dfe9f9);
+        border-color: rgba(78, 105, 156, 0.55);
+    }
+
+    :global(html[data-theme="light"]) .animation-label-toggle:focus {
+        border-color: rgba(78, 105, 156, 0.75);
+    }
+
+    :global(html[data-theme="light"])
+        .animation-label-toggle[aria-pressed="true"] {
+        background: linear-gradient(180deg, #c9ddff, #b8d0f7);
+        border-color: rgba(78, 105, 156, 0.35);
+        color: #0f2d56;
+        box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.35);
+    }
+
+    :global(html[data-theme="light"]) .custom-select-menu {
+        background: linear-gradient(180deg, #ffffff, #eef3fb);
+        border-color: rgba(78, 105, 156, 0.35);
+        box-shadow: 0 14px 24px rgba(31, 47, 76, 0.18);
+    }
+
+    :global(html[data-theme="light"])
+        .model-viewer
+        :global(.custom-select-option) {
+        color: #10284b;
+        border-bottom-color: rgba(33, 54, 89, 0.12);
+    }
+
+    :global(html[data-theme="light"])
+        .model-viewer
+        :global(.custom-select-option:hover),
+    :global(html[data-theme="light"])
+        .model-viewer
+        :global(.custom-select-option:focus),
+    :global(html[data-theme="light"])
+        .model-viewer
+        :global(.custom-select-option.is-selected) {
+        background: rgba(93, 142, 230, 0.2);
+        color: #10284b;
+    }
+
+    :global(html[data-theme="light"]) .canvas-container {
+        background:
+            radial-gradient(
+                circle at center,
+                rgba(161, 189, 236, 0.45),
+                rgba(224, 232, 246, 0.9) 62%
+            ),
+            #dde6f6;
+        border-color: rgba(78, 105, 156, 0.35);
+    }
+
+    :global(html[data-theme="light"]) .viewer-hint {
+        border-color: rgba(78, 105, 156, 0.32);
+        background: rgba(241, 246, 255, 0.85);
+        color: rgba(18, 43, 81, 0.82);
+    }
+
+    :global(html[data-theme="light"]) .viewer-status {
+        background: rgba(238, 244, 255, 0.8);
+        color: rgba(18, 43, 81, 0.9);
     }
 </style>
 
 <script>
     import * as THREE from "three";
+    import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
     import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 
-    const container = document.getElementById("canvas-container");
-    if (container) {
-        // Setup Scene, Camera, Renderer
-        const scene = new THREE.Scene();
-        const camera = new THREE.PerspectiveCamera(
-            75,
-            container.clientWidth / container.clientHeight,
-            0.1,
-            1000,
+    interface RuntimeModel {
+        name: string;
+        path: string;
+        fullPath: string;
+        animation?: string;
+    }
+
+    function initializeViewer(root: Element) {
+        const canvasContainer = root.querySelector<HTMLElement>(
+            "[data-canvas-container]",
         );
-        const renderer = new THREE.WebGLRenderer({ antialias: true });
+        const modelDropdown = root.querySelector<HTMLElement>(
+            "[data-model-dropdown]",
+        );
+        const modelTrigger = root.querySelector<HTMLButtonElement>(
+            "[data-model-trigger]",
+        );
+        const modelMenu = root.querySelector<HTMLElement>("[data-model-menu]");
+        const controlsButtons = root.querySelectorAll<HTMLButtonElement>(
+            "[data-angle-control]",
+        );
+        const animationDropdown = root.querySelector<HTMLElement>(
+            "[data-animation-dropdown]",
+        );
+        const animationTrigger = root.querySelector<HTMLButtonElement>(
+            "[data-animation-trigger]",
+        );
+        const animationMenu = root.querySelector<HTMLElement>(
+            "[data-animation-menu]",
+        );
+        const animationLabelModeToggle = root.querySelector<HTMLButtonElement>(
+            "[data-animation-full-names-toggle]",
+        );
+        const viewerStatus = root.querySelector<HTMLElement>(
+            "[data-viewer-status]",
+        );
+        const animationToolsEnabled =
+            root.getAttribute("data-enable-animation-tools") === "true";
 
-        renderer.setSize(container.clientWidth, container.clientHeight);
-        container.appendChild(renderer.domElement);
-
-        // Add basic ambient and directional lighting to view the model
-        const ambientLight = new THREE.AmbientLight(0xffffff, 1.5);
-        scene.add(ambientLight);
-
-        const modelPath = container.getAttribute("data-model-path");
-        if (!modelPath) {
-            console.error("Model path not provided!");
+        if (!canvasContainer) {
             return;
         }
 
-        // Load the Blockbench model from the /public directory
-        const loader = new GLTFLoader();
-        loader.load(modelPath, (gltf) => {
-            const model = gltf.scene;
-            scene.add(model);
-        });
+        const modelDataRaw = root.getAttribute("data-models") || "[]";
+        const modelData = JSON.parse(modelDataRaw) as RuntimeModel[];
 
-        camera.position.z = 5;
+        const showStatus = (message: string) => {
+            if (!viewerStatus) return;
+            viewerStatus.textContent = message;
+            viewerStatus.classList.add("is-visible");
+        };
 
-        function animate() {
-            requestAnimationFrame(animate);
-            renderer.render(scene, camera);
+        const hideStatus = () => {
+            if (!viewerStatus) return;
+            viewerStatus.textContent = "";
+            viewerStatus.classList.remove("is-visible");
+        };
+
+        if (!Array.isArray(modelData) || modelData.length === 0) {
+            showStatus("No models available for this page.");
+            console.error("ModelViewer: no model data provided");
+            return;
         }
-        animate();
 
-        // Handle resizing dynamically
-        window.addEventListener("resize", () => {
-            camera.aspect = container.clientWidth / container.clientHeight;
-            camera.updateProjectionMatrix();
-            renderer.setSize(container.clientWidth, container.clientHeight);
+        hideStatus();
+
+        const configureSkyboxTexture = (texture: THREE.CubeTexture) => {
+            texture.colorSpace = THREE.SRGBColorSpace;
+            texture.magFilter = THREE.LinearFilter;
+            texture.minFilter = THREE.LinearMipmapLinearFilter;
+            texture.generateMipmaps = true;
+            texture.needsUpdate = true;
+            return texture;
+        };
+
+        const loadSkyboxFromFiles = (paths: string[]) =>
+            new Promise<THREE.CubeTexture>((resolve, reject) => {
+                const cubeLoader = new THREE.CubeTextureLoader();
+                cubeLoader.load(
+                    paths,
+                    (texture) => {
+                        resolve(configureSkyboxTexture(texture));
+                    },
+                    undefined,
+                    (error) => {
+                        reject(error);
+                    },
+                );
+            });
+
+        const scene = new THREE.Scene();
+        scene.background = new THREE.Color(0x000000);
+        const sceneBackgroundControls = scene as THREE.Scene & {
+            backgroundBlurriness?: number;
+            backgroundIntensity?: number;
+        };
+        sceneBackgroundControls.backgroundBlurriness = 0.08;
+        sceneBackgroundControls.backgroundIntensity = 0.95;
+
+        // Three.js cubemap order: +X, -X, +Y, -Y, +Z, -Z.
+        const skyboxFaces = [
+            "/skybox/space_rt.png",
+            "/skybox/space_lf.png",
+            "/skybox/space_up.png",
+            "/skybox/space_dn.png",
+            "/skybox/space_ft.png",
+            "/skybox/space_bk.png",
+        ];
+
+        loadSkyboxFromFiles(skyboxFaces)
+            .then((skyboxTexture) => {
+                scene.background = skyboxTexture;
+            })
+            .catch((error) => {
+                scene.background = new THREE.Color(0x000000);
+                console.warn(
+                    "ModelViewer: failed to load file skybox, using black background fallback.",
+                    error,
+                );
+            });
+
+        const camera = new THREE.PerspectiveCamera(
+            60,
+            canvasContainer.clientWidth / canvasContainer.clientHeight,
+            0.1,
+            2000,
+        );
+        camera.position.set(3, 3, 3);
+
+        const renderer = new THREE.WebGLRenderer({
+            antialias: true,
+            alpha: false,
         });
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        renderer.setSize(
+            canvasContainer.clientWidth,
+            canvasContainer.clientHeight,
+        );
+        canvasContainer.appendChild(renderer.domElement);
+
+        const orbitControls = new OrbitControls(camera, renderer.domElement);
+        orbitControls.enableDamping = true;
+        orbitControls.enablePan = false;
+        orbitControls.target.set(0, 1, 0);
+        orbitControls.update();
+
+        const ambientLight = new THREE.AmbientLight(0xffffff, 1.4);
+        scene.add(ambientLight);
+
+        const keyLight = new THREE.DirectionalLight(0xffffff, 1.2);
+        keyLight.position.set(8, 10, 6);
+        scene.add(keyLight);
+
+        const fillLight = new THREE.DirectionalLight(0xffffff, 0.6);
+        fillLight.position.set(-6, 5, -8);
+        scene.add(fillLight);
+
+        const loader = new GLTFLoader();
+        let currentModel: THREE.Object3D | null = null;
+        let animationMixer: THREE.AnimationMixer | null = null;
+        let activeAction: THREE.AnimationAction | null = null;
+        let currentAnimations: THREE.AnimationClip[] = [];
+        let currentAnimationLabels: string[] = [];
+        let showFullAnimationNames = false;
+        let selectedAnimationIndex = 0;
+        let selectedModelIndex = 0;
+        const clock = new THREE.Clock();
+
+        const closeMenu = (
+            menu: HTMLElement | null,
+            trigger: HTMLButtonElement | null,
+        ) => {
+            if (!menu || !trigger) return;
+            menu.hidden = true;
+            trigger.setAttribute("aria-expanded", "false");
+        };
+
+        const openMenu = (
+            menu: HTMLElement | null,
+            trigger: HTMLButtonElement | null,
+        ) => {
+            if (!menu || !trigger) return;
+            menu.hidden = false;
+            trigger.setAttribute("aria-expanded", "true");
+        };
+
+        const toggleMenu = (
+            menu: HTMLElement | null,
+            trigger: HTMLButtonElement | null,
+        ) => {
+            if (!menu || !trigger) return;
+            const isOpen = !menu.hidden;
+            if (isOpen) {
+                closeMenu(menu, trigger);
+            } else {
+                openMenu(menu, trigger);
+            }
+        };
+
+        const markSelectedOption = (
+            menu: HTMLElement | null,
+            dataAttr: string,
+            value: string,
+        ) => {
+            if (!menu) return;
+            const options = menu.querySelectorAll<HTMLButtonElement>(
+                ".custom-select-option",
+            );
+            options.forEach((option) => {
+                const optionValue = option.getAttribute(dataAttr);
+                option.classList.toggle("is-selected", optionValue === value);
+            });
+        };
+
+        const getAnimationDisplayLabels = (clips: THREE.AnimationClip[]) => {
+            if (showFullAnimationNames) {
+                return clips.map(
+                    (clip, index) => clip.name || `Animation ${index + 1}`,
+                );
+            }
+
+            const fallbackLabels = clips.map(
+                (clip, index) => clip.name || `Animation ${index + 1}`,
+            );
+
+            if (clips.length < 2) {
+                return fallbackLabels;
+            }
+
+            const parsed = clips.map((clip) => {
+                const clipName = clip.name;
+                if (!clipName || !clipName.startsWith("animation.")) {
+                    return null;
+                }
+
+                const lastDotIndex = clipName.lastIndexOf(".");
+                const prefix = clipName.slice(0, lastDotIndex + 1);
+                const shortName = clipName.slice(lastDotIndex + 1);
+
+                if (prefix === "animation." || shortName.length === 0) {
+                    return null;
+                }
+
+                return {
+                    prefix,
+                    shortName,
+                };
+            });
+
+            if (parsed.some((entry) => entry === null)) {
+                return fallbackLabels;
+            }
+
+            const sharedPrefix = parsed[0]!.prefix;
+            const hasSharedPrefix = parsed.every(
+                (entry) => entry!.prefix === sharedPrefix,
+            );
+
+            if (!hasSharedPrefix) {
+                return fallbackLabels;
+            }
+
+            return parsed.map((entry) => entry!.shortName);
+        };
+
+        const populateAnimationMenu = (
+            selectedIndex: number,
+            selectedLabel?: string,
+        ) => {
+            if (!animationToolsEnabled || !animationMenu || !animationTrigger) {
+                return;
+            }
+
+            animationMenu.innerHTML = "";
+
+            currentAnimations.forEach((clip, index) => {
+                const option = document.createElement("button");
+                option.type = "button";
+                option.className = "custom-select-option";
+                option.setAttribute("data-animation-index", String(index));
+                option.textContent =
+                    currentAnimationLabels[index] ||
+                    clip.name ||
+                    `Animation ${index + 1}`;
+                animationMenu.appendChild(option);
+            });
+
+            if (currentAnimations.length > 0) {
+                animationTrigger.textContent =
+                    selectedLabel ||
+                    currentAnimationLabels[selectedIndex] ||
+                    currentAnimations[selectedIndex]?.name ||
+                    `Animation ${selectedIndex + 1}`;
+                markSelectedOption(
+                    animationMenu,
+                    "data-animation-index",
+                    String(selectedIndex),
+                );
+            }
+        };
+
+        const setAnimationControlsState = () => {
+            if (
+                !animationToolsEnabled ||
+                !animationDropdown ||
+                !animationTrigger ||
+                !animationMenu
+            ) {
+                return;
+            }
+
+            if (animationLabelModeToggle) {
+                animationLabelModeToggle.disabled =
+                    currentAnimations.length === 0;
+            }
+
+            const hasAnimations = currentAnimations.length > 0;
+            if (!hasAnimations) {
+                animationDropdown.hidden = true;
+                closeMenu(animationMenu, animationTrigger);
+                animationMenu.innerHTML = "";
+                animationTrigger.disabled = true;
+                animationTrigger.textContent = "Select animation";
+            } else {
+                animationDropdown.hidden = false;
+                animationTrigger.disabled = false;
+            }
+        };
+
+        const playAnimationClip = (clip: THREE.AnimationClip) => {
+            if (!currentModel) return;
+
+            if (!animationMixer) {
+                animationMixer = new THREE.AnimationMixer(currentModel);
+            }
+
+            if (activeAction) {
+                activeAction.stop();
+                activeAction = null;
+            }
+
+            activeAction = animationMixer.clipAction(clip);
+            activeAction.reset();
+            activeAction.play();
+        };
+
+        const resetCamera = () => {
+            camera.position.set(3, 3, 3);
+            orbitControls.update();
+        };
+
+        const frameModel = (object3D: THREE.Object3D) => {
+            const box = new THREE.Box3().setFromObject(object3D);
+            const size = box.getSize(new THREE.Vector3());
+            const center = box.getCenter(new THREE.Vector3());
+
+            const maxDim = Math.max(size.x, size.y, size.z) || 1;
+            const fitDistance = maxDim * 1.6;
+
+            orbitControls.target.copy(center);
+            camera.position.set(
+                center.x + fitDistance,
+                center.y + fitDistance * 0.65,
+                center.z + fitDistance,
+            );
+            camera.near = Math.max(0.01, fitDistance / 100);
+            camera.far = fitDistance * 100;
+            camera.updateProjectionMatrix();
+            orbitControls.update();
+        };
+
+        const disposeModel = (model: THREE.Object3D) => {
+            model.traverse((child: THREE.Object3D) => {
+                if ("isMesh" in child && child.isMesh) {
+                    const mesh = child as THREE.Mesh;
+                    if (mesh.geometry) mesh.geometry.dispose();
+                    if (Array.isArray(mesh.material)) {
+                        mesh.material.forEach(
+                            (mat: THREE.Material) =>
+                                mat.dispose && mat.dispose(),
+                        );
+                    } else if (mesh.material) {
+                        mesh.material.dispose && mesh.material.dispose();
+                    }
+                }
+            });
+        };
+
+        const loadModelAtIndex = (index: number) => {
+            const model = modelData[index];
+            if (!model) return;
+
+            selectedModelIndex = index;
+            if (modelTrigger) {
+                modelTrigger.textContent = model.name;
+            }
+            markSelectedOption(modelMenu, "data-model-index", String(index));
+
+            loader.load(
+                model.fullPath,
+                (gltf) => {
+                    hideStatus();
+
+                    if (activeAction) {
+                        activeAction.stop();
+                        activeAction = null;
+                    }
+
+                    if (currentModel) {
+                        if (animationMixer) {
+                            animationMixer.stopAllAction();
+                            animationMixer.uncacheRoot(currentModel);
+                            animationMixer = null;
+                        }
+
+                        scene.remove(currentModel);
+                        disposeModel(currentModel);
+                    }
+
+                    currentModel = gltf.scene;
+                    scene.add(currentModel);
+                    frameModel(currentModel);
+
+                    currentAnimations = gltf.animations || [];
+                    currentAnimationLabels =
+                        getAnimationDisplayLabels(currentAnimations);
+                    setAnimationControlsState();
+
+                    // Play requested animation clip by name, or fallback to first clip
+                    if (currentAnimations.length > 0) {
+                        const requestedAnimationName = model.animation;
+                        const requestedClip = requestedAnimationName
+                            ? THREE.AnimationClip.findByName(
+                                  currentAnimations,
+                                  requestedAnimationName,
+                              )
+                            : null;
+
+                        const selectedClip =
+                            requestedClip || currentAnimations[0];
+                        const selectedClipIndex = Math.max(
+                            0,
+                            currentAnimations.indexOf(selectedClip),
+                        );
+                        selectedAnimationIndex = selectedClipIndex;
+
+                        if (requestedAnimationName && !requestedClip) {
+                            console.warn(
+                                `ModelViewer: animation \"${requestedAnimationName}\" not found for ${model.name}. Falling back to first clip.`,
+                            );
+                        }
+
+                        playAnimationClip(selectedClip);
+                        populateAnimationMenu(
+                            selectedClipIndex,
+                            currentAnimationLabels[selectedClipIndex] ||
+                                selectedClip.name ||
+                                "Animation 1",
+                        );
+                    }
+                },
+                undefined,
+                (error) => {
+                    showStatus(`Unable to load model: ${model.name}`);
+                    console.error(
+                        `ModelViewer: failed to load ${model.fullPath}`,
+                        error,
+                    );
+                },
+            );
+        };
+
+        if (modelTrigger && modelMenu) {
+            modelTrigger.addEventListener("click", () => {
+                closeMenu(animationMenu, animationTrigger);
+                toggleMenu(modelMenu, modelTrigger);
+            });
+
+            modelMenu.addEventListener("click", (event) => {
+                const target = event.target as HTMLElement;
+                const button =
+                    target.closest<HTMLButtonElement>("[data-model-index]");
+                if (!button) return;
+
+                const selectedIndex = Number(
+                    button.getAttribute("data-model-index"),
+                );
+                loadModelAtIndex(selectedIndex);
+                closeMenu(modelMenu, modelTrigger);
+            });
+        }
+
+        if (animationToolsEnabled && animationTrigger && animationMenu) {
+            animationTrigger.addEventListener("click", () => {
+                if (currentAnimations.length === 0) {
+                    return;
+                }
+                closeMenu(modelMenu, modelTrigger);
+                toggleMenu(animationMenu, animationTrigger);
+            });
+
+            animationMenu.addEventListener("click", (event) => {
+                const target = event.target as HTMLElement;
+                const button = target.closest<HTMLButtonElement>(
+                    "[data-animation-index]",
+                );
+                if (!button) return;
+
+                const selectedIndex = Number(
+                    button.getAttribute("data-animation-index"),
+                );
+                const selectedClip = currentAnimations[selectedIndex];
+                if (selectedClip) {
+                    selectedAnimationIndex = selectedIndex;
+                    playAnimationClip(selectedClip);
+                    animationTrigger.textContent =
+                        currentAnimationLabels[selectedIndex] ||
+                        selectedClip.name ||
+                        `Animation ${selectedIndex + 1}`;
+                    markSelectedOption(
+                        animationMenu,
+                        "data-animation-index",
+                        String(selectedIndex),
+                    );
+                }
+
+                closeMenu(animationMenu, animationTrigger);
+            });
+
+            animationLabelModeToggle?.addEventListener("click", () => {
+                showFullAnimationNames = !showFullAnimationNames;
+                animationLabelModeToggle.setAttribute(
+                    "aria-pressed",
+                    String(showFullAnimationNames),
+                );
+                currentAnimationLabels =
+                    getAnimationDisplayLabels(currentAnimations);
+
+                if (currentAnimations.length === 0) {
+                    return;
+                }
+
+                selectedAnimationIndex = Math.min(
+                    selectedAnimationIndex,
+                    currentAnimations.length - 1,
+                );
+                const currentLabel =
+                    currentAnimationLabels[selectedAnimationIndex] ||
+                    currentAnimations[selectedAnimationIndex]?.name ||
+                    "Animation 1";
+                populateAnimationMenu(selectedAnimationIndex, currentLabel);
+            });
+        }
+
+        document.addEventListener("click", (event) => {
+            const target = event.target as Node;
+            if (modelDropdown && !modelDropdown.contains(target)) {
+                closeMenu(modelMenu, modelTrigger);
+            }
+            if (animationDropdown && !animationDropdown.contains(target)) {
+                closeMenu(animationMenu, animationTrigger);
+            }
+        });
+
+        document.addEventListener("keydown", (event) => {
+            if (event.key === "Escape") {
+                closeMenu(modelMenu, modelTrigger);
+                closeMenu(animationMenu, animationTrigger);
+            }
+        });
+
+        controlsButtons.forEach((button) => {
+            button.addEventListener("click", () => {
+                const action = button.getAttribute("data-angle-control");
+                const step = Math.PI / 10;
+
+                if (action === "left") orbitControls.rotateLeft(step);
+                if (action === "right") orbitControls.rotateLeft(-step);
+                if (action === "up") orbitControls.rotateUp(step / 1.5);
+                if (action === "down") orbitControls.rotateUp(-step / 1.5);
+                if (action === "reset") resetCamera();
+
+                orbitControls.update();
+            });
+        });
+
+        const onResize = () => {
+            camera.aspect =
+                canvasContainer.clientWidth / canvasContainer.clientHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(
+                canvasContainer.clientWidth,
+                canvasContainer.clientHeight,
+            );
+        };
+
+        window.addEventListener("resize", onResize);
+
+        setAnimationControlsState();
+        loadModelAtIndex(0);
+
+        const animate = () => {
+            requestAnimationFrame(animate);
+
+            const delta = clock.getDelta();
+            if (animationMixer) {
+                animationMixer.update(delta);
+            }
+
+            orbitControls.update();
+            renderer.render(scene, camera);
+        };
+        animate();
     }
+
+    document.querySelectorAll("[data-model-viewer]").forEach((root) => {
+        initializeViewer(root);
+    });
 </script>
