@@ -1,4 +1,6 @@
-export const MODELS = [
+import type { ViewerModel } from '../../../types';
+
+export const MODELS: ViewerModel[] = [
     // Regular Pokestops
     {
         name: "Blue Pokestop",
