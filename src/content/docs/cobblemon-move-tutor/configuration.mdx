@@ -23,12 +23,65 @@ The configuration directory is located at `<game_directory>/config/cobblemon_mov
 
 ## Common Configuration
 
-**TODO**
+The `common.json` file contains the general configuration settings for Cobblemon Move Tutor. Below is an example of what the `common.json` looks like by default:
+
+```json
+{
+  "currencyConfig": {
+    "currencyType": "item",
+    "levelMovePrice": 16,
+    "tmMovePrice": 16,
+    "hmMovePrice": 32,
+    "tutorMovePrice": 16,
+    "specialMovePrice": 16,
+    "eggMovePrice": 32
+  },
+  "villageTutorConfig": {
+    "hideAlreadyKnownMoves": false,
+    "levelMove": false,
+    "tmMove": false,
+    "hmMove": true,
+    "tutorMove": true,
+    "specialMove": true,
+    "eggMove": false
+  },
+  "adminTutorConfig": {
+    "hideAlreadyKnownMoves": false,
+    "levelMove": false,
+    "tmMove": false,
+    "hmMove": true,
+    "tutorMove": true,
+    "specialMove": true,
+    "eggMove": false
+  }
+}
+```
 
 ## Currency Providers Configuration
 
-**TODO**
+```json
+{
+  "cobbleDollarsProvider": {
+    "currencyDisplayName": "CobbleDollars"
+  },
+  "impactorProvider": {
+    "currencyDisplayName": "Dollars",
+    "currency": "impactor:dollars"
+  },
+  "itemProvider": {
+    "currencyDisplayName": "Rare Candy",
+    "itemId": "cobblemon:rare_candy"
+  }
+}
+```
 
 ## Permissions Configuration
 
-**TODO**
+```json
+{
+  "permissionlevels": {
+    "command.move-tutor": 2,
+    "command.move-tutor.other": 2
+  }
+}
+```
