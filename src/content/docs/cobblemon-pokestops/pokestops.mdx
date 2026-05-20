@@ -14,24 +14,8 @@ banner:
 ---
 
 import ModelViewer from '~/components/ModelViewer.astro';
+import { MODELS } from "./model-list";
 
 Below is a preview of the different PokeStop models added by Cobblemon PokeStops. You can interact with the models to view them from different angles and see their details.
 
-<ModelViewer 
-    models={[ 
-        { name: "Blue Pokestop", path: "cobblemon_pokestops/blue_pokestop.gltf" },
-        { name: "Gold Pokestop", path: "cobblemon_pokestops/gold_pokestop.gltf" },
-        { name: "Black Pokestop", path: "cobblemon_pokestops/black_pokestop.gltf" },
-        { name: "Green Pokestop", path: "cobblemon_pokestops/green_pokestop.gltf" },
-
-        { name: "Blue Winged Pokestop", path: "cobblemon_pokestops/blue_wingedstop.gltf" },
-        { name: "Gold Winged Pokestop", path: "cobblemon_pokestops/gold_wingedstop.gltf" },
-        { name: "Green Winged Pokestop", path: "cobblemon_pokestops/green_wingedstop.gltf" },
-
-        { name: "Healing Pokestop", path: "cobblemon_pokestops/healingstop.gltf" },
-
-        { name: "Master Ball Pokestop", path: "cobblemon_pokestops/masterball_pokeballstop.gltf" },
-        { name: "Premier Ball Pokestop", path: "cobblemon_pokestops/premierball_pokeballstop.gltf" },
-        { name: "Ultra Ball Pokestop", path: "cobblemon_pokestops/ultraball_pokeballstop.gltf" },
-        { name: "Park Ball Pokestop", path: "cobblemon_pokestops/parkball_pokeballstop.gltf" },
-    ]} />
+<ModelViewer models={MODELS} />
