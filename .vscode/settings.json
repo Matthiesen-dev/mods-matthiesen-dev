@@ -5,8 +5,10 @@
         "cobblemon",
         "datapacks",
         "GLTF",
+        "healingstop",
         "lpchatprefix",
         "luckperms",
+        "masterball",
         "Matthiesen",
         "Matthiesen's",
         "modder",
@@ -14,9 +16,15 @@
         "Molang",
         "Monocraft",
         "neoforge",
+        "parkball",
+        "pokeballstop",
+        "Pokestop",
         "pokestops",
         "poketotem",
+        "premierball",
         "skybox",
-        "Smithing"
+        "Smithing",
+        "ultraball",
+        "wingedstop"
     ]
 }

@@ -990,6 +990,7 @@ const serializedModels = JSON.stringify(
                     }
 
                     currentModel = gltf.scene;
+                    currentModel.rotateY(Math.PI);
                     scene.add(currentModel);
                     frameModel(currentModel);
 
