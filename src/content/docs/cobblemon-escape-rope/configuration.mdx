@@ -17,11 +17,11 @@ banner:
 
 A config file is generated automatically at:
 
-- `config/cobblemon_escape_rope/config.json`
+- `<game_directory>/config/cobblemon_escape_rope/config.json`
 
 Default values:
 
-```json
+```json title="<game_directory>/config/cobblemon_escape_rope/config.json"
 {
   "serverSaveTicks": 20,
   "escapeRopeItem": {
@@ -48,9 +48,14 @@ Default values:
 
 Sample:
 
-```json
+```json title="<game_directory>/config/cobblemon_escape_rope/config.json" add={9-10}
 {
+  "serverSaveTicks": 20,
   "escapeRopeItem": {
+    "cooldownInSeconds": 300,
+    "consumeOnUse": false,
+    "useTimeInSeconds": 3,
+    "teleportSafeSearchRadius": 5,
     "blacklistedDimensions": [
       "minecraft:the_nether",
       "minecraft:the_end"

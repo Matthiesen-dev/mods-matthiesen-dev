@@ -25,7 +25,7 @@ The configuration directory is located at `<game_directory>/config/cobblemon_mov
 
 The `common.json` file contains the general configuration settings for Cobblemon Move Tutor. Below is an example of what the `common.json` looks like by default:
 
-```json
+```json title="<game_directory>/config/cobblemon_move_tutor/common.json"
 {
   "currencyConfig": {
     "currencyType": "item",
@@ -57,20 +57,30 @@ The `common.json` file contains the general configuration settings for Cobblemon
 }
 ```
 
-- `currencyConfig` - Contains the configuration settings for the currency used by the Move Tutor, including the type of currency and the price for each type of move.
-  - `currencyType` - The type of currency used by the Move Tutor. Can be set to `item`, `cobbledollars`, or `impactor`.
-  - `levelMovePrice` - The price for learning a level-up move.
-  - `tmMovePrice` - The price for learning a TM move.
-  - `hmMovePrice` - The price for learning an HM/Legacy move.
-  - `tutorMovePrice` - The price for learning a Move Tutor move.
-  - `specialMovePrice` - The price for learning a special move.
-  - `eggMovePrice` - The price for learning an egg move.
-- `villageTutorConfig` - Contains the configuration settings for the Move Tutor that spawns near villages, including which types of moves they offer and whether to hide moves that the player's Pokemon already knows.
-  - Options shared with `adminTutorConfig` see [below](#tutor-configuration-options).
-- `adminTutorConfig` - Contains the configuration settings for the "Admin" Move Tutor, which can be summoned using commands or Molang functions, including which types of moves they offer and whether to hide moves that the player's Pokemon already knows.
-  - Options shared with `villageTutorConfig` see [below](#tutor-configuration-options).
+### `currencyConfig` 
 
-### Tutor Configuration Options
+Contains the configuration settings for the currency used by the Move Tutor, including the type of currency and the price for each type of move.
+
+- `currencyType` - The type of currency used by the Move Tutor. Can be set to `item`, `cobbledollars`, or `impactor`.
+- `levelMovePrice` - The price for learning a level-up move.
+- `tmMovePrice` - The price for learning a TM move.
+- `hmMovePrice` - The price for learning an HM/Legacy move.
+- `tutorMovePrice` - The price for learning a Move Tutor move.
+- `specialMovePrice` - The price for learning a special move.
+- `eggMovePrice` - The price for learning an egg move.
+
+### `villageTutorConfig` 
+
+Contains the configuration settings for the Move Tutor that spawns near villages, including which types of moves they offer and whether to hide moves that the player's Pokemon already knows.
+
+- Options shared with `adminTutorConfig` see [below](#tutor-configuration-options).
+### `adminTutorConfig` 
+
+Contains the configuration settings for the "Admin" Move Tutor, which can be summoned using commands or Molang functions, including which types of moves they offer and whether to hide moves that the player's Pokemon already knows.
+
+- Options shared with `villageTutorConfig` see [below](#tutor-configuration-options).
+
+#### Tutor Configuration Options
 
 The following options are shared between both the `villageTutorConfig` and `adminTutorConfig`:
 - `hideAlreadyKnownMoves` - If true, the Move Tutor will hide moves that the player's Pokemon already knows from their move list.
@@ -85,7 +95,7 @@ The following options are shared between both the `villageTutorConfig` and `admi
 
 The `currency_providers.json` file contains the configuration settings for currency providers, which are used to determine how the currency providers work for the Move Tutor. Below is an example of what the `currency_providers.json` looks like by default:
 
-```json
+```json title="<game_directory>/config/cobblemon_move_tutor/currency_providers.json"
 {
   "cobbleDollarsProvider": {
     "currencyDisplayName": "CobbleDollars"
@@ -101,20 +111,31 @@ The `currency_providers.json` file contains the configuration settings for curre
 }
 ```
 
-- `cobbleDollarsProvider` - The configuration for the CobbleDollars currency provider, which allows the Move Tutor to use CobbleDollars as currency.
-  - `currencyDisplayName` - The display name for the CobbleDollars currency when shown in the Move Tutor's GUI and messages.
-- `impactorProvider` - The configuration for the Impactor currency provider, which allows the Move Tutor to use Impactor Dollars as currency.
-  - `currencyDisplayName` - The display name for the Impactor currency when shown in the Move Tutor's GUI and messages.
-  - `currency` - The impactor currency ID for the currency used by the Impactor provider. This is used for checking if the Impactor mod is present and for displaying the currency in the Move Tutor's GUI.
-- `itemProvider` - The configuration for the item currency provider, which allows the Move Tutor to use a specific item as currency.
-  - `currencyDisplayName` - The display name for the item currency when shown in the Move Tutor's GUI and messages.
-  - `itemId` - The item ID for the item used as currency by the item provider. This is used for checking if the item exists and for displaying the currency in the Move Tutor's GUI. By default, this is set to "cobblemon:rare_candy", which is the item ID for Cobblemon's Rare Candy item.
+### `cobbleDollarsProvider` 
+
+The configuration for the CobbleDollars currency provider, which allows the Move Tutor to use CobbleDollars as currency.
+
+- `currencyDisplayName` - The display name for the CobbleDollars currency when shown in the Move Tutor's GUI and messages.
+
+### `impactorProvider`
+
+The configuration for the Impactor currency provider, which allows the Move Tutor to use Impactor Dollars as currency.
+
+- `currencyDisplayName` - The display name for the Impactor currency when shown in the Move Tutor's GUI and messages.
+- `currency` - The impactor currency ID for the currency used by the Impactor provider. This is used for checking if the Impactor mod is present and for displaying the currency in the Move Tutor's GUI.
+
+### `itemProvider` 
+
+The configuration for the item currency provider, which allows the Move Tutor to use a specific item as currency.
+
+- `currencyDisplayName` - The display name for the item currency when shown in the Move Tutor's GUI and messages.
+- `itemId` - The item ID for the item used as currency by the item provider. This is used for checking if the item exists and for displaying the currency in the Move Tutor's GUI. By default, this is set to "cobblemon:rare_candy", which is the item ID for Cobblemon's Rare Candy item.
 
 ## Permissions Configuration
 
 The `permissions.json` file contains the configuration settings for permissions related to the Move Tutor, which can be used to control access to available commands. Below is an example of what the `permissions.json` looks like by default:
 
-```json
+```json title="<game_directory>/config/cobblemon_move_tutor/permissions.json"
 {
   "permissionlevels": {
     "command.move-tutor": 2,
@@ -123,6 +144,9 @@ The `permissions.json` file contains the configuration settings for permissions 
 }
 ```
 
-- `permissionlevels` - Contains the permission levels for various permissions related to the Move Tutor commands.
-  - `command.move-tutor` - The permission level required to use the `/move-tutor` command, which opens the Move Tutor's GUI for the player.
-  - `command.move-tutor.other` - The permission level required to use the `/move-tutor other <player>` command, which opens the Move Tutor's GUI for another player.
+### `permissionlevels` 
+
+Contains the permission levels for various permissions related to the Move Tutor commands.
+
+- `command.move-tutor` - The permission level required to use the `/move-tutor` command, which opens the Move Tutor's GUI for the player.
+- `command.move-tutor.other` - The permission level required to use the `/move-tutor other <player>` command, which opens the Move Tutor's GUI for another player.

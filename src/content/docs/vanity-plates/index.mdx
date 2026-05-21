@@ -36,9 +36,9 @@ permission node via LuckPerms, and the user can now Set that as a personal prefi
 
 > **Note:** Only Prefixes are currently supported.
 
-The configuration file will be located at `./config/vanity_plates/config.json` and by default will contain the following:
+The configuration file will be located at `<game_directory>/config/vanity_plates/config.json` and by default will contain the following:
 
-```json
+```json title="<game_directory>/config/vanity_plates/config.json"
 {
   "prefixPriority": 1000,
   "availablePlates": [
@@ -60,7 +60,7 @@ as to configure your luckperms to include `highest_own` as an available prefix p
 
 In your `./config/luckperms/luckperms.conf` file in the `meta-formatting` section ensure the following:
 
-```conf
+```conf title="<game_directory>/config/luckperms/luckperms.conf"
 meta-formatting {
   prefix {
     format = [
