@@ -20,7 +20,7 @@ Pokestop experience to fit their server's needs. The configuration file can be f
 
 - **Default config location:** `<game_directory>/config/cobblemon_pokestops/config.json`
 
-### Default Configuration Example
+## Default Configuration Example
 
 ```json title="<game_directory>/config/cobblemon_pokestops/config.json"
 {
@@ -42,17 +42,37 @@ Pokestop experience to fit their server's needs. The configuration file can be f
 }
 ```
 
-### Configuration Options
+## Main Config options
 
-- `enableGlobalBroadcast`: If true, all players will receive a message when a Pokestop is used. If false, only players within the local broadcast radius will receive the message.
-- `localBroadcastRadius`: The radius (in blocks) within which players will receive a message when a Pokestop is used if global broadcast is disabled.
-- `pokestopCooldownSeconds`: The cooldown time (in seconds) for Pokestops after being used.
-- `wingedstopCooldownSeconds`: The cooldown time (in seconds) for Wingedstops after being used.
-- `pokeballStopCooldownSeconds`: The cooldown time (in seconds) for Pokeball Stops after being used.
-- `healingStopCooldownSeconds`: The cooldown time (in seconds) for Healing Stops after being used.
-- `extraRarities`: A list of additional items list that defines items as "Rare" for the purpose of the Pokestop rewards. These items are used for determining the rarity of rewards given by Pokestops for usage in the rarity broadcast message.
+### `enableGlobalBroadcast`
 
-### LootTable Configuration
+If true, all players will receive a message when a Pokestop is used. If false, only players within the local broadcast radius will receive the message.
+
+### `localBroadcastRadius`
+
+The radius (in blocks) within which players will receive a message when a Pokestop is used if global broadcast is disabled.
+
+### `pokestopCooldownSeconds`
+
+The cooldown time (in seconds) for Pokestops after being used.
+
+### `wingedstopCooldownSeconds`
+
+The cooldown time (in seconds) for Wingedstops after being used.
+
+### `pokeballStopCooldownSeconds`
+
+The cooldown time (in seconds) for Pokeball Stops after being used.
+
+### `healingStopCooldownSeconds`
+
+The cooldown time (in seconds) for Healing Stops after being used.
+
+### `extraRarities`
+
+A list of additional items that defines items as "Rare" for the purpose of the Pokestop rewards. These items are used for determining the rarity of rewards given by Pokestops for usage in the rarity broadcast message.
+
+## LootTable Configuration
 
 The rewards given by Pokestops are determined by a loot table. The default loot table can be found in the mod's [resources directory](https://github.com/Matthiesen-dev/cobblemon-pokestops/tree/main/common/src/generated/data/cobblemon_pokestops/loot_table/gameplay), and server owners can create their own custom loot tables to further customize the rewards.
 

@@ -2,7 +2,9 @@
 title: Vanity Plates
 description: Vanity Plates is a mod that allows users to assign "vanity" prefixes via a friendly and easy-to-use in-game GUI.
 prev: false
-next: false
+next: 
+  label: Vanity Plates - Configuration
+  link: /vanity-plates/configuration
 sidebar:
   label: Getting Started
   order: 1
@@ -13,6 +15,7 @@ banner:
 
 import ModMeta from '~/components/ModMeta.astro';
 import Deps from '~/components/Deps.astro';
+import ReadMore from '~/components/ReadMore.astro';
 
 <ModMeta 
   minecraftVersion='1.21.1'
@@ -32,26 +35,7 @@ permission node via LuckPerms, and the user can now Set that as a personal prefi
 - [GooeyLibs v3.1.1-1.21.x+](https://modrinth.com/mod/gooeylibs)
 - [Luckperms 5.4](https://modrinth.com/mod/luckperms)
 
-## Configuration
-
-> **Note:** Only Prefixes are currently supported.
-
-The configuration file will be located at `<game_directory>/config/vanity_plates/config.json` and by default will contain the following:
-
-```json title="<game_directory>/config/vanity_plates/config.json"
-{
-  "prefixPriority": 1000,
-  "availablePlates": [
-    {
-      "displayItem": "minecraft:paper",
-      "customModelData": null,
-      "label": "Demo",
-      "requiredPermission": "demo.plate",
-      "prefix": "[Demo]"
-    }
-  ]
-}
-```
+<ReadMore>For more detailed instructions on configuring the mod, and setting up your permissions, check out the <a href="/vanity-plates/configuration">configuration docs</a>.</ReadMore>
 
 ### LuckPerms setup
 

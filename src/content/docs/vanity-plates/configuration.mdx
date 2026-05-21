@@ -1,0 +1,45 @@
+---
+title: Vanity Plates - Configuration
+description: Configuration options for Vanity Plates, a mod that allows users to assign "vanity" prefixes via a friendly and easy-to-use in-game GUI.
+prev: 
+  label: Vanity Plates - Getting Started
+  link: /vanity-plates
+next: false
+sidebar:
+  label: Configuration
+  order: 2
+banner:
+  content: |
+    These docs are a work in progress and may be incomplete or contain inaccuracies. (Or be for a newer unreleased version of the mod)
+---
+
+The configuration file will be located at `<game_directory>/config/vanity_plates/config.json` and by default will contain the following:
+
+```json title="<game_directory>/config/vanity_plates/config.json"
+{
+  "prefixPriority": 1000,
+  "availablePlates": [
+    {
+      "displayItem": "minecraft:paper",
+      "customModelData": null,
+      "label": "Demo",
+      "requiredPermission": "demo.plate",
+      "prefix": "[Demo]"
+    }
+  ]
+}
+```
+
+### prefixPriority
+
+The `prefixPriority` field determines the priority of the vanity plate prefixes compared to other prefixes in the chat. A higher value means that the vanity plate prefix will be displayed before other prefixes with a lower priority.
+
+### availablePlates
+
+The `availablePlates` field is an array of objects, each representing a vanity plate that users can assign to themselves. Each object has the following properties:
+
+- `displayItem`: The item that will be displayed in the GUI for this vanity plate. This should be a valid Minecraft item ID.
+- `customModelData`: (Optional) The custom model data value for the display item, if applicable. This can be used to differentiate between different variants of the same item.
+- `label`: The label that will be shown in the GUI for this vanity plate.
+- `requiredPermission`: The permission node that a user must have to be able to assign this vanity plate to themselves. This should be configured in your permissions plugin (e.g., LuckPerms).
+- `prefix`: The actual prefix that will be displayed in the chat when a user has this vanity plate assigned. This can include formatting codes (e.g., color codes) if desired.

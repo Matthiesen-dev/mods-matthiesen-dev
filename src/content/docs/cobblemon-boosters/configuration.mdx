@@ -24,4 +24,278 @@ You can also customize the in-game messages sent to players when a booster is st
 This file is also used to store and cache the active and queued boosts between server restarts, so it is important to not delete this file if you want to keep 
 your active boosts between restarts. And you **will not be able to directly edit the file while the server is running as the config file will be overwritten at server stop.**
 
-**TODO**
+## Default Configuration Example
+
+The default configuration file will look like the following:
+
+```json title="<game_directory>/config/cobblemon_boosters/config.json"
+{
+  "permissionlevels": {
+    "command.boosters.reload": 4,
+    "command.boosters.catch": 0,
+    "command.boosters.catch.start": 4,
+    "command.boosters.catch.stop": 4,
+    "command.boosters.catch.status": 0,
+    "command.boosters.experience": 0,
+    "command.boosters.experience.start": 4,
+    "command.boosters.experience.stop": 4,
+    "command.boosters.experience.status": 4,
+    "command.boosters.shiny": 0,
+    "command.boosters.shiny.start": 4,
+    "command.boosters.shiny.stop": 4,
+    "command.boosters.shiny.status": 0,
+    "command.boosters.bucket": 0,
+    "command.boosters.bucket.start": 4,
+    "command.boosters.bucket.stop": 4,
+    "command.boosters.bucket.status": 0,
+    "command.boosters.clear_queues": 4,
+    "command.boosters.check_queue": 0
+  },
+  "messages": {
+    "prefix": "<gray>[<gold>Boosters<gray>]",
+    "commandReload": "%prefix% <green>Reloaded the config!",
+    "shinyMessages": {
+      "barColor": "YELLOW",
+      "barOverlay": "PROGRESS",
+      "barText": "<gold>%multiplier%x Shiny Boost <gray>| <green>%time_remaining% Remaining",
+      "noActiveBoosts": "%prefix% <green>There are currently no active Shiny Boosts!",
+      "boostStarted": "%prefix% <green>Started a Shiny %multiplier%x boost for %duration%!",
+      "boostAddedToQueued": "%prefix% <green>Added a Shiny %multiplier%x boost with a %duration% duration to queue!",
+      "boostStopped": "%prefix% <green>Stopped the current Shiny boost!",
+      "boostQueueCleared": "%prefix% <green>Cleared the Shiny queued boosts!",
+      "boostInfo": "%prefix% <white><bold>Multiplier: <reset><gold>%multiplier%x <gray><bold>| <reset><white><bold>Timer: <reset><green>%time_remaining% <gray>/ <green>%duration%",
+      "noQueuedBoosts": "%prefix% <green>There are currently no Shiny Boosts in the queue!"
+    },
+    "catchBoostMessages": {
+      "barColor": "PURPLE",
+      "barOverlay": "PROGRESS",
+      "barText": "<light_purple>%multiplier%x Catch Boost <gray>| <green>%time_remaining% Remaining",
+      "noActiveBoosts": "%prefix% <green>There are currently no active Catch Boosts!",
+      "boostStarted": "%prefix% <green>Started a Catch %multiplier%x boost for %duration%!",
+      "boostAddedToQueued": "%prefix% <green>Added a Catch %multiplier%x boost with a %duration% duration to queue!",
+      "boostStopped": "%prefix% <green>Stopped the current Catch boost!",
+      "boostQueueCleared": "%prefix% <green>Cleared the Catch queued boosts!",
+      "boostInfo": "%prefix% <white><bold>Multiplier: <reset><light_purple>%multiplier%x <gray><bold>| <reset><white><bold>Timer: <reset><green>%time_remaining% <gray>/ <green>%duration%",
+      "noQueuedBoosts": "%prefix% <green>There are currently no Catch Boosts in the queue!"
+    },
+    "experienceBoostMessages": {
+      "barColor": "GREEN",
+      "barOverlay": "PROGRESS",
+      "barText": "<green>%multiplier%x Experience Boost <gray>| <green>%time_remaining% Remaining",
+      "noActiveBoosts": "%prefix% <green>There are currently no active Experience Boosts!",
+      "boostStarted": "%prefix% <green>Started a Experience %multiplier%x boost for %duration%!",
+      "boostAddedToQueued": "%prefix% <green>Added a Experience %multiplier%x boost with a %duration% duration to queue!",
+      "boostStopped": "%prefix% <green>Stopped the current Experience boost!",
+      "boostQueueCleared": "%prefix% <green>Cleared the Experience queued boosts!",
+      "boostInfo": "%prefix% <white><bold>Multiplier: <reset><green>%multiplier%x <gray><bold>| <reset><white><bold>Timer: <reset><green>%time_remaining% <gray>/ <green>%duration%",
+      "noQueuedBoosts": "%prefix% <green>There are currently no Experience Boosts in the queue!"
+    },
+    "spawnBucketBoostMessages": {
+      "barColor": "BLUE",
+      "barOverlay": "PROGRESS",
+      "barText": "<aqua>%bucket% Spawn Bucket Boost <gray>| <green>%time_remaining% Remaining",
+      "noActiveBoosts": "%prefix% <green>There are currently no active Spawn Bucket Boosts!",
+      "boostStarted": "%prefix% <green>Started a %bucket% Spawn Bucket Boost for %duration%!",
+      "boostAddedToQueued": "%prefix% <green>Added a %bucket% Spawn Bucket Boost with a %duration% duration to queue!",
+      "boostStopped": "%prefix% <green>Stopped the current Spawn Bucket boost!",
+      "boostQueueCleared": "%prefix% <green>Cleared the Spawn Bucket queued boosts!",
+      "boostInfo": "%prefix% <white><bold>Bucket: <reset><aqua>%bucket% <gray><bold>| <reset><white><bold>Timer: <reset><green>%time_remaining% <gray>/ <green>%duration%",
+      "noQueuedBoosts": "%prefix% <green>There are currently no Spawn Bucket Boosts in the queue!"
+    }
+  },
+  "discordWebhookConfig": {
+    "enabled": false,
+    "webhookUrl": "DISCORD_WEBHOOK_URL_HERE",
+    "discordAuthorName": "Cobblemon Boosters",
+    "discordAuthorIconUrl": "https://raw.githubusercontent.com/Matthiesen-Dev/cobblemon-boosters/refs/heads/main/assets/logo.png",
+    "catchEventStartEmbed": {
+      "title": "Catch Event Started!",
+      "description": "A new Catch Boost event has started! Here are the details:",
+      "color": "10181046",
+      "author": {
+        "name": "%discord_webhook_author_name%",
+        "icon_url": "%discord_webhook_author_icon_url%"
+      },
+      "fields": [
+        {
+          "name": "Multiplier",
+          "value": "%multiplier%x",
+          "inline": true
+        },
+        {
+          "name": "Duration",
+          "value": "%duration%",
+          "inline": true
+        }
+      ],
+      "timestamp": "%timestamp%"
+    },
+    "catchEventEndEmbed": {
+      "title": "Catch Event Ended!",
+      "description": "The %multiplier%x Catch Boost event has ended!",
+      "color": "10181046",
+      "author": {
+        "name": "%discord_webhook_author_name%",
+        "icon_url": "%discord_webhook_author_icon_url%"
+      },
+      "timestamp": "%timestamp%"
+    },
+    "experienceEventStartEmbed": {
+      "title": "Experience Event Started!",
+      "description": "A new Experience Boost event has started! Here are the details:",
+      "color": "3066993",
+      "author": {
+        "name": "%discord_webhook_author_name%",
+        "icon_url": "%discord_webhook_author_icon_url%"
+      },
+      "fields": [
+        {
+          "name": "Multiplier",
+          "value": "%multiplier%x",
+          "inline": true
+        },
+        {
+          "name": "Duration",
+          "value": "%duration%",
+          "inline": true
+        }
+      ],
+      "timestamp": "%timestamp%"
+    },
+    "experienceEventEndEmbed": {
+      "title": "Experience Event Ended!",
+      "description": "The %multiplier%x Experience Boost event has ended!",
+      "color": "3066993",
+      "author": {
+        "name": "%discord_webhook_author_name%",
+        "icon_url": "%discord_webhook_author_icon_url%"
+      },
+      "timestamp": "%timestamp%"
+    },
+    "shinyEventStartEmbed": {
+      "title": "Shiny Event Started!",
+      "description": "A new Shiny Boost event has started! Here are the details:",
+      "color": "15844367",
+      "author": {
+        "name": "%discord_webhook_author_name%",
+        "icon_url": "%discord_webhook_author_icon_url%"
+      },
+      "fields": [
+        {
+          "name": "Multiplier",
+          "value": "%multiplier%x",
+          "inline": true
+        },
+        {
+          "name": "Duration",
+          "value": "%duration%",
+          "inline": true
+        }
+      ],
+      "timestamp": "%timestamp%"
+    },
+    "shinyEventEndEmbed": {
+      "title": "Shiny Event Ended!",
+      "description": "The %multiplier%x Shiny Boost event has ended!",
+      "color": "15844367",
+      "author": {
+        "name": "%discord_webhook_author_name%",
+        "icon_url": "%discord_webhook_author_icon_url%"
+      },
+      "timestamp": "%timestamp%"
+    },
+    "spawnBucketEventStartEmbed": {
+      "title": "Spawn Bucket Event Started!",
+      "description": "A new Spawn Bucket Boost event has started! Here are the details:",
+      "color": "3447003",
+      "author": {
+        "name": "%discord_webhook_author_name%",
+        "icon_url": "%discord_webhook_author_icon_url%"
+      },
+      "fields": [
+        {
+          "name": "Bucket",
+          "value": "%bucket%",
+          "inline": true
+        },
+        {
+          "name": "Duration",
+          "value": "%duration%",
+          "inline": true
+        }
+      ],
+      "timestamp": "%timestamp%"
+    },
+    "spawnBucketEventEndEmbed": {
+      "title": "Spawn Bucket Event Ended!",
+      "description": "The %bucket% Spawn Bucket Boost event has ended!",
+      "color": "3447003",
+      "author": {
+        "name": "%discord_webhook_author_name%",
+        "icon_url": "%discord_webhook_author_icon_url%"
+      },
+      "timestamp": "%timestamp%"
+    }
+  },
+  "queuedShinyBoosts": [],
+  "queuedCatchBoosts": [],
+  "queuedExperienceBoosts": [],
+  "queuedSpawnBucketBoosts": []
+}
+```
+
+## Main Config options
+
+### `permissionlevels`
+
+This section of the config allows you to configure the required permission levels for each command in the mod. The permission levels are based on the default Minecraft permission levels, where 0 is for all players, 2 is for Moderators, 3 is for Admins, and 4 is for Server Owners. You can adjust these permission levels as needed to fit your server's permission structure.
+
+- `command.boosters.reload`: The permission level required to reload the boosters config.
+- `command.boosters.catch.*`: The permission levels required for the catch booster commands.
+- `command.boosters.experience.*`: The permission levels required for the experience booster commands.
+- `command.boosters.shiny.*`: The permission levels required for the shiny booster commands.
+- `command.boosters.bucket.*`: The permission levels required for the spawn bucket booster commands.
+- `command.boosters.clear_queues`: The permission level required to clear the booster queues.
+- `command.boosters.check_queue`: The permission level required to check the booster queues.
+
+### `messages`
+
+This section of the config allows you to customize the in-game messages sent to players when interacting with boosters. You can customize the prefix for all messages, as well as the specific messages for each type of booster (catch, experience, shiny, spawn bucket). Each booster type has messages for when there are no active boosts, when a boost is started, when a boost is added to the queue, when a boost is stopped, when the boost queue is cleared, and for displaying boost info.
+
+- `prefix`: The prefix that will be added to all messages sent by the mod. This can include color codes and formatting.
+- `commandReload`: The message sent to the command sender when the config is reloaded.
+
+Each booster type (shiny, catch, experience, spawn bucket) has the following message options:
+
+- `barColor`: The color of the boss bar for the boost.
+- `barOverlay`: The style of the boss bar overlay (e.g., PROGRESS, NOTCHED_6, etc.).
+- `barText`: The text displayed on the boss bar while the boost is active. This can include placeholders for the multiplier, time remaining, and duration.
+- `noActiveBoosts`: The message sent to players when they check the status of boosts and there are no active boosts of that type.
+- `boostStarted`: The message sent to players when a boost of that type is started.
+- `boostAddedToQueue`: The message sent to players when a boost of that type is added to the queue.
+- `boostStopped`: The message sent to players when a boost of that type is stopped.
+- `boostQueueCleared`: The message sent to players when the queue of that boost type is cleared.
+- `boostInfo`: The message sent to players when they check the status of boosts and there is an active boost of that type. This message can include placeholders for the multiplier, time remaining, and duration.
+- `noQueuedBoosts`: The message sent to players when they check the boost queue and there are no boosts of that type in the queue.
+
+### `discordWebhookConfig`
+
+This section of the config allows you to configure the Discord webhook integration for the mod. You can enable or disable the integration, set the webhook URL, and customize the embeds sent to Discord when boosts are started and stopped for each boost type.
+
+- `enabled`: A boolean value to enable or disable the Discord webhook integration.
+- `webhookUrl`: The URL of the Discord webhook where the messages will be sent.
+- `discordAuthorName`: The name that will be displayed as the author of the Discord messages.
+- `discordAuthorIconUrl`: The URL of the icon that will be displayed as the author of the Discord messages.
+
+Each boost type (catch, experience, shiny, spawn bucket) has the following embed options for when a boost is started and when a boost is stopped:
+
+- `title`: The title of the embed.
+- `description`: The description of the embed.
+- `color`: The color of the embed, represented as an integer.
+- `author`: An object containing the `name` and `icon_url` for the embed author, which can use the `%discord_webhook_author_name%` and `%discord_webhook_author_icon_url%` placeholders to use the values from the config.
+- `fields`: An array of field objects, each containing a `name`, `value`, and `inline` boolean to specify whether the field should be displayed inline. The `value` can include placeholders for the multiplier, bucket type, and duration.
+- `timestamp`: A placeholder to include the timestamp of when the boost was started or stopped in the embed.
+
+### Queues
+
+The `queuedShinyBoosts`, `queuedCatchBoosts`, `queuedExperienceBoosts`, and `queuedSpawnBucketBoosts` fields are used to store the queued boosts for each boost type. These queues allow the mod to keep track of boosts that have been added to the queue but have not yet started, and they persist between server restarts as they are stored in the config file. Each entry in the queue would typically include information about the boost such as the multiplier, duration, and when it was added to the queue.
