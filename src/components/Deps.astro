@@ -6,6 +6,7 @@ import GooeyLibs from "~/assets/deps/gooeylibs.svg";
 import GooeyLibsOptional from "~/assets/deps/gooeylibs_optional.svg";
 import LuckPerms from "~/assets/deps/luckperms.svg";
 import MatthiesenLib from "~/assets/deps/matthiesenLib.svg";
+import MatthiesenLibAPI from "~/assets/deps/matthiesenLibAPI.svg";
 
 interface Props {
     architecturyApi?: boolean;
@@ -15,6 +16,7 @@ interface Props {
     gooeyLibsOptional?: boolean;
     luckPerms?: boolean;
     matthiesenLib?: boolean;
+    matthiesenLibAPI?: boolean;
 }
 
 const {
@@ -25,6 +27,7 @@ const {
     gooeyLibsOptional,
     luckPerms,
     matthiesenLib,
+    matthiesenLibAPI,
 } = Astro.props;
 ---
 
@@ -118,6 +121,19 @@ const {
                     data-tooltip="MatthiesenLib"
                 >
                     <MatthiesenLib />
+                </a>
+            )
+        }
+        {
+            matthiesenLibAPI && (
+                <a
+                    href="https://modrinth.com/mod/matthiesen-lib-api"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="dep-icon"
+                    data-tooltip="MatthiesenLib API"
+                >
+                    <MatthiesenLibAPI />
                 </a>
             )
         }
