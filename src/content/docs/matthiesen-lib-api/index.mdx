@@ -1,0 +1,60 @@
+---
+title: "Getting Started"
+description: "Matthiesen Lib API is the Server-side API for Matthiesen Lib, a lightweight Architectury-style library for shared mod code across Fabric and NeoForge."
+prev: false
+next: 
+  link: /matthiesen-lib-api/installation
+  label: "Installation"
+sidebar:
+  order: 1
+banner:
+  content: |
+    These docs are a work in progress and may be incomplete or contain inaccuracies. (Or be for a newer unreleased version of the mod)
+---
+
+import ModMeta from '~/components/ModMeta.astro';
+import ReadMore from '~/components/ReadMore.astro';
+
+<ModMeta 
+  minecraftVersion='1.21.1'
+  github='matthiesen-lib'
+  modrinth='matthiesen-lib-api'
+  fabric neoforge
+/>
+
+## What is Matthiesen Lib API?
+
+Matthiesen Lib API is the server-side API for Matthiesen Lib, a lightweight Architectury-style library that enables mod developers to write shared code that works seamlessly across both **Fabric** and **NeoForge** mod loaders for Minecraft **1.21.1**. Instead of maintaining separate implementations for each platform, you can write your mod logic once in common code and let Matthiesen Lib handle the platform-specific details.
+
+:::note[For Regular Users]
+This library does nothing on its own - it's a developer tool. If a mod requires Matthiesen Lib API, simply drop it in your `mods` folder alongside the mod that needs it.
+:::
+
+## Key Features
+
+Matthiesen Lib API provides a unified API for:
+
+- **Content Registration** - Register blocks, items, block entities, sounds, creative tabs, and more from common code
+- **Command System** - Create cross-platform commands with a simple abstraction layer
+- **Permission System** - Unified permission validation across both platforms
+- **Utility Classes** - ItemBuilder, and other helpful utilities
+
+## Why Use Matthiesen Lib API?
+
+### Write Once, Run Everywhere
+Instead of maintaining separate Fabric and NeoForge implementations:
+
+```java
+// With Matthiesen Lib API - Write once in common code
+public static final RegistryBuilder REGISTRY = new MatthiesenLib.RegistryBuilder("mymod");
+
+public static final Supplier<Item> MY_ITEM = REGISTRY.registerItem(
+    "my_item",
+    () -> new Item(new Item.Properties())
+);
+```
+
+### Simplified Multi-Loader Development
+- **Automatic Namespace Prefixing** - The RegistryBuilder automatically adds your mod ID to all registered content
+- **Platform Abstraction** - Access platform-specific features through a common API
+- **Unified Initialization** - One initialization flow that works on both loaders

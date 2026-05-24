@@ -1,0 +1,254 @@
+---
+title: "Utilities"
+description: "Helpful utility classes and abstractions provided by Matthiesen Lib API"
+prev: 
+  link: /matthiesen-lib-api/permissions
+  label: "Permissions"
+next: 
+  link: /matthiesen-lib-api/embers-integration
+  label: "Embers Integration"
+sidebar:
+  order: 5
+banner:
+  content: |
+    These docs are a work in progress and may be incomplete or contain inaccuracies. (Or be for a newer unreleased version of the mod)
+---
+
+import ReadMore from '~/components/ReadMore.astro';
+
+## Overview
+
+Matthiesen Lib API provides several utility classes and abstractions to simplify common tasks in mod development. These utilities help reduce boilerplate code and provide cross-platform implementations.
+
+## ItemBuilder
+
+The `ItemBuilder` class provides a fluent API for creating and modifying `ItemStack` instances with custom properties.
+
+### Basic Usage
+
+```java
+import dev.matthiesen.common.matthiesen_lib_api.utility.ItemBuilder;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+
+ItemStack customItem = new ItemBuilder(Items.DIAMOND_SWORD)
+    .setCustomName(Component.literal("Legendary Sword"))
+    .addLore(new Component[] {
+        Component.literal("A powerful weapon"),
+        Component.literal("Deals extra damage")
+    })
+    .build();
+```
+
+### Creating from Item
+
+Create a new ItemStack from an `Item`:
+
+```java
+ItemStack stack = new ItemBuilder(Items.GOLDEN_APPLE)
+    .setCustomName(Component.literal("Enchanted Apple"))
+    .build();
+```
+
+### Creating from ItemStack
+
+Modify an existing ItemStack:
+
+```java
+ItemStack existingStack = new ItemStack(Items.BOOK);
+ItemStack modified = new ItemBuilder(existingStack)
+    .setCustomName(Component.literal("Spell Book"))
+    .addLore(new Component[] {
+        Component.literal("Contains ancient spells")
+    })
+    .build();
+```
+
+### Available Methods
+
+#### addLore(Component[] newLore)
+
+Add lore (tooltip text) to the item:
+
+```java
+new ItemBuilder(Items.DIAMOND)
+    .addLore(new Component[] {
+        Component.literal("A precious gem"),
+        Component.literal("Very rare!")
+    })
+    .build();
+```
+
+Features:
+- Appends to existing lore if any
+- Automatically disables italic formatting
+- Returns the builder for method chaining
+
+#### setCustomData(CustomData data)
+
+Set custom NBT data on the item:
+
+```java
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.item.component.CustomData;
+
+CompoundTag tag = new CompoundTag();
+tag.putString("owner", "PlayerName");
+tag.putInt("power", 100);
+
+new ItemBuilder(Items.STICK)
+    .setCustomData(CustomData.of(tag))
+    .build();
+```
+
+Features:
+- Merges with existing custom data
+- Sets max stack size to 1 automatically
+- Returns the builder for method chaining
+
+#### hideAdditionalTooltip()
+
+Hide additional tooltip information:
+
+```java
+new ItemBuilder(Items.DIAMOND_SWORD)
+    .hideAdditionalTooltip()
+    .build();
+```
+
+This hides enchantments, attributes, and other default tooltip information.
+
+#### setCustomName(Component name)
+
+Set a custom display name for the item:
+
+```java
+new ItemBuilder(Items.IRON_SWORD)
+    .setCustomName(Component.literal("Excalibur")
+        .withStyle(ChatFormatting.GOLD, ChatFormatting.BOLD))
+    .build();
+```
+
+#### setCustomModelData(int value)
+
+Set custom model data for resource pack support:
+
+```java
+new ItemBuilder(Items.STICK)
+    .setCustomModelData(1)  // References custom model #1
+    .build();
+```
+
+This is commonly used with resource packs to display different models for the same item.
+
+#### build()
+
+Finalize and return the ItemStack:
+
+```java
+ItemStack result = new ItemBuilder(Items.DIAMOND)
+    .setCustomName(Component.literal("Super Diamond"))
+    .build();
+```
+
+**Important:** After calling `build()`, do not use the ItemBuilder instance anymore.
+
+### Complete Example
+
+```java
+import dev.matthiesen.common.matthiesen_lib_api.utility.ItemBuilder;
+import net.minecraft.ChatFormatting;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.component.CustomData;
+
+public class CustomItems {
+    public static ItemStack createLegendarySword() {
+        CompoundTag tag = new CompoundTag();
+        tag.putString("tier", "legendary");
+        tag.putInt("damage_bonus", 50);
+        
+        return new ItemBuilder(Items.DIAMOND_SWORD)
+            .setCustomName(Component.literal("Dragonslayer")
+                .withStyle(ChatFormatting.DARK_RED, ChatFormatting.BOLD))
+            .addLore(new Component[] {
+                Component.literal("Forged in dragon fire")
+                    .withStyle(ChatFormatting.GRAY),
+                Component.literal("+50 Damage")
+                    .withStyle(ChatFormatting.RED),
+                Component.literal("Legendary Tier")
+                    .withStyle(ChatFormatting.GOLD)
+            })
+            .setCustomData(CustomData.of(tag))
+            .setCustomModelData(1)
+            .hideAdditionalTooltip()
+            .build();
+    }
+    
+    public static ItemStack createEnchantedBook() {
+        return new ItemBuilder(Items.BOOK)
+            .setCustomName(Component.literal("Ancient Tome")
+                .withStyle(ChatFormatting.DARK_PURPLE))
+            .addLore(new Component[] {
+                Component.literal("Contains forbidden knowledge"),
+                Component.literal("Use with caution")
+                    .withStyle(ChatFormatting.ITALIC, ChatFormatting.RED)
+            })
+            .build();
+    }
+}
+```
+
+## Platform Utilities
+
+### Check if Mod is Loaded
+
+Check if a specific mod is loaded:
+
+```java
+import dev.matthiesen.common.matthiesen_lib_api.MatthiesenLibApi;
+
+if (MatthiesenLibApi.isModLoaded("jei")) {
+    // JEI is loaded, enable integration
+}
+
+if (MatthiesenLibApi.isModLoaded("create")) {
+    // Create mod is loaded
+}
+```
+
+### Check Development Environment
+
+Determine if running in a development environment:
+
+```java
+import dev.matthiesen.common.matthiesen_lib_api.MatthiesenLibApi;
+
+if (MatthiesenLibApi.isDevelopmentEnvironment()) {
+    // Enable debug features
+    enableDebugLogging();
+}
+```
+
+This is useful for:
+- Enabling extra logging in development
+- Showing debug information
+- Loading development-only features
+- Testing and debugging
+
+## Best Practices
+
+### ItemBuilder
+
+- Always call `build()` when finished
+- Don't reuse an ItemBuilder after calling `build()`
+- Chain methods for cleaner code
+- Use meaningful component styling
+
+### Platform Checks
+
+- Check for mod compatibility early (during initialization)
+- Use development checks to avoid debug code in production
+- Cache the results of platform checks if used frequently

@@ -1,5 +1,9 @@
 export const LIBRARY_MODS = [
     {
+        name: 'Matthiesen Lib API',
+        docs: 'matthiesen-lib-api'
+    },
+    {
         name: 'Matthiesen Lib',
         docs: 'matthiesen-lib'
     }

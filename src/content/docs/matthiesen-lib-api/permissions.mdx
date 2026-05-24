@@ -2,13 +2,13 @@
 title: "Permissions"
 description: "Implement unified permission checks across Fabric and NeoForge"
 prev: 
-  link: /matthiesen-lib/commands
+  link: /matthiesen-lib-api/commands
   label: "Commands"
 next: 
-  link: /matthiesen-lib/utilities
+  link: /matthiesen-lib-api/utilities
   label: "Utilities"
 sidebar:
-  order: 5
+  order: 4
 banner:
   content: |
     These docs are a work in progress and may be incomplete or contain inaccuracies. (Or be for a newer unreleased version of the mod)
@@ -18,7 +18,7 @@ import ReadMore from '~/components/ReadMore.astro';
 
 ## Overview
 
-Matthiesen Lib provides a unified permission system that works consistently across both Fabric and NeoForge. The permission system is based on Cobblemon's permission architecture and provides a standardized way to define and check permissions for commands and other features.
+Matthiesen Lib API provides a unified permission system that works consistently across both Fabric and NeoForge. The permission system is based on Cobblemon's permission architecture and provides a standardized way to define and check permissions for commands and other features.
 
 ## Permission Levels
 
@@ -39,8 +39,8 @@ The permission system uses five standard permission levels based on Minecraft's 
 The recommended pattern is to extend `AbstractPermission` and override the namespace methods:
 
 ```java
-import dev.matthiesen.common.matthiesen_lib.permission.AbstractPermission;
-import dev.matthiesen.common.matthiesen_lib.permission.PermissionLevel;
+import dev.matthiesen.common.matthiesen_lib_api.permission.AbstractPermission;
+import dev.matthiesen.common.matthiesen_lib_api.permission.PermissionLevel;
 
 public class MyModPermission extends AbstractPermission {
     
@@ -72,8 +72,8 @@ Create a `PermissionRegistry` class to organize and register all your mod's perm
 ```java
 package dev.matthiesen.common.mymod.registry;
 
-import dev.matthiesen.common.matthiesen_lib.MatthiesenLib;
-import dev.matthiesen.common.matthiesen_lib.permission.*;
+import dev.matthiesen.common.matthiesen_lib_api.MatthiesenLibApi;
+import dev.matthiesen.common.matthiesen_lib_api.permission.*;
 import net.minecraft.commands.CommandSourceStack;
 
 public class PermissionRegistry {
@@ -86,7 +86,7 @@ public class PermissionRegistry {
     
     // Helper method to check permissions
     public static boolean checkPermission(CommandSourceStack source, Permission permission) {
-        return MatthiesenLib.getPermissionValidator().hasPermission(source, permission);
+        return MatthiesenLibApi.getPermissionValidator().hasPermission(source, permission);
     }
     
     // Convert integer to PermissionLevel
@@ -112,7 +112,7 @@ public class PermissionRegistry {
                 return "MyMod";
             }
         };
-        MatthiesenLib.registerPermission(newPermission);
+        MatthiesenLibApi.registerPermission(newPermission);
         return newPermission;
     }
 }
@@ -154,11 +154,11 @@ This method handles both player and non-player command sources (console, command
 If you specifically need to check a player:
 
 ```java
-import dev.matthiesen.common.matthiesen_lib.MatthiesenLib;
+import dev.matthiesen.common.matthiesen_lib_api.MatthiesenLibApi;
 import net.minecraft.server.level.ServerPlayer;
 
 public void performAction(ServerPlayer player) {
-    boolean hasPermission = MatthiesenLib.getPermissionValidator()
+    boolean hasPermission = MatthiesenLibApi.getPermissionValidator()
         .hasPermission(player, MyPermissions.ADMIN_COMMAND);
     
     if (hasPermission) {
@@ -176,7 +176,7 @@ Use the permission check helper in command requirements:
 
 ```java
 import com.mojang.brigadier.CommandDispatcher;
-import dev.matthiesen.common.matthiesen_lib.command.AbstractCommand;
+import dev.matthiesen.common.matthiesen_lib_api.command.AbstractCommand;
 import dev.matthiesen.common.mymod.registry.PermissionRegistry;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
@@ -216,7 +216,7 @@ Check permission with fallback to vanilla permission level:
 ```java
 public boolean canUseFeature(ServerPlayer player) {
     // Check custom permission first
-    if (MatthiesenLib.getPermissionValidator()
+    if (MatthiesenLibApi.getPermissionValidator()
             .hasPermission(player, MyModPermissions.SPECIAL_FEATURE)) {
         return true;
     }
@@ -241,8 +241,8 @@ On Fabric, if the Fabric Permissions API is available, it will automatically be 
 You can implement your own permission validator:
 
 ```java
-import dev.matthiesen.common.matthiesen_lib.core.interfaces.MatthiesenLibPermissionValidator;
-import dev.matthiesen.common.matthiesen_lib.permission.Permission;
+import dev.matthiesen.common.matthiesen_lib_api.core.interfaces.MatthiesenLibPermissionValidator;
+import dev.matthiesen.common.matthiesen_lib_api.permission.Permission;
 import net.minecraft.server.level.ServerPlayer;
 
 public class CustomPermissionValidator implements MatthiesenLibPermissionValidator {
@@ -266,7 +266,7 @@ public class CustomPermissionValidator implements MatthiesenLibPermissionValidat
 }
 
 // Set your custom validator
-MatthiesenLib.setPermissionValidator(new CustomPermissionValidator());
+MatthiesenLibApi.setPermissionValidator(new CustomPermissionValidator());
 ```
 
 ## Complete Example
@@ -277,8 +277,8 @@ Here's a complete example showing permission definition, registration, and usage
 // ========== PermissionRegistry.java ==========
 package com.example.mymod.registry;
 
-import dev.matthiesen.common.matthiesen_lib.MatthiesenLib;
-import dev.matthiesen.common.matthiesen_lib.permission.*;
+import dev.matthiesen.common.matthiesen_lib_api.MatthiesenLibApi;
+import dev.matthiesen.common.matthiesen_lib_api.permission.*;
 import net.minecraft.commands.CommandSourceStack;
 
 public class PermissionRegistry {
@@ -290,7 +290,7 @@ public class PermissionRegistry {
     public static void init() {}
     
     public static boolean checkPermission(CommandSourceStack source, Permission permission) {
-        return MatthiesenLib.getPermissionValidator().hasPermission(source, permission);
+        return MatthiesenLibApi.getPermissionValidator().hasPermission(source, permission);
     }
     
     public static PermissionLevel toPermLevel(int permLevel) {
@@ -314,7 +314,7 @@ public class PermissionRegistry {
                 return "MyMod";
             }
         };
-        MatthiesenLib.registerPermission(newPermission);
+        MatthiesenLibApi.registerPermission(newPermission);
         return newPermission;
     }
 }
@@ -325,7 +325,7 @@ package com.example.mymod.commands;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import dev.matthiesen.common.matthiesen_lib.command.AbstractCommand;
+import dev.matthiesen.common.matthiesen_lib_api.command.AbstractCommand;
 import dev.matthiesen.common.mymod.registry.PermissionRegistry;
 import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.CommandSourceStack;
@@ -471,12 +471,3 @@ Document your permissions for server administrators:
  */
 public static final Permission TELEPORT = ...
 ```
-
-## Related
-
-<ReadMore>Learn how to set up Matthiesen Lib in your development environment with the [Installation Guide](/matthiesen-lib/installation).</ReadMore>
-<ReadMore>Explore the [Registry Builder API](/matthiesen-lib/registry-builder) to see how to register content from common code.</ReadMore>
-<ReadMore>Check out the [Commands](/matthiesen-lib/commands) page to learn how to create cross-platform commands.</ReadMore>
-<ReadMore>Discover how to register client-side features like screens and renderers in the [Client-Side Features](/matthiesen-lib/client-features) section.</ReadMore>
-<ReadMore>Integrate with the Embers Text API for immersive messaging with the [Embers Integration](/matthiesen-lib/embers-integration) guide.</ReadMore>
-<ReadMore>Utilize helpful utilities like the ItemBuilder in the [Utilities](/matthiesen-lib/utilities) section.</ReadMore>
