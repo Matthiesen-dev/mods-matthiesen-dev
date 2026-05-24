@@ -21,6 +21,7 @@ export default defineConfig({
 				{ icon: 'discord', label: 'Discord', href: 'https://discord.gg/4ePfVRgexS' },
 			],
 			components: {
+				ContentPanel: './src/components/starlight/ContentPanel.astro',
 				SocialIcons: './src/components/starlight/SocialIcons.astro'
 			},
 			customCss: [

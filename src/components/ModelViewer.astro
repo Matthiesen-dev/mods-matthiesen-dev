@@ -157,6 +157,7 @@ const serializedModels = JSON.stringify(
         display: flex;
         flex-direction: column;
         gap: 0.9rem;
+        margin: 1.5rem 0;
         padding: 1rem;
         border-radius: 12px;
         border: 1px solid rgba(120, 176, 255, 0.35);
@@ -174,6 +175,12 @@ const serializedModels = JSON.stringify(
         box-shadow:
             0 12px 30px rgba(0, 0, 0, 0.35),
             inset 0 0 0 1px rgba(255, 255, 255, 0.03);
+    }
+
+    @media (min-width: 72rem) {
+        .model-viewer {
+            margin: 2rem 6rem;
+        }
     }
 
     .viewer-header {
