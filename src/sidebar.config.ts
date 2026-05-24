@@ -1,7 +1,8 @@
 export const LIBRARY_MODS = [
     {
         name: 'Matthiesen Lib API',
-        docs: 'matthiesen-lib-api'
+        docs: 'matthiesen-lib-api',
+        badge: "Server"
     },
     {
         name: 'Matthiesen Lib',

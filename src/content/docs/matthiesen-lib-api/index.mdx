@@ -39,21 +39,6 @@ Matthiesen Lib API provides a unified API for:
 - **Permission System** - Unified permission validation across both platforms
 - **Utility Classes** - ItemBuilder, and other helpful utilities
 
-## Why Use Matthiesen Lib API?
-
-### Write Once, Run Everywhere
-Instead of maintaining separate Fabric and NeoForge implementations:
-
-```java
-// With Matthiesen Lib API - Write once in common code
-public static final RegistryBuilder REGISTRY = new MatthiesenLib.RegistryBuilder("mymod");
-
-public static final Supplier<Item> MY_ITEM = REGISTRY.registerItem(
-    "my_item",
-    () -> new Item(new Item.Properties())
-);
-```
-
 ### Simplified Multi-Loader Development
 - **Automatic Namespace Prefixing** - The RegistryBuilder automatically adds your mod ID to all registered content
 - **Platform Abstraction** - Access platform-specific features through a common API
