@@ -29,112 +29,75 @@ const {
     matthiesenLib,
     matthiesenLibAPI,
 } = Astro.props;
+
+const depMap = [
+    {
+        name: "Architectury API",
+        enabled: architecturyApi,
+        Icon: ArchitecturyApi,
+        url: "https://modrinth.com/mod/architectury-api",
+    },
+    {
+        name: "Cobblemon",
+        enabled: cobblemon,
+        Icon: Cobblemon,
+        url: "https://modrinth.com/mod/cobblemon",
+    },
+    {
+        name: "GeckoLib",
+        enabled: geckoLib,
+        Icon: GeckoLib,
+        url: "https://modrinth.com/mod/geckolib",
+    },
+    {
+        name: "GooeyLibs",
+        enabled: gooeyLibs,
+        Icon: GooeyLibs,
+        url: "https://modrinth.com/mod/gooeylibs",
+    },
+    {
+        name: "GooeyLibs (Optional)",
+        enabled: gooeyLibsOptional,
+        Icon: GooeyLibsOptional,
+        url: "https://modrinth.com/mod/gooeylibs",
+    },
+    {
+        name: "LuckPerms",
+        enabled: luckPerms,
+        Icon: LuckPerms,
+        url: "https://modrinth.com/mod/luckperms",
+    },
+    {
+        name: "Matthiesen Lib",
+        enabled: matthiesenLib,
+        Icon: MatthiesenLib,
+        url: "https://modrinth.com/mod/matthiesen-lib",
+    },
+    {
+        name: "Matthiesen Lib API",
+        enabled: matthiesenLibAPI,
+        Icon: MatthiesenLibAPI,
+        url: "https://modrinth.com/mod/matthiesen-lib-api",
+    },
+];
 ---
 
 <div class="deps-container not-content">
     <div class="deps">
         {
-            architecturyApi && (
-                <a
-                    href="https://modrinth.com/mod/architectury-api"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    class="dep-icon"
-                    data-tooltip="Architectury API"
-                >
-                    <ArchitecturyApi />
-                </a>
-            )
-        }
-        {
-            cobblemon && (
-                <a
-                    href="https://modrinth.com/mod/cobblemon"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    class="dep-icon"
-                    data-tooltip="Cobblemon"
-                >
-                    <Cobblemon />
-                </a>
-            )
-        }
-        {
-            geckoLib && (
-                <a
-                    href="https://modrinth.com/mod/geckolib"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    class="dep-icon"
-                    data-tooltip="GeckoLib"
-                >
-                    <GeckoLib />
-                </a>
-            )
-        }
-        {
-            gooeyLibs && (
-                <a
-                    href="https://modrinth.com/mod/gooeylibs"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    class="dep-icon"
-                    data-tooltip="GooeyLibs"
-                >
-                    <GooeyLibs />
-                </a>
-            )
-        }
-        {
-            gooeyLibsOptional && (
-                <a
-                    href="https://modrinth.com/mod/gooeylibs"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    class="dep-icon"
-                    data-tooltip="GooeyLibs (Optional)"
-                >
-                    <GooeyLibsOptional />
-                </a>
-            )
-        }
-        {
-            luckPerms && (
-                <a
-                    href="https://modrinth.com/mod/luckperms"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    class="dep-icon"
-                    data-tooltip="LuckPerms"
-                >
-                    <LuckPerms />
-                </a>
-            )
-        }
-        {
-            matthiesenLib && (
-                <a
-                    href="https://modrinth.com/mod/matthiesen-lib"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    class="dep-icon"
-                    data-tooltip="MatthiesenLib"
-                >
-                    <MatthiesenLib />
-                </a>
-            )
-        }
-        {
-            matthiesenLibAPI && (
-                <a
-                    href="https://modrinth.com/mod/matthiesen-lib-api"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    class="dep-icon"
-                    data-tooltip="MatthiesenLib API"
-                >
-                    <MatthiesenLibAPI />
-                </a>
+            depMap.map(
+                ({ name, enabled, Icon, url }) =>
+                    enabled && (
+                        <a
+                            href={url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="dep-icon"
+                            data-tooltip={name}
+                        >
+                            <Icon />
+                        </a>
+                    ),
             )
         }
     </div>
