@@ -58,11 +58,10 @@ repositories {
 
 ### Step 2: Add Version to gradle.properties
 
-Add the Matthiesen Lib and Matthiesen Lib API versions to your `gradle.properties` file:
+Add the Matthiesen Lib version to your `gradle.properties` file, Note: Generally you will only specify one version for both the API and the LIB, as their versions should always be in sync.
 
 ```properties
 matthiesen_lib_version=1.1.0
-matthiesen_lib_api_version=1.1.0
 ```
 
 :::tip[Finding the Latest Version]
@@ -95,7 +94,7 @@ If you're writing multi-loader code in a common module:
 
 ```kotlin
 dependencies {
-    modImplementation("dev.matthiesen:matthiesen-lib-api-common:${property("matthiesen_lib_api_version")}") {
+    modImplementation("dev.matthiesen:matthiesen-lib-api-common:${property("matthiesen_lib_version")}") {
         isTransitive = false
     }
     modImplementation("dev.matthiesen:matthiesen-lib-common:${property("matthiesen_lib_version")}") { 
@@ -113,7 +112,7 @@ dependencies {
     modImplementation("dev.matthiesen:matthiesen-lib-fabric:${property("matthiesen_lib_version")}") { 
         isTransitive = false 
     }
-    modImplementation("dev.matthiesen:matthiesen-lib-api-fabric:${property("matthiesen_lib_api_version")}") {
+    modImplementation("dev.matthiesen:matthiesen-lib-api-fabric:${property("matthiesen_lib_version")}") {
         isTransitive = false
     }
 }
@@ -128,7 +127,7 @@ dependencies {
     modImplementation("dev.matthiesen:matthiesen-lib-neoforge:${property("matthiesen_lib_version")}") { 
         isTransitive = false 
     }
-    modImplementation("dev.matthiesen:matthiesen-lib-api-neoforge:${property("matthiesen_lib_api_version")}") {
+    modImplementation("dev.matthiesen:matthiesen-lib-api-neoforge:${property("matthiesen_lib_version")}") {
         isTransitive = false
     }
 }
@@ -141,7 +140,7 @@ For a typical Architectury-style multi-loader setup:
 ```kotlin
 // In common/build.gradle.kts
 dependencies {
-    modImplementation("dev.matthiesen:matthiesen-lib-api-common:${property("matthiesen_lib_api_version")}") { 
+    modImplementation("dev.matthiesen:matthiesen-lib-api-common:${property("matthiesen_lib_version")}") { 
         isTransitive = false 
     }
     modImplementation("dev.matthiesen:matthiesen-lib-common:${property("matthiesen_lib_version")}") { 
@@ -151,7 +150,7 @@ dependencies {
 
 // In fabric/build.gradle.kts
 dependencies {
-    modImplementation("dev.matthiesen:matthiesen-lib-api-fabric:${property("matthiesen_lib_api_version")}") {
+    modImplementation("dev.matthiesen:matthiesen-lib-api-fabric:${property("matthiesen_lib_version")}") {
         isTransitive = false
     }
     modImplementation("dev.matthiesen:matthiesen-lib-fabric:${property("matthiesen_lib_version")}") { 
@@ -161,7 +160,7 @@ dependencies {
 
 // In neoforge/build.gradle.kts  
 dependencies {
-    modImplementation("dev.matthiesen:matthiesen-lib-api-neoforge:${property("matthiesen_lib_api_version")}") {
+    modImplementation("dev.matthiesen:matthiesen-lib-api-neoforge:${property("matthiesen_lib_version")}") {
         isTransitive = false
     }
     modImplementation("dev.matthiesen:matthiesen-lib-neoforge:${property("matthiesen_lib_version")}") { 
