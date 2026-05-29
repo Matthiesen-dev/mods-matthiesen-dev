@@ -1,12 +1,17 @@
 export const LIBRARY_MODS = [
     {
+        name: 'Matthiesen Lib',
+        docs: 'matthiesen-lib'
+    },
+    {
         name: 'Matthiesen Lib API',
         docs: 'matthiesen-lib-api',
         badge: "Server"
     },
     {
-        name: 'Matthiesen Lib',
-        docs: 'matthiesen-lib'
+        name: 'Matthiesen Lib Webhooks',
+        docs: 'matthiesen-lib-webhooks',
+        badge: "Server"
     }
 ];
 

@@ -1,0 +1,183 @@
+---
+title: "Examples"
+description: "How to use Matthiesen Lib Webhooks in your Minecraft mod project"
+prev: 
+  link: /matthiesen-lib-webhooks/installation
+  label: "Installation"
+next: false
+sidebar:
+  order: 3
+banner:
+  content: |
+    These docs are a work in progress and may be incomplete or contain inaccuracies. (Or be for a newer unreleased version of the mod)
+---
+
+Below are some example usages of the Matthiesen Lib Webhooks API. For more detailed information on how to use the API, check out the Javadoc or the source code.
+
+## Setup
+
+Declare a `Webhooks` instance somewhere accessible in your mod, passing in the Discord webhook URL. If the URL is `null` or blank the notifier is a no-op — no messages will be sent and no errors will be thrown, making it safe to leave unconfigured in development.
+
+```java
+import dev.matthiesen.common.matthiesen_lib_webhooks.MatthiesenLibWebhooks;
+
+public class MyMod {
+    // Typically sourced from your mod's config file
+    public static final MatthiesenLibWebhooks.Webhooks WEBHOOKS =
+      new MatthiesenLibWebhooks.Webhooks("https://discord.com/api/webhooks/...");
+}
+```
+
+---
+
+## Simple Text Message
+
+Send a plain-text message with a custom display name.
+
+```java
+MyMod.WEBHOOKS.sendMessage(message -> message
+  .withUsername("My Mod")
+  .withContent("The server has started!"));
+```
+
+---
+
+## Embed with Color
+
+Use the built-in `DiscordColor` enum to apply a color stripe to an embed.
+
+```java
+import dev.matthiesen.common.matthiesen_lib_webhooks.MatthiesenLibWebhooks;
+import dev.matthiesen.common.matthiesen_lib_webhooks.discord.DiscordColor;
+
+MyMod.WEBHOOKS.sendMessage(message -> message
+  .withUsername("Server Monitor")
+  .addEmbed(embed -> embed
+    .withColor(DiscordColor.GREEN)
+    .withTitle("Server Online")
+    .withDescription("The server is up and running.")));
+```
+
+You can also supply a raw decimal color value if you need a color not in the enum:
+
+```java
+embed.withColor(0xFF5733); // custom RGB color as a decimal int
+```
+
+---
+
+## Rich Embed
+
+Combine author, thumbnail, inline fields, a footer, and an ISO-8601 timestamp in a single embed.
+
+```java
+import dev.matthiesen.common.matthiesen_lib_webhooks.MatthiesenLibWebhooks;
+import dev.matthiesen.common.matthiesen_lib_webhooks.discord.DiscordColor;
+
+import java.time.Instant;
+
+MyMod.WEBHOOKS.sendMessage(message -> message
+  .withUsername("My Mod")
+  .withAvatarUrl("https://example.com/avatar.png")
+  .addEmbed(embed -> embed
+    .withColor(DiscordColor.GOLD)
+    .withAuthor("My Mod", "https://example.com", "https://example.com/icon.png")
+    .withTitle("Player Milestone")
+    .withDescription("A player has reached a new milestone!")
+    .withThumbnailUrl("https://example.com/thumbnail.png")
+    .addField("Player", "Steve", true)
+    .addField("Milestone", "First Death", true)
+    .addField("World", "Overworld", true)
+    .withFooter("My Mod v1.0.0", "https://example.com/icon.png")
+    .withTimestamp(Instant.now().toString())));
+```
+
+---
+
+## Multiple Embeds
+
+Call `addEmbed` multiple times to include more than one embed in a single message (Discord allows up to 10).
+
+```java
+import dev.matthiesen.common.matthiesen_lib_webhooks.MatthiesenLibWebhooks;
+import dev.matthiesen.common.matthiesen_lib_webhooks.discord.DiscordColor;
+
+MyMod.WEBHOOKS.sendMessage(message -> message
+  .withUsername("Server Stats")
+  .addEmbed(embed -> embed
+    .withColor(DiscordColor.BLUE)
+    .withTitle("Performance")
+    .addField("TPS", "19.8", true)
+    .addField("MSPT", "12.3", true))
+  .addEmbed(embed -> embed
+    .withColor(DiscordColor.PURPLE)
+    .withTitle("Players")
+    .addField("Online", "14", true)
+    .addField("Peak Today", "31", true)));
+```
+
+---
+
+## File Attachment
+
+Attach a file by providing its filename and raw bytes. This is useful for sending logs or generated images.
+
+```java
+import dev.matthiesen.common.matthiesen_lib_webhooks.MatthiesenLibWebhooks;
+import dev.matthiesen.common.matthiesen_lib_webhooks.discord.model.WebhookFile;
+
+import java.nio.charset.StandardCharsets;
+
+byte[] logBytes = "Server stopped cleanly.".getBytes(StandardCharsets.UTF_8);
+
+MyMod.WEBHOOKS.sendMessage(message -> message
+  .withUsername("My Mod")
+  .withContent("Daily server log attached.")
+  .addFile(new WebhookFile("server.log", logBytes)));
+```
+
+---
+
+## Checking Configuration Before Sending
+
+If you need to conditionally branch on whether a webhook URL has been provided, use `MatthiesenLibWebhooks.createWebhookNotifier` to obtain the `WebhookNotifier` directly and call `isConfigured()`.
+
+```java
+import dev.matthiesen.common.matthiesen_lib_webhooks.MatthiesenLibWebhooks;
+import dev.matthiesen.common.matthiesen_lib_webhooks.discord.WebhookNotifier;
+
+WebhookNotifier notifier = MatthiesenLibWebhooks.createWebhookNotifier(config.getWebhookUrl());
+
+if (notifier.isConfigured()) {
+    // Perform extra setup that only makes sense when a webhook is active
+}
+
+MatthiesenLibWebhooks.Webhooks webhooks = new MatthiesenLibWebhooks.Webhooks(notifier);
+webhooks.sendMessage(message -> message
+  .withUsername("My Mod")
+  .withContent("Webhook is active!"));
+```
+
+---
+
+## Pre-building a Message
+
+Use `WebhookMessageBuilder.build()` when you want to construct a `WebhookMessage` ahead of time and reuse or inspect it before sending.
+
+```java
+import dev.matthiesen.common.matthiesen_lib_webhooks.MatthiesenLibWebhooks;
+import dev.matthiesen.common.matthiesen_lib_webhooks.discord.DiscordColor;
+import dev.matthiesen.common.matthiesen_lib_webhooks.discord.model.WebhookMessage;
+import dev.matthiesen.common.matthiesen_lib_webhooks.discord.model.WebhookMessageBuilder;
+
+WebhookMessage message = new WebhookMessageBuilder()
+  .withUsername("My Mod")
+  .addEmbed(embed -> embed
+    .withColor(DiscordColor.RED)
+    .withTitle("Server Stopping")
+    .withDescription("The server is shutting down for maintenance."))
+  .build();
+
+// Send the pre-built message
+MyMod.WEBHOOKS.sendMessage(message);
+```
