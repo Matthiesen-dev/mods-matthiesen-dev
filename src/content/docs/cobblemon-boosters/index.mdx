@@ -24,7 +24,7 @@ import Deps from '~/components/Deps.astro';
   fabric neoforge
 />
 
-<Deps cobblemon gooeyLibsOptional architecturyApi />
+<Deps cobblemon gooeyLibsOptional matthiesenLibAPI />
 
 This is a Server side mod that adds different types of timed boosters to your server. These boosters can be used to increase the 
 chances of finding Shiny Pokemon, or increases the catch rate!
@@ -37,11 +37,15 @@ chances of finding Shiny Pokemon, or increases the catch rate!
 
 ## Dependencies
 - [Cobblemon 1.7.3+1.21.1](https://www.modrinth.com/mod/cobblemon)
-- [Adventure API for 1.21.1](https://modrinth.com/mod/adventure-platform-mod)
-- [Architectury API for 1.21.1](https://modrinth.com/mod/architectury-api)
+- [Matthiesen Lib API](https://www.modrinth.com/mod/matthiesen-lib-api)
 
 ### Optional Dependencies
 - [GooeyLibs 3.1.1-1.21.x](https://modrinth.com/mod/gooeylibs) - Used for optional GUIs
+- [Matthiesen Lib Webhooks](https://modrinth.com/mod/matthiesen-lib-webhooks) - Used for optional Discord webhook notifications
+
+:::note[Discord Webhook Integration]
+Cobblemon Boosters has optional integration with Discord webhooks to send notifications about booster events. If you have the [Matthiesen Lib Webhooks](https://modrinth.com/mod/matthiesen-lib-webhooks) mod installed, you can configure the webhook settings in the [`webhooks.json` configuration file](/cobblemon-boosters/configuration).
+:::
 
 ## See Also
 
