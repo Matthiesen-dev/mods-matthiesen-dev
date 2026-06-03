@@ -8,7 +8,7 @@ next:
   link: /matthiesen-lib-api/embers-integration
   label: "Embers Integration"
 sidebar:
-  order: 5
+  order: 6
 banner:
   content: |
     These docs are a work in progress and may be incomplete or contain inaccuracies. (Or be for a newer unreleased version of the mod)
@@ -200,6 +200,52 @@ public class CustomItems {
     }
 }
 ```
+
+## Universal Metrics
+
+Matthiesen Lib API includes a utility for collecting and submitting metrics to [faststats](https://faststats.dev) with a unified API that works across both Fabric and NeoForge. This allows mod developers to easily gather usage data and error reports from their mods without needing to implement separate solutions for each platform.
+
+### Getting Started
+
+To enable metrics collection for your mod, simply include the `matthiesen-lib-api` dependency and follow the steps listed below to configure and use the metrics system. Metrics collection is opt-in, so you have full control over what data is collected and submitted.
+
+### Configuration
+
+Create a new class file or include the following code in your main mod class to configure metrics:
+
+```java
+import dev.matthiesen.common.matthiesen_lib_api.MatthiesenLibApi;
+import dev.matthiesen.common.matthiesen_lib_api.core.MatthiesenLibApiMetricsManager;
+import dev.matthiesen.common.matthiesen_lib_api.core.metric.UniversalMetricContext;
+import dev.matthiesen.libs.faststats.ErrorTracker;
+import dev.matthiesen.libs.faststats.Metrics;
+
+public final class MetricManager {
+    public static final ErrorTracker ERROR_TRACKER = MatthiesenLibApiMetricsManager.getErrorTracker();
+    private static final UniversalMetricContext metricContext = new UniversalMetricContext.Factory(
+            "MOD_ID", // Replace with your mod's ID
+            "METRICS_TOKEN" // Replace with your faststats metrics token
+    )
+            .metrics(Metrics.Factory::create)
+            .errorTrackerService(ERROR_TRACKER)
+            .create();
+
+    public static UniversalMetricContext getMetricContext() {
+        return metricContext;
+    }
+
+    public static void ready() {
+        MatthiesenLibApi.registerModToMetrics(Constants.MOD_ID);
+        metricContext.ready();
+    }
+}
+```
+
+After setting up the MetricManager, call `MetricManager.ready()` during your mod's initialization to start the metrics system.
+
+:::note[Metrics Configuration]
+Since this API clones the original faststats plugins/mods, you can customize your `metricContext` with additional options provided by the faststats library, which has been mirrored and re-packaged under the `dev.matthiesen.libs.faststats` package. This includes options for debug logging, additional metrics collection, error reporting, and more. Refer to the [faststats documentation](https://docs.faststats.dev/java/configuration) for more details on available features and configuration options.
+:::
 
 ## Platform Utilities
 
