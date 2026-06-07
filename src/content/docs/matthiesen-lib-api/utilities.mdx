@@ -222,21 +222,14 @@ import dev.matthiesen.libs.faststats.Metrics;
 
 public final class MetricManager {
     public static final ErrorTracker ERROR_TRACKER = MatthiesenLibApiMetricsManager.getErrorTracker();
-    private static final UniversalMetricContext metricContext = new UniversalMetricContext.Factory(
+    private static final UniversalMetricContext metricContext = MatthiesenLibApiMetricsManager.makeErrorMetricsContext(
             "MOD_ID", // Replace with your mod's ID
-            "METRICS_TOKEN" // Replace with your faststats metrics token
-    )
-            .metrics(Metrics.Factory::create)
-            .errorTrackerService(ERROR_TRACKER)
-            .create();
-
-    public static UniversalMetricContext getMetricContext() {
-        return metricContext;
-    }
+            "METRICS_TOKEN", // Replace with your faststats metrics token
+            ERROR_TRACKER
+    );
 
     public static void ready() {
-        MatthiesenLibApi.registerModToMetrics(Constants.MOD_ID);
-        metricContext.ready();
+        MatthiesenLibApi.registerModToMetrics(Constants.MOD_ID); // Optional: Register your mod with Matthiesen Lib API's metrics system
     }
 }
 ```
