@@ -19,10 +19,23 @@ All of the configuration files for Cobblemon Boosters are located in the `<game_
 
 Here is a brief overview of the configuration files and their purposes:
 
+- **`core.json`:** This file contains the core configuration settings for the mod.
 - **`cache.json`:** This file is used to store cached data for the mod, such as booster information and player data. It is automatically generated and updated by the mod, and should not be edited manually.
 - **`messages.json`:** This file contains all of the customizable messages used by the mod. You can edit this file to change the text of messages sent to players, such as booster activation messages, error messages, and more.
 - **`permissions.json`:** This file contains the permission nodes used by the mod. You can edit this file to change the permission nodes required for various commands and actions related to boosters.
 - **`webhooks.json`:** This file contains the configuration for any webhooks that the mod may use. You can edit this file to customize webhook settings.
+
+## Core Configuration
+
+The `core.json` file contains the core configuration settings for the mod. Currently, there is only one setting in this file.
+
+```json title="<game_directory>/config/cobblemon_boosters/core.json"
+{
+  "saveIntervalTicks": 1200
+}
+```
+
+- `saveIntervalTicks`: This setting determines how often the mod saves its data to the `cache.json` file. The value is specified in ticks, where 20 ticks equal 1 second. By default, this is set to `1200`, which means the mod will save its data every 60 seconds. You can adjust this value to save more or less frequently based on your server's needs. Keep in mind that setting this value too low may cause performance issues, while setting it too high may result in more data loss in the event of a server crash, as the mod will save less frequently. The mod also saves during server shutdown to help prevent data loss, but it's important to choose a save interval that balances performance and data safety for your specific server setup.
 
 ## Cache File
 
