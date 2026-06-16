@@ -1,0 +1,1185 @@
+---
+/**
+ * LootTableEditor.astro
+ * Visual editor for Cobblemon Pokestops loot tables.
+ *
+ * Usage:
+ *   <LootTableEditor />
+ *
+ * The component lets users:
+ *  - Switch between the three loot tables (pokeball stop, pokestop, winged stop)
+ *  - Add / remove / reorder loot pool entries
+ *  - Adjust weight, min count, and max count per entry
+ *  - See live weight-to-probability percentages
+ *  - Export a ready-to-use JSON file (or the full ZIP)
+ *
+ * No props are required; all state is managed client-side.
+ */
+---
+
+<div class="not-content" id="lte-root">
+  <!-- populated by client script -->
+</div>
+
+<style is:global>
+  :root {
+    --lte-surface: rgba(10, 12, 18, 0.95);
+    --lte-surface-soft: rgba(7, 10, 18, 0.55);
+    --lte-surface-elevated: linear-gradient(180deg, #11192a, #0b1220);
+    --lte-control: linear-gradient(180deg, #1f2736, #151c2a);
+    --lte-control-hover: linear-gradient(180deg, #273246, #1b2436);
+    --lte-control-active: linear-gradient(180deg, #31538a, #25406c);
+
+    --lte-text-primary: #f4f7ff;
+    --lte-text-secondary: rgba(225, 233, 245, 0.72);
+    --lte-text-muted: rgba(222, 235, 255, 0.58);
+    --lte-text-danger: #ff8a8a;
+
+    --lte-border: rgba(120, 176, 255, 0.35);
+    --lte-border-soft: rgba(130, 140, 160, 0.25);
+    --lte-border-strong: rgba(170, 214, 255, 0.6);
+
+    --lte-accent: #78b0ff;
+    --lte-accent-strong: #9fd0ff;
+    --lte-success: #45d39d;
+    --lte-danger-bg: rgba(226, 75, 74, 0.16);
+
+    --lte-radius-md: 8px;
+    --lte-radius-lg: 12px;
+    --lte-radius-xl: 16px;
+  }
+
+  :global(html[data-theme="light"]) {
+    --lte-surface: rgba(220, 228, 242, 0.94);
+    --lte-surface-soft: rgba(244, 248, 255, 0.78);
+    --lte-surface-elevated: linear-gradient(180deg, #ffffff, #eef3fb);
+    --lte-control: linear-gradient(180deg, #f4f8ff, #e6eefb);
+    --lte-control-hover: linear-gradient(180deg, #edf4ff, #dfe9f9);
+    --lte-control-active: linear-gradient(180deg, #c9ddff, #b8d0f7);
+
+    --lte-text-primary: #10284b;
+    --lte-text-secondary: rgba(28, 44, 74, 0.7);
+    --lte-text-muted: rgba(28, 44, 74, 0.52);
+    --lte-text-danger: #b72f35;
+
+    --lte-border: rgba(77, 112, 171, 0.28);
+    --lte-border-soft: rgba(78, 105, 156, 0.24);
+    --lte-border-strong: rgba(78, 105, 156, 0.55);
+
+    --lte-accent: #4e699c;
+    --lte-accent-strong: #315d9d;
+    --lte-success: #1d9e75;
+    --lte-danger-bg: rgba(226, 75, 74, 0.12);
+  }
+
+  /* ── Reset ─────────────────────────────────────────────────── */
+  :where(#lte-root, #lte-root *) {
+    box-sizing: border-box;
+  }
+
+  :where(#lte-root *) {
+    margin: 0;
+    padding: 0;
+  }
+
+  /* ── Layout shell ───────────────────────────────────────────── */
+  #lte-root {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 1.05rem;
+    margin: 0rem 0;
+    padding: clamp(0.9rem, 2vw, 1.25rem);
+    border-radius: var(--lte-radius-lg);
+    border: 1px solid var(--lte-border);
+    background:
+      radial-gradient(
+        circle at 20% 0%,
+        rgba(43, 82, 140, 0.35),
+        transparent 45%
+      ),
+      linear-gradient(
+        180deg,
+        rgba(20, 24, 36, 0.9),
+        rgba(10, 12, 18, 0.95)
+      );
+    box-shadow:
+      0 12px 30px rgba(0, 0, 0, 0.35),
+      inset 0 0 0 1px rgba(255, 255, 255, 0.03);
+    color: var(--lte-text-primary);
+    font-family: var(--font-sans, system-ui, sans-serif);
+  }
+
+  :global(html[data-theme="light"]) #lte-root {
+    background:
+      radial-gradient(
+        circle at 20% 0%,
+        rgba(97, 141, 207, 0.18),
+        transparent 45%
+      ),
+      linear-gradient(
+        180deg,
+        rgba(233, 238, 247, 0.96),
+        rgba(220, 228, 242, 0.94)
+      );
+    box-shadow:
+      0 10px 24px rgba(42, 55, 78, 0.18),
+      inset 0 0 0 1px rgba(255, 255, 255, 0.45);
+  }
+
+  @media (min-width: 72rem) {
+    #lte-root {
+      margin: 2rem 0;
+    }
+  }
+
+  .lte-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0 0.15rem;
+  }
+
+  .lte-title {
+    font-size: 0.95rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: #cfe3ff;
+  }
+
+  :global(html[data-theme="light"]) .lte-title {
+    color: #19355f;
+  }
+
+  .lte-subtitle {
+    margin-top: 0.2rem;
+    font-size: 0.82rem;
+    color: var(--lte-text-secondary);
+  }
+
+  /* ── Table switcher ─────────────────────────────────────────── */
+  .lte-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.45rem;
+    width: fit-content;
+    max-width: 100%;
+    padding: 0.45rem;
+    border: 1px solid var(--lte-border-soft);
+    border-radius: 8px;
+    background: rgba(7, 10, 18, 0.28);
+  }
+
+  .lte-tab {
+    appearance: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 2.35rem;
+    border: 1px solid rgba(138, 166, 214, 0.35);
+    border-radius: 6px;
+    background: var(--lte-control);
+    color: var(--lte-text-primary);
+    padding: 0.6rem 0.95rem;
+    font: inherit;
+    font-size: 0.84rem;
+    font-weight: 600;
+    line-height: 1.2;
+    white-space: nowrap;
+    cursor: pointer;
+    transition:
+      border-color 0.15s ease,
+      transform 0.15s ease,
+      background 0.15s ease,
+      box-shadow 0.15s ease;
+  }
+
+  .lte-tab:hover {
+    transform: translateY(-1px);
+    background: var(--lte-control-hover);
+    border-color: var(--lte-border-strong);
+  }
+
+  .lte-tab:focus {
+    outline: none;
+    border-color: rgba(170, 214, 255, 0.85);
+  }
+
+  .lte-tab.active {
+    background: var(--lte-control-active);
+    border-color: rgba(170, 214, 255, 0.88);
+    color: #ffffff;
+    box-shadow:
+      inset 0 0 0 1px rgba(255, 255, 255, 0.12),
+      0 8px 18px rgba(0, 0, 0, 0.18);
+  }
+
+  :global(html[data-theme="light"]) .lte-tab.active {
+    color: #0f2d56;
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.35);
+  }
+
+  /* ── Pool settings bar ──────────────────────────────────────── */
+  .lte-pool-bar {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(155px, 1fr));
+    gap: 0.8rem;
+  }
+
+  .lte-metric {
+    padding: 0.9rem 1rem;
+    border: 1px solid var(--lte-border-soft);
+    border-radius: 10px;
+    background:
+      radial-gradient(
+        circle at top right,
+        rgba(120, 176, 255, 0.1),
+        transparent 55%
+      ),
+      var(--lte-surface-soft);
+  }
+
+  .lte-metric label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: var(--lte-text-secondary);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+  }
+
+  .lte-metric input[type="number"] {
+    min-height: 1.6rem;
+    width: 100%;
+    border: none;
+    background: transparent;
+    color: var(--lte-text-primary);
+    font: inherit;
+    font-size: 1rem;
+    font-weight: 700;
+    outline: none;
+  }
+
+  .lte-metric input[disabled] {
+    color: var(--lte-text-muted);
+  }
+
+  /* ── Entry table ────────────────────────────────────────────── */
+  .lte-table-wrap {
+    overflow: auto;
+    max-height: min(680px, 75vh);
+    border: 1px solid var(--lte-border-soft);
+    border-radius: 10px;
+    background: rgba(5, 8, 15, 0.28);
+    box-shadow:
+      inset 0 0 0 1px rgba(255, 255, 255, 0.025),
+      0 10px 22px rgba(0, 0, 0, 0.18);
+  }
+
+  :global(html[data-theme="light"]) .lte-table-wrap {
+    background: rgba(241, 246, 255, 0.58);
+    box-shadow:
+      inset 0 0 0 1px rgba(255, 255, 255, 0.38),
+      0 10px 22px rgba(31, 47, 76, 0.1);
+  }
+
+  .lte-table {
+    width: 100%;
+    min-width: 1080px;
+    border-collapse: collapse;
+    table-layout: fixed;
+    font-size: 0.82rem;
+  }
+
+  .lte-table th {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    padding: 0.7rem 0.65rem;
+    border-bottom: 1px solid var(--lte-border-soft);
+    background: var(--lte-surface-elevated);
+    color: var(--lte-text-secondary);
+    text-align: left;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .lte-table td {
+    padding: 0.5rem 0.55rem;
+    border-bottom: 1px solid rgba(130, 140, 160, 0.16);
+    vertical-align: middle;
+  }
+
+  .lte-table th:first-child,
+  .lte-table td:first-child,
+  .lte-table th:last-child,
+  .lte-table td:last-child {
+    padding-inline: 0.35rem;
+    text-align: center;
+  }
+
+  .lte-table tr:last-child td {
+    border-bottom: none;
+  }
+
+  .lte-table tbody tr {
+    transition:
+      background 0.15s ease,
+      box-shadow 0.15s ease;
+  }
+
+  .lte-table tbody tr:hover td {
+    background: rgba(93, 142, 230, 0.12);
+  }
+
+  :global(html[data-theme="light"]) .lte-table tbody tr:hover td {
+    background: rgba(93, 142, 230, 0.12);
+  }
+
+  .lte-table input[type="text"],
+  .lte-table input[type="number"] {
+    min-height: 1.85rem;
+    width: 100%;
+    border: 1px solid rgba(138, 166, 214, 0.28);
+    border-radius: 7px;
+    background: var(--lte-control);
+    color: var(--lte-text-primary);
+    font: inherit;
+    font-size: 0.82rem;
+    line-height: 1.2;
+    transition:
+      border-color 0.15s ease,
+      background 0.15s ease,
+      box-shadow 0.15s ease;
+  }
+
+  .lte-table input[type="text"],
+  .lte-table input[type="number"] {
+    padding: 0.38rem 0.5rem;
+  }
+
+  .lte-table input[type="text"]:focus,
+  .lte-table input[type="number"]:focus {
+    outline: none;
+    border-color: rgba(170, 214, 255, 0.85);
+    box-shadow: 0 0 0 3px rgba(120, 176, 255, 0.12);
+  }
+
+  .namespace-input {
+    color: var(--lte-text-secondary);
+  }
+
+  .number-input {
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* Column widths */
+  .col-drag {
+    width: 32px;
+  }
+
+  .col-namespace {
+    width: 17%;
+  }
+
+  .col-item {
+    width: 25%;
+  }
+
+  .col-weight {
+    width: 10%;
+  }
+
+  .col-min {
+    width: 10%;
+  }
+
+  .col-max {
+    width: 10%;
+  }
+
+  .col-prob {
+    width: 15%;
+  }
+
+  .col-rarity {
+    width: 11%;
+  }
+
+  .col-del {
+    width: 86px;
+  }
+
+  /* ── Rarity badge ──────────────────────────────────────────── */
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 5.4rem;
+    padding: 0.22rem 0.52rem;
+    border-radius: 999px;
+    border: 1px solid transparent;
+    font-size: 0.68rem;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  .badge-common {
+    background: rgba(211, 209, 199, 0.18);
+    border-color: rgba(211, 209, 199, 0.38);
+    color: #dedbd0;
+  }
+
+  .badge-uncommon {
+    background: rgba(69, 211, 157, 0.16);
+    border-color: rgba(69, 211, 157, 0.38);
+    color: #8bf0c9;
+  }
+
+  .badge-rare {
+    background: rgba(120, 176, 255, 0.16);
+    border-color: rgba(120, 176, 255, 0.42);
+    color: #b9d8ff;
+  }
+
+  .badge-epic {
+    background: rgba(190, 154, 255, 0.16);
+    border-color: rgba(190, 154, 255, 0.4);
+    color: #d7c4ff;
+  }
+
+  .badge-legendary {
+    background: rgba(255, 184, 108, 0.18);
+    border-color: rgba(255, 184, 108, 0.44);
+    color: #ffd5a3;
+  }
+
+  :global(html[data-theme="light"]) .badge-common {
+    color: #444441;
+  }
+
+  :global(html[data-theme="light"]) .badge-uncommon {
+    color: #085041;
+  }
+
+  :global(html[data-theme="light"]) .badge-rare {
+    color: #0c447c;
+  }
+
+  :global(html[data-theme="light"]) .badge-epic {
+    color: #3c3489;
+  }
+
+  :global(html[data-theme="light"]) .badge-legendary {
+    color: #712b13;
+  }
+
+  /* ── Probability bar ───────────────────────────────────────── */
+  .prob-bar-wrap {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+  }
+
+  .prob-bar-bg {
+    flex: 1;
+    height: 0.4rem;
+    overflow: hidden;
+    border-radius: 999px;
+    background: rgba(130, 140, 160, 0.22);
+  }
+
+  .prob-bar-fill {
+    height: 100%;
+    border-radius: inherit;
+    background: linear-gradient(90deg, var(--lte-success), var(--lte-accent-strong));
+    box-shadow: 0 0 12px rgba(69, 211, 157, 0.35);
+    transition: width 0.2s ease;
+  }
+
+  .prob-text {
+    min-width: 2.6rem;
+    color: var(--lte-text-secondary);
+    font-size: 0.72rem;
+    font-variant-numeric: tabular-nums;
+    text-align: right;
+  }
+
+  /* ── Action row ────────────────────────────────────────────── */
+  .lte-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.65rem;
+    padding: 0;
+    border: 1px solid var(--lte-border-soft);
+    border-width: 1px 0;
+    border-radius: 0;
+    background: transparent;
+    padding-block: 0.9rem;
+  }
+
+  .lte-btn {
+    appearance: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    min-height: 2.4rem;
+    border: 1px solid rgba(138, 166, 214, 0.35);
+    border-radius: 6px;
+    background: var(--lte-control);
+    color: var(--lte-text-primary);
+    padding: 0.65rem 0.95rem;
+    font: inherit;
+    font-size: 0.84rem;
+    font-weight: 600;
+    line-height: 1.2;
+    white-space: nowrap;
+    cursor: pointer;
+    transition:
+      border-color 0.15s ease,
+      transform 0.15s ease,
+      background 0.15s ease,
+      box-shadow 0.15s ease;
+  }
+
+  .lte-btn:hover {
+    transform: translateY(-1px);
+    background: var(--lte-control-hover);
+    border-color: var(--lte-border-strong);
+  }
+
+  .lte-btn:focus {
+    outline: none;
+    border-color: rgba(170, 214, 255, 0.85);
+  }
+
+  .lte-btn.primary {
+    background: var(--lte-control-active);
+    border-color: rgba(170, 214, 255, 0.72);
+    color: #ffffff;
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+  }
+
+  :global(html[data-theme="light"]) .lte-btn.primary {
+    color: #0f2d56;
+  }
+
+  .lte-btn.subtle {
+    margin-left: auto;
+    color: var(--lte-text-secondary);
+  }
+
+  .lte-btn i {
+    font-size: 1rem;
+  }
+
+  /* ── Drag handle ───────────────────────────────────────────── */
+  .drag-handle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--lte-text-muted);
+    cursor: grab;
+    font-size: 1.05rem;
+    opacity: 0.85;
+    transition:
+      color 0.15s ease,
+      opacity 0.15s ease,
+      transform 0.15s ease;
+  }
+
+  .drag-handle:hover {
+    color: var(--lte-accent-strong);
+    opacity: 1;
+    transform: scale(1.05);
+  }
+
+  /* ── Delete btn ────────────────────────────────────────────── */
+  .del-btn {
+    appearance: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    min-height: 1.85rem;
+    border: 1px solid rgba(255, 138, 138, 0.24);
+    border-radius: 6px;
+    background: rgba(226, 75, 74, 0.08);
+    color: var(--lte-text-muted);
+    font: inherit;
+    font-size: 0.74rem;
+    font-weight: 700;
+    cursor: pointer;
+    line-height: 1.1;
+    padding: 0.35rem 0.5rem;
+    text-transform: uppercase;
+    transition:
+      color 0.15s ease,
+      background 0.15s ease,
+      border-color 0.15s ease,
+      transform 0.15s ease;
+  }
+
+  .del-btn:hover {
+    transform: translateY(-1px);
+    border-color: rgba(255, 138, 138, 0.3);
+    background: var(--lte-danger-bg);
+    color: var(--lte-text-danger);
+  }
+
+  /* ── Footer stats ──────────────────────────────────────────── */
+  .lte-stats {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem 1rem;
+    color: var(--lte-text-secondary);
+    font-size: 0.78rem;
+  }
+
+  .lte-stats span {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.35rem 0.55rem;
+    border: 1px solid var(--lte-border-soft);
+    border-radius: 999px;
+    background: rgba(7, 10, 18, 0.32);
+  }
+
+  :global(html[data-theme="light"]) .lte-stats span {
+    background: rgba(241, 246, 255, 0.62);
+  }
+
+  /* ── Toast ─────────────────────────────────────────────────── */
+  #lte-toast {
+    position: absolute;
+    right: 1rem;
+    bottom: 1rem;
+    z-index: 20;
+    max-width: min(320px, calc(100% - 2rem));
+    padding: 0.55rem 0.8rem;
+    border: 1px solid rgba(138, 166, 214, 0.45);
+    border-radius: 999px;
+    background: var(--lte-surface-elevated);
+    box-shadow: 0 14px 26px rgba(0, 0, 0, 0.38);
+    color: var(--lte-text-primary);
+    font-size: 0.82rem;
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(0.4rem);
+    transition:
+      opacity 0.2s ease,
+      transform 0.2s ease;
+  }
+
+  #lte-toast.show {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ── Responsive polish ─────────────────────────────────────── */
+  @media (max-width: 680px) {
+    #lte-root {
+      padding: 0.75rem;
+      border-radius: 10px;
+    }
+
+    .lte-header {
+      flex-direction: column;
+    }
+
+    .lte-actions {
+      align-items: stretch;
+    }
+
+    .lte-btn {
+      flex: 1 1 auto;
+    }
+
+    #lte-reset {
+      margin-left: 0 !important;
+    }
+  }
+</style>
+
+<script is:inline>
+  (function () {
+    // ── Data ───────────────────────────────────────────────────────────────────
+
+    // Rarity thresholds (by weight relative to total pool weight)
+    function rarityLabel(pct) {
+      if (pct >= 25) return { label: "common", cls: "badge-common" };
+      if (pct >= 12) return { label: "uncommon", cls: "badge-uncommon" };
+      if (pct >= 5) return { label: "rare", cls: "badge-rare" };
+      if (pct >= 2) return { label: "epic", cls: "badge-epic" };
+      return { label: "legendary", cls: "badge-legendary" };
+    }
+
+    // Default loot tables (matching the JSON format from the repository)
+    const DEFAULTS = {
+      pokestop_loot: {
+        label: "Pokestop",
+        file: "data/cobblemon_pokestops/loot_table/gameplay/pokestop_loot.json",
+        rolls: 1.0,
+        bonusRolls: 0.6,
+        entries: [
+          { name: "iron_ingot", ns: "minecraft", weight: 50, min: 1, max: 1 },
+          { name: "coal", ns: "minecraft", weight: 50, min: 1, max: 1 },
+          { name: "gold_ingot", ns: "minecraft", weight: 30, min: 1, max: 1 },
+          { name: "lapis_lazuli", ns: "minecraft", weight: 30, min: 1, max: 1 },
+          { name: "diamond", ns: "minecraft", weight: 15, min: 1, max: 1 },
+          { name: "poke_ball", ns: "cobblemon", weight: 50, min: 1, max: 1 },
+          { name: "azure_ball", ns: "cobblemon", weight: 50, min: 1, max: 1 },
+          { name: "citrine_ball", ns: "cobblemon", weight: 50, min: 1, max: 1 },
+          { name: "roseate_ball", ns: "cobblemon", weight: 50, min: 1, max: 1 },
+          { name: "verdant_ball", ns: "cobblemon", weight: 50, min: 1, max: 1 },
+          { name: "friend_ball", ns: "cobblemon", weight: 30, min: 1, max: 1 },
+          { name: "dive_ball", ns: "cobblemon", weight: 30, min: 1, max: 1 },
+          { name: "lure_ball", ns: "cobblemon", weight: 30, min: 1, max: 1 },
+          { name: "nest_ball", ns: "cobblemon", weight: 30, min: 1, max: 1 },
+          { name: "heavy_ball", ns: "cobblemon", weight: 15, min: 1, max: 1 },
+          { name: "quick_ball", ns: "cobblemon", weight: 15, min: 1, max: 1 },
+          { name: "dusk_ball", ns: "cobblemon", weight: 15, min: 1, max: 1 },
+          { name: "premier_ball", ns: "cobblemon", weight: 15, min: 1, max: 1 },
+          { name: "ultra_ball", ns: "cobblemon", weight: 15, min: 1, max: 1 },
+          { name: "timer_ball", ns: "cobblemon", weight: 15, min: 1, max: 1 },
+          { name: "luxury_ball", ns: "cobblemon", weight: 15, min: 1, max: 1 },
+          { name: "level_ball", ns: "cobblemon", weight: 15, min: 1, max: 1 },
+          { name: "sport_ball", ns: "cobblemon", weight: 15, min: 1, max: 1 },
+          { name: "fast_ball", ns: "cobblemon", weight: 15, min: 1, max: 1 },
+          { name: "park_ball", ns: "cobblemon", weight: 15, min: 1, max: 1 },
+          { name: "master_ball", ns: "cobblemon", weight: 5, min: 1, max: 1 },
+          { name: "beast_ball", ns: "cobblemon", weight: 5, min: 1, max: 1 },
+        ],
+      },
+      pokeballstop_loot: {
+        label: "Pokeball Stop",
+        file: "data/cobblemon_pokestops/loot_table/gameplay/pokeballstop_loot.json",
+        rolls: 1.0,
+        bonusRolls: 0.6,
+        entries: [
+          { name: "poke_ball", ns: "cobblemon", weight: 60, min: 1, max: 3 },
+          { name: "azure_ball", ns: "cobblemon", weight: 60, min: 1, max: 2 },
+          { name: "citrine_ball", ns: "cobblemon", weight: 60, min: 1, max: 2 },
+          { name: "roseate_ball", ns: "cobblemon", weight: 60, min: 1, max: 2 },
+          { name: "verdant_ball", ns: "cobblemon", weight: 60, min: 1, max: 2 },
+          { name: "friend_ball", ns: "cobblemon", weight: 35, min: 1, max: 2 },
+          { name: "dive_ball", ns: "cobblemon", weight: 35, min: 1, max: 2 },
+          { name: "lure_ball", ns: "cobblemon", weight: 35, min: 1, max: 2 },
+          { name: "nest_ball", ns: "cobblemon", weight: 35, min: 1, max: 2 },
+          { name: "heavy_ball", ns: "cobblemon", weight: 20, min: 1, max: 1 },
+          { name: "quick_ball", ns: "cobblemon", weight: 20, min: 1, max: 1 },
+          { name: "dusk_ball", ns: "cobblemon", weight: 20, min: 1, max: 1 },
+          { name: "ultra_ball", ns: "cobblemon", weight: 20, min: 1, max: 1 },
+          { name: "timer_ball", ns: "cobblemon", weight: 15, min: 1, max: 1 },
+          { name: "luxury_ball", ns: "cobblemon", weight: 15, min: 1, max: 1 },
+          { name: "master_ball", ns: "cobblemon", weight: 5, min: 1, max: 1 },
+          { name: "beast_ball", ns: "cobblemon", weight: 5, min: 1, max: 1 },
+        ],
+      },
+      wingedstop_loot: {
+        label: "Winged Stop",
+        file: "data/cobblemon_pokestops/loot_table/gameplay/wingedstop_loot.json",
+        rolls: 1.0,
+        bonusRolls: 0.8,
+        entries: [
+          { name: "feather", ns: "minecraft", weight: 50, min: 1, max: 3 },
+          { name: "arrow", ns: "minecraft", weight: 40, min: 1, max: 4 },
+          { name: "poke_ball", ns: "cobblemon", weight: 40, min: 1, max: 2 },
+          { name: "azure_ball", ns: "cobblemon", weight: 40, min: 1, max: 2 },
+          { name: "sky_ball", ns: "cobblemon", weight: 25, min: 1, max: 1 },
+          { name: "heal_ball", ns: "cobblemon", weight: 20, min: 1, max: 1 },
+          { name: "quick_ball", ns: "cobblemon", weight: 15, min: 1, max: 1 },
+          { name: "premier_ball", ns: "cobblemon", weight: 15, min: 1, max: 1 },
+          { name: "master_ball", ns: "cobblemon", weight: 3, min: 1, max: 1 },
+        ],
+      },
+    };
+
+    // ── State ──────────────────────────────────────────────────────────────────
+
+    // Deep-clone defaults so mutations don't affect the originals
+    const state = {
+      tables: JSON.parse(JSON.stringify(DEFAULTS)),
+      activeTable: "pokestop_loot",
+    };
+
+    let dragSrcIdx = null;
+
+    // ── Serialisation ──────────────────────────────────────────────────────────
+
+    function toJSON(tableKey) {
+      const t = state.tables[tableKey];
+      return {
+        type: "minecraft:chest",
+        pools: [
+          {
+            bonus_rolls: parseFloat(t.bonusRolls) || 0,
+            entries: t.entries.map((e) => ({
+              type: "minecraft:item",
+              functions: [
+                {
+                  add: false,
+                  count:
+                    e.min === e.max
+                      ? parseFloat(e.min)
+                      : { min: parseFloat(e.min), max: parseFloat(e.max) },
+                  function: "minecraft:set_count",
+                },
+              ],
+              name: `${e.ns}:${e.name}`,
+              weight: parseInt(e.weight, 10),
+            })),
+            rolls: parseFloat(t.rolls) || 1,
+          },
+        ],
+      };
+    }
+
+    function downloadJSON(tableKey) {
+      const t = state.tables[tableKey];
+      const json = JSON.stringify(toJSON(tableKey), null, 2);
+      const blob = new Blob([json], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      const filename = t.file.split("/").pop();
+      a.href = url;
+      a.download = filename;
+      a.click();
+      URL.revokeObjectURL(url);
+      showToast(`Downloaded ${filename}`);
+    }
+
+    // ── Toast ──────────────────────────────────────────────────────────────────
+
+    let toastTimer;
+    function showToast(msg) {
+      const el = document.getElementById("lte-toast");
+      if (!el) return;
+      el.textContent = msg;
+      el.classList.add("show");
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => el.classList.remove("show"), 2200);
+    }
+
+    // ── Probability helpers ────────────────────────────────────────────────────
+
+    function totalWeight(tableKey) {
+      return state.tables[tableKey].entries.reduce(
+        (s, e) => s + (parseInt(e.weight, 10) || 0),
+        0,
+      );
+    }
+
+    function pct(weight, total) {
+      if (!total) return 0;
+      return (weight / total) * 100;
+    }
+
+    function escapeHTML(value) {
+      return String(value ?? "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#39;");
+    }
+
+    // ── Render ─────────────────────────────────────────────────────────────────
+
+    function render() {
+      const root = document.getElementById("lte-root");
+      if (!root) return;
+
+      const ak = state.activeTable;
+      const t = state.tables[ak];
+      const tw = totalWeight(ak);
+      const totalEntries = t.entries.length;
+
+      // ── Header
+      let html = `
+      <h2 class="sr-only">Cobblemon Pokestops loot table editor</h2>
+      <div class="lte-header">
+        <div>
+          <div class="lte-title">Loot table editor</div>
+          <div class="lte-subtitle">Cobblemon Pokestops · ${t.file}</div>
+        </div>
+      </div>`;
+
+      // ── Tabs
+      html += `<div class="lte-tabs">`;
+      for (const [key, tbl] of Object.entries(state.tables)) {
+        html += `<button class="lte-tab${key === ak ? " active" : ""}" data-tab="${key}">${tbl.label}</button>`;
+      }
+      html += `</div>`;
+
+      // ── Pool settings
+      html += `
+      <div class="lte-pool-bar">
+        <div class="lte-metric">
+          <label for="lte-rolls">Rolls (guaranteed)</label>
+          <input type="number" id="lte-rolls" min="0" max="100" step="0.1" value="${t.rolls}" data-field="rolls">
+        </div>
+        <div class="lte-metric">
+          <label for="lte-bonusrolls">Bonus rolls (luck)</label>
+          <input type="number" id="lte-bonusrolls" min="0" max="100" step="0.1" value="${t.bonusRolls}" data-field="bonusRolls">
+        </div>
+        <div class="lte-metric">
+          <label>Total weight</label>
+          <input type="number" value="${tw}" disabled style="opacity:0.5">
+        </div>
+        <div class="lte-metric">
+          <label>Entries</label>
+          <input type="number" value="${totalEntries}" disabled style="opacity:0.5">
+        </div>
+      </div>`;
+
+      // ── Entry table
+      html += `
+      <div class="lte-table-wrap">
+        <table class="lte-table" id="lte-entries">
+          <colgroup>
+            <col class="col-drag">
+            <col class="col-namespace">
+            <col class="col-item">
+            <col class="col-weight">
+            <col class="col-min">
+            <col class="col-max">
+            <col class="col-prob">
+            <col class="col-rarity">
+            <col class="col-del">
+          </colgroup>
+          <thead>
+            <tr>
+              <th></th>
+              <th>Namespace</th>
+              <th>Item</th>
+              <th>Weight</th>
+              <th>Min</th>
+              <th>Max</th>
+              <th>Probability</th>
+              <th>Rarity</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>`;
+
+      t.entries.forEach((e, idx) => {
+        const p = pct(parseInt(e.weight, 10) || 0, tw);
+        const r = rarityLabel(p);
+        const barW = Math.min(100, p).toFixed(1);
+        const namespace = escapeHTML(e.ns);
+        const itemName = escapeHTML(e.name);
+        const itemId = `${namespace}:${itemName}`;
+
+        html += `
+        <tr draggable="true" data-idx="${idx}">
+          <td><span class="drag-handle" title="Drag to reorder"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                                                                  <path d="M0 0h24v24H0z" fill="none" />
+                                                                  <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5a1 1 0 1 0 2 0a1 1 0 1 0-2 0m0 7a1 1 0 1 0 2 0a1 1 0 1 0-2 0m0 7a1 1 0 1 0 2 0a1 1 0 1 0-2 0m6-14a1 1 0 1 0 2 0a1 1 0 1 0-2 0m0 7a1 1 0 1 0 2 0a1 1 0 1 0-2 0m0 7a1 1 0 1 0 2 0a1 1 0 1 0-2 0" />
+                                                                </svg></span></td>
+          <td><input class="namespace-input" type="text" value="${namespace}" placeholder="namespace" autocomplete="off" spellcheck="false" data-idx="${idx}" data-field="ns"></td>
+          <td><input type="text" value="${itemName}" placeholder="item_name" autocomplete="off" spellcheck="false" data-idx="${idx}" data-field="name"></td>
+          <td><input class="number-input" type="number" min="1" max="9999" value="${e.weight}" data-idx="${idx}" data-field="weight"></td>
+          <td><input class="number-input" type="number" min="1" max="64"   value="${e.min}"    data-idx="${idx}" data-field="min"></td>
+          <td><input class="number-input" type="number" min="1" max="64"   value="${e.max}"    data-idx="${idx}" data-field="max"></td>
+          <td>
+            <div class="prob-bar-wrap">
+              <div class="prob-bar-bg"><div class="prob-bar-fill" style="width:${barW}%"></div></div>
+              <span class="prob-text">${p.toFixed(1)}%</span>
+            </div>
+          </td>
+          <td><span class="badge ${r.cls}">${r.label}</span></td>
+          <td>
+            <button class="del-btn" data-idx="${idx}" title="Remove entry" aria-label="Remove ${itemId}">
+              Delete
+            </button>
+          </td>
+        </tr>`;
+      });
+
+      html += `
+          </tbody>
+        </table>
+      </div>`;
+
+      // ── Actions
+      html += `
+      <div class="lte-actions">
+        <button class="lte-btn primary" id="lte-add">
+          Add entry
+        </button>
+        <button class="lte-btn" id="lte-export">
+          Export JSON
+        </button>
+        <button class="lte-btn" id="lte-copy">
+          Copy JSON
+        </button>
+        <button class="lte-btn subtle" id="lte-reset">
+          Reset defaults
+        </button>
+      </div>`;
+
+      // ── Footer stats
+      const maxW = t.entries.reduce(
+        (m, e) => Math.max(m, parseInt(e.weight, 10) || 0),
+        0,
+      );
+      const topEntry = t.entries.find(
+        (e) => (parseInt(e.weight, 10) || 0) === maxW,
+      );
+      html += `
+      <div class="lte-stats">
+        <span><i class="ti ti-chart-bar" aria-hidden="true"></i> Highest chance: ${topEntry ? topEntry.ns + ":" + topEntry.name : "—"} (${pct(maxW, tw).toFixed(1)}%)</span>
+        <span><i class="ti ti-dice" aria-hidden="true"></i> Avg rolls: ${(parseFloat(t.rolls) + parseFloat(t.bonusRolls) / 2).toFixed(2)}</span>
+      </div>`;
+
+      // ── Toast anchor
+      html += `<div id="lte-toast" role="status" aria-live="polite"></div>`;
+
+      root.innerHTML = html;
+      attachEvents();
+    }
+
+    // ── Event binding ──────────────────────────────────────────────────────────
+
+    function attachEvents() {
+      const root = document.getElementById("lte-root");
+
+      // Tab switching
+      root.querySelectorAll(".lte-tab").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          state.activeTable = btn.dataset.tab;
+          render();
+        });
+      });
+
+      // Pool-level numeric fields
+      root
+        .querySelectorAll('[data-field="rolls"], [data-field="bonusRolls"]')
+        .forEach((inp) => {
+          inp.addEventListener("change", () => {
+            state.tables[state.activeTable][inp.dataset.field] = inp.value;
+            render();
+          });
+        });
+
+      // Entry field changes
+      root.querySelectorAll("[data-idx]").forEach((inp) => {
+        inp.addEventListener("change", () => {
+          const idx = parseInt(inp.dataset.idx, 10);
+          const field = inp.dataset.field;
+          const entry = state.tables[state.activeTable].entries[idx];
+          if (!entry) return;
+          entry[field] =
+            inp.type === "number" ? parseFloat(inp.value) : inp.value;
+          render();
+        });
+      });
+
+      // Delete buttons
+      root.querySelectorAll(".del-btn").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const idx = parseInt(btn.dataset.idx, 10);
+          state.tables[state.activeTable].entries.splice(idx, 1);
+          render();
+        });
+      });
+
+      // Add entry
+      const addBtn = document.getElementById("lte-add");
+      if (addBtn) {
+        addBtn.addEventListener("click", () => {
+          state.tables[state.activeTable].entries.push({
+            name: "new_item",
+            ns: "minecraft",
+            weight: 10,
+            min: 1,
+            max: 1,
+          });
+          render();
+          // Scroll to bottom of table
+          setTimeout(() => {
+            const wrap = root.querySelector(".lte-table-wrap");
+            if (wrap) wrap.scrollTop = wrap.scrollHeight;
+          }, 50);
+        });
+      }
+
+      // Export
+      const exportBtn = document.getElementById("lte-export");
+      if (exportBtn) {
+        exportBtn.addEventListener("click", () =>
+          downloadJSON(state.activeTable),
+        );
+      }
+
+      // Copy JSON
+      const copyBtn = document.getElementById("lte-copy");
+      if (copyBtn) {
+        copyBtn.addEventListener("click", () => {
+          const json = JSON.stringify(toJSON(state.activeTable), null, 2);
+          navigator.clipboard
+            .writeText(json)
+            .then(() => showToast("JSON copied to clipboard"));
+        });
+      }
+
+      // Reset
+      const resetBtn = document.getElementById("lte-reset");
+      if (resetBtn) {
+        resetBtn.addEventListener("click", () => {
+          if (!confirm("Reset this loot table to its defaults?")) return;
+          state.tables[state.activeTable] = JSON.parse(
+            JSON.stringify(DEFAULTS[state.activeTable]),
+          );
+          render();
+          showToast("Reset to defaults");
+        });
+      }
+
+      // Drag-and-drop rows
+      const tbody = root.querySelector("#lte-entries tbody");
+      if (tbody) {
+        tbody.addEventListener("dragstart", (e) => {
+          const tr = e.target.closest("tr[data-idx]");
+          if (!tr) return;
+          dragSrcIdx = parseInt(tr.dataset.idx, 10);
+          e.dataTransfer.effectAllowed = "move";
+        });
+
+        tbody.addEventListener("dragover", (e) => {
+          e.preventDefault();
+          e.dataTransfer.dropEffect = "move";
+        });
+
+        tbody.addEventListener("drop", (e) => {
+          e.preventDefault();
+          const tr = e.target.closest("tr[data-idx]");
+          if (!tr || dragSrcIdx === null) return;
+          const destIdx = parseInt(tr.dataset.idx, 10);
+          if (dragSrcIdx === destIdx) return;
+          const entries = state.tables[state.activeTable].entries;
+          const [moved] = entries.splice(dragSrcIdx, 1);
+          entries.splice(destIdx, 0, moved);
+          dragSrcIdx = null;
+          render();
+        });
+      }
+    }
+
+    // ── Boot ───────────────────────────────────────────────────────────────────
+    render();
+  })();
+</script>

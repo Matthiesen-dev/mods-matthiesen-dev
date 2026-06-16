@@ -1,0 +1,52 @@
+---
+title: "Loot Tables"
+description: Preview and Edit the Pokestop loot tables added by Cobblemon Pokestops.
+prev: 
+  link: /cobblemon-pokestops/pokestops
+  label: "Pokestop Preview"
+next: false
+sidebar:
+  label: Loot Tables
+  order: 4
+tableOfContents: false
+banner:
+  content: |
+    These docs are a work in progress and may be incomplete or contain inaccuracies. (Or be for a newer unreleased version of the mod)
+---
+
+import LootTableEditor from '~/components/pokestops/LootTableEditor.astro';
+import ReadMore from '~/components/ReadMore.astro';
+
+## Data-pack instructions
+
+The loot tables for the Pokestops are located in the `data/cobblemon_pokestops/loot_tables` folder of the mod's JAR file. You can extract these files and modify them to change the rewards given by the Pokestops. Or you can use the editor below to modify the loot tables and then copy the generated JSON files into your data-pack.
+
+When creating a data-pack you will need the following:
+
+- `YourDatapack/pack.mcmeta` file
+- `YourDatapack/data/cobblemon_pokestops/loot_tables` folder containing the modified loot tables. You can use the [editor below](#editor) to generate these files.
+
+:::note
+Datapacks should be placed in the `datapacks` folder of your Minecraft world save, and can be saved as a `.zip` file or as an uncompressed folder.
+:::
+
+### Example `pack.mcmeta` file
+
+```json title="YourDatapack/pack.mcmeta"
+{
+  "pack": {
+    "pack_format": 48,
+    "description": "Custom loot tables for Cobblemon Pokestops"
+  }
+}
+```
+
+### Resources
+
+<ReadMore>For more information on Minecraft's loot table system, see the [Minecraft Wiki: Loot table](https://minecraft.wiki/w/Loot_table).</ReadMore>
+<ReadMore>For more information on Minecraft's Pack format, see the [Minecraft Wiki: Pack format](https://minecraft.wiki/w/Pack_format).</ReadMore>
+<ReadMore>For more information on Minecraft's Data pack system, see the [Minecraft Wiki: Data pack](https://minecraft.wiki/w/Data_pack).</ReadMore>
+
+## Editor
+
+<LootTableEditor />
