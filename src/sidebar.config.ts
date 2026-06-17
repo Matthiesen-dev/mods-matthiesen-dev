@@ -55,6 +55,11 @@ export const COBBLEMON_MODS = [
 
 export const MISC_MODS = [
     {
+        name: 'Falling Star Rewards',
+        docs: 'falling-star-rewards',
+        badge: "Server"
+    },
+    {
         name: 'Re-LPChatPrefix',
         docs: 're-lpchatprefix',
         badge: "Server"

@@ -1,0 +1,75 @@
+---
+title: Falling Star Rewards Commands
+description: A list of commands added by the Falling Star Rewards mod, which can be used to manage and customize the falling star events and rewards.
+prev:
+  link: /falling-star-rewards/
+  label: "Getting Started"
+next: 
+  link: /falling-star-rewards/config
+  label: Configuration
+sidebar:
+  label: Commands
+  order: 2
+banner:
+  content: |
+    These docs are a work in progress and may be incomplete or contain inaccuracies. (Or be for a newer unreleased version of the mod)
+---
+
+Commands for the Falling Star Rewards mod. These commands can be used to manage and customize the falling star events and rewards.
+
+:::note
+Currently, all commands require OP permissions to use. In the future, more granular permissions will be added to allow server owners to control who can use which commands.
+:::
+
+## fallingstar
+
+The main command for the Falling Star Rewards mod. This command has several subcommands that can be used to manage and customize the falling star events and rewards.
+
+### help
+
+Show help message.
+
+- **Usage:** `/fallingstar help`
+- **Permission:** N/A (Requires OP)
+
+### reload
+
+Reload config files.
+
+- **Usage:** `/fallingstar reload`
+- **Permission:** N/A (Requires OP)
+
+### status
+
+Show status output. By default, shows condensed status output.
+
+- **Usage:** `/fallingstar status [breif|full]`
+- **Permission:** N/A (Requires OP)
+
+#### brief
+
+Show condensed status output.
+
+- **Usage:** `/fallingstar status brief`
+- **Permission:** N/A (Requires OP)
+
+#### full
+
+Show full status output, including all config values, and rewards validation status.
+
+- **Usage:** `/fallingstar status full`
+- **Permission:** N/A (Requires OP)
+
+### force
+
+Force one spawn cycle, or up to `<count>` spawn cycles if a count is provided.
+
+- **Usage:** `/fallingstar force [<count>]`
+- **Permission:** N/A (Requires OP)
+
+### cleanup
+
+Remove tracked active drops. This command is useful for removing drops that have been stuck due to errors or other issues.
+
+- **Usage:** `/fallingstar cleanup`
+- **Permission:** N/A (Requires OP)
