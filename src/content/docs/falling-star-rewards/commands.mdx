@@ -10,6 +10,9 @@ next:
 sidebar:
   label: Commands
   order: 2
+tableOfContents:
+  minHeadingLevel: 2
+  maxHeadingLevel: 4
 banner:
   content: |
     These docs are a work in progress and may be incomplete or contain inaccuracies. (Or be for a newer unreleased version of the mod)
@@ -72,4 +75,191 @@ Force one random spawn cycle, or a specific `<preset>` if provided. This command
 Remove tracked active drops. This command is useful for removing drops that have been stuck due to errors or other issues.
 
 - **Usage:** `/fallingstar cleanup`
+- **Permission:** N/A (Requires OP)
+
+### confirm-delete
+
+Confirm deletion of a preset.
+
+- **Usage:** `/fallingstar confirm-delete <event_id>`
+- **Permission:** N/A (Requires OP)
+
+### preset
+
+Manage presets. This command has several subcommands for listing, creating, editing, and deleting presets.
+
+#### events
+
+Manage event presets. These presets define the conditions and parameters for falling star events.
+
+##### enable
+
+Allow an event preset to be selected for spawning.
+
+- **Usage:** `/fallingstar preset events enable <event_id>`
+- **Permission:** N/A (Requires OP)
+
+##### disable
+
+Prevent an event preset from being selected for spawning.
+
+- **Usage:** `/fallingstar preset events disable <event_id>`
+- **Permission:** N/A (Requires OP)
+
+##### list
+
+Show a list of all event presets, including their enabled/disabled status.
+
+- **Usage:** `/fallingstar preset events list`
+- **Permission:** N/A (Requires OP)
+
+##### create
+
+Create a new event preset. This command will create a new preset file with default values, which can then be edited to customize the event.
+
+- **Usage:** `/fallingstar preset events create <event_id>`
+- **Permission:** N/A (Requires OP)
+
+##### delete
+
+Delete an event preset. This command will prompt for confirmation before deleting the preset file.
+
+:::note
+The confirmation code is valid for 5 minutes after the delete command is issued.
+:::
+
+- **Usage:** `/fallingstar preset events delete <event_id>`
+- **Permission:** N/A (Requires OP)
+
+##### info
+
+Show detailed information about an event preset, including its activation conditions, spawn parameters, and associated rewards and visuals presets.
+
+- **Usage:** `/fallingstar preset events info <event_id>`
+- **Permission:** N/A (Requires OP)
+
+##### set
+
+Set a specific config value for an event preset. This command allows for quick editing of preset values without needing to manually edit the JSON files.
+
+###### rewards
+
+Set the rewards preset associated with this event preset.
+
+- **Usage:** `/fallingstar preset events set rewards <event_id> <rewards_preset_id>`
+- **Permission:** N/A (Requires OP)
+
+###### visuals
+
+Set the visuals preset associated with this event preset.
+
+- **Usage:** `/fallingstar preset events set visuals <event_id> <visuals_preset_id>`
+- **Permission:** N/A (Requires OP)
+
+
+#### rewards
+
+Manage rewards presets. These presets define the rewards that can be dropped by falling stars during events.
+
+##### list
+
+Show a list of all rewards presets.
+
+- **Usage:** `/fallingstar preset rewards list`
+- **Permission:** N/A (Requires OP)
+
+##### create
+
+Create a new rewards preset. This command will create a new preset file with default values, which can then be edited to customize the rewards.
+
+- **Usage:** `/fallingstar preset rewards create <rewards_preset_id>`
+- **Permission:** N/A (Requires OP)
+
+##### delete
+
+Delete a rewards preset. This command will prompt for confirmation before deleting the preset file.
+
+:::note
+The confirmation code is valid for 5 minutes after the delete command is issued.
+:::
+
+- **Usage:** `/fallingstar preset rewards delete <rewards_preset_id>`
+- **Permission:** N/A (Requires OP)
+
+##### info
+
+Show detailed information about a rewards preset, including the items and quantities that can be dropped.
+
+- **Usage:** `/fallingstar preset rewards info <rewards_preset_id>`
+- **Permission:** N/A (Requires OP)
+
+##### add
+
+Add a reward entry to a rewards preset. This command allows for quick editing of rewards presets without needing to manually edit the JSON files.
+
+- **Usage:** `/fallingstar preset rewards add <rewards_preset_id> <item_id> <weight> <min> <max> [custom_model_data] [custom_data]`
+- **Permission:** N/A (Requires OP)
+
+##### add-held-item
+
+Add a reward entry to a rewards preset based on the item currently held by the player. This command allows for quickly adding rewards based on in-game items without needing to know the exact item ID or other parameters.
+
+- **Usage:** `/fallingstar preset rewards add-held-item <rewards_preset_id> <weight> <min> <max>`
+- **Permission:** N/A (Requires OP)
+
+##### remove
+
+Remove a reward entry from a rewards preset by its item ID. This command allows for quick editing of rewards presets without needing to manually edit the JSON files.
+
+- **Usage:** `/fallingstar preset rewards remove <rewards_preset_id> <item_id>`
+- **Permission:** N/A (Requires OP)
+
+#### visuals
+
+Manage visuals presets. These presets define the visual effects and sounds that accompany falling star events.
+
+##### enable
+
+Allow a visuals preset to be selected for use in events.
+
+- **Usage:** `/fallingstar preset visuals enable <visuals_preset_id>`
+- **Permission:** N/A (Requires OP)
+
+##### disable
+
+Prevent a visuals preset from being selected for use in events.
+
+- **Usage:** `/fallingstar preset visuals disable <visuals_preset_id>`
+- **Permission:** N/A (Requires OP)
+
+##### list
+
+Show a list of all visuals presets, including their enabled/disabled status.
+
+- **Usage:** `/fallingstar preset visuals list`
+- **Permission:** N/A (Requires OP)
+
+##### create
+
+Create a new visuals preset. This command will create a new preset file with default values, which can then be edited to customize the visuals.
+
+- **Usage:** `/fallingstar preset visuals create <visuals_preset_id>`
+- **Permission:** N/A (Requires OP)
+
+##### delete
+
+Delete a visuals preset. This command will prompt for confirmation before deleting the preset file.
+
+:::note
+The confirmation code is valid for 5 minutes after the delete command is issued.
+:::
+
+- **Usage:** `/fallingstar preset visuals delete <visuals_preset_id>`
+- **Permission:** N/A (Requires OP)
+
+##### info
+
+Show detailed information about a visuals preset, including the particle effects, sounds, and other visual parameters that will be used during events.
+
+- **Usage:** `/fallingstar preset visuals info <visuals_preset_id>`
 - **Permission:** N/A (Requires OP)
