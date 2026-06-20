@@ -15,16 +15,9 @@ banner:
     These docs are a work in progress and may be incomplete or contain inaccuracies. (Or be for a newer unreleased version of the mod)
 ---
 
+import Commands from '~/components/Commands.astro';
+import { commands } from "./commands_data";
+
 Cobblemon Move Tutor adds the following commands to the game:
 
-## `/move-tutor`
-
-Opens the Move Tutor's GUI, allowing you to browse and learn new moves for your Pokemon.
-
-- **Required Permission:** `cobblemon_move_tutor.command.move_tutor`
-
-## `/move-tutor other <player>`
-
-Opens the Move Tutor's GUI for another player, allowing you to browse and learn new moves for their Pokemon.
-
-- **Required Permission:** `cobblemon_move_tutor.command.move_tutor.other`
+<Commands commands={commands} />

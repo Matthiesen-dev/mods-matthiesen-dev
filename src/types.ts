@@ -7,3 +7,13 @@ export interface ViewerModel {
     path: string;
     animation?: string;
 }
+
+export interface Command {
+    command: string;
+    description: string;
+    usage: string;
+    permissionNode?: string;
+    requiresOp?: boolean;
+}
+
+export type Commands = Array<Command>;

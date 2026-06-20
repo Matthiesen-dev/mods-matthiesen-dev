@@ -16,6 +16,8 @@ banner:
 import ModMeta from '~/components/ModMeta.astro';
 import Deps from '~/components/Deps.astro';
 import ReadMore from '~/components/ReadMore.astro';
+import Commands from '~/components/Commands.astro';
+import { commands } from "./commands_data";
 
 <ModMeta 
   minecraftVersion='1.21.1'
@@ -59,7 +61,4 @@ meta-formatting {
 
 To allow users to use any of the configured available prefixes, all you have to do is assign the user/group the `requiredPermission` you assigned in the config.
 
-- `/vanity` - Opens the Vanity Plates GUI (Available to all users)
-- `/plates` - An Alias for `vanity`
-- `/vanity reload` - Reloads the Vanity Plates config (Requires OP)
-- `/plates reload` - an Alias for `vanity reload` 
+<Commands commands={commands} />

@@ -15,53 +15,9 @@ banner:
     These docs are a work in progress and may be incomplete or contain inaccuracies. (Or be for a newer unreleased version of the mod)
 ---
 
+import Commands from '~/components/Commands.astro';
+import { commands } from "./commands_data";
+
 Commands for Cobblemon PokeTotems. These commands are used to convert between Pokemon and PokeTotems, as well as redeeming PokeTotems.
 
-## poketototem
-
-Opens the normal PokeTotem conversion GUI, allowing you to convert a Pokemon into a Normal PokeTotem. Normal PokeTotems keep their UUID and OT data intact.
-
-- **Usage:** `/poketototem`
-- **Permission:** `cobblemon_poketotem.command.poketototem`
-
-### clone
-
-Opens the clone PokeTotem conversion GUI, allowing you to convert a Pokemon into a Clone PokeTotem. Clone PokeTotems get new UUIDs and OTs assigned once redeemed.
-
-- **Usage:** `/poketototem clone`
-- **Permission:** `cobblemon_poketotem.command.poketototem`
-
-### server
-
-Converts a specific Player's party Pokemon into a PokeTotem and gives it to the player. This command is useful for server-owners and map-makers who want to give out PokeTotems as rewards.
-
-- **Usage:** `/poketototem server <player> <slot 0-5>`
-- **Permission:** `cobblemon_poketotem.command.poketototem-server`
-
-## totemtopoke
-
-Converts a PokeTotem back into a Pokemon. This command is used to redeem the currently held PokeTotem.
-
-- **Usage:** `/totemtopoke`
-- **Permission:** `cobblemon_poketotem.command.totemtopoke`
-
-### server
-
-Converts the specific Player's currently held PokeTotem back into a Pokemon. This command is useful for server-owners and map-makers who want to allow players to redeem PokeTotems as rewards.
-
-- **Usage:** `/totemtopoke server <player>`
-- **Permission:** `cobblemon_poketotem.command.totemtopoke-server`
-
-### redeem
-
-Converts a Clone PokeTotem back into a Pokemon. This command is used to redeem the currently held Clone PokeTotem. This command is separate from `/totemtopoke` to allow server-owners and map-makers to restrict the redemption of Clone PokeTotems if they wish.
-
-- **Usage:** `/totemtopoke redeem`
-- **Permission:** `cobblemon_poketotem.command.totemtopoke-redeem`
-
-#### server
-
-Converts the specific Player's currently held Clone PokeTotem back into a Pokemon. This command is useful for server-owners and map-makers who want to allow players to redeem Clone PokeTotems as rewards, while still restricting the redemption of Clone PokeTotems for regular players.
-
-- **Usage:** `/totemtopoke redeem server <player>`
-- **Permission:** `cobblemon_poketotem.command.totemtopoke-redeem-server`
+<Commands commands={commands} />

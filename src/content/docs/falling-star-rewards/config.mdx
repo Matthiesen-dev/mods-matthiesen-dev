@@ -19,6 +19,7 @@ The following configuration options are available in the Falling Star Rewards mo
 
 - [**Main Config:**](#main-config-options) `<game_directory>/config/falling_star_rewards/config.json`
 - [**Announcements Config:**](#announcements-config-options) `<game_directory>/config/falling_star_rewards/announcements.json`
+- [**Permissions Config:**](#permissions-config-options) `<game_directory>/config/falling_star_rewards/permissions.json`
 - [**Events Presets:**](#events-presets) `<game_directory>/config/falling_star_rewards/events/`
 - [**Rewards Presets:**](#rewards-presets) `<game_directory>/config/falling_star_rewards/rewards/`
 - [**Visuals Presets:**](#visuals-presets) `<game_directory>/config/falling_star_rewards/visuals/`
@@ -74,6 +75,59 @@ These options control the in-game announcements related to falling star events, 
   "scope": "nearby",
   "useActionBar": false,
   "spawnMessage": "A falling star has appeared nearby!"
+}
+```
+
+## Permissions Config options
+
+These options control the permissions required to use the mod's commands and features.
+
+- `command`: permission levels for commands. The root `command` node sets the default permission level for all commands, which can be overridden by specifying a different level for individual subcommands. Permission levels are defined as integers, where higher values indicate higher required permissions (e.g., 0 for all players, 2 for trusted players, 4 for server operators). The specific permission nodes are structured as follows:
+  - `root`: default permission level for all commands.
+  - `fallingstar`: permission levels for the main `fallingstar` command and its subcommands.
+    - `help`: permission level for the `help` subcommand.
+    - `reload`: permission level for the `reload` subcommand.
+    - `cleanup`: permission level for the `cleanup` subcommand.
+    - `status`: permission level for the `status` subcommand.
+    - `force`: permission level for the `force` subcommand.
+    - `confirm-delete`: permission level for the `confirm-delete` subcommand, which is used to confirm the deletion of tracked drops when using the `cleanup` command.
+    - `preset`: permission levels for the `preset` subcommands, which are used to manage event presets.
+      - `enable`: permission level for the `preset enable` subcommand, which is used to enable specific event presets.
+      - `disable`: permission level for the `preset disable` subcommand, which is used to disable specific event presets.
+      - `list`: permission level for the `preset list` subcommand, which is used to list all available event presets and their statuses.
+      - `create`: permission level for the `preset create` subcommand, which is used to create new event presets.
+      - `delete`: permission level for the `preset delete` subcommand, which is used to delete existing event presets.
+      - `info`: permission level for the `preset info` subcommand, which is used to display detailed information about specific event presets.
+      - `set`: permission level for the `preset set` subcommand, which is used to modify the parameters of existing event presets.
+      - `add`: permission level for the `preset add` subcommand, which is used to add rewards or visuals presets to event presets.
+      - `remove`: permission level for the `preset remove` subcommand, which is used to remove rewards or visuals presets from event presets.
+
+### Example config file
+
+```json title="<game_directory>/config/falling_star_rewards/permissions.json"
+{
+  "command": {
+    "root": 4,
+    "fallingstar": {
+      "help": 4,
+      "reload": 4,
+      "cleanup": 4,
+      "status": 4,
+      "force": 4,
+      "confirm-delete": 4,
+      "preset": {
+        "enable": 4,
+        "disable": 4,
+        "list": 4,
+        "create": 4,
+        "delete": 4,
+        "info": 4,
+        "set": 4,
+        "add": 4,
+        "remove": 4
+      }
+    }
+  }
 }
 ```
 
