@@ -18,3 +18,10 @@ export interface Command {
 }
 
 export type Commands = Array<Command>;
+
+export interface Mod {
+    name: string;
+    docs: string;
+    badge?: string;
+    badgeVariant?: "tip" | "note" | "danger" | "success" | "caution" | "default";
+}

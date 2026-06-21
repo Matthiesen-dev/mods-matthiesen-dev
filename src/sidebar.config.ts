@@ -1,4 +1,6 @@
-export const LIBRARY_MODS = [
+import type { Mod } from "./types";
+
+export const LIBRARY_MODS: Mod[] = [
     {
         name: 'Matthiesen Lib',
         docs: 'matthiesen-lib'
@@ -15,7 +17,7 @@ export const LIBRARY_MODS = [
     }
 ];
 
-export const COBBLEMON_MODS = [
+export const COBBLEMON_MODS: Mod[] = [
     {
         name: 'Boosters',
         docs: 'cobblemon-boosters',
@@ -53,7 +55,7 @@ export const COBBLEMON_MODS = [
     },
 ];
 
-export const MISC_MODS = [
+export const MISC_MODS: Mod[] = [
     {
         name: 'Falling Star Rewards',
         docs: 'falling-star-rewards',
@@ -76,14 +78,14 @@ export const MISC_MODS = [
     }
 ];
 
-export function buildSidebarItems(mods: { name: string; docs: string; badge?: string }[]) {
+export function buildSidebarItems(mods: Mod[]) {
     return mods.map(mod => ({
         label: mod.name,
         collapsed: true,
         ...(mod.badge ? {
             badge: {
                 text: mod.badge,
-                variant: "tip" as const
+                variant: mod.badgeVariant ?? "tip"
             }
         } : {}),
         items: [
