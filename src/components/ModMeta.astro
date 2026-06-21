@@ -5,6 +5,7 @@ import FabricUnsupported from "~/assets/loaders/fabric_unsupported.svg";
 import NeoForgeUnsupported from "~/assets/loaders/neoforge_unsupported.svg";
 import Modrinth from "~/assets/links/modrinth.svg";
 import Github from "~/assets/links/github.svg";
+import LiveVersionDetector from "./LiveVersionDetector.astro";
 
 interface Props {
     modrinth: string;
@@ -17,8 +18,8 @@ interface Props {
 const { modrinth, github, minecraftVersion, fabric, neoforge } = Astro.props;
 ---
 
-<div class="not-content">
-    <div class="meta-content">
+<div class="not-content meta-header">
+    <div class="not-content meta-content">
         <div class="meta-row">
             <div class="meta-label">Minecraft Version</div>
             <div class="meta-value version-value">
@@ -102,6 +103,8 @@ const { modrinth, github, minecraftVersion, fabric, neoforge } = Astro.props;
             </div>
         </div>
     </div>
+
+    <LiveVersionDetector projectId={modrinth} />
 </div>
 
 <style is:global>
@@ -114,6 +117,14 @@ const { modrinth, github, minecraftVersion, fabric, neoforge } = Astro.props;
 </style>
 
 <style>
+    .meta-header {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        margin-bottom: 24px;
+        gap: 20px;
+    }
+
     .meta-content {
         display: flex;
         flex-direction: column;
