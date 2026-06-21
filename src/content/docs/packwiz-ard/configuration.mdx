@@ -1,0 +1,32 @@
+---
+title: PackWiz-ard - Configuration
+description: Configuration options for PackWiz-ard, a mod that allows server owners to easily load and update their modpacks using PackWiz.
+prev: 
+  label: Getting Started
+  link: /packwiz-ard
+next: 
+  label: Commands
+  link: /packwiz-ard/commands
+sidebar:
+  label: Configuration
+  order: 2
+banner:
+  content: |
+    These docs are a work in progress and may be incomplete or contain inaccuracies. (Or be for a newer unreleased version of the mod)
+---
+
+The configuration for PackWiz-ard is done through a config file located at `<game_directory>/config/packwiz_ard/config.json`.
+
+## Config Options
+
+- `pack_toml` (string, required): The web URL to your PackWiz `pack.toml` file. This is used by the mod to determine which modpack to load and update.
+- `minimum_permission_level` (integer, optional, default: 4): The minimum permission level required to use the mod's commands. This is used to restrict access to the mod's commands to certain players, such as server operators.
+
+## Example Config
+
+```json title="<game_directory>/config/packwiz_ard/config.json"
+{
+  "pack_toml": "",
+  "minimum_permission_level": 4
+}
+```

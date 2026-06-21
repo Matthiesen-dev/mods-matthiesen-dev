@@ -1,0 +1,41 @@
+---
+title: PackWiz-ard
+description: Load and update your server PackWiz modpack with ease.
+prev: false
+next: 
+  label: Configuration
+  link: /packwiz-ard/configuration
+sidebar:
+  label: Getting Started
+  order: 1
+banner:
+  content: |
+    These docs are a work in progress and may be incomplete or contain inaccuracies. (Or be for a newer unreleased version of the mod)
+---
+
+import ModMeta from '~/components/ModMeta.astro';
+import Deps from '~/components/Deps.astro';
+import ReadMore from '~/components/ReadMore.astro';
+
+<ModMeta 
+  minecraftVersion='1.21.1'
+  github='packwiz-ard'
+  modrinth='packwiz-ard'
+  neoforge fabric
+/>
+
+<Deps matthiesenLibAPI />
+
+Load and update your server PackWiz modpack with ease. PackWiz-ard is a server-side mod that integrates with the PackWiz ecosystem, allowing server owners to easily load and update their modpacks using PackWiz. With PackWiz-ard, you can keep your server's modpack up to date with the latest versions of mods, and easily manage your modpack's dependencies.
+
+## Requirements
+
+- [Matthiesen Lib API](https://modrinth.com/mod/matthiesen-lib-api)
+
+## PackWiz Integration
+
+PackWiz-ard integrates with the PackWiz ecosystem by using the PackWiz `pack.toml` file to determine which modpack to load and update. To use PackWiz-ard, simply provide the web URL to your PackWiz `pack.toml` file in the mod's config, and PackWiz-ard will take care of the rest. Just run the `/packwizard update` command to have PackWiz-ard download and load the mods specified in your `pack.toml` file, and keep them up to date with the latest versions.
+
+<ReadMore>
+To learn more about PackWiz checkout their [Documentation](https://packwiz.infra.link/), or their [Github](https://github.com/packwiz/packwiz).
+</ReadMore>

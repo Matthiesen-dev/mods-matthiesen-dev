@@ -33,6 +33,14 @@ const { commands } = Astro.props;
                                         Requires OP
                                     </span>
                                 )}
+                                {entry.controlledByConfig && (
+                                    <span
+                                        class="controlled-by-config-pill"
+                                        title="Controlled by config"
+                                    >
+                                        Controlled by config
+                                    </span>
+                                )}
                             </div>
                         </div>
 
@@ -111,7 +119,8 @@ const { commands } = Astro.props;
     }
 
     .permission-pill,
-    .requires-op-pill {
+    .requires-op-pill,
+    .controlled-by-config-pill {
         display: inline-flex;
         align-items: center;
         border-radius: 999px;
@@ -139,7 +148,8 @@ const { commands } = Astro.props;
         color: var(--sl-color-text-accent);
     }
 
-    .requires-op-pill {
+    .requires-op-pill,
+    .controlled-by-config-pill {
         border: 1px solid
             color-mix(
                 in srgb,

@@ -14,6 +14,7 @@ export interface Command {
     usage: string;
     permissionNode?: string;
     requiresOp?: boolean;
+    controlledByConfig?: boolean;
 }
 
 export type Commands = Array<Command>;

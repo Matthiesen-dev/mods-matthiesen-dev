@@ -60,6 +60,11 @@ export const MISC_MODS = [
         badge: "Server"
     },
     {
+        name: 'PackWiz-ard',
+        docs: 'packwiz-ard',
+        badge: "Server"
+    },
+    {
         name: 'Re-LPChatPrefix',
         docs: 're-lpchatprefix',
         badge: "Server"
