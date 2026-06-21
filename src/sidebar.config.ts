@@ -6,12 +6,12 @@ export const LIBRARY_MODS = [
     {
         name: 'Matthiesen Lib API',
         docs: 'matthiesen-lib-api',
-        badge: "Server"
+        badge: "S"
     },
     {
         name: 'Matthiesen Lib Webhooks',
         docs: 'matthiesen-lib-webhooks',
-        badge: "Server"
+        badge: "S"
     }
 ];
 
@@ -19,7 +19,7 @@ export const COBBLEMON_MODS = [
     {
         name: 'Boosters',
         docs: 'cobblemon-boosters',
-        badge: "Server"
+        badge: "S"
     },
     {
         name: 'Breathers',
@@ -32,7 +32,7 @@ export const COBBLEMON_MODS = [
     {
         name: 'LP NPC Compat',
         docs: 'cobblemon-luckperms-npc-compat',
-        badge: "Server"
+        badge: "S"
     },
     {
         name: 'Move Tutor',
@@ -49,7 +49,7 @@ export const COBBLEMON_MODS = [
     {
         name: 'PokeTotem',
         docs: 'cobblemon-poketotem',
-        badge: "Server"
+        badge: "S"
     },
 ];
 
@@ -57,22 +57,22 @@ export const MISC_MODS = [
     {
         name: 'Falling Star Rewards',
         docs: 'falling-star-rewards',
-        badge: "Server"
+        badge: "S"
     },
     {
         name: 'PackWiz-ard',
         docs: 'packwiz-ard',
-        badge: "Server"
+        badge: "S"
     },
     {
         name: 'Re-LPChatPrefix',
         docs: 're-lpchatprefix',
-        badge: "Server"
+        badge: "S"
     },
     {
         name: 'Vanity Plates',
         docs: 'vanity-plates',
-        badge: "Server"
+        badge: "S"
     }
 ];
 
