@@ -82,12 +82,12 @@ export function buildSidebarItems(mods: Mod[]) {
     return mods.map(mod => ({
         label: mod.name,
         collapsed: true,
-        ...(mod.badge ? {
-            badge: {
-                text: mod.badge,
-                variant: mod.badgeVariant ?? "tip"
-            }
-        } : {}),
+        ...(mod.badge
+            ? {
+                badge: typeof mod.badge === "string"
+                    ? { text: mod.badge, variant: "tip" as const }
+                    : mod.badge
+            } : {}),
         items: [
             { autogenerate: { directory: mod.docs, collapsed: true } }
         ]
