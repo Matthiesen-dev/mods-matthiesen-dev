@@ -19,6 +19,11 @@ export const LIBRARY_MODS: Mod[] = [
 
 export const COBBLEMON_MODS: Mod[] = [
     {
+        name: 'Cobbled Level Control',
+        docs: 'cobbled-level-control',
+        badge: "S"
+    },
+    {
         name: 'Boosters',
         docs: 'cobblemon-boosters',
         badge: "S"
