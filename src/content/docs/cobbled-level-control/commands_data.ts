@@ -1,0 +1,34 @@
+import type { Commands } from "../../../types";
+
+export const commands: Commands = [
+    {
+        command: "level-control",
+        description: "The main command for Cobbled Level Control.",
+        usage: "/level-control <subcommand>",
+        permissionNode: "cobbled_level_control.command.admin",
+    },
+    {
+        command: "level-control reload",
+        description: "Reloads the configuration files.",
+        usage: "/level-control reload",
+        permissionNode: "cobbled_level_control.command.admin",
+    },
+    {
+        command: "level-control level-up",
+        description: "Levels up a player's module.",
+        usage: "/level-control level-up <player> <module>",
+        permissionNode: "cobbled_level_control.command.admin",
+    },
+    {
+        command: "level-control set-difficulty",
+        description: "Sets the difficulty of a player.",
+        usage: "/level-control set-difficulty <player> <difficulty>",
+        permissionNode: "cobbled_level_control.command.admin",
+    },
+    {
+        command: "level-control set-level",
+        description: "Sets the level of a player's module.",
+        usage: "/level-control set-level <player> <module> <level>",
+        permissionNode: "cobbled_level_control.command.admin",
+    }
+];

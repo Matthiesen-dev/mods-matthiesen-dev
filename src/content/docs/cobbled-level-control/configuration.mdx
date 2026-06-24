@@ -1,0 +1,168 @@
+---
+title: Cobbled Level Control - Configuration
+description: Configuration for Cobbled Level Control.
+prev: 
+  link: /cobbled-level-control
+  label: "Overview"
+next: 
+  link: /cobbled-level-control/commands
+  label: "Commands"
+sidebar:
+  label: Configuration
+  order: 2
+banner:
+  content: |
+    These docs are a work in progress and may be incomplete or contain inaccuracies. (Or be for a newer unreleased version of the mod)
+---
+
+All of the configuration files for Cobbled Level Control are located in the `<game_directory>/config/cobbled_level_control/` directory.
+
+## Main Configuration
+
+- `main.json`: This is the main configuration file for Cobbled Level Control. It contains settings for the mod, including level caps, catch rules, and wild spawn level caps.
+
+### Configuration Options
+
+- `difficulties`: An array of difficulty preset names that are available in the mod. Each difficulty preset is defined in a separate JSON file located in the `difficulty/` directory.
+- `defaults`: An object containing default settings for the mod, including the default difficulty preset and whether to automatically apply the default settings to new players.
+  - `defaultDifficulty`: The name of the default difficulty preset to use for new players.
+  - `autoApplyDefault`: A boolean value indicating whether to automatically apply the default settings to new players when they first join the server.
+- `spawnConfig`: An object containing settings for wild pokemon spawns, including whether to enable scaling and the method to use for scaling.
+  - `enableScaling`: A boolean value indicating whether to enable scaling for wild pokemon spawns.
+  - `scalingMethod`: A string value indicating the method to use for scaling wild pokemon spawns. See [Scaling Methods](#scaling-methods).
+- `errorMessages`: An object containing custom error messages for various situations, including when a player exceeds their level cap, when they do not have permission to catch a pokemon, and when they do not have permission to level up a pokemon.
+  - `useActionBar`: A boolean value indicating whether to display error messages in the action bar instead of the chat.
+  - `battle`: The error message to display when a player exceeds their level cap in battle.
+  - `catchingTier`: The error message to display when a player does not have permission to catch a pokemon due to their catching tier.
+  - `levelingTier`: The error message to display when a player does not have permission to level up a pokemon due to their leveling tier.
+  - `missingPermission`: The error message to display when a player does not have permission to perform an action.
+- `saveConfig`: An object containing settings for saving player account data, including whether to enable auto-saving and the interval at which to save the data.
+  - `enableAutoSave`: A boolean value indicating whether to enable auto-saving of player account data.
+  - `saveIntervalTicks`: The interval, in ticks, at which to save player account data. The default value is 100 ticks (5 seconds).
+
+### Example Configuration
+
+```json title="<game_directory>/config/cobbled_level_control/main.json"
+{
+  "difficulties": [
+    "default"
+  ],
+  "defaults": {
+    "defaultDifficulty": "default",
+    "autoApplyDefault": true
+  },
+  "spawnConfig": {
+    "enableScaling": true,
+    "scalingMethod": "+- random7"
+  },
+  "errorMessages": {
+    "useActionBar": false,
+    "battle": "One or more of your Pokemon exceeds your leveling cap! Please put it in your PC!",
+    "catchingTier": "Your Catching Tier level is too low for this Pokemon!",
+    "levelingTier": "Your Leveling Tier level is too low to level up this Pokemon!",
+    "missingPermission": "You do not have permission to do that!"
+  },
+  "saveConfig": {
+    "enableAutoSave": true,
+    "saveIntervalTicks": 100
+  }
+}
+```
+
+## Player Accounts Storage
+
+- `player_accounts.json`: This file stores player account data, including their assigned difficulty levels and any custom settings they may have. It is automatically generated and updated by the mod.
+
+### Configuration Options
+
+- `accounts`: A Map of player UUIDs to their account data, including their assigned difficulty level and any custom settings they may have.
+
+### Example Configuration
+
+```json title="<game_directory>/config/cobbled_level_control/player_accounts.json"
+{
+  "accounts": {}
+}
+```
+
+## Difficulty Presets
+
+- `difficulty/<preset_name>.json`: These files define the different difficulty presets available in the mod. Each preset contains settings for level caps, catch rules, and wild spawn level caps.
+
+### Configuration Options
+
+- `battles`: An object containing settings for battle level caps, including whether to restrict battles and the level cap for each evolution stage.
+  - `restrictBattles`: A boolean value indicating whether to restrict battles based on level caps.
+- `catching`: An object containing settings for catching level caps, including the level cap for each evolution stage, legendary, mythical, ultra beast, and shiny pokemon, as well as the level cap for each catching tier.
+  - `evolutionStages`: An object containing the required permission for each evolution stage.
+    - `singleEvo`: The required permission for single-stage pokemon.
+    - `firstStageEvo`: The required permission for first-stage evolution pokemon.
+    - `secondStageEvo`: The required permission for second-stage evolution pokemon.
+    - `finalStageEvo`: The required permission for final-stage evolution pokemon.
+  - `legendary`: The required permission for legendary pokemon.
+  - `mythical`: The required permission for mythical pokemon.
+  - `ultraBeast`: The required permission for ultra beast pokemon.
+  - `shiny`: The required permission for shiny pokemon.
+  - `tiers`: An object containing the level cap for each tier
+- `leveling`: An object containing settings for leveling level caps, including the level cap for each evolution stage and the level cap for each leveling tier.
+  - `evolutionStages`: An object containing the required permission for each evolution stage.
+    - `singleEvo`: The required permission for single-stage pokemon.
+    - `firstStageEvo`: The required permission for first-stage evolution pokemon.
+    - `secondStageEvo`: The required permission for second-stage evolution pokemon.
+    - `finalStageEvo`: The required permission for final-stage evolution pokemon.
+  - `tiers`: An object containing the level cap for each tier.
+
+### Example Configuration
+
+```json title="<game_directory>/config/cobbled_level_control/difficulty/default.json"
+{
+  "battles": {
+    "restrictBattles": false
+  },
+  "catching": {
+    "evolutionStages": {
+      "singleEvo": "",
+      "firstStageEvo": "",
+      "secondStageEvo": "cobbled_level_control.catching.second_stage_evo",
+      "finalStageEvo": "cobbled_level_control.catching.final_stage_evo"
+    },
+    "legendary": "cobbled_level_control.catching.legendary",
+    "mythical": "cobbled_level_control.catching.mythical",
+    "ultraBeast": "cobbled_level_control.catching.ultra_beast",
+    "shiny": "cobbled_level_control.catching.shiny",
+    "tiers": {
+      "1": 10,
+      "2": 20,
+      "3": 40,
+      "4": 80,
+      "5": 100
+    }
+  },
+  "leveling": {
+    "evolutionStages": {
+      "singleEvo": "",
+      "firstStageEvo": "",
+      "secondStageEvo": "cobbled_level_control.catching.second_stage_evo",
+      "finalStageEvo": "cobbled_level_control.catching.final_stage_evo"
+    },
+    "tiers": {
+      "1": 10,
+      "2": 20,
+      "3": 40,
+      "4": 80,
+      "5": 100
+    }
+  }
+}
+```
+
+## Scaling Methods
+
+Cobbled Level Control supports different scaling methods for wild pokemon spawns. The scaling method determines how the level of wild pokemon spawns is calculated based on the player's max catching level.
+
+### Supported Scaling Methods
+
+- `+- randomX`: This method will randomly add or subtract a number between 1 and X levels from the player's max catching level. For example, `+- random5` will result in a wild pokemon spawn level that is randomly between 1 and 5 levels higher or lower than the player's max catching level.
+- `+ X`: This method will add X levels to the player's max catching level. For example, `+ 3` will result in a wild pokemon spawn level that is 3 levels higher than the player's max catching level.
+- `- randomX`: This method will randomly subtract a number between 1 and X levels from the player's max catching level. For example, `- random7` will result in a wild pokemon spawn level that is randomly between 1 and 7 levels lower than the player's max catching level.
+- `+ 0`: This method will set the wild pokemon spawn level to be exactly at the player's max catching level. This is the best way to ensure that wild pokemon spawns are at the player's max catching level without any variation.
