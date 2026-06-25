@@ -20,6 +20,7 @@ The following configuration options are available in the Falling Star Rewards mo
 - [**Main Config:**](#main-config-options) `<game_directory>/config/falling_star_rewards/config.json`
 - [**Announcements Config:**](#announcements-config-options) `<game_directory>/config/falling_star_rewards/announcements.json`
 - [**Permissions Config:**](#permissions-config-options) `<game_directory>/config/falling_star_rewards/permissions.json`
+- [**Scheduling Presets:**](#scheduling-presets) `<game_directory>/config/falling_star_rewards/scheduling/`
 - [**Events Presets:**](#events-presets) `<game_directory>/config/falling_star_rewards/events/`
 - [**Rewards Presets:**](#rewards-presets) `<game_directory>/config/falling_star_rewards/rewards/`
 - [**Visuals Presets:**](#visuals-presets) `<game_directory>/config/falling_star_rewards/visuals/`
@@ -30,14 +31,11 @@ These options control the core behavior of the mod, including how falling star e
 
 - `enabled`: master switch.
 - `enablePresetGeneration`: whether to generate example preset files on first run. This is intended to help server owners get started with customizing the mod, but can be turned off if not needed. The generated presets are just examples and are not used by default, so they can be safely deleted or modified without affecting the mod's functionality.
+- `enabledSchedules`: list of scheduling presets to use for spawning falling star events. Each preset defines a schedule for when events can occur, allowing server owners to customize the frequency and timing of falling star events. The mod will randomly select from the enabled schedules when determining when to spawn a falling star event.
 - `claim`
   - `lifeTicks`: despawn timer for spawned stars.
   - `pickupDelayTicks`: delay before pickup is allowed.
   - `maxActiveDrops`: hard cap for concurrently tracked star drops.
-- `scheduler`
-  - `baseIntervalTicks`: base delay between cycles.
-  - `intervalJitterTicks`: random extra delay (0..jitter).
-  - `maxStarsPerCycle`: cap events started in one cycle.
 
 ### Example config file
 
@@ -45,15 +43,13 @@ These options control the core behavior of the mod, including how falling star e
 {
   "enabled": true,
   "enablePresetGeneration": true,
+  "enabledSchedules": [
+    "base"
+  ],
   "claim": {
     "lifeTicks": 900,
     "pickupDelayTicks": 10,
     "maxActiveDrops": 64
-  },
-  "scheduler": {
-    "baseIntervalTicks": 2400,
-    "intervalJitterTicks": 600,
-    "maxStarsPerCycle": 1
   }
 }
 ```
@@ -127,6 +123,54 @@ These options control the permissions required to use the mod's commands and fea
         "remove": 4
       }
     }
+  }
+}
+```
+
+## Scheduling Presets
+
+Scheduling presets are JSON files that define the timing and frequency of falling star events. These presets allow server owners to customize when and how often falling star events occur, providing flexibility in event scheduling. Each preset can specify conditions such as time of day, weather, and other factors that influence when events can be triggered.
+
+- `enabled`: toggles this schedule.
+- `baseIntervalTicks`: base delay between schedule cycles.
+- `intervalJitterTicks`: random extra delay (0..jitter).
+- `maxStarsPerCycle`: cap events started for this schedule cycle.
+- `selectionMode`: `random | weighted | rotation`.
+- `eventEntries[]`
+  - `eventPresetId`: event preset to select from.
+  - `enabled`: include/exclude this entry.
+  - `weight`: used by `weighted` mode, defaults to `1` when missing/non-positive.
+- `conditions`
+  - `timeMode`: `any | day | night`.
+  - `requireSurfaceAccess`: skip players in covered areas/caves.
+  - `weatherMode`: `any | clear | rain | thunder`.
+  - `moonPhases`: accepts names and/or numeric IDs (`0..7`), mixed values are de-duplicated.
+- `state.rotationCursor`: persisted rotation pointer for deterministic `rotation` mode.
+
+### Example config file
+
+```json title="<game_directory>/config/falling_star_rewards/scheduling/<preset_id>.json"
+{
+  "enabled": true,
+  "baseIntervalTicks": 2400,
+  "intervalJitterTicks": 600,
+  "maxStarsPerCycle": 1,
+  "selectionMode": "random",
+  "eventEntries": [
+    {
+      "eventPresetId": "base",
+      "enabled": true,
+      "weight": 1
+    }
+  ],
+  "conditions": {
+    "timeMode": "any",
+    "requireSurfaceAccess": true,
+    "weatherMode": "any",
+    "moonPhases": []
+  },
+  "state": {
+    "rotationCursor": 0
   }
 }
 ```

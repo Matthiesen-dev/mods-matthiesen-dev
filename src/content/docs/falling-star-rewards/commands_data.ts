@@ -203,4 +203,44 @@ export const commands: Commands = [
         usage: "/fallingstar preset visuals info <visuals_preset_id>",
         permissionNode: "falling_star_rewards.command.fallingstar.preset.info",
     },
+    {
+        command: "fallingstar preset schedules enable",
+        description: "Allow a schedule preset to be selected for use in events.",
+        usage: "/fallingstar preset schedules enable <schedule_preset_id>",
+        permissionNode: "falling_star_rewards.command.fallingstar.preset.enable",
+    },
+    {
+        command: "fallingstar preset schedules disable",
+        description: "Prevent a schedule preset from being selected for use in events.",
+        usage: "/fallingstar preset schedules disable <schedule_preset_id>",
+        permissionNode: "falling_star_rewards.command.fallingstar.preset.disable",
+    },
+    {
+        command: "fallingstar preset schedules list",
+        description:
+            "Show a list of all schedule presets, including their enabled/disabled status.",
+        usage: "/fallingstar preset schedules list",
+        permissionNode: "falling_star_rewards.command.fallingstar.preset.list",
+    },
+    {
+        command: "fallingstar preset schedules create",
+        description:
+            "Create a new schedule preset. This command will create a new preset file with default values, which can then be edited to customize the schedule.",
+        usage: "/fallingstar preset schedules create <schedule_preset_id>",
+        permissionNode: "falling_star_rewards.command.fallingstar.preset.create",
+    },
+    {
+        command: "fallingstar preset schedules delete",
+        description:
+            "Delete a schedule preset. This command will prompt for confirmation before deleting the preset file.",
+        usage: "/fallingstar preset schedules delete <schedule_preset_id>",
+        permissionNode: "falling_star_rewards.command.fallingstar.preset.delete",
+    },
+    {
+        command: "fallingstar preset schedules info",
+        description:
+            "Show detailed information about a schedule preset, including the timing and frequency of events.",
+        usage: "/fallingstar preset schedules info <schedule_preset_id>",
+        permissionNode: "falling_star_rewards.command.fallingstar.preset.info",
+    },
 ];
