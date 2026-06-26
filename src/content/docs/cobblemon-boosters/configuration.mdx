@@ -31,11 +31,21 @@ The `core.json` file contains the core configuration settings for the mod. Curre
 
 ```json title="<game_directory>/config/cobblemon_boosters/core.json"
 {
-  "saveIntervalTicks": 1200
+  "saveIntervalTicks": 1200,
+  "verboseCacheLogging": false,
+  "queuePriorityEnabled": false,
+  "queuePriorityMode": "FIFO",
+  "timePriorityDirection": "SHORTEST_FIRST",
+  "activePreemptionEnabled": false
 }
 ```
 
 - `saveIntervalTicks`: This setting determines how often the mod saves its data to the `cache.json` file. The value is specified in ticks, where 20 ticks equal 1 second. By default, this is set to `1200`, which means the mod will save its data every 60 seconds. You can adjust this value to save more or less frequently based on your server's needs. Keep in mind that setting this value too low may cause performance issues, while setting it too high may result in more data loss in the event of a server crash, as the mod will save less frequently. The mod also saves during server shutdown to help prevent data loss, but it's important to choose a save interval that balances performance and data safety for your specific server setup.
+- `verboseCacheLogging`: This setting determines whether the mod will log detailed information about its cache operations. By default, this is set to `false`, which means that the mod will only log essential information. If you set this to `true`, the mod will log additional details about its cache operations, which can be useful for debugging or monitoring purposes. 
+- `queuePriorityEnabled`: This setting determines whether the mod will use a priority system for queued boosts. By default, this is set to `false`, which means that boosts will be processed in a first-in-first-out (FIFO) order. If you set this to `true`, the mod will prioritize boosts based on the `queuePriorityMode` and `timePriorityDirection` settings.
+- `queuePriorityMode` supports `FIFO`, `MULTIPLIER`, and `TIME_REMAINING`.
+- `timePriorityDirection` supports `SHORTEST_FIRST` (default) and `LONGEST_FIRST`.
+- `activePreemptionEnabled` must be `true` for a newly queued higher-priority boost to replace an active boost.
 
 ## Cache File
 

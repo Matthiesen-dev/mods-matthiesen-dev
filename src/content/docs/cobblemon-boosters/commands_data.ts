@@ -26,6 +26,36 @@ export const commands: Commands = [
         permissionNode: "cobblemon_boosters.command.boosters.check_queues",
     },
     {
+        command: "boosters queue-priority",
+        description: "Sets the priority of a booster queue.",
+        usage: "/boosters queue-priority <subcommand>",
+        permissionNode: "cobblemon_boosters.command.boosters.queue_priority",
+    },
+    {
+        command: "boosters queue-priority enable",
+        description: "Enables the priority system for a booster queue.",
+        usage: "/boosters queue-priority enable <boolean>",
+        permissionNode: "cobblemon_boosters.command.boosters.queue_priority",
+    },
+    {
+        command: "boosters queue-priority mode",
+        description: "Sets the mode of the priority system for a booster queue. Supports 'fifo', 'multiplier', and 'time' modes.",
+        usage: "/boosters queue-priority mode <mode>",
+        permissionNode: "cobblemon_boosters.command.boosters.queue_priority",
+    },
+    {
+        command: "boosters queue-priority preemption",
+        description: "Sets the preemption mode of the priority system for a booster queue.",
+        usage: "/boosters queue-priority preemption <boolean>",
+        permissionNode: "cobblemon_boosters.command.boosters.queue_priority",
+    },
+    {
+        command: "boosters queue-priority time-direction",
+        description: "Sets the time direction of the priority system for a booster queue. Supports 'shortest' and 'longest' modes.",
+        usage: "/boosters queue-priority time-direction <direction>",
+        permissionNode: "cobblemon_boosters.command.boosters.queue_priority",
+    },
+    {
         command: "boosters catch",
         description: "Root command for catch boosters.",
         usage: "/boosters catch <subcommand>",
