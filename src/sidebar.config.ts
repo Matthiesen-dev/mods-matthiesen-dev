@@ -19,7 +19,7 @@ export const LIBRARY_MODS: Mod[] = [
 
 export const COBBLEMON_MODS: Mod[] = [
     {
-        name: "Cobble NPC GD Compat",
+        name: "NPC GD Compat",
         docs: "cobble-npc-gd-compat",
         badge: "S"
     },
