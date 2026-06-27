@@ -8,7 +8,7 @@ import Github from "~/assets/links/github.svg";
 import LiveVersionDetector from "./LiveVersionDetector.astro";
 
 interface Props {
-    modrinth: string;
+    modrinth?: string;
     github: string;
     minecraftVersion: string;
     fabric?: boolean;
@@ -82,15 +82,19 @@ const { modrinth, github, minecraftVersion, fabric, neoforge } = Astro.props;
         <div class="meta-row">
             <div class="meta-label">External Links</div>
             <div class="meta-value links-value">
-                <a
-                    href={`https://modrinth.com/mod/${modrinth}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    class="link-badge"
-                    data-tooltip="View on Modrinth"
-                >
-                    <Modrinth />
-                </a>
+                {
+                    modrinth && (
+                        <a
+                            href={`https://modrinth.com/mod/${modrinth}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="link-badge"
+                            data-tooltip="View on Modrinth"
+                        >
+                            <Modrinth />
+                        </a>
+                    )
+                }
                 <a
                     href={`https://github.com/matthiesen-dev/${github}`}
                     target="_blank"
@@ -104,7 +108,7 @@ const { modrinth, github, minecraftVersion, fabric, neoforge } = Astro.props;
         </div>
     </div>
 
-    <LiveVersionDetector projectId={modrinth} />
+    {modrinth && <LiveVersionDetector projectId={modrinth} />}
 </div>
 
 <style is:global>
