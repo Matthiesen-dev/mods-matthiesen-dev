@@ -18,7 +18,6 @@ The following configuration options are available in the Falling Star Rewards mo
 ## Config files
 
 - [**Main Config:**](#main-config-options) `<game_directory>/config/falling_star_rewards/config.json`
-- [**Announcements Config:**](#announcements-config-options) `<game_directory>/config/falling_star_rewards/announcements.json`
 - [**Permissions Config:**](#permissions-config-options) `<game_directory>/config/falling_star_rewards/permissions.json`
 - [**Scheduling Presets:**](#scheduling-presets) `<game_directory>/config/falling_star_rewards/scheduling/`
 - [**Events Presets:**](#events-presets) `<game_directory>/config/falling_star_rewards/events/`
@@ -51,26 +50,6 @@ These options control the core behavior of the mod, including how falling star e
     "pickupDelayTicks": 10,
     "maxActiveDrops": 64
   }
-}
-```
-
-## Announcements Config options
-
-These options control the in-game announcements related to falling star events, such as whether to show a message when a star spawns, and who can see the message.
-
-- `enabled`: show spawn message.
-- `scope`: `nearby | global`.
-- `useActionBar`: show spawn message in action bar instead of chat.
-- `spawnMessage`: chat message on spawn.
-
-### Example config file
-
-```json title="<game_directory>/config/falling_star_rewards/announcements.json"
-{
-  "enabled": true,
-  "scope": "nearby",
-  "useActionBar": false,
-  "spawnMessage": "A falling star has appeared nearby!"
 }
 ```
 
@@ -182,33 +161,39 @@ Events presets are JSON files that define the conditions and parameters for fall
 - `enabled`: whether this event can be selected for spawning. This allows server owners to have a library of presets and easily enable or disable them without deleting the files.
 - `rewardsPresetId`: the ID of the rewards preset to use for this event.
 - `visualsPresetId`: the ID of the visuals preset to use for this event.
-- `activation`: conditions for activating the event.
-  - `requireNight`: whether it must be night to activate.
-  - `requireSurfaceAccess`: whether the spawn location must have access to the sky.
-  - `weatherMode`: `any | clear | storm` - whether to activate in any weather, only clear weather, or only during storms.
 - `spawn`: parameters for spawning the falling star.
   - `targetScope`: `per_player | global` - whether to spawn stars targeting each player individually, or just spawn a single star globally.
   - `minRadius`: minimum spawn radius from the target player (or players, if `targetScope` is `per_player`).
   - `maxRadius`: maximum spawn radius from the target player (or players, if `targetScope` is `per_player`).
   - `maxLocationAttempts`: maximum number of attempts to find a valid spawn location.
   - `allowWaterSpawns`: whether stars can spawn in water.
+- `announcement`: parameters for the in-game announcement when a star spawns.
+  - `enabled`: whether to show a spawn message.
+  - `scope`: `nearby | global` - whether to show the message to nearby players or all players on the server.
+  - `useActionBar`: whether to show the message in the action bar instead of chat.
+  - `messages`: an array of possible messages to display when a star spawns. One message will be randomly selected from this list each time an event occurs.
 
 ```json title="<game_directory>/config/falling_star_rewards/events/<event_id>.json"
 {
   "enabled": true,
   "rewardsPresetId": "base",
   "visualsPresetId": "base",
-  "activation": {
-    "requireNight": true,
-    "requireSurfaceAccess": true,
-    "weatherMode": "any"
-  },
   "spawn": {
     "targetScope": "per_player",
     "minRadius": 16,
     "maxRadius": 48,
     "maxLocationAttempts": 12,
     "allowWaterSpawns": false
+  },
+  "announcement": {
+    "enabled": true,
+    "scope": "nearby",
+    "useActionBar": false,
+    "messages": [
+      "A falling star has appeared nearby!",
+      "A falling star has appeared in the sky!",
+      "A falling star has appeared in the world!"
+    ]
   }
 }
 ```
