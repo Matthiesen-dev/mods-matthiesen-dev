@@ -161,6 +161,9 @@ Events presets are JSON files that define the conditions and parameters for fall
 - `enabled`: whether this event can be selected for spawning. This allows server owners to have a library of presets and easily enable or disable them without deleting the files.
 - `rewardsPresetId`: the ID of the rewards preset to use for this event.
 - `visualsPresetId`: the ID of the visuals preset to use for this event.
+- `commands[]`: optional server commands to run after a successful spawn.
+  - Leading `/` is optional.
+  - Supports `%nearbyPlayer%`, `%spawnPos%`, and `%rewardItem%` placeholders.
 - `spawn`: parameters for spawning the falling star.
   - `targetScope`: `per_player | global` - whether to spawn stars targeting each player individually, or just spawn a single star globally.
   - `minRadius`: minimum spawn radius from the target player (or players, if `targetScope` is `per_player`).
@@ -178,6 +181,10 @@ Events presets are JSON files that define the conditions and parameters for fall
   "enabled": true,
   "rewardsPresetId": "base",
   "visualsPresetId": "base",
+  "commands": [
+    "tellraw %nearbyPlayer% {\"text\":\"A star landed at %spawnPos% with %rewardItem%!\",\"color\":\"gold\"}",
+    "playsound minecraft:entity.experience_orb.pickup player %nearbyPlayer%"
+  ],
   "spawn": {
     "targetScope": "per_player",
     "minRadius": 16,
