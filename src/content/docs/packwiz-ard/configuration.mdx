@@ -21,12 +21,16 @@ The configuration for PackWiz-ard is done through a config file located at `<gam
 
 - `pack_toml` (string, required): The web URL to your PackWiz `pack.toml` file. This is used by the mod to determine which modpack to load and update.
 - `minimum_permission_level` (integer, optional, default: 4): The minimum permission level required to use the mod's commands. This is used to restrict access to the mod's commands to certain players, such as server operators.
+- `auto_update` (boolean, optional, default: false): Enables or disables automatic updates for the server's modpack.
+- `auto_update_interval_minutes` (integer, optional, default: 1440): Sets the interval (in minutes) for automatic updates.
 
 ## Example Config
 
 ```json title="<game_directory>/config/packwiz_ard/config.json"
 {
   "pack_toml": "",
-  "minimum_permission_level": 4
+  "minimum_permission_level": 4,
+  "auto_update": false,
+  "auto_update_interval_minutes": 1440
 }
 ```
