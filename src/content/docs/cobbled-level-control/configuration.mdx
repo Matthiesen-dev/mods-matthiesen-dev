@@ -30,9 +30,6 @@ All of the configuration files for Cobbled Level Control are located in the `<ga
 - `spawnConfig`: An object containing settings for wild pokemon spawns, including whether to enable scaling and the method to use for scaling.
   - `enableScaling`: A boolean value indicating whether to enable scaling for wild pokemon spawns.
   - `scalingMethod`: A string value indicating the method to use for scaling wild pokemon spawns. See [Scaling Methods](#scaling-methods).
-- `saveConfig`: An object containing settings for saving player account data, including whether to enable auto-saving and the interval at which to save the data.
-  - `enableAutoSave`: A boolean value indicating whether to enable auto-saving of player account data.
-  - `saveIntervalTicks`: The interval, in ticks, at which to save player account data. The default value is 100 ticks (5 seconds).
 
 ### Example Configuration
 
@@ -48,10 +45,6 @@ All of the configuration files for Cobbled Level Control are located in the `<ga
   "spawnConfig": {
     "enableScaling": true,
     "scalingMethod": "+- random7"
-  },
-  "saveConfig": {
-    "enableAutoSave": true,
-    "saveIntervalTicks": 100
   }
 }
 ```
@@ -101,22 +94,6 @@ All of the configuration files for Cobbled Level Control are located in the `<ga
 }
 ```
 
-## Player Accounts Storage
-
-- `player_accounts.json`: This file stores player account data, including their assigned difficulty levels and any custom settings they may have. It is automatically generated and updated by the mod.
-
-### Configuration Options
-
-- `accounts`: A Map of player UUIDs to their account data, including their assigned difficulty level and any custom settings they may have.
-
-### Example Configuration
-
-```json title="<game_directory>/config/cobbled_level_control/player_accounts.json"
-{
-  "accounts": {}
-}
-```
-
 ## Difficulty Presets
 
 - `difficulty/<preset_name>.json`: These files define the different difficulty presets available in the mod. Each preset contains settings for level caps, catch rules, and wild spawn level caps.
@@ -125,7 +102,16 @@ All of the configuration files for Cobbled Level Control are located in the `<ga
 
 - `battles`: An object containing settings for battle level caps, including whether to restrict battles and the level cap for each evolution stage.
   - `restrictBattles`: A boolean value indicating whether to restrict battles based on level caps.
-- `catching`: An object containing settings for catching level caps, including the level cap for each evolution stage, legendary, mythical, ultra beast, and shiny pokemon, as well as the level cap for each catching tier.
+  - `evolutionStages`: An object containing the required permission for each evolution stage.
+    - `singleEvo`: The required permission for single-stage pokemon.
+    - `firstStageEvo`: The required permission for first-stage evolution pokemon.
+    - `secondStageEvo`: The required permission for second-stage evolution pokemon.
+    - `finalStageEvo`: The required permission for final-stage evolution pokemon.
+  - `legendary`: The required permission for legendary pokemon.
+  - `mythical`: The required permission for mythical pokemon.
+  - `ultraBeast`: The required permission for ultra beast pokemon.
+- `catching`: An object containing settings for catching level caps, including whether to restrict catching, the level cap for each evolution stage, legendary, mythical, ultra beast, and shiny pokemon, as well as the level cap for each catching tier.
+  - `restrictCatching`: A boolean value indicating whether to restrict catching based on level caps.
   - `evolutionStages`: An object containing the required permission for each evolution stage.
     - `singleEvo`: The required permission for single-stage pokemon.
     - `firstStageEvo`: The required permission for first-stage evolution pokemon.
@@ -136,7 +122,8 @@ All of the configuration files for Cobbled Level Control are located in the `<ga
   - `ultraBeast`: The required permission for ultra beast pokemon.
   - `shiny`: The required permission for shiny pokemon.
   - `tiers`: An object containing the level cap for each tier
-- `leveling`: An object containing settings for leveling level caps, including the level cap for each evolution stage and the level cap for each leveling tier.
+- `leveling`: An object containing settings for leveling level caps, including whether to restrict leveling, the level cap for each evolution stage, and the level cap for each leveling tier.
+  - `restrictLeveling`: A boolean value indicating whether to restrict leveling based on level caps.
   - `evolutionStages`: An object containing the required permission for each evolution stage.
     - `singleEvo`: The required permission for single-stage pokemon.
     - `firstStageEvo`: The required permission for first-stage evolution pokemon.
@@ -144,14 +131,29 @@ All of the configuration files for Cobbled Level Control are located in the `<ga
     - `finalStageEvo`: The required permission for final-stage evolution pokemon.
   - `tiers`: An object containing the level cap for each tier.
 
+:::tip
+Setting a permission to an empty string will allow all players to use that evolution stage, while setting it to a non-empty string will require players to have that permission in order to use that evolution stage.
+:::
+
 ### Example Configuration
 
 ```json title="<game_directory>/config/cobbled_level_control/difficulty/default.json"
 {
   "battles": {
-    "restrictBattles": false
+    "restrictBattles": false,
+    "evolutionStages": {
+      "singleEvo": "",
+      "firstStageEvo": "",
+      "secondStageEvo": "cobbled_level_control.battles.second_stage_evo",
+      "finalStageEvo": "cobbled_level_control.battles.final_stage_evo"
+    },
+    "legendary": "cobbled_level_control.battles.legendary",
+    "mythical": "cobbled_level_control.battles.mythical",
+    "ultraBeast": "cobbled_level_control.battles.ultra_beast",
+    "shiny": "cobbled_level_control.battles.shiny"
   },
   "catching": {
+    "restrictCatching": false,
     "evolutionStages": {
       "singleEvo": "",
       "firstStageEvo": "",
@@ -163,14 +165,15 @@ All of the configuration files for Cobbled Level Control are located in the `<ga
     "ultraBeast": "cobbled_level_control.catching.ultra_beast",
     "shiny": "cobbled_level_control.catching.shiny",
     "tiers": {
-      "1": 10,
-      "2": 20,
-      "3": 40,
+      "5": 100,
       "4": 80,
-      "5": 100
+      "3": 40,
+      "2": 20,
+      "1": 10
     }
   },
   "leveling": {
+    "restrictLeveling": false,
     "evolutionStages": {
       "singleEvo": "",
       "firstStageEvo": "",
@@ -178,11 +181,11 @@ All of the configuration files for Cobbled Level Control are located in the `<ga
       "finalStageEvo": "cobbled_level_control.leveling.final_stage_evo"
     },
     "tiers": {
-      "1": 10,
-      "2": 20,
-      "3": 40,
+      "5": 100,
       "4": 80,
-      "5": 100
+      "3": 40,
+      "2": 20,
+      "1": 10
     }
   }
 }
