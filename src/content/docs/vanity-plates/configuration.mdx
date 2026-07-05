@@ -64,7 +64,8 @@ The UI configuration file is `ui.json`, which contains the following fields:
   },
   "displayItems": {
     "frameItemId": "minecraft:gray_stained_glass_pane",
-    "navigationItemId": "minecraft:arrow",
+    "prevNavigationItemId": "minecraft:arrow",
+    "nextNavigationItemId": "minecraft:arrow",
     "clearItemId": "minecraft:name_tag",
     "pageItemId": "minecraft:book",
     "exitItemId": "minecraft:barrier"
@@ -105,7 +106,8 @@ The `text` section of the UI configuration file contains the following fields:
 The `displayItems` section of the UI configuration file contains the following fields:
 
 - `frameItemId`: The item that will be used as the frame for the vanity plates GUI. This should be a valid Minecraft item ID.
-- `navigationItemId`: The item that will be used for the navigation buttons (previous and next page) in the vanity plates GUI. This should be a valid Minecraft item ID.
+- `prevNavigationItemId`: The item that will be used for the previous page navigation button in the vanity plates GUI. This should be a valid Minecraft item ID.
+- `nextNavigationItemId`: The item that will be used for the next page navigation button in the vanity plates GUI. This should be a valid Minecraft item ID.
 - `clearItemId`: The item that will be used for the button that allows users to clear their assigned vanity plate prefix. This should be a valid Minecraft item ID.
 - `pageItemId`: The item that will be used for the page indicator in the vanity plates GUI. This should be a valid Minecraft item ID.
 - `exitItemId`: The item that will be used for the button that allows users to exit the vanity plates GUI. This should be a valid Minecraft item ID.
