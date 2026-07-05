@@ -33,6 +33,7 @@ The `core.json` file contains the core configuration settings for the mod. Curre
 {
   "saveIntervalTicks": 1200,
   "verboseCacheLogging": false,
+  "displayMode": "BOSSBAR",
   "queuePriorityEnabled": false,
   "queuePriorityMode": "FIFO",
   "timePriorityDirection": "SHORTEST_FIRST",
@@ -42,6 +43,7 @@ The `core.json` file contains the core configuration settings for the mod. Curre
 
 - `saveIntervalTicks`: This setting determines how often the mod saves its data to the `cache.json` file. The value is specified in ticks, where 20 ticks equal 1 second. By default, this is set to `1200`, which means the mod will save its data every 60 seconds. You can adjust this value to save more or less frequently based on your server's needs. Keep in mind that setting this value too low may cause performance issues, while setting it too high may result in more data loss in the event of a server crash, as the mod will save less frequently. The mod also saves during server shutdown to help prevent data loss, but it's important to choose a save interval that balances performance and data safety for your specific server setup.
 - `verboseCacheLogging`: This setting determines whether the mod will log detailed information about its cache operations. By default, this is set to `false`, which means that the mod will only log essential information. If you set this to `true`, the mod will log additional details about its cache operations, which can be useful for debugging or monitoring purposes. 
+- `displayMode`: This setting determines how the mod will display information about active boosts to players. The available options are `BOSSBAR`, `SIDEBAR`, and `NONE`. By default, this is set to `BOSSBAR`, which means that active boosts will be displayed in a boss bar at the top of the player's screen. If you set this to `SIDEBAR`, active boosts will be displayed in the sidebar on the right side of the player's screen. If you set this to `NONE`, no information about active boosts will be displayed to players. You can choose the display mode that best fits your server's needs and player experience.
 - `queuePriorityEnabled`: This setting determines whether the mod will use a priority system for queued boosts. By default, this is set to `false`, which means that boosts will be processed in a first-in-first-out (FIFO) order. If you set this to `true`, the mod will prioritize boosts based on the `queuePriorityMode` and `timePriorityDirection` settings.
 - `queuePriorityMode` supports `FIFO`, `MULTIPLIER`, and `TIME_REMAINING`.
 - `timePriorityDirection` supports `SHORTEST_FIRST` (default) and `LONGEST_FIRST`.
@@ -73,6 +75,7 @@ The `messages.json` file contains all of the customizable messages used by the m
 {
   "messages": {
     "prefix": "&7[&6Boosters&7]",
+    "sidebarTitle": "&6&lBoosters",
     "commandReload": "%prefix% &aReloaded the config!",
     "shinyMessages": {
       "barColor": "YELLOW",
@@ -84,7 +87,8 @@ The `messages.json` file contains all of the customizable messages used by the m
       "boostStopped": "%prefix% &aStopped the current Shiny boost!",
       "boostQueueCleared": "%prefix% &aCleared the Shiny queued boosts!",
       "boostInfo": "%prefix% &f&lMultiplier: &r&6%multiplier%x &7&l| &r&f&lTimer: &r&a%time_remaining% &7/ &a%duration%",
-      "noQueuedBoosts": "%prefix% &aThere are currently no Shiny Boosts in the queue!"
+      "noQueuedBoosts": "%prefix% &aThere are currently no Shiny Boosts in the queue!",
+      "sidebarLine": "&7%time_remaining_short2% &6Shiny &f%multiplier%x"
     },
     "catchBoostMessages": {
       "barColor": "PURPLE",
@@ -96,7 +100,8 @@ The `messages.json` file contains all of the customizable messages used by the m
       "boostStopped": "%prefix% &aStopped the current Catch boost!",
       "boostQueueCleared": "%prefix% &aCleared the Catch queued boosts!",
       "boostInfo": "%prefix% &f&lMultiplier: &r&d%multiplier%x &7&l| &r&f&lTimer: &r&a%time_remaining% &7/ &a%duration%",
-      "noQueuedBoosts": "%prefix% &aThere are currently no Catch Boosts in the queue!"
+      "noQueuedBoosts": "%prefix% &aThere are currently no Catch Boosts in the queue!",
+      "sidebarLine": "&7%time_remaining_short2% &dCatch &f%multiplier%x"
     },
     "experienceBoostMessages": {
       "barColor": "GREEN",
@@ -108,7 +113,8 @@ The `messages.json` file contains all of the customizable messages used by the m
       "boostStopped": "%prefix% &aStopped the current Experience boost!",
       "boostQueueCleared": "%prefix% &aCleared the Experience queued boosts!",
       "boostInfo": "%prefix% &f&lMultiplier: &r&a%multiplier%x &7&l| &r&f&lTimer: &r&a%time_remaining% &7/ &a%duration%",
-      "noQueuedBoosts": "%prefix% &aThere are currently no Experience Boosts in the queue!"
+      "noQueuedBoosts": "%prefix% &aThere are currently no Experience Boosts in the queue!",
+      "sidebarLine": "&7%time_remaining_short2% &aExp &f%multiplier%x"
     },
     "spawnBucketBoostMessages": {
       "barColor": "BLUE",
@@ -120,13 +126,15 @@ The `messages.json` file contains all of the customizable messages used by the m
       "boostStopped": "%prefix% &aStopped the current Spawn Bucket boost!",
       "boostQueueCleared": "%prefix% &aCleared the Spawn Bucket queued boosts!",
       "boostInfo": "%prefix% &f&lBucket: &r&b%bucket% &7&l| &r&f&lTimer: &r&a%time_remaining% &7/ &a%duration%",
-      "noQueuedBoosts": "%prefix% &aThere are currently no Spawn Bucket Boosts in the queue!"
+      "noQueuedBoosts": "%prefix% &aThere are currently no Spawn Bucket Boosts in the queue!",
+      "sidebarLine": "&7%time_remaining_short2% &b%bucket% &f%multiplier%x"
     }
   }
 }
 ```
 
 - `messages.prefix`: This is the prefix that will be used in all messages sent by the mod. You can customize this to fit the theme of your server.
+- `messages.sidebarTitle`: This is the title that will be displayed in the sidebar when showing information about active boosts. You can customize this to fit the theme of your server.
 - `messages.commandReload`: This message is sent to players when the mod's configuration is reloaded. You can customize this message to provide feedback to players when they reload the config.
 
 The rest of the messages are organized into sections for each type of booster (shiny, catch, experience, and spawn bucket). Each section contains messages related to that specific booster type, such as activation messages, error messages, and information messages. You can customize these messages to provide a unique experience for your players when they interact with boosters on your server.
@@ -141,6 +149,7 @@ The rest of the messages are organized into sections for each type of booster (s
 - `messages.<boosterType>Messages.boostQueueCleared`: This message is sent to players when the queue of boosts of this type is cleared. You can customize this message to inform players that all queued boosts of this type have been removed.
 - `messages.<boosterType>Messages.boostInfo`: This message is sent to players when they check for information about the active boost of this type. You can customize this message to display detailed information about the active boost, including the multiplier and remaining time.
 - `messages.<boosterType>Messages.noQueuedBoosts`: This message is sent to players when they check for queued boosts of this type and there are none currently in the queue. You can customize this message to inform players that there are no boosts of this type currently queued for activation.
+- `messages.<boosterType>Messages.sidebarLine`: This message is used to display information about the active boost of this type in the sidebar. You can use placeholders such as `%time_remaining_short2%`, `%multiplier%`, and `%bucket%` to dynamically display the remaining time, multiplier, and bucket type in the sidebar line.
 
 ## Permissions File
 
