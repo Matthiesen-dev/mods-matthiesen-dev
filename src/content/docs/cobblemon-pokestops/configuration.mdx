@@ -15,6 +15,8 @@ banner:
     These docs are a work in progress and may be incomplete or contain inaccuracies. (Or be for a newer unreleased version of the mod)
 ---
 
+import ReadMore from '~/components/ReadMore.astro';
+
 The cooldown time and rewards can be configured in the mod's configuration file. This allows server owners to customize the
 Pokestop experience to fit their server's needs. The configuration file can be found in the server's config directory after installing the mod.
 
@@ -24,15 +26,25 @@ Pokestop experience to fit their server's needs. The configuration file can be f
 
 ```json title="<game_directory>/config/cobblemon_pokestops/config.json"
 {
-  "enableGlobalBroadcast": false,
-  "localBroadcastRadius": 50.0,
-  "pokestopCooldownSeconds": 300,
-  "wingedstopCooldownSeconds": 300,
-  "pokeballStopCooldownSeconds": 300,
-  "healingStopCooldownSeconds": 600,
+  "broadcastSettings": {
+    "enableGlobalBroadcast": false,
+    "localBroadcastRadius": 50.0
+  },
+  "cooldowns": {
+    "pokestops": 300,
+    "wingedstops": 300,
+    "pokeballstops": 300,
+    "healingstops": 600
+  },
+  "stopRemoverConfig": {
+    "requireOp": false,
+    "permissionLevel": 2,
+    "dropsStopItem": false,
+    "confirmWindowSeconds": 5
+  },
   "extraRarities": [
     "cobblemon:master_ball",
-    "cobblemon:acient_origin_ball",
+    "cobblemon:ancient_origin_ball",
     "cobblemon:ability_capsule",
     "cobblemon:max_revive",
     "cobblemon:hyper_potion",
@@ -44,37 +56,24 @@ Pokestop experience to fit their server's needs. The configuration file can be f
 
 ## Main Config options
 
-### `enableGlobalBroadcast`
-
-If true, all players will receive a message when a Pokestop is used. If false, only players within the local broadcast radius will receive the message.
-
-### `localBroadcastRadius`
-
-The radius (in blocks) within which players will receive a message when a Pokestop is used if global broadcast is disabled.
-
-### `pokestopCooldownSeconds`
-
-The cooldown time (in seconds) for Pokestops after being used.
-
-### `wingedstopCooldownSeconds`
-
-The cooldown time (in seconds) for Wingedstops after being used.
-
-### `pokeballStopCooldownSeconds`
-
-The cooldown time (in seconds) for Pokeball Stops after being used.
-
-### `healingStopCooldownSeconds`
-
-The cooldown time (in seconds) for Healing Stops after being used.
-
-### `extraRarities`
-
-A list of additional items that defines items as "Rare" for the purpose of the Pokestop rewards. These items are used for determining the rarity of rewards given by Pokestops for usage in the rarity broadcast message.
+- **`broadcastSettings`:** This section contains the configuration options for the broadcast settings of Pokestops.
+  - **`enableGlobalBroadcast`:** Whether to enable global broadcast messages when a player interacts with a Pokestop. (Default: false)
+  - **`localBroadcastRadius`:** The radius in blocks for local broadcast messages when a player interacts with a Pokestop. (Default: 50.0)
+- **`cooldowns`:** This section contains the configuration options for the cooldown times of different types of Pokestops.
+  - **`pokestops`:** The cooldown time in seconds for regular Pokestops. (Default: 300)
+  - **`wingedstops`:** The cooldown time in seconds for WingedStops. (Default: 300)
+  - **`pokeballstops`:** The cooldown time in seconds for Pokeball Stops. (Default: 300)
+  - **`healingstops`:** The cooldown time in seconds for Healing Stops. (Default: 600)
+- **`stopRemoverConfig`:** This section contains the configuration options for the Stop Remover item.
+  - **`requireOp`:** Whether to require the player to be an operator to use the Stop Remover item. (Default: false)
+  - **`permissionLevel`:** The permission level required to use the Stop Remover item. (Default: 2)
+  - **`dropsStopItem`:** Whether the Stop Remover item drops the Pokestop item when used. (Default: false)
+  - **`confirmWindowSeconds`:** The number of seconds the player has to confirm the use of the Stop Remover item. (Default: 5)
+- **`extraRarities`:** This section contains a list of additional items that can be added to the Pokestop loot tables. These items will be added to the loot tables in addition to the default items. (Default: shown in the example above)
 
 ## LootTable Configuration
 
-The rewards given by Pokestops are determined by a loot table. The default loot table can be found in the mod's [resources directory](https://github.com/Matthiesen-dev/cobblemon-pokestops/tree/main/common/src/generated/data/cobblemon_pokestops/loot_table/gameplay), and server owners can create their own custom loot tables to further customize the rewards.
+<ReadMore>For more information on how to configure the Pokestop loot tables as well as to see the default loot table configurations, see the [Loot Tables Documentation](/cobblemon-pokestops/loot-tables/).</ReadMore>
 
 **Datapack Loot Table Locations:**
 - **PokeStop:** `/data/cobblemon_pokestops/loot_table/gameplay/pokestop_loot.json`

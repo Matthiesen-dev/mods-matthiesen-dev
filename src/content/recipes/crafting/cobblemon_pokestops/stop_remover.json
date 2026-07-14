@@ -1,0 +1,24 @@
+{
+    "name": "Stop Remover",
+    "description": "Allows the player to remove a Pokestop from the world.",
+    "modFilter": "cobblemon_pokestops",
+    "ingredients": [
+        "wooden_pickaxe",
+        {
+            "modId": "cobblemon",
+            "itemId": "poke_ball"
+        },
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+    ],
+    "resultItem": {
+        "modId": "cobblemon_pokestops",
+        "itemId": "stop_remover"
+    },
+    "resultCount": 1
+}
