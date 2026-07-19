@@ -1,0 +1,24 @@
+{
+    "name": "PC Tablet",
+    "description": "A tablet used to access the PC in Cobblemon.",
+    "modFilter": "cobblemon_tablet",
+    "ingredients": [
+        "glass",
+        "glass",
+        "glass",
+        "glass",
+        {
+            "modId": "cobblemon",
+            "itemId": "pc"
+        },
+        "glass",
+        "glass",
+        "glass",
+        "glass"
+    ],
+    "resultItem": {
+        "modId": "cobblemon_tablet",
+        "itemId": "pc_tablet"
+    },
+    "resultCount": 1
+}
