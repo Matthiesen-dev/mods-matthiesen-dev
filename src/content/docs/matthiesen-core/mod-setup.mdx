@@ -49,6 +49,31 @@ public final class ExampleModCommon extends AbstractCommonMod {
 }
 ```
 
+### Available Methods in AbstractCommonMod
+
+- `initialize()`: Called during the mod's initialization phase. Override this method while calling super to set up your mod's common logic.
+- `trackError(Throwable error)`: Tracks an error that occurs within your mod. This can be used to report errors to FastStats or other error tracking systems.
+- `getMetricContext()`: Returns the metric context for your mod, which can be used to send custom metrics to FastStats.
+- `getModId()`: Returns the mod ID of your mod.
+- `getModName()`: Returns the mod name of your mod.
+- `getLogger()`: Returns the logger instance for your mod, which can be used to log messages to the console or log files.
+- `createInfoLog(String message)`: Creates an info log message for your mod.
+- `createWarnLog(String message)`: Creates a warning log message for your mod.
+- `createErrorLog(String message)`: Creates an error log message for your mod.
+- `createErrorLog(String message, Throwable error)`: Creates an error log message with an associated throwable for your mod.
+- `getRegistryBuilder()`: Returns the registry builder for your mod, which can be used to register blocks, items, entities, and other game content in a platform-agnostic way.
+- `getPermissionsManager()`: Returns the permissions manager for your mod, which can be used to manage access to certain features or commands.
+- `getCommandsRegistryManager()`: Returns the commands registry manager for your mod, which can be used to register commands in a platform-agnostic way.
+- `getPlayerEventsManager()`: Returns the player events manager for your mod, which can be used to listen to and handle player-related events in a platform-agnostic way.
+- `getServerEventsManager()`: Returns the server events manager for your mod, which can be used to listen to and handle server-related events in a platform-agnostic way.
+- `getWebhookService()`: Returns the webhook service for your mod, which can be used to send webhooks to external services in a platform-agnostic way. (Requires Matthiesen Core Webhooks to be installed)
+- `getCommonUtils()`: Returns the common utilities for your mod, which can be used to access a variety of utility functions for common tasks.
+- `getCommonRegistry()`: Returns the common registry for your mod, which can be used to register blocks, items, entities, and other game content in a platform-agnostic way.
+- `getTextParserManager()`: Returns the text parser manager for your mod, which can be used to parse and format text in a platform-agnostic way. (Supports `vanilla` and `emberstextapi` parsers out-of-the-box)
+- `getCoreMetrics()`: Returns the core metrics for your mod, which can be used to send custom metrics to FastStats.
+- `getNetworkingManager()`: Returns the networking manager for your mod, which can be used to send and receive network packets between the client and server in a platform-agnostic way.
+- `getCreativeModeAugmentsManager()`: Returns the creative mode augments manager for your mod, which can be used to append to the creative mode tabs custom items.
+
 At this point, your mod is set up to use Matthiesen Core's core functionalities. You can now proceed to implement your mod's unique features in the common codebase, while Matthiesen Core handles the platform-specific details.
 
 See the sections on the sidebar for more information on how to implement specific features and functionalities in your mod using Matthiesen Core.
@@ -76,6 +101,23 @@ public final class ExampleModCommonClient extends AbstractCommonClientMod {
     }
 }
 ```
+
+### Available Methods in AbstractCommonClientMod
+
+- `initialize()`: Called during the client mod's initialization phase. Override this method while calling super to set up your mod's client-side logic.
+- `getModId()`: Returns the mod ID of your mod.
+- `getModName()`: Returns the mod name of your mod.
+- `getLogger()`: Returns the logger instance for your mod, which can be used to log messages to the console or log files.
+- `createInfoLog(String message)`: Creates an info log message for your mod.
+- `createWarnLog(String message)`: Creates a warning log message for your mod.
+- `createErrorLog(String message)`: Creates an error log message for your mod.
+- `createErrorLog(String message, Throwable error)`: Creates an error log message with an associated throwable for your mod.
+- `getClientEventsListeners()`: Returns Utility methods for handling client events, such as rendering, input handling, and more.
+- `getBlockOutlineManager()`: Returns the block outline manager for your mod, which can be used to manage block outlines in a platform-agnostic way.
+- `getScreenManager()`: Returns the screen manager for your mod, which can be used to manage screens and GUIs in a platform-agnostic way.
+- `getEntityRendererManager()`: Returns the entity renderer manager for your mod, which can be used to manage entity renderers in a platform-agnostic way.
+- `getHudManager()`: Returns the HUD manager for your mod, which can be used to manage HUD elements in a platform-agnostic way.
+- `getKeybindingsManager()`: Returns the keybindings manager for your mod, which can be used to manage keybindings in a platform-agnostic way.
 
 At this point, your client mod is set up to use Matthiesen Core's client-specific features. You can now proceed to implement your mod's unique client-side features in the client codebase, while Matthiesen Core handles the platform-specific details.
 
