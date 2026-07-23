@@ -1,32 +1,45 @@
-import { defineConfig } from 'astro/config';
-import starlight from '@astrojs/starlight';
-import starlightSocialIcons from './src/plugins/socialIcons';
-import { buildSidebarItems, COBBLEMON_MODS, LIBRARY_MODS, MISC_MODS } from './src/sidebar.config';
-import { HEAD_CONFIG } from './src/head.config';
+import starlight from "@astrojs/starlight";
+import { defineConfig } from "astro/config";
+import { HEAD_CONFIG } from "./src/head.config";
+import starlightSocialIcons from "./src/plugins/socialIcons";
+import {
+  buildSidebarItems,
+  COBBLEMON_MODS,
+  LIBRARY_MODS,
+  MISC_MODS,
+} from "./src/sidebar.config";
 
 // https://astro.build/config
 export default defineConfig({
-	site: 'https://mods.matthiesen.dev/',
+	site: "https://mods.matthiesen.dev/",
 	integrations: [
 		starlightSocialIcons({
-			modrinth: 'https://modrinth.com/user/Adammatthiesen',
-			maven: 'https://maven.matthiesen.dev/'
+			modrinth: "https://modrinth.com/user/Adammatthiesen",
+			maven: "https://maven.matthiesen.dev/",
 		}),
 		starlight({
 			title: "Adam Matthiesen's MC Development",
-			description: "Documentation for Adam Matthiesen's Minecraft mods and libraries.",
-			tagline: "Documentation for Adam Matthiesen's Minecraft mods and libraries.",
+			description:
+				"Documentation for Adam Matthiesen's Minecraft mods and libraries.",
+			tagline:
+				"Documentation for Adam Matthiesen's Minecraft mods and libraries.",
 			social: [
-				{ icon: 'github', label: 'GitHub', href: 'https://github.com/Matthiesen-dev' },
-				{ icon: 'discord', label: 'Discord', href: 'https://discord.gg/4ePfVRgexS' },
+				{
+					icon: "github",
+					label: "GitHub",
+					href: "https://github.com/Matthiesen-dev",
+				},
+				{
+					icon: "discord",
+					label: "Discord",
+					href: "https://discord.gg/4ePfVRgexS",
+				},
 			],
 			components: {
-				ContentPanel: './src/components/starlight/ContentPanel.astro',
-				SocialIcons: './src/components/starlight/SocialIcons.astro'
+				ContentPanel: "./src/components/starlight/ContentPanel.astro",
+				SocialIcons: "./src/components/starlight/SocialIcons.astro",
 			},
-			customCss: [
-				"./src/styles/starlight.css",
-			],
+			customCss: ["./src/styles/starlight.css"],
 			logo: {
 				src: "./src/assets/logo.png",
 			},
@@ -35,20 +48,20 @@ export default defineConfig({
 			head: HEAD_CONFIG,
 			sidebar: [
 				{
-					label: 'Introduction',
-					link: '/'
+					label: "Introduction",
+					link: "/",
 				},
 				{
-					label: 'Library Mods',
-					items: buildSidebarItems(LIBRARY_MODS)
+					label: "Libraries",
+					items: buildSidebarItems(LIBRARY_MODS),
 				},
 				{
-					label: 'Cobblemon Mods',
-					items: buildSidebarItems(COBBLEMON_MODS)
+					label: "Cobblemon Mods",
+					items: buildSidebarItems(COBBLEMON_MODS),
 				},
 				{
-					label: 'Misc Mods',
-					items: buildSidebarItems(MISC_MODS)
+					label: "Misc Mods",
+					items: buildSidebarItems(MISC_MODS),
 				},
 			],
 		}),

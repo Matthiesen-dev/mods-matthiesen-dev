@@ -2,6 +2,10 @@ import type { Mod } from "./types";
 
 export const LIBRARY_MODS: Mod[] = [
   {
+    name: "Matthiesen Core",
+    docs: "matthiesen-core"
+  },
+  {
     name: "Matthiesen Lib",
     docs: "matthiesen-lib",
   },

@@ -1,0 +1,169 @@
+---
+title: "Matthiesen Core - Developer Setup"
+description: "How to setup your development environment for Matthiesen Core."
+prev:
+  link: /matthiesen-core/
+  label: "Getting Started"
+next:
+  link: /matthiesen-core/mod-setup
+  label: "Mod Setup"
+sidebar:
+  label: Developer Setup
+  order: 2
+banner:
+  content: |
+    These docs are a work in progress and may be incomplete or contain inaccuracies. (Or be for a newer unreleased version of the mod)
+---
+
+
+import ReadMore from '~/components/ReadMore.astro';
+import MavenBadge from '~/components/MavenBadge.astro';
+
+## Adding Matthiesen Core to Your Project
+
+Matthiesen Core is available through the [Matthiesen Dev Maven](https://maven.matthiesen.dev/) repository. Follow the instructions below to add it to your Gradle project.
+
+## Prerequisites
+
+- Minecraft 1.21.1
+- Java 21 or higher
+- Fabric Loader 0.17.2+ (for Fabric)
+- NeoForge 21.1.182+ (for NeoForge)
+
+## Gradle Configuration
+
+### Step 1: Add the Repository
+
+Add the Matthiesen Dev Maven repository to your `build.gradle` or `build.gradle.kts`:
+
+```kotlin
+repositories {
+    maven("https://maven.matthiesen.dev/releases") {
+        name = "devMatthiesenMaven-releases"
+    }
+    // For Snapshot versions, also include the snapshots repository
+    maven("https://maven.matthiesen.dev/snapshots") {
+        name = "devMatthiesenMaven-snapshots"
+    }
+}
+```
+
+### Step 2: Add Version to gradle.properties
+
+Add the Matthiesen Core version to your `gradle.properties` file:
+
+```properties
+matthiesen_core_version=1.x.x
+```
+
+:::tip[Finding the Latest Version]
+Visit [Matthiesen Dev Maven](https://maven.matthiesen.dev/) to find the latest version for your platform.
+:::
+
+| Current Release Version | Current Snapshot Version |
+| ----------------------- | ------------------------ |
+| <MavenBadge repository='dev/matthiesen/matthiesen-core' settings={{ name: "matthiesen-core" }} /> | <MavenBadge repository='dev/matthiesen/matthiesen-core' settings={{ name: "matthiesen-core", color: "A844D4" }} snapshot /> |
+
+### Step 3: Add Dependencies
+
+The dependency you need depends on your project structure:
+
+#### For Common/Shared Code
+
+If you're writing multi-loader code in a common module:
+
+```kotlin
+dependencies {
+    modImplementation("dev.matthiesen:matthiesen-core-common:${property("matthiesen_core_version")}")
+}
+```
+
+#### For Fabric-Specific Code
+
+In your Fabric module:
+
+```kotlin
+dependencies {
+    modImplementation("dev.matthiesen:matthiesen-core-fabric:${property("matthiesen_core_version")}")
+}
+```
+
+#### For NeoForge-Specific Code
+
+In your NeoForge module:
+
+```kotlin
+dependencies {
+    modImplementation("dev.matthiesen:matthiesen-core-neoforge:${property("matthiesen_core_version")}")
+}
+```
+
+#### Complete Multi-Loader Example
+
+For a typical Architectury-style multi-loader setup:
+
+```kotlin
+// In common/build.gradle.kts
+dependencies {
+    modImplementation("dev.matthiesen:matthiesen-core-common:${property("matthiesen_core_version")}")
+}
+
+// In fabric/build.gradle.kts
+dependencies {
+    modImplementation("dev.matthiesen:matthiesen-core-fabric:${property("matthiesen_core_version")}")
+}
+
+// In neoforge/build.gradle.kts
+dependencies {
+    modImplementation("dev.matthiesen:matthiesen-core-neoforge:${property("matthiesen_core_version")}")
+}
+```
+
+## Declaring as a Dependency
+
+Make sure to declare Matthiesen Lib as a dependency in your mod metadata files so users know they need it.
+
+### For Fabric (fabric.mod.json)
+
+```json
+{
+  "depends": {
+    "matthiesen_core": ">=1.x.x"
+  }
+}
+```
+
+### For NeoForge (neoforge.mods.toml)
+
+```toml
+[[dependencies.yourmodid]]
+modId = "matthiesen_core"
+type = "required"
+versionRange = "[1.x.x,)"
+ordering = "AFTER"
+side = "SERVER" # or "BOTH" if your mod uses client-side features
+```
+
+## Verification
+
+After adding the dependency, sync your Gradle project. You should now be able to import Matthiesen Lib classes:
+
+```java
+import dev.matthiesen.matthiesen_core.common.AbstractCommonMod;
+```
+
+## Troubleshooting
+
+### Dependency Not Found
+
+If Gradle can't find the dependency:
+1. Verify the repository URL is correct
+2. Ensure the version exists on Maven by visiting [maven.matthiesen.dev](https://maven.matthiesen.dev/)
+3. Try invalidating caches and restarting your IDE
+
+### Version Conflicts
+
+If you encounter version conflicts:
+1. Ensure all modules use the same version of Matthiesen Lib
+2. Check that your Minecraft version is compatible (1.21.1)
+3. Verify your loader versions meet the minimum requirements

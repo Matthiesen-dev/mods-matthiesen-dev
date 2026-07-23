@@ -1,0 +1,82 @@
+---
+title: "Matthiesen Core - Mod Setup"
+description: "Getting your mod setup and running with Matthiesen Core."
+prev:
+  link: /matthiesen-core/developer-setup
+  label: "Developer Setup"
+next: false
+sidebar:
+  label: Mod Setup
+  order: 3
+banner:
+  content: |
+    These docs are a work in progress and may be incomplete or contain inaccuracies. (Or be for a newer unreleased version of the mod)
+---
+
+The following sections will guide you through setting up your mod to work with Matthiesen Core. This includes extending the necessary base classes provided by Matthiesen Core to ensure your mod integrates seamlessly with the core functionalities.
+
+## AbstractCommonMod
+
+Extend the `AbstractCommonMod` class in your common mod codebase to leverage Matthiesen Core's core functionalities. This class provides a foundation for your mod, allowing you to focus on implementing your mod's unique features while Matthiesen Core handles the platform-specific details.
+
+```java
+package com.example.mymod;
+
+import dev.matthiesen.matthiesen_core.common.AbstractCommonMod;
+import dev.matthiesen.libs.faststats.Token;
+
+public final class ExampleModCommon extends AbstractCommonMod {
+    public static final String MOD_ID = "examplemod";
+    public static final String MOD_NAME = "Example Mod";
+    public static @Token final String METRICS_TOKEN = ""; // Provided by FastStats.dev (Optional, can be null to disable metrics for your mod)
+
+    public static final ExampleModCommon INSTANCE = new ExampleModCommon();
+
+    private ExampleModCommon() {
+        super(MOD_ID, MOD_NAME);
+    }
+
+    @Override
+    public @Nullable @Token String getMetricsToken() {
+        return METRICS_TOKEN;
+    }
+
+    @Override
+    public void initialize() {
+        super.initialize();
+        createInfoLog("Initializing Example Mod Common...");
+    }
+}
+```
+
+At this point, your mod is set up to use Matthiesen Core's core functionalities. You can now proceed to implement your mod's unique features in the common codebase, while Matthiesen Core handles the platform-specific details.
+
+See the sections on the sidebar for more information on how to implement specific features and functionalities in your mod using Matthiesen Core.
+
+## AbstractCommonClientMod
+
+Extend the `AbstractCommonClientMod` class in your client mod codebase to leverage Matthiesen Core's client-specific features. This class provides a foundation for your client-side mod, allowing you to focus on implementing your mod's unique client-side features while Matthiesen Core handles the platform-specific details.
+
+```java
+package com.example.mymod.client;
+
+import dev.matthiesen.matthiesen_core.common.AbstractCommonClientMod;
+import com.example.mymod.ExampleModCommon;
+
+public final class ExampleModCommonClient extends AbstractCommonClientMod {
+    public static final ExampleModCommonClient INSTANCE = new ExampleModCommonClient();
+
+    private ExampleModCommonClient() {
+        super(ExampleModCommon.INSTANCE);
+    }
+
+    @Override
+    public void initialize() {
+        createInfoLog("Initializing Example Mod Common Client logic...");
+    }
+}
+```
+
+At this point, your client mod is set up to use Matthiesen Core's client-specific features. You can now proceed to implement your mod's unique client-side features in the client codebase, while Matthiesen Core handles the platform-specific details.
+
+See the sections on the sidebar for more information on how to implement specific client-side features and functionalities in your mod using Matthiesen Core.
