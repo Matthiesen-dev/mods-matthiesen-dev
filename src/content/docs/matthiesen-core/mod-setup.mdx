@@ -4,7 +4,9 @@ description: "Getting your mod setup and running with Matthiesen Core."
 prev:
   link: /matthiesen-core/developer-setup
   label: "Developer Setup"
-next: false
+next: 
+  link: /matthiesen-core/platform-events
+  label: "Platform Events"  
 sidebar:
   label: Mod Setup
   order: 3
@@ -66,8 +68,6 @@ public final class ExampleModCommon extends AbstractCommonMod {
 - `getRegistryBuilder()`: Returns the registry builder for your mod, which can be used to register blocks, items, entities, and other game content in a platform-agnostic way.
 - `getPermissionsManager()`: Returns the permissions manager for your mod, which can be used to manage access to certain features or commands.
 - `getCommandsRegistryManager()`: Returns the commands registry manager for your mod, which can be used to register commands in a platform-agnostic way.
-- `getPlayerEventsManager()`: Returns the player events manager for your mod, which can be used to listen to and handle player-related events in a platform-agnostic way.
-- `getServerEventsManager()`: Returns the server events manager for your mod, which can be used to listen to and handle server-related events in a platform-agnostic way.
 - `getWebhookService()`: Returns the webhook service for your mod, which can be used to send webhooks to external services in a platform-agnostic way. (Requires [Matthiesen Core Webhooks](#matthiesen-core-webhooks) to be installed)
 - `getCommonUtils()`: Returns the common utilities for your mod, which can be used to access a variety of utility functions for common tasks.
 - `getCommonRegistry()`: Returns the common registry for your mod, which can be used to register blocks, items, entities, and other game content in a platform-agnostic way.

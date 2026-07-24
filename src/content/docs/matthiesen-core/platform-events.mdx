@@ -1,0 +1,307 @@
+---
+title: "Matthiesen Core - Platform Events"
+description: "Understanding and utilizing platform events in Matthiesen Core for mod development."
+prev:
+  link: /matthiesen-core/mod-setup
+  label: "Mod Setup"
+next: false
+sidebar:
+  label: Platform Events
+  order: 4
+tableOfContents:
+  minHeadingLevel: 2
+  maxHeadingLevel: 5
+banner:
+  content: |
+    These docs are a work in progress and may be incomplete or contain inaccuracies. (Or be for a newer unreleased version of the mod)
+---
+
+import ReadMore from '~/components/ReadMore.astro';
+
+Matthiesen Core provides a robust event system that allows mod developers to hook into various platform events. This enables mods to respond to specific actions or changes within the game environment, enhancing interactivity and functionality.
+
+## Platform Events
+
+Matthiesen Core defines several server-side events that mods can listen to. These events are crucial for managing server behavior and responding to changes in the game state.
+
+```java title="ExampleModServerEvents.java"
+package com.example.mymod;
+
+import dev.matthiesen.matthiesen_core.common.api.events.PlatformEvents;
+import dev.matthiesen.matthiesen_core.common.api.events.EventObservable;
+import dev.matthiesen.matthiesen_core.common.api.events.server.ServerEvent;
+import net.minecraft.server.MinecraftServer;
+
+public class ExampleModServerEvents {
+    private static volatile EventObservable<ServerEvent.Started> serverStartedObservable;
+    private static volatile EventObservable<ServerEvent.Stopping> serverStoppingObservable;
+
+    public static void registerEvents() {
+        serverStartedObservable = PlatformEvents.SERVER_STARTED.subscribe((MinecraftServer server) -> {
+            // Logic to execute when the server is starting
+        });
+        serverStoppingObservable = PlatformEvents.SERVER_STOPPING.subscribe((MinecraftServer server) -> {
+            // Logic to execute when the server is starting
+        });
+    }
+
+    public static void teardownEvents() {
+        if (serverStartedObservable != null) {
+            serverStartedObservable.unsubscribe(ExampleModServerEvents::onServerStarted);
+            serverStartedObservable = null;
+        }
+        if (serverStoppingObservable != null) {
+            serverStoppingObservable.unsubscribe(ExampleModServerEvents::onServerStopping);
+            serverStoppingObservable = null;
+        }
+    }
+}
+```
+
+### Server Lifecycle Events
+
+Events that occur during the server's lifecycle, allowing mods to respond to server state changes.
+
+#### SERVER_STARTING
+
+Triggered when the server is starting up, before it has fully initialized.
+
+```java title="ServerStartingEvent.java"
+PlatformEvents.SERVER_STARTING.subscribe((MinecraftServer server) -> {
+    // Logic to execute when the server is starting
+});
+```
+
+#### SERVER_STARTED
+
+Triggered when the server has fully started and is ready to accept connections.
+
+```java title="ServerStartedEvent.java"
+PlatformEvents.SERVER_STARTED.subscribe((MinecraftServer server) -> {
+    // Logic to execute when the server has started
+});
+```
+
+#### SERVER_STOPPING
+
+Triggered when the server is in the process of stopping, allowing for cleanup or saving state.
+
+```java title="ServerStoppingEvent.java"
+PlatformEvents.SERVER_STOPPING.subscribe((MinecraftServer server) -> {
+    // Logic to execute when the server is stopping
+});
+```
+
+#### SERVER_STOPPED
+
+Triggered when the server has fully stopped, allowing for final cleanup or resource deallocation.
+
+```java title="ServerStoppedEvent.java"
+PlatformEvents.SERVER_STOPPED.subscribe((MinecraftServer server) -> {
+    // Logic to execute when the server has stopped
+});
+```
+
+#### SERVER_RELOAD
+
+Triggered when the server is reloading its configuration or resources, allowing for dynamic updates without a full restart.
+
+```java title="ServerReloadEvent.java"
+PlatformEvents.SERVER_RELOAD.subscribe(() -> {
+    // Logic to execute when the server is reloading
+});
+```
+
+### Server Tick Events
+
+Events that occur on each server tick, allowing for periodic updates or checks.
+
+#### SERVER_START_TICK
+
+Triggered at the start of each server tick, allowing for periodic updates or checks.
+
+```java title="ServerStartTickEvent.java"
+PlatformEvents.SERVER_START_TICK.subscribe((MinecraftServer server) -> {
+    // Logic to execute at the start of each server tick
+});
+```
+
+#### SERVER_END_TICK
+
+Triggered at the end of each server tick, allowing for periodic updates or checks.
+
+```java title="ServerEndTickEvent.java"
+PlatformEvents.SERVER_END_TICK.subscribe((MinecraftServer server) -> {
+    // Logic to execute at the end of each server tick
+});
+```
+
+### Player Connection Events
+
+Events related to player connections, allowing for custom behavior when players join or leave the server.
+
+#### PLAYER_JOIN
+
+Triggered when a player joins the server, allowing for welcome messages or initialization logic.
+
+```java title="PlayerJoinEvent.java"
+PlatformEvents.PLAYER_JOIN.subscribe((ServerPlayer player) -> {
+    // Logic to execute when a player joins the server
+});
+```
+
+#### PLAYER_LEAVE
+
+Triggered when a player leaves the server, allowing for cleanup or saving player state.
+
+```java title="PlayerLeaveEvent.java"
+PlatformEvents.PLAYER_LEAVE.subscribe((ServerPlayer player) -> {
+    // Logic to execute when a player leaves the server
+});
+```
+
+### Player Interaction Events
+
+Events related to player interactions with items and blocks, allowing for custom behavior or effects.
+
+#### PLAYER_USE_ITEM
+
+Triggered when a player uses an item, allowing for custom behavior or effects.
+
+```java title="PlayerUseItemEvent.java"
+import net.minecraft.world.InteractionResult;
+
+PlatformEvents.PLAYER_USE_ITEM.subscribe((ServerPlayer player, Level level, InteractionHand hand) -> {
+    return InteractionResult.PASS; // Logic to execute when a player uses an item
+});
+```
+
+#### PLAYER_USE_BLOCK
+
+Triggered when a player interacts with a block, allowing for custom behavior or effects.
+
+```java title="PlayerUseBlockEvent.java"
+import net.minecraft.world.InteractionResult;
+
+PlatformEvents.PLAYER_USE_BLOCK.subscribe((ServerPlayer player, Level level, InteractionHand hand, BlockPos pos) -> {
+    return InteractionResult.PASS; // Logic to execute when a player interacts with a block
+});
+```
+
+## Platform Client Events
+
+Events that occur on the client side, allowing for custom behavior or effects in response to client actions.
+
+Similar to server events, client events can be subscribed to in order to execute logic when certain client-side actions occur. These events are part of the `PlatformClientEvents` class.
+
+```java title="Example Import for Client Events Class"
+import dev.matthiesen.matthiesen_core.common.api.events.PlatformClientEvents;
+```
+
+### Client Lifecycle Events
+
+#### CLIENT_STOPPING
+
+Triggered when the client is stopping, allowing for cleanup or saving state.
+
+```java title="ClientStoppingEvent.java"
+PlatformClientEvents.CLIENT_STOPPING.subscribe(() -> {
+    // Logic to execute when the client is stopping
+});
+```
+
+#### CLIENT_END_TICK
+
+Triggered at the end of each client tick, allowing for periodic updates or checks.
+
+```java title="ClientEndTickEvent.java"
+PlatformClientEvents.CLIENT_END_TICK.subscribe(() -> {
+    // Logic to execute at the end of each client tick
+});
+```
+
+### Client Render Events
+
+#### HUD_REGISTRATION
+
+Triggered when the HUD is being registered, allowing for custom HUD elements to be added.
+
+:::caution[Internal Event]
+This event is intended for internal use by Matthiesen Core and has dedicated methods for registering HUD elements. See notes below for more information on how to register HUD elements.
+:::
+
+```java title="HudRegistrationEvent.java"
+import dev.matthiesen.matthiesen_core.common.api.client.hud.HudRegistrar;
+
+PlatformClientEvents.HUD_REGISTRATION.subscribe((HudRegistrar registrar) -> {
+    // Logic to execute when the HUD is being registered
+});
+```
+
+##### Registering HUD Elements
+
+There is two dedicated methods for registering HUD elements, which are:
+
+```java title="Registering HUD Elements"
+import dev.matthiesen.matthiesen_core.common.api.PlatformClientEvents;
+
+/**
+ * Registers a HUD layer above all others.
+ */
+PlatformClientEvents.registerHudLayer(ResourceLocation key, LayerDraw.layer layer);
+
+/**
+ * Registers a HUD layer with explicit ordering metadata.
+ */
+PlatformClientEvents.registerHudLayer(HudOrdering ordering, ResourceLocation other, 
+                                      ResourceLocation key, LayeredDraw.Layer layer);
+```
+
+#### BLOCK_HIGHLIGHT
+
+Triggered when a block is highlighted, allowing for custom behavior or effects.
+
+```java title="BlockHighlightEvent.java"
+import dev.matthiesen.matthiesen_core.common.api.client.BlockOutlineContext;
+import net.minecraft.world.InteractionResult;
+
+PlatformClientEvents.BLOCK_HIGHLIGHT.subscribe((BlockOutlineContext context) -> {
+    // Logic to execute when a block is highlighted
+    return InteractionResult.PASS; // Return the appropriate InteractionResult based on your logic
+});
+```
+
+### Resource Pack Events
+
+#### RESOURCE_PACK_REGISTRATION
+
+Triggered when resource packs are being registered, allowing for custom resource packs to be added.
+
+:::caution[Internal Event]
+This event is intended for internal use by Matthiesen Core and has dedicated methods for registering resource packs. See notes below for more information on how to register resource packs.
+:::
+
+```java title="ResourcePackRegistrationEvent.java"
+import dev.matthiesen.matthiesen_core.common.api.client.ResourcePackRegistrar;
+
+PlatformClientEvents.RESOURCE_PACK_REGISTRATION.subscribe((ResourcePackRegistrar registrar) -> {
+    // Logic to execute when resource packs are being registered
+});
+```
+
+##### Registering Resource Packs
+
+There is three dedicated methods for registering resource packs, which are:
+
+```java title="Registering Resource Packs"
+import dev.matthiesen.matthiesen_core.common.api.PlatformClientEvents;
+import dev.matthiesen.matthiesen_core.common.api.platform.registry.ResourcePackDef;
+import dev.matthiesen.matthiesen_core.common.api.platform.registry.ResourcePackActivationBehaviour;
+import net.minecraft.network.chat.Component;
+
+PlatformClientEvents.registerResourcePack(ResourcePackDef resourcePackDef);
+PlatformClientEvents.registerResourcePack(String modId, String id, String displayName, 
+                                          ResourcePackActivationBehaviour activationBehaviour);
+PlatformClientEvents.registerResourcePack(String modId, String id, Component displayName, 
+                                          ResourcePackActivationBehaviour activationBehaviour);
+```
