@@ -1,7 +1,40 @@
 ---
 title: "Block Entity Registry"
-description: ""
+description: "Convenience base class for registries that register block entities in a platform-agnostic way."
 banner:
   content: |
     These docs are a work in progress and may be incomplete or contain inaccuracies. (Or be for a newer unreleased version of the mod)
 ---
+
+Matthiesen Core provides a convenience base class for registering block entities in a platform-agnostic way. This allows mod developers to define and register blocks entities without worrying about the underlying platform-specific implementation details.
+
+```java title="ModBlockEntityRegistry.java"
+package com.example.mymod.registry;
+
+import dev.matthiesen.matthiesen_core.common.registry.AbstractBlockEntityRegistry;
+
+public final class ModBlockEntityRegistry extends AbstractBlockEntityRegistry {
+  private static final ModBlockEntityRegistry INSTANCE = new ModBlockEntityRegistry();
+  
+  private ModBlockEntityRegistry() {
+    super("example_mod"); // Replace with your mod's ID
+  }
+
+  /**
+   * Initializes the block entity registry. This method should be called during the mod's initialization phase.
+   */
+  public static void init() {}
+
+  public static final Supplier<BlockEntityType<ExampleBlockEntity>> EXAMPLE_BLOCK_ENTITY = INSTANCE.register(
+    "example_block_entity",
+    () -> buildType(ExampleBlockEntity::new, ModBlockRegistry.EXAMPLE_BLOCK)
+  );
+
+  private static <T extends BlockEntity> BlockEntityType<T> buildType(
+    BiFunction<BlockPos, BlockState, T> entityFactory,
+    Supplier<? extends Block> supplier
+  ) {
+    return BlockEntityType.Builder.of(entityFactory::apply, supplier.get()).build(null);
+  }
+}
+```

@@ -1,7 +1,48 @@
 ---
 title: "Command Registry"
-description: ""
+description: "Convenience base class for registries that register commands in a platform-agnostic way."
 banner:
   content: |
     These docs are a work in progress and may be incomplete or contain inaccuracies. (Or be for a newer unreleased version of the mod)
 ---
+
+Matthiesen Core provides a convenience base class for registering commands in a platform-agnostic way. This allows mod developers to define and register commands without worrying about the underlying platform-specific implementation details.
+
+```java title="ModCommandRegistry.java"
+package com.example.mymod.registry;
+
+import dev.matthiesen.matthiesen_core.common.registry.AbstractCommandRegistry;
+
+public final class ModCommandRegistry extends AbstractCommandRegistry {
+  private static final ModCommandRegistry INSTANCE = new ModCommandRegistry();
+  
+  private ModCommandRegistry() {
+    super();
+  }
+
+  /**
+   * Initializes the block registry. This method should be called during the mod's initialization phase.
+   */
+  public static void init() {
+    INSTANCE.register(MyExampleCommand.INSTANCE);
+  }
+
+  public static class MyExampleCommand implements CoreCommand {
+    public static final MyExampleCommand INSTANCE = new MyExampleCommand();
+
+    public MyExampleCommand() {
+    }
+
+    @Override
+    public void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registry, Commands.CommandSelection context) {
+      dispatcher.register(
+        Commands.literal("example_command")
+          .executes(context -> {
+            context.getSource().sendSuccess(Component.literal("Hello from example command!"), false);
+            return 1;
+          })
+      );
+    }
+  }
+}
+```
