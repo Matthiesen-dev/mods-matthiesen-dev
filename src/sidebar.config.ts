@@ -1,10 +1,9 @@
+import { globSync } from "node:fs";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
 import type { Mod } from "./types";
 
 export const LIBRARY_MODS: Mod[] = [
-  {
-    name: "Matthiesen Core",
-    docs: "matthiesen-core"
-  },
   {
     name: "Matthiesen Lib",
     docs: "matthiesen-lib",
@@ -110,4 +109,76 @@ export function buildSidebarItems(mods: Mod[]) {
       : {}),
     items: [{ autogenerate: { directory: mod.docs, collapsed: true } }],
   }));
+}
+
+function removeLeadingSlash(str: string): string {
+  return str.startsWith("/") ? str.slice(1) : str;
+}
+
+function removeTrailingSlash(str: string): string {
+  return str.endsWith("/") ? str.slice(0, -1) : str;
+}
+
+function makeDocsLink(str: string): string {
+  str = str.replace(/\\/g, "/").replace(/\.mdx$/, "").replace(/index$/, "");
+  // Remove trailing slash if present
+  str = removeTrailingSlash(str);
+  // Remove leading slash if present
+  return removeLeadingSlash(str);
+}
+
+function prettyFolderName(str: string): string {
+  return str.replace(/-/g, " ").replace(/\b\w/g, (char) => char.toUpperCase());
+}
+
+export function buildSidebarFromGlob(mod: Mod) {
+  const dir = path.dirname(fileURLToPath(import.meta.url));
+  const contentDocsBase = path.join(dir, "./content/docs/");
+  const modBase = path.join(contentDocsBase, mod.docs);
+  const pattern = `${modBase}/**/*.mdx`;
+  const files = globSync(pattern);
+
+  const rootItems: string[] = [];
+  const folderMap = new Map<string, string[]>();
+
+  for (const file of files) {
+    const relativePath = path.relative(contentDocsBase, file);
+    const link = makeDocsLink(relativePath);
+    const relToMod = path.relative(modBase, file);
+    const parts = relToMod.split(path.sep);
+
+    if (parts.length === 1) {
+      rootItems.push(link);
+    } else {
+      const folder = parts[0];
+      const existing = folderMap.get(folder);
+      if (existing) {
+        existing.push(link);
+      } else {
+        folderMap.set(folder, [link]);
+      }
+    }
+  }
+
+  const folderGroups = Array.from(folderMap.entries()).map(
+    ([folder, folderItems]) => ({
+      label: prettyFolderName(folder),
+      collapsed: true as const,
+      items: folderItems,
+    })
+  );
+
+  return {
+    label: mod.name,
+    collapsed: true,
+    ...(mod.badge
+      ? {
+          badge:
+            typeof mod.badge === "string"
+              ? { text: mod.badge, variant: "tip" as const }
+              : mod.badge,
+        }
+      : {}),
+    items: [...rootItems, ...folderGroups],
+  };
 }

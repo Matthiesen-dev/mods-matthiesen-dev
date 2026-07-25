@@ -3,6 +3,7 @@ import { defineConfig } from "astro/config";
 import { HEAD_CONFIG } from "./src/head.config";
 import starlightSocialIcons from "./src/plugins/socialIcons";
 import {
+  buildSidebarFromGlob,
   buildSidebarItems,
   COBBLEMON_MODS,
   LIBRARY_MODS,
@@ -53,7 +54,13 @@ export default defineConfig({
 				},
 				{
 					label: "Libraries",
-					items: buildSidebarItems(LIBRARY_MODS),
+          items: [
+            buildSidebarFromGlob({
+              name: "Matthiesen Core",
+              docs: "matthiesen-core"
+            }),
+            ...buildSidebarItems(LIBRARY_MODS),
+					],
 				},
 				{
 					label: "Cobblemon Mods",
