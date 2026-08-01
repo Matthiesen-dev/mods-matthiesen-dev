@@ -1,9 +1,72 @@
 ---
 title: "Command Builder"
-description: ""
+description: "Fluent helper for building Brigadier command trees in a more readable way."
 banner:
   content: |
     These docs are a work in progress and may be incomplete or contain inaccuracies. (Or be for a newer unreleased version of the mod)
 ---
 
-TODO
+This builder is intended to reduce the amount of nested `Commands.literal(...)` and `Commands.argument(...)` calls needed when registering complex command hierarchies. It wraps a root `LiteralArgumentBuilder` and exposes a compact API for attaching requirements, execution handlers, nested literals, and arguments.
+
+:::note
+This example is from the [Cobbled Level Control](/cobbled-level-control) mod, which uses the `CommandBuilder` to register its commands. The `register` method is called from the mod's `onRegisterCommands` event handler.
+:::
+
+```java title="ExampleCommand.java"
+
+public class ExampleCommand {
+  public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registry, Commands.CommandSelection context) {
+    dispatcher.register(
+      new CommandBuilder("level-control")
+        .requires(src -> PermissionHelpers.checkPermission(src, PermissionHelpers.COMMAND_ROOT_PERMISSION))
+        .then("reload", reload -> reload
+          .requires(src -> PermissionHelpers.checkPermission(src, PermissionHelpers.COMMAND_RELOAD_PERMISSION))
+          .executes(this::reload)
+        )
+        .then("level-up", levelUp -> levelUp
+          .requires(src -> PermissionHelpers.checkPermission(src, PermissionHelpers.COMMAND_LEVEL_UP_PERMISSION))
+          .then(Commands.argument("player", ServerUserArgument.playerArg())
+            .then(Commands.argument("module", StringArgumentType.string())
+              .suggests(modulesProvider())
+              .executes(this::levelUp)
+            )
+          )
+        )
+        .then("set-difficulty", setDifficulty -> setDifficulty
+          .requires(src -> PermissionHelpers.checkPermission(src, PermissionHelpers.COMMAND_SET_DIFFICULTY_PERMISSION))
+          .then(Commands.argument("player", ServerUserArgument.playerArg())
+            .then(Commands.argument("difficulty", StringArgumentType.string())
+              .suggests((_ctx, builder) -> {
+                var diffNames = CobbledLevelControl.INSTANCE.getConfigManager().getMainConfig().difficulties;
+                for (var difficulty : diffNames) {
+                  builder.suggest(difficulty);
+                }
+                return builder.buildFuture();
+              })
+              .executes(this::setDifficulty)
+            )
+          )
+        )
+        .then("set-level", setLevel -> setLevel
+          .requires(src -> PermissionHelpers.checkPermission(src, PermissionHelpers.COMMAND_SET_LEVEL_PERMISSION))
+          .then(Commands.argument("player", ServerUserArgument.playerArg())
+            .then(Commands.argument("level", IntegerArgumentType.integer(1))
+              .executes(this::setLevel)
+            )
+          )
+        )
+        .then("status", status -> status
+          .requires(src -> PermissionHelpers.checkPermission(src, PermissionHelpers.COMMAND_STATUS_PERMISSION))
+          .executes(this::action)
+        )
+        .then("status-other", statusOther -> statusOther
+          .requires(src -> PermissionHelpers.checkPermission(src, PermissionHelpers.COMMAND_STATUS_OTHER_PERMISSION))
+          .then(Commands.argument("player", ServerUserArgument.playerArg())
+            .executes(this::action)
+          )
+        )
+        .build()
+    );
+  }
+}
+```
