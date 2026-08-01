@@ -1,9 +1,72 @@
 ---
 title: "Chat Table Builder"
-description: ""
+description: "Utility class for building chat tables. This is used to create tables in chat with a fluent API."
 banner:
   content: |
     These docs are a work in progress and may be incomplete or contain inaccuracies. (Or be for a newer unreleased version of the mod)
 ---
 
-TODO
+Utility class for building chat tables. This is used to create tables in chat with a fluent API. It provides methods for adding rows and columns, and it will automatically handle the formatting of the table.
+
+```java title="ChatTableExample.java"
+package com.example.chat;
+
+import dev.matthiesen.matthiesen_core.common.utility.chat.ChatTableBuilder;
+import net.minecraft.server.level.ServerPlayer;
+
+public class ChatTableExample {
+  public static void sendToPlayer(ServerPlayer player) {
+    ChatTableBuilder tableBuilder = new ChatTableBuilder("Example Table");
+
+    tableBuilder.addSection("Section 1");
+
+    tableBuilder.addRow("Row 1", "Value 1");
+    tableBuilder.addRow("Row 2", "Value 2");
+
+    tableBuilder.addSection("Section 2");
+
+    tableBuilder.addRow("Row 3", "Value 3");
+    tableBuilder.addRow("Row 4", "Value 4");
+
+    player.sendSystemMessage(tableBuilder.build());
+  }
+}
+
+```
+
+## Custom Formatting Settings
+
+ChatTableBuilder also allows you to customize the formatting of the table. You can set the column widths, row heights, and other formatting options.
+
+```java title="ChatTableExample.java"
+package com.example.chat;
+
+import dev.matthiesen.matthiesen_core.common.utility.chat.ChatTableBuilder;
+import net.minecraft.ChatFormatting;
+import net.minecraft.server.level.ServerPlayer;
+
+public class ChatTableExample {
+  public static void sendToPlayer(ServerPlayer player) {
+    ChatTableBuilder tableBuilder = new ChatTableBuilder("Example Table", getCustomFormatting());
+
+    tableBuilder.addSection("Section 1");
+
+    tableBuilder.addRow("Row 1", "Value 1");
+    tableBuilder.addRow("Row 2", "Value 2");
+
+    player.sendSystemMessage(tableBuilder.build());
+  }
+
+  public static ChatTableBuilder.Formatting getCustomFormatting() {
+    ChatFormatting title = ChatFormatting.GOLD;
+    ChatFormatting sectionLabel = ChatFormatting.AQUA;
+    ChatFormatting rowMark = ChatFormatting.DARK_GRAY;
+    ChatFormatting rowKey = ChatFormatting.YELLOW;
+    ChatFormatting rowSeparator = ChatFormatting.GRAY;
+    ChatFormatting rowValue = ChatFormatting.WHITE;
+
+    return new ChatTableBuilder.Formatting(title, sectionLabel, rowMark, rowKey, rowSeparator, rowValue);
+  }
+}
+
+```
