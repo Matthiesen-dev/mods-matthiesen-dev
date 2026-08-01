@@ -37,21 +37,21 @@ public class ExampleModServerEvents {
     private static volatile EventObservable<ServerEvent.Stopping> serverStoppingObservable;
 
     public static void registerEvents() {
-        serverStartedObservable = PlatformEvents.SERVER_STARTED.subscribe((MinecraftServer server) -> {
+        serverStartedObservable = PlatformEvents.SERVER_STARTED.subscribe((ServerEvent.Started event) -> {
             // Logic to execute when the server is starting
         });
-        serverStoppingObservable = PlatformEvents.SERVER_STOPPING.subscribe((MinecraftServer server) -> {
-            // Logic to execute when the server is starting
+        serverStoppingObservable = PlatformEvents.SERVER_STOPPING.subscribe((ServerEvent.Stopping event) -> {
+            // Logic to execute when the server is stopping
         });
     }
 
     public static void teardownEvents() {
         if (serverStartedObservable != null) {
-            serverStartedObservable.unsubscribe(ExampleModServerEvents::onServerStarted);
+            serverStartedObservable.unsubscribe();
             serverStartedObservable = null;
         }
         if (serverStoppingObservable != null) {
-            serverStoppingObservable.unsubscribe(ExampleModServerEvents::onServerStopping);
+            serverStoppingObservable.unsubscribe();
             serverStoppingObservable = null;
         }
     }
@@ -67,7 +67,7 @@ Events that occur during the server's lifecycle, allowing mods to respond to ser
 Triggered when the server is starting up, before it has fully initialized.
 
 ```java title="ServerStartingEvent.java"
-PlatformEvents.SERVER_STARTING.subscribe((MinecraftServer server) -> {
+PlatformEvents.SERVER_STARTING.subscribe((ServerEvent.Starting event) -> {
     // Logic to execute when the server is starting
 });
 ```
@@ -77,7 +77,7 @@ PlatformEvents.SERVER_STARTING.subscribe((MinecraftServer server) -> {
 Triggered when the server has fully started and is ready to accept connections.
 
 ```java title="ServerStartedEvent.java"
-PlatformEvents.SERVER_STARTED.subscribe((MinecraftServer server) -> {
+PlatformEvents.SERVER_STARTED.subscribe((ServerEvent.Started event) -> {
     // Logic to execute when the server has started
 });
 ```
@@ -87,7 +87,7 @@ PlatformEvents.SERVER_STARTED.subscribe((MinecraftServer server) -> {
 Triggered when the server is in the process of stopping, allowing for cleanup or saving state.
 
 ```java title="ServerStoppingEvent.java"
-PlatformEvents.SERVER_STOPPING.subscribe((MinecraftServer server) -> {
+PlatformEvents.SERVER_STOPPING.subscribe((ServerEvent.Stopping event) -> {
     // Logic to execute when the server is stopping
 });
 ```
@@ -97,7 +97,7 @@ PlatformEvents.SERVER_STOPPING.subscribe((MinecraftServer server) -> {
 Triggered when the server has fully stopped, allowing for final cleanup or resource deallocation.
 
 ```java title="ServerStoppedEvent.java"
-PlatformEvents.SERVER_STOPPED.subscribe((MinecraftServer server) -> {
+PlatformEvents.SERVER_STOPPED.subscribe((ServerEvent.Stopped event) -> {
     // Logic to execute when the server has stopped
 });
 ```
@@ -107,7 +107,7 @@ PlatformEvents.SERVER_STOPPED.subscribe((MinecraftServer server) -> {
 Triggered when the server is reloading its configuration or resources, allowing for dynamic updates without a full restart.
 
 ```java title="ServerReloadEvent.java"
-PlatformEvents.SERVER_RELOAD.subscribe(() -> {
+PlatformEvents.SERVER_RELOAD.subscribe((ServerEvent.Reload event) -> {
     // Logic to execute when the server is reloading
 });
 ```
@@ -121,7 +121,7 @@ Events that occur on each server tick, allowing for periodic updates or checks.
 Triggered at the start of each server tick, allowing for periodic updates or checks.
 
 ```java title="ServerStartTickEvent.java"
-PlatformEvents.SERVER_START_TICK.subscribe((MinecraftServer server) -> {
+PlatformEvents.SERVER_START_TICK.subscribe((ServerEvent.StartTick event) -> {
     // Logic to execute at the start of each server tick
 });
 ```
@@ -131,8 +131,43 @@ PlatformEvents.SERVER_START_TICK.subscribe((MinecraftServer server) -> {
 Triggered at the end of each server tick, allowing for periodic updates or checks.
 
 ```java title="ServerEndTickEvent.java"
-PlatformEvents.SERVER_END_TICK.subscribe((MinecraftServer server) -> {
+PlatformEvents.SERVER_END_TICK.subscribe((ServerEvent.EndTick event) -> {
     // Logic to execute at the end of each server tick
+});
+```
+
+#### WORLD_START_TICK
+
+Triggered at the start of each world tick, allowing for periodic updates or checks specific to a world.
+
+```java title="WorldStartTickEvent.java"
+PlatformEvents.WORLD_START_TICK.subscribe((WorldEvent.StartTick event) -> {
+    // Logic to execute at the start of each world tick
+});
+```
+
+#### WORLD_END_TICK
+
+Triggered at the end of each world tick, allowing for periodic updates or checks specific to a world.
+
+```java title="WorldEndTickEvent.java"
+PlatformEvents.WORLD_END_TICK.subscribe((WorldEvent.EndTick event) -> {
+    // Logic to execute at the end of each world tick
+});
+```
+
+### Server Chat Events
+
+Events related to server chat, allowing for custom behavior or moderation of chat messages.
+
+#### SERVER_CHAT
+
+Triggered when a chat message is sent on the server, allowing for moderation or custom behavior.
+
+```java title="ServerChatEvent.java"
+PlatformEvents.SERVER_CHAT.subscribe((ServerEvent.Chat event) -> {
+    // Logic to execute when a chat message is sent on the server
+    return false; // Return true to cancel the chat message, false to allow it
 });
 ```
 
@@ -145,7 +180,7 @@ Events related to player connections, allowing for custom behavior when players 
 Triggered when a player joins the server, allowing for welcome messages or initialization logic.
 
 ```java title="PlayerJoinEvent.java"
-PlatformEvents.PLAYER_JOIN.subscribe((ServerPlayer player) -> {
+PlatformEvents.PLAYER_JOIN.subscribe((PlayerEvent.Join event) -> {
     // Logic to execute when a player joins the server
 });
 ```
@@ -155,8 +190,32 @@ PlatformEvents.PLAYER_JOIN.subscribe((ServerPlayer player) -> {
 Triggered when a player leaves the server, allowing for cleanup or saving player state.
 
 ```java title="PlayerLeaveEvent.java"
-PlatformEvents.PLAYER_LEAVE.subscribe((ServerPlayer player) -> {
+PlatformEvents.PLAYER_LEAVE.subscribe((PlayerEvent.Leave event) -> {
     // Logic to execute when a player leaves the server
+});
+```
+
+### Player Tick Events
+
+Events that occur on each player tick, allowing for periodic updates or checks specific to a player.
+
+#### PLAYER_PRE_TICK
+
+Triggered before each player tick, allowing for periodic updates or checks specific to a player.
+
+```java title="PlayerPreTickEvent.java"
+PlatformEvents.PLAYER_PRE_TICK.subscribe((PlayerEvent.PreTick event) -> {
+    // Logic to execute before each player tick
+});
+```
+
+#### PLAYER_END_TICK
+
+Triggered at the end of each player tick, allowing for periodic updates or checks specific to a player.
+
+```java title="PlayerEndTickEvent.java"
+PlatformEvents.PLAYER_END_TICK.subscribe((PlayerEvent.EndTick event) -> {
+    // Logic to execute at the end of each player tick
 });
 ```
 
@@ -205,8 +264,18 @@ import dev.matthiesen.matthiesen_core.common.api.events.PlatformClientEvents;
 Triggered when the client is stopping, allowing for cleanup or saving state.
 
 ```java title="ClientStoppingEvent.java"
-PlatformClientEvents.CLIENT_STOPPING.subscribe(() -> {
+PlatformClientEvents.CLIENT_STOPPING.subscribe((ClientEvent.Stopping event) -> {
     // Logic to execute when the client is stopping
+});
+```
+
+#### CLIENT_PRE_TICK
+
+Triggered before each client tick, allowing for periodic updates or checks.
+
+```java title="ClientPreTickEvent.java"
+PlatformClientEvents.CLIENT_PRE_TICK.subscribe((ClientEvent.PreTick event) -> {
+    // Logic to execute before each client tick
 });
 ```
 
@@ -215,7 +284,7 @@ PlatformClientEvents.CLIENT_STOPPING.subscribe(() -> {
 Triggered at the end of each client tick, allowing for periodic updates or checks.
 
 ```java title="ClientEndTickEvent.java"
-PlatformClientEvents.CLIENT_END_TICK.subscribe(() -> {
+PlatformClientEvents.CLIENT_END_TICK.subscribe((ClientEvent.EndTick event) -> {
     // Logic to execute at the end of each client tick
 });
 ```
@@ -233,7 +302,7 @@ This event is intended for internal use by Matthiesen Core and has dedicated met
 ```java title="HudRegistrationEvent.java"
 import dev.matthiesen.matthiesen_core.common.api.client.hud.HudRegistrar;
 
-PlatformClientEvents.HUD_REGISTRATION.subscribe((HudRegistrar registrar) -> {
+PlatformClientEvents.HUD_REGISTRATION.subscribe((ClientEvent.HudRegistration event) -> {
     // Logic to execute when the HUD is being registered
 });
 ```
@@ -265,7 +334,7 @@ Triggered when a block is highlighted, allowing for custom behavior or effects.
 import dev.matthiesen.matthiesen_core.common.api.client.BlockOutlineContext;
 import net.minecraft.world.InteractionResult;
 
-PlatformClientEvents.BLOCK_HIGHLIGHT.subscribe((BlockOutlineContext context) -> {
+PlatformClientEvents.BLOCK_HIGHLIGHT.subscribe((ClientEvent.BlockHighlight event) -> {
     // Logic to execute when a block is highlighted
     return InteractionResult.PASS; // Return the appropriate InteractionResult based on your logic
 });
