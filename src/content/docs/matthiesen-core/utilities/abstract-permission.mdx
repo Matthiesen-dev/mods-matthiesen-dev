@@ -1,9 +1,58 @@
 ---
 title: "Abstract Permission"
-description: ""
+description: "Abstract base class for permissions that provides common functionality for generating the permission's identifier and literal string based on the mod ID and permission node."
 banner:
   content: |
     These docs are a work in progress and may be incomplete or contain inaccuracies. (Or be for a newer unreleased version of the mod)
 ---
 
-TODO
+Abstract base class for permissions that provides common functionality for generating the permission's identifier and literal string based on the mod ID and permission node.
+
+A basic example of how you could use this class to create a permission is as follows:
+
+```java title="PermissionRegistry.java" {22-34}
+package com.examplemod.permissions;
+
+import dev.matthiesen.matthiesen_core.common.core.MatthiesenCoreCommon;
+import dev.matthiesen.matthiesen_core.common.api.permissions.Permission;
+import dev.matthiesen.matthiesen_core.common.api.permissions.PermissionLevel;
+import dev.matthiesen.matthiesen_core.common.utility.AbstractPermission;
+
+public final class PermissionRegistry {
+  public static final Permission EXAMPLE_PERMISSION = register(
+    "example_permission", // registered as "example_mod.example_permission" and has the literal string "ExampleMod:example_permission"
+    4 // permission level (0-4) where 0 is the lowest and 4 is the highest
+  );
+
+  public static void init() {}
+  
+  private static Permission register(String node, int level) {
+    var newPermission = modPermission(node, toPermLevel(level));
+    MatthiesenCoreCommon.INSTANCE.getPermissionsManager().registerPermission(newPermission); // can also be accessed from your mod if extending AbstractCommonMod
+    return newPermission;
+  }
+
+  private static Permission modPermission(String node, PermissionLevel level) {
+    return new AbstractPermission(node, level) {
+      @Override
+      protected String getModId() {
+        return "example_mod";
+      }
+
+      @Override
+      protected String getPermissionNamespace() {
+         return "ExampleMod";
+      }
+    };
+  }
+  
+  private static PermissionLevel toPermLevel(int permLevel) {
+    for (PermissionLevel value : PermissionLevel.values()) {
+      if (value.ordinal() == permLevel) {
+        return value;
+      }
+    }
+    return PermissionLevel.CHEAT_COMMANDS_AND_COMMAND_BLOCKS;
+  }
+}
+```
