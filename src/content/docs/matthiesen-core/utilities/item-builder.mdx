@@ -1,9 +1,56 @@
 ---
 title: "Item Builder"
-description: ""
+description: "Utility class for building ItemStacks with a fluent API. This is used to avoid having to duplicate code for creating ItemStacks across platforms."
 banner:
   content: |
     These docs are a work in progress and may be incomplete or contain inaccuracies. (Or be for a newer unreleased version of the mod)
 ---
 
-TODO
+Utility class for building ItemStacks with a fluent API. This is used to avoid having to duplicate code for creating ItemStacks across platforms. It provides methods for adding lore, setting custom data, hiding additional tooltip information, setting a custom name, and setting custom model data.
+
+```java title="ItemBuilderExample.java"
+package com.example.item;
+
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.item.component.CustomData;
+import net.minecraft.world.item.ItemStack;
+
+public class ItemBuilderExample {
+  public static void main() {
+    // Create a new ItemBuilder with a diamond sword
+    ItemStack item = new ItemBuilder(Items.DIAMOND_SWORD);
+
+    // Hide default additional tooltip information
+    item.hideAdditional();
+
+    // Set a custom name for the item
+    item.setCustomName(Component.literal("Excalibur"));
+
+    // Add lore to the item
+    Component[] lore = new Component[] {
+      Component.literal("A legendary sword"),
+      Component.literal("with immense power")
+    };
+    item.addLore(lore);
+
+    // Set custom model data for the item
+    item.setModelData(123456);
+
+    // Set custom data for the item
+    CompoundTag customDataNBT = new CompoundTag();
+    // Add custom data to the NBT tag then convert it to a CustomData object and set it to the item
+    CustomData customData = new CustomData(customDataNBT);
+    item.setCustomData(customData);
+
+    // Modify the ItemStack directly if needed
+    item.modifyStack(stack -> {
+      // Perform modifications on the ItemStack here
+      stack.setDamageValue(10); // Example: Set the damage value of the item
+    });
+
+    // Get the final ItemStack
+    ItemStack finalItem = item.build();
+  }
+}
+```
