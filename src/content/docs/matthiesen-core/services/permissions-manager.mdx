@@ -1,9 +1,28 @@
 ---
 title: "Permissions Manager"
-description: ""
+description: "The PermissionsManager class is responsible for managing the permission validation system within the Matthiesen Core library."
 banner:
   content: |
     These docs are a work in progress and may be incomplete or contain inaccuracies. (Or be for a newer unreleased version of the mod)
 ---
 
-TODO
+The PermissionsManager class is responsible for managing the permission validation system within the Matthiesen Core library.
+
+## Obtaining the PermissionsManager Instance
+
+To obtain the instance of the PermissionsManager, you can use the following code:
+
+```java
+PermissionsManager permissionsManager = MatthiesenCoreCommon.INSTANCE.getPermissionsManager();
+```
+
+## Available Methods
+
+- `registerPermission(Permission permission)`
+  - Registers a new permission within the system. You need to provide the permission object that defines the permission's properties and behavior.
+
+Permission Type is available from:
+
+```java
+import dev.matthiesen.matthiesen_core.common.api.permissions.Permission;
+```

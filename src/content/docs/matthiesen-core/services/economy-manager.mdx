@@ -1,9 +1,70 @@
 ---
 title: "Economy Manager"
-description: ""
+description: "The EconomyManager class is a singleton responsible for managing the in-game economy, including currency providers, balance management, deposits, withdrawals, and checking if a player has sufficient funds."
 banner:
   content: |
     These docs are a work in progress and may be incomplete or contain inaccuracies. (Or be for a newer unreleased version of the mod)
 ---
 
-TODO
+The EconomyManager class is a singleton responsible for managing the in-game economy, including currency providers, balance management, deposits, withdrawals, and checking if a player has sufficient funds.
+
+## Built-in Currency Providers
+
+- **Item Provider**: Uses in-game items as currency.
+- **[Impactor](https://modrinth.com/mod/impactor) Provider**: Uses Impactor's currency system for managing balances.
+
+## Obtaining the EconomyManager Instance
+
+To obtain the instance of the EconomyManager, use the following code:
+
+```java
+
+public class MyMod {
+
+  public static EconomyManager getEcoManager() {
+    return MatthiesenCoreCommon.INSTANCE.getEconomyManager();
+  }
+
+}
+```
+
+### Example Usage
+
+Once you have the EconomyManager instance, you can access the various providers and perform operations such as checking balances, depositing, and withdrawing funds. Here's an example of how to use the EconomyManager:
+
+```java
+
+public class MyMod {
+
+  public static void main(String[] args) {
+    EconomyManager ecoManager = getEcoManager();
+
+    // Get an economy provider (e.g., Item Provider)
+    EconomyProvider itemProvider = ecoManager.getProvider("item"); // or "impactor" for Impactor Provider
+
+    // Check a player's balance
+    int balance = itemProvider.getBalance(player, "minecraft:diamond");
+    System.out.println("Player's balance: " + balance);
+
+    // Deposit funds
+    itemProvider.deposit(player, 10, "minecraft:diamond");
+
+    // Withdraw funds
+    boolean success = itemProvider.withdraw(player, 5, "minecraft:diamond");
+    if (success) {
+      System.out.println("Withdrawal successful.");
+    } else {
+      System.out.println("Insufficient funds for withdrawal.");
+    }
+
+    // Check if a player has sufficient funds
+    boolean hasFunds = itemProvider.hasEnough(player, 20, "minecraft:diamond");
+    if (hasFunds) {
+      System.out.println("Player has enough funds.");
+    } else {
+      System.out.println("Player does not have enough funds.");
+    }
+  }
+
+}
+```
