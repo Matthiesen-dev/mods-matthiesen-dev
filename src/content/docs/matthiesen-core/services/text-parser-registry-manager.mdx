@@ -1,9 +1,39 @@
 ---
 title: "Text Parser Registry"
-description: ""
+description: "The TextParserRegistryManager is responsible for managing the registration and retrieval of text parsers within the mod."
 banner:
   content: |
     These docs are a work in progress and may be incomplete or contain inaccuracies. (Or be for a newer unreleased version of the mod)
 ---
 
-TODO
+The TextParserRegistryManager is responsible for managing the registration and retrieval of text parsers within the mod. It maintains a registry of text parsers, allowing for the addition of new parsers and the retrieval of existing ones based on their type. The manager ensures that each parser is uniquely identified by its type and provides a default Vanilla text parser as a fallback option.
+
+## Obtaining the TextParserRegistryManager Instance
+
+To obtain the instance of the TextParserRegistryManager, you can use the following code:
+
+```java
+TextParserRegistryManager textParserManager = MatthiesenCoreCommon.INSTANCE.getTextParserManager();
+```
+
+### Example Usage
+
+```java
+
+// Get a test parser for a specific type
+TextParser vanillaParser = textParserManager.getParser(BuiltInTextParsers.VANILLA);
+TextParser EmbersTextApiParser = textParserManager.getParser(BuiltInTextParsers.EMBERS);
+TextParser AdventureMiniMessageParser = textParserManager.getParser(BuiltInTextParsers.ADVENTURE);
+
+// Parse a string using the Vanilla parser
+String input = "&6Hello, World!&r";
+Component parsedOutput = vanillaParser.parse(input);
+
+// Parse a string using the Embers Text API parser
+String input2 = "<rainbow>Hello, world!</rainbow>";
+Component parsedOutput2 = EmbersTextApiParser.parse(input2);
+
+// Parse a string using the Adventure MiniMessage parser
+String input3 = "<gradient:#ff0000:#0000ff>Hello, world!</gradient>";
+Component parsedOutput3 = AdventureMiniMessageParser.parse(input3);
+```
