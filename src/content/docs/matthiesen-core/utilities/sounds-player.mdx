@@ -1,9 +1,33 @@
 ---
 title: "Sounds Player"
-description: ""
+description: "A utility class for playing sounds to players with customizable volume and pitch."
 banner:
   content: |
     These docs are a work in progress and may be incomplete or contain inaccuracies. (Or be for a newer unreleased version of the mod)
 ---
 
-TODO
+A utility class for playing sounds to players with customizable volume and pitch. This class allows you to create a sound player for a specific sound event and configure its volume and pitch before playing it to a player. The sound will be played on the master sound channel by default, but this can be changed if needed.
+
+```java title="SoundsPlayerExample.java"
+package com.example.sound;
+
+import dev.matthiesen.matthiesen_core.common.utility.SoundsPlayer;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.server.level.ServerPlayer;
+
+public class SoundsPlayerExample {
+  public static void playSoundToPlayer(ServerPlayer player, SoundEvent soundEvent) {
+    // Create a SoundsPlayer for the specified sound event
+    SoundsPlayer soundsPlayer = new SoundsPlayer(soundEvent);
+
+    // Set the volume and pitch (optional)
+    soundsPlayer.setVolume(1.0f); // Set volume to 1.0
+    soundsPlayer.setPitch(1.0f);  // Set pitch to 1.
+
+    // Play the sound to the specified player
+    soundsPlayer.play(player);
+  }
+}
+
+```

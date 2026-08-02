@@ -1,9 +1,21 @@
 ---
 title: "UI Menu"
-description: ""
+description: "Various utility functions for creating menus in the UI."
 banner:
   content: |
     These docs are a work in progress and may be incomplete or contain inaccuracies. (Or be for a newer unreleased version of the mod)
 ---
 
-TODO
+## AbstractNoInventoryMenu
+
+A simple menu that has no inventory. This is useful for GUIs that don't need to interact with the player's inventory, such as a crafting table or furnace GUI. This menu will not allow the player to move items in or out of the menu, and it will not have any slots. It can be used as a base class for GUIs that don't need an inventory,
+
+```java
+import dev.matthiesen.matthiesen_core.utility.ui.menu.AbstractNoInventoryMenu;
+
+public class MyMenu extends AbstractNoInventoryMenu {
+  public MyMenu(MenuType<?> menuType, int id) {
+    super(menuType, id);
+  }
+}
+```

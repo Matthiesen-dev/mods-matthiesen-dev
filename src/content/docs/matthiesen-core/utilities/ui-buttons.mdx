@@ -1,9 +1,27 @@
 ---
 title: "UI Buttons"
-description: ""
+description: "Various utility functions for creating buttons in the UI."
 banner:
   content: |
     These docs are a work in progress and may be incomplete or contain inaccuracies. (Or be for a newer unreleased version of the mod)
 ---
 
-TODO
+## Slot Button
+
+A simple slot that cannot be interacted with. This is useful for buttons in GUIs, as it prevents the player from accidentally moving items into or out of the slot.
+
+```java
+import dev.matthiesen.matthiesen_core.utility.ui.button.SlotButton;
+
+SlotButton slotButton = new SlotButton(Container, int slotIndex, int x, int y);
+```
+
+## No Highlight Slot Button
+
+A slot button that cannot be highlighted when hovered over. This is useful for buttons in GUIs that should not have a highlight effect when hovered over, such as buttons that are purely decorative or that should not draw attention to themselves.
+
+```java
+import dev.matthiesen.matthiesen_core.utility.ui.button.NoHighlightSlotButton;
+
+NoHighlightSlotButton noHighlightSlotButton = new NoHighlightSlotButton(Container, int slotIndex, int x, int y);
+```

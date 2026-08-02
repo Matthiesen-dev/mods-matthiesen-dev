@@ -1,9 +1,53 @@
 ---
 title: "UI Screen"
-description: ""
+description: "Various utilities for creating and managing UI screens in Minecraft mods."
 banner:
   content: |
     These docs are a work in progress and may be incomplete or contain inaccuracies. (Or be for a newer unreleased version of the mod)
 ---
 
-TODO
+## AbstractSimpleScreen
+
+A simple screen abstraction for screens that only need a background texture and no labels. This is useful for custom GUI implementations that rely on other methods for displaying information to the player, such as tooltips or custom rendering.
+
+:::note
+The following example is from the [Cobblemon Move Tutor](/cobblemon-move-tutor) mod, which uses this class to create a confirmation screen for the player. The screen has a background texture and no labels, and it is used to confirm the player's action before proceeding.
+:::
+
+```java
+package dev.matthiesen.cobblemon_move_tutor.common.ui.client;
+
+import dev.matthiesen.cobblemon_move_tutor.common.CobblemonMoveTutor;
+import dev.matthiesen.cobblemon_move_tutor.common.ui.ConfirmationMenu;
+import dev.matthiesen.matthiesen_core.common.utility.ui.screen.AbstractSimpleScreen;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.player.Inventory;
+
+public final class ConfirmationScreen extends AbstractSimpleScreen<ConfirmationMenu> {
+    private static final int BG_WIDTH = 176;
+    private static final int BG_HEIGHT = 82;
+    private static final ResourceLocation BACKGROUND =
+            CobblemonMoveTutor.modResource("textures/gui/confirmation.png");
+
+    @Override
+    protected int getBgWidth() {
+        return BG_WIDTH;
+    }
+
+    @Override
+    protected int getBgHeight() {
+        return BG_HEIGHT;
+    }
+
+    @Override
+    protected ResourceLocation getBackgroundTexture() {
+        return BACKGROUND;
+    }
+
+    public ConfirmationScreen(ConfirmationMenu menu, Inventory inventory, Component title) {
+        super(menu, inventory, title);
+    }
+}
+
+```
