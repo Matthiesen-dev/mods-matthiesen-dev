@@ -1,9 +1,58 @@
 ---
 title: "Config Folder Manager"
-description: ""
+description: "A generic configuration manager for handling multiple JSON-based config files inside a single folder."
 banner:
   content: |
     These docs are a work in progress and may be incomplete or contain inaccuracies. (Or be for a newer unreleased version of the mod)
 ---
 
-TODO
+A generic configuration manager for handling multiple JSON-based config files inside a single folder. Each file is identified by its filename without the `.json` extension.
+
+```java title="ExampleConfig.java"
+package com.example.config;
+
+import com.google.gson.annotations.SerializedName;
+
+public class ExampleConfig {
+
+  @SerializedName("some_value")
+  public String someValue = "default_value";
+
+  @SerializedName("another_value")
+  public int anotherValue = 42;
+
+  @SerializedName("nested_config")
+  public NestedConfig nestedConfig = new NestedConfig();
+
+  public static class NestedConfig {
+    @SerializedName("nested_value")
+    public boolean nestedValue = true;
+  }
+
+}
+```
+
+```java title="ConfigFolderExample.java"
+package com.example.config;
+
+import dev.matthiesen.matthiesen_core.common.utility.config.ConfigFolderManager;
+
+public class ConfigFolderExample {
+    public static void main(String[] args) {
+        // Create a new ConfigFolderManager for the "config" folder
+        ConfigFolderManager configFolderManager = new ConfigFolderManager(ExampleConfig.class, "config", "example_mod_id");
+
+        // Load all config files in the folder
+        configFolderManager.loadConfigs();
+
+        // Get a specific config by its filename (without .json)
+        MyConfig myConfig = configFolderManager.getConfig("myConfig");
+
+        // Modify the config and save it back to the file
+        myConfig.setSomeValue("newValue");
+        configFolderManager.setConfig("myConfig", myConfig);
+        configFolderManager.saveConfig("myConfig");
+    }
+}
+
+```

@@ -1,9 +1,55 @@
 ---
 title: "Config Manager"
-description: ""
+description: "A generic configuration manager for handling JSON-based config files."
 banner:
   content: |
     These docs are a work in progress and may be incomplete or contain inaccuracies. (Or be for a newer unreleased version of the mod)
 ---
 
-TODO
+A generic configuration manager for handling JSON-based config files. It supports loading, saving, and merging default values with existing config files.
+
+```java title="ExampleConfig.java"
+package com.example.config;
+
+import com.google.gson.annotations.SerializedName;
+
+public class ExampleConfig {
+
+  @SerializedName("some_value")
+  public String someValue = "default_value";
+
+  @SerializedName("another_value")
+  public int anotherValue = 42;
+
+  @SerializedName("nested_config")
+  public NestedConfig nestedConfig = new NestedConfig();
+
+  public static class NestedConfig {
+    @SerializedName("nested_value")
+    public boolean nestedValue = true;
+  }
+
+}
+```
+
+```java title="ConfigManagerExample.java"
+package com.example.config;
+
+import dev.matthiesen.matthiesen_core.common.utility.config.ConfigManager;
+
+public class ConfigManagerExample {
+    public static void main(String[] args) {
+        // Create a new ConfigManager for the "config" folder
+        ConfigManager<ExampleConfig> configManager = new ConfigManager<>(ExampleConfig.class, "config", "example_mod_id");
+
+        // Load the config file
+        ExampleConfig config = configManager.loadConfig("example_config");
+
+        // Modify the config and save it back to the file
+        config.someValue = "newValue";
+        configManager.setConfig(config);
+        configManager.saveConfig();
+    }
+}
+
+```
