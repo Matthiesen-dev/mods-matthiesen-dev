@@ -1,9 +1,30 @@
 ---
 title: "Server Messaging Util"
-description: ""
+description: "Utility class for sending messages to players and the console on the Minecraft server."
 banner:
   content: |
     These docs are a work in progress and may be incomplete or contain inaccuracies. (Or be for a newer unreleased version of the mod)
 ---
 
-TODO
+Utility class for sending messages to players and the console on the Minecraft server. This class provides static methods to send messages to all players, the console, or both.
+
+```java title="ServerMessagingExamples.java"
+import dev.matthiesen.matthiesen_core.common.utility.chat.ServerMessagingUtil;
+
+public class ServerMessagingExamples {
+  public static void sendMessageToAllPlayersExample() {
+    // Send a message to all players
+    ServerMessagingUtil.sendToAllPlayers("Hello, players!");
+  }
+
+  public static void sendMessageToConsoleExample() {
+    // Send a message to the console
+    ServerMessagingUtil.sendToConsole("Hello, console!");
+  }
+
+  public static void sendMessageToAllPlayersAndConsoleExample() {
+    // Send a message to all players and the console
+    ServerMessagingUtil.sendToAllAndConsole("Hello, everyone!");
+  }
+}
+```

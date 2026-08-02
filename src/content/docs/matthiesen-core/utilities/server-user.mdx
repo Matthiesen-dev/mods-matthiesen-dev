@@ -1,9 +1,76 @@
 ---
 title: "Server User"
-description: ""
+description: "Represents a user on the server, which can be either online or offline."
 banner:
   content: |
     These docs are a work in progress and may be incomplete or contain inaccuracies. (Or be for a newer unreleased version of the mod)
 ---
 
-TODO
+Represents a user on the server, which can be either online or offline.
+
+## Getting a ServerUser
+
+```java title="ServerUserExample.java"
+package com.example.user;
+
+import dev.matthiesen.matthiesen_core.common.utility.player_data.ServerUser;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.player.Player;
+
+import java.util.UUID;
+
+public class ServerUserExample {
+  public static ServerUser getUser(ServerPlayer player) {
+    return new ServerUser(player);
+  }
+
+  public static ServerUser getUser(Player player) {
+    return new ServerUser(player);
+  }
+
+  public static ServerUser getUser(UUID uuid) {
+    return new ServerUser(uuid);
+  }
+
+  public static ServerUser getUser(String username) {
+    return new ServerUser(username);
+  }
+}
+```
+
+## Available Methods
+
+- `isOnline()` - Returns `true` if the user is currently online, `false` otherwise.
+- `getOnlinePlayer()` - Returns the `ServerPlayer` instance if the user is online, or `null` if they are offline.
+- `getOfflinePlayer()` - Returns the `Player` instance if the user is online or offline, or `null` if they are not found.
+- `getUsername()` - Returns the username of the user.
+- `getAliases()` - Returns a list of known aliases for the user.
+- `getUUID()` - Returns the UUID of the user.
+- `getStringUUID()` - Returns the UUID of the user as a string.
+
+## ServerUserArgument
+
+Argument type for getting server users from command contexts, which can be either online or offline players.
+
+```java title="ServerUserArgumentExample.java"
+package com.example.user;
+
+import dev.matthiesen.matthiesen_core.common.utility.player_data.ServerUser;
+import dev.matthiesen.matthiesen_core.common.utility.player_data.ServerUserArgument;
+
+public class ServerUserArgumentExample {
+
+  public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registry, Commands.CommandSelection context) {
+    dispatcher.register(
+      Commands.literal("getUser")
+        .then(Commands.argument("user", ServerUserArgument.playerArg())
+          .executes(context -> {
+            ServerUser user = ServerUserArgument.getUser(context, "user");
+            context.sendSystemMessage(Component.literal("Found user: " + user.getUsername()));
+            return 1;
+          })
+        )
+    );
+  }
+}
+```
