@@ -1,9 +1,20 @@
 ---
 title: "Common Loader Utils"
-description: ""
+description: "The CommonLoaderUtils interface provides a set of utility methods for interacting with the underlying mod loader and game environment."
 banner:
   content: |
     These docs are a work in progress and may be incomplete or contain inaccuracies. (Or be for a newer unreleased version of the mod)
 ---
 
-TODO
+The CommonLoaderUtils interface provides a set of utility methods for interacting with the underlying mod loader and game environment.
+
+Available methods include:
+
+- `getServer`: Returns the current Minecraft server instance, if available. This can be used to access server-specific functionality and data.
+- `isDevelopmentEnvironment`: Returns a boolean indicating whether the mod is running in a development environment. This can be useful for enabling or disabling certain features or behaviors during development.
+- `isModLoaded`: Takes a mod ID as an argument and returns a boolean indicating whether the specified mod is loaded. This can be used to check for dependencies or optional features.
+- `getGameDirectory`: Returns the path to the game's root directory. This can be useful for reading or writing files related to the mod.
+- `getModConfig`: Takes a directory, and filename as arguments and returns the configuration file for the mod. This can be used to read or write configuration settings for the mod.
+- `getEnvironment`: Returns the current environment type (e.g., client, server, or dedicated server). This can be used to conditionally execute code based on the environment.
+- `getLoaderMeta`: Returns the loader platform metadata for the current mod loader. This can be used to access information about the mod loader and its capabilities.
+- `getModContainer`: Get the mod container for a specific mod ID. This method provides access to the mod container, which contains information about the mod, such as its name, version, and platform data.

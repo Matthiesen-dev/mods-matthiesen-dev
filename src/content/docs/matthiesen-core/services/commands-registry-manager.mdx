@@ -1,9 +1,36 @@
 ---
 title: "Commands Registry"
-description: ""
+description: "The CommandsRegistryManager is a singleton class responsible for managing the registration of commands across different platforms."
 banner:
   content: |
     These docs are a work in progress and may be incomplete or contain inaccuracies. (Or be for a newer unreleased version of the mod)
 ---
 
-TODO
+The CommandsRegistryManager is a singleton class responsible for managing the registration of commands across different platforms.
+
+## CoreCommand interface
+
+```java
+package com.example.command;
+
+public class MyCommand implements CoreCommand {
+  @Override
+  public void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registry, Commands.CommandSelection context) {
+    // Implement the command registration logic here
+  }
+}
+
+```
+
+## Command Registration
+
+```java
+package com.example.command;
+
+public class MyRegistrationExample {
+  public static void register() {
+    // If your mod extends AbstractCommonMod, you can use your mod's instance to access the CommandsRegistryManager
+    MatthiesenCoreCommon.INSTANCE.getCommandsRegistryManager().registerCommand(new MyCommand());
+  }
+}
+```

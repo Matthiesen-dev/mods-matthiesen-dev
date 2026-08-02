@@ -1,9 +1,25 @@
 ---
 title: "Common Loader Registry"
-description: ""
+description: "The CommonLoaderRegistry interface provides a unified way to register various game elements such as blocks, items, sounds, and more across different mod loaders."
 banner:
   content: |
     These docs are a work in progress and may be incomplete or contain inaccuracies. (Or be for a newer unreleased version of the mod)
 ---
 
-TODO
+The CommonLoaderRegistry interface provides a unified way to register various game elements such as blocks, items, sounds, and more across different mod loaders.
+
+Available methods include:
+
+- `registerBlockEntity`: Registers a block entity type.
+- `registerBlock`: Registers a block type.
+- `registerItem`: Registers an item type.
+  - `registerItemRegistryCallback`: Registers a callback for item registration.
+- `registerSound`: Registers a sound event.
+- `registerCriteriaTriggers`: Registers criteria triggers for advancements.
+- `registerStats`: Registers custom statistics.
+- `registerMenuType`: Registers a menu type for GUIs.
+- `registerDataComponentType`: Registers a data component type.
+- `registerEntityEffects`: Registers entity effects.
+- `registerFeature`: Registers a feature for world generation.
+- `registerCreativeModeTab`: Registers a creative mode tab.
+- `newCreativeTabBuilder`: Creates a new builder for a creative mode tab.
