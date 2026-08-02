@@ -1,9 +1,51 @@
 ---
 title: "Webhooks Notifier Service"
-description: ""
+description: "This interface defines the contract for a WebhookNotifierService, which is responsible for creating instances of WebhookNotifierInstance that can send notifications to webhooks."
 banner:
   content: |
     These docs are a work in progress and may be incomplete or contain inaccuracies. (Or be for a newer unreleased version of the mod)
 ---
 
-TODO
+This interface defines the contract for a WebhookNotifierService, which is responsible for creating instances of WebhookNotifierInstance that can send notifications to webhooks (e.g., Discord webhooks). Implementations of this interface can vary based on the type of webhook service being used (e.g., Discord, Slack, etc.).
+
+## Webhook Notifier Service Interface
+
+```java title="WebhookNotifierService.java"
+package dev.matthiesen.matthiesen_core.common.api.discord;
+
+public interface WebhookNotifierService {
+  void initialize();
+  TYPE type();
+  WebhookNotifierInstance makeInstance(String webhookUrl);
+  default boolean isAvailable() {
+      return type() != TYPE.NOOP;
+  }
+}
+```
+
+## Webhook Notifier Instance Interface
+
+```java title="WebhookNotifierInstance.java"
+package dev.matthiesen.matthiesen_core.common.api.discord;
+
+public interface WebhookNotifierInstance {
+  WebhookClient client();
+  String webhookUrl();
+  default boolean isConfigured() {
+      return webhookUrl() != null && !webhookUrl().isEmpty();
+  }
+  default boolean isNotConfigured() {
+      return webhookUrl() == null || webhookUrl().isEmpty();
+  }
+  default void sendMessage(WebhookMessage message) throws DiscordWebhookException {
+      if (isNotConfigured()) return;
+      client().sendMessage(webhookUrl(), message);
+  }
+  default void sendMessage(Consumer<WebhookMessageBuilder> messageBuilderConsumer) throws DiscordWebhookException {
+      if (isNotConfigured()) return;
+      WebhookMessageBuilder builder = new WebhookMessageBuilder();
+      messageBuilderConsumer.accept(builder);
+      sendMessage(builder.build());
+  }
+}
+```
