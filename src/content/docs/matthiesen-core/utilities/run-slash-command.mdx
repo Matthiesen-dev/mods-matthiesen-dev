@@ -1,9 +1,26 @@
 ---
 title: "Run Slash Command"
-description: ""
+description: "Utility class for running slash commands on the Minecraft server."
 banner:
   content: |
     These docs are a work in progress and may be incomplete or contain inaccuracies. (Or be for a newer unreleased version of the mod)
 ---
 
-TODO
+Utility class for running slash commands on the Minecraft server.
+
+```java title="RunSlashCommandExample.java"
+
+import dev.matthiesen.matthiesen_core.common.utility.commands.RunSlashCommand;
+
+public class RunSlashCommandExample {
+  public static void asServerExample() {
+    // Run a command as the server
+    RunSlashCommand.asServer("say Hello, world!");
+  }
+
+  public static void asPlayerExample(ServerPlayer player) {
+    // Run a command as a specific player
+    RunSlashCommand.asPlayer(player, "say Hello from the player!");
+  }
+}
+```
