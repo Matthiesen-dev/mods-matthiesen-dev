@@ -1,9 +1,102 @@
 ---
 title: "Database Service"
-description: ""
+description: "Matthiesen Core Database Service"
 banner:
   content: |
     These docs are a work in progress and may be incomplete or contain inaccuracies. (Or be for a newer unreleased version of the mod)
 ---
 
-TODO
+Matthiesen Core provides utilities for interfacing with MySQL and SQLite databases. Included in the mod, is a `CoreDatabase` class that can be used to create and manage database connections, as well as execute queries. The `CoreDatabase` class is designed to be flexible and easy to use, allowing developers to quickly integrate database functionality into their mods.
+
+## Prerequisites
+
+Depending on the database you want to use, you will need to include the appropriate JDBC driver in your mod's dependencies. The following are the recommended JDBC drivers for MySQL and SQLite:
+
+- [Minecraft SQLite JDBC](https://modrinth.com/plugin/minecraft-sqlite-jdbc)
+- [Minecraft MySQL JDBC](https://modrinth.com/plugin/minecraft-mysql-jdbc)
+
+## Creating a Database Instance
+
+```java title="MyMod.java"
+
+import dev.matthiesen.matthiesen_core.common.core.database.CoreDatabase;
+
+public class MyMod {
+  public static CoreDatabase database;
+
+  public static void initDB() {
+    // Create a new config instance for the database connection
+    DatabaseConfig config = new DatabaseConfig();
+
+    // Set the database type (MySQL or SQLite)
+    config.useMySQL = false; // Set to true for MySQL, false for SQLite
+
+    database = new CoreDatabase("example_mod", config);
+
+    boolean connected = database.createConnection();
+
+    if (connected) {
+      System.out.println("Database connection established successfully.");
+    } else {
+      System.err.println("Failed to establish database connection.");
+      return;
+    }
+
+    // Example of Setting up a table with indexes
+    MyDBServices.CUSTOM_TABLE.createTable();
+    MyDBServices.CUSTOM_TABLE.createIndexes();
+  }
+}
+```
+
+## Creating a Repository
+
+The following is an example snippet from the [Cobble Poke Bank](/cobble-poke-bank/) mod, which demonstrates how to create a repository for managing a custom table in the database. The `PokemonBankRepository` class implements the `IRepository` interface and provides methods for creating the table and indexes.
+
+```java title="PokemonBankRepository.java"
+import dev.matthiesen.matthiesen_core.common.api.database.repository.IRepository;
+import dev.matthiesen.matthiesen_core.common.core.database.CoreDatabase;
+import dev.matthiesen.matthiesen_core.common.core.database.dialect.MySQLDialect;
+
+public final class PokemonBankRepository implements IRepository {
+  private final CoreDatabase database;
+
+  public PokemonBankRepository(CoreDatabase database) {
+    this.database = database;
+  }
+  
+  @Override
+  public void createTable() {
+    String sql = "CREATE TABLE IF NOT EXISTS pokemon_bank (" +
+      "id " + database.getDialect().getDataType("integer") + " PRIMARY KEY " + (database.getDialect() instanceof MySQLDialect ? " AUTO_INCREMENT" : "") + "," +
+      "user_uuid " + database.getDialect().getDataType("varchar") + "(36) NOT NULL," +
+      "pokemon_uuid " + database.getDialect().getDataType("varchar") + "(36) NOT NULL UNIQUE," +
+      "pokemon_json_data " + database.getDialect().getDataType("text") + " NOT NULL" +
+      ")";
+    if (database.getDialect() instanceof MySQLDialect) {
+      sql += " ENGINE=InnoDB DEFAULT CHARACTER SET utf8mb4;";
+    } else {
+      sql += ";";
+    }
+    database.createTable(sql);
+  }
+  
+  public void createIndexes() {
+    String sql;
+      if (database.getDialect() instanceof MySQLDialect) {
+        sql = "ALTER TABLE pokemon_bank ADD INDEX idx_user_uuid (user_uuid), ADD UNIQUE INDEX idx_pokemon_uuid (pokemon_uuid);";
+      } else {
+        sql = "CREATE INDEX IF NOT EXISTS idx_user_uuid ON pokemon_bank(user_uuid);";
+      }
+      database.execute(sql, false);
+  }
+}
+```
+
+## Creating the Service class
+
+```java title="MyDBServices.java"
+
+public interface MyDBServices {
+  PokeBankService CUSTOM_TABLE = new PokeBankService(MyMod.database);
+}
