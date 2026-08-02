@@ -1,9 +1,6 @@
 ---
 title: "Command Builder"
 description: "Fluent helper for building Brigadier command trees in a more readable way."
-banner:
-  content: |
-    These docs are a work in progress and may be incomplete or contain inaccuracies. (Or be for a newer unreleased version of the mod)
 ---
 
 This builder is intended to reduce the amount of nested `Commands.literal(...)` and `Commands.argument(...)` calls needed when registering complex command hierarchies. It wraps a root `LiteralArgumentBuilder` and exposes a compact API for attaching requirements, execution handlers, nested literals, and arguments.
