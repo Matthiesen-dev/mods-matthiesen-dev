@@ -8,3 +8,31 @@ next: false
 sidebar:
   order: 4
 ---
+
+When using Matthiesen Core with Cobblemon NPCs, you can use the following Molang extensions to check for player permissions:
+
+## Economy
+
+### Player Functions
+
+- `q.player.economy() -> { "playerUUID": "string" }`
+- `q.player.economy.get_balance(<string providerID>, <string currency>) -> double`
+- `q.player.economy.deposit(<string providerID>, <int amount>, <string currency>) -> 1 for success, otherwise 0`
+- `q.player.economy.withdraw(<string providerID>, <int amount>, <string currency>) -> 1 for success, otherwise 0`
+- `q.player.economy.has_enough(<string providerID>, <int amount>, <string currency>) -> 1 for true, otherwise 0`
+            
+## Text Parsing
+
+### Player Functions
+
+- `q.player.text_parser() -> { "playerUUID": "string" }`
+- `q.player.text_parser.vanilla(<string message>) -> 1 for success, 0 for failure`
+- `q.player.text_parser.adventure(<string message>) -> 1 for success, 0 for failure`
+- `q.player.text_parser.emberstextapi(<string message>) -> 1 for success, 0 for failure`
+
+### Server Functions
+
+- `q.server.text_parser() -> { "serverPlatform": "string" }`
+- `q.server.text_parser.vanilla(<string message>) -> 1 for success, 0 for failure`
+- `q.server.text_parser.adventure(<string message>) -> 1 for success, 0 for failure`
+- `q.server.text_parser.emberstextapi(<string message>) -> 1 for success, 0 for failure`
