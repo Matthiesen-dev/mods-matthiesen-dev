@@ -11,26 +11,12 @@ sidebar:
   order: 3
 ---
 
+import MolangExtensions from '~/components/MolangExtensions.astro';
+
+import { luckPermsPlayerExtensions } from './luckperms-extensions';
+
 When using LuckPerms with Cobblemon NPCs, you can use the following Molang extensions to check for player permissions:
 
 ## Player Functions
 
-- `q.player.luckperms() -> { playerUUID: "string" }`
-- `q.player.luckperms.promote(<track string>, <dont-add-to-first int-as-boolean>) -> 0`
-- `q.player.luckperms.demote(<track string>, <dont-remove-from-first int-as-boolean>) -> 0`
-- `q.player.luckperms.permission_set(<track string>, <dont-remove-from-first int-as-boolean>) -> 0`
-- `q.player.luckperms.permission_unset(<node string>) -> 0`
-- `q.player.luckperms.permission_settemp(<node string>, <value boolean>, <duration string>) -> 0`
-- `q.player.luckperms.permission_unsettemp(<node string>) -> 0`
-- `q.player.luckperms.permission_check(<node string>) -> Boolean-As-Double`
-- `q.player.luckperms.parent_set(<group string>) -> 0`
-- `q.player.luckperms.parent_add(<group string>) -> 0`
-- `q.player.luckperms.parent_remove(<group string>) -> 0`
-- `q.player.luckperms.parent_settrack(<track string>, <group string>) -> 0`
-- `q.player.luckperms.parent_addtemp(<group string>, <duration string>) -> 0`
-- `q.player.luckperms.parent_removetemp(<group string>) -> 0`
-- `q.player.luckperms.meta_set(<key string>, <value string>) -> 0`
-- `q.player.luckperms.meta_unset(<key string>) -> 0`
-- `q.player.luckperms.meta_settemp(<key string>, <value string>, <duration string>) -> 0`
-- `q.player.luckperms.meta_unsettemp(<key string>) -> 0`
-- `q.player.luckperms.meta_get(<key string>) -> string`
+<MolangExtensions extensions={luckPermsPlayerExtensions} />

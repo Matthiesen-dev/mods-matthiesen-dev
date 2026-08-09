@@ -12,6 +12,9 @@ sidebar:
   order: 4
 ---
 
+import MolangExtensions from '~/components/MolangExtensions.astro';
+import { playerMolangExtensions } from './npc-extensions_data';
+
 Here you can find documentation on the NPC extensions added by the Cobblemon Move Tutor mod, including new Molang functions, dialogues, and NPCs that have been added to enhance the functionality of the Move Tutor NPCs.
 
 ## Molang functions
@@ -20,8 +23,7 @@ Two new Molang functions have been added to the Player molang functions:
 
 > Note: Slot is the index of the Pokemon in the player's party, starting from 0. With a maximum of 5, as the player can have up to 6 Pokemon in their party.
 
-- `q.player.open_village_tutor(<slot>)` - Opens the Move Tutor's GUI for the player, allowing them to browse and learn new moves for their Pokemon.
-- `q.player.open_admin_tutor(<slot>)` - Opens the "Admin" version of the Move Tutor's GUI for the player, instead of the village tutor.
+<MolangExtensions extensions={playerMolangExtensions} />
 
 ## Dialogues
 

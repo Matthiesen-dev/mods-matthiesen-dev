@@ -12,12 +12,13 @@ sidebar:
   order: 4
 ---
 
+import MolangExtensions from '~/components/MolangExtensions.astro';
+import { playerMolangExtensions } from './npc-extensions_data';
+
 Cobblemon PokeTotems includes extensions for Cobblemon NPCs, allowing them to interact with PokeTotems in various ways. These extensions can be used to create custom NPC dialogues and interactions involving PokeTotems.
 
 ## Player Functions
 
-### `poketototem`
-
-- `q.player.poketototem(<slot 0-5>)` - Converts the player's pokemon on a specific slot to a Normal PokeTotem
+<MolangExtensions extensions={playerMolangExtensions} />
 
 An Example of this can be found in the included Cobblemon NPC Dialogue [`cobblemon:cpt_poke_to_totem`](https://github.com/Matthiesen-dev/cobblemon-poketotem/blob/main/common/src/main/resources/data/cobblemon/dialogues/cpt_poke_to_totem.json)
