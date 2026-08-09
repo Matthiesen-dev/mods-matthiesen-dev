@@ -1,0 +1,60 @@
+---
+title: "Getting Started"
+description: "Introduces various Cobblemon NPC Molang extensions for use with other mods!"
+prev: false
+next: false
+sidebar:
+  order: 1
+banner:
+  content: |
+    These docs are a work in progress and may be incomplete or contain inaccuracies. (Or be for a newer unreleased version of the mod)
+---
+
+import ModMeta from '~/components/ModMeta.astro';
+import ReadMore from '~/components/ReadMore.astro';
+import Deps from '~/components/Deps.astro';
+
+<ModMeta 
+  minecraftVersion='1.21.1'
+  github='cobblemon-npc-extensions'
+  modrinth='cobblemon-npc-extensions'
+  fabric neoforge
+/>
+
+<Deps cobblemon matthiesenCore />
+
+Introduces various Cobblemon NPC Molang extensions for use with other mods!
+
+## Requirements
+
+- [Matthiesen Core](https://modrinth.com/mod/matthiesen-core)
+- [Cobblemon](https://modrinth.com/mod/cobblemon)
+
+## Supported Mods
+
+The following mods have added Molang extensions for use with Cobblemon NPCs:
+
+- [Matthiesen Core](https://modrinth.com/mod/matthiesen-core)
+  - Text Parser Extensions (Player)
+    - [Adventure MiniMessage](https://modrinth.com/mod/adventure-platform-mod) (via Matthiesen Core) 
+    - [Embers Text API](https://modrinth.com/mod/embers-text-api) (via Matthiesen Core)
+  - Economy Extensions (Player)
+    - [Impactor](https://modrinth.com/mod/impactor) (via Matthiesen Core)
+    - Item based Economy (via Matthiesen Core)
+- [GriefDefender](https://docs.griefdefender.com/)
+  - NPC Extensions
+  - Player Extensions
+  - Server Extensions
+  - World Extensions
+- [LuckPerms](https://modrinth.com/mod/luckperms)
+  - Player Extensions
+
+## FastStats Metrics
+
+This mod uses [FastStats](https://faststats.dev) to collect anonymous usage statistics. This helps the developer understand
+how this mod is being used and improve it over time. You can learn more about the data collected and how it is used by visiting
+[FastStats: Information](https://faststats.dev/info).
+
+You can also view the data collected by this mod on the [FastStats: Cobblemon NPC Extensions](https://faststats.dev/project/cobblemon-npc-extensions) page.
+
+To opt out of this data collection, set the `enabled` property to `false` in the `<game_directory>/config/matthiesen_core/metrics.properties` file.

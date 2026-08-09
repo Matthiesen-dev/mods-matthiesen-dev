@@ -1,0 +1,49 @@
+---
+title: "Getting Started"
+description: "This mod adds support for Torchmaster to Cobblemon, allowing Torchmaster's blocks to be used to prevent Cobblemon spawning."
+prev: false
+next: false
+sidebar:
+  order: 1
+banner:
+  content: |
+    These docs are a work in progress and may be incomplete or contain inaccuracies. (Or be for a newer unreleased version of the mod)
+---
+
+import ModMeta from '~/components/ModMeta.astro';
+import ReadMore from '~/components/ReadMore.astro';
+import Deps from '~/components/Deps.astro';
+
+<ModMeta 
+  minecraftVersion='1.21.1'
+  github='cobblemon-torchmaster-fix'
+  modrinth='cobblemon-torchmaster-fix'
+  fabric neoforge
+/>
+
+<Deps cobblemon matthiesenCore />
+
+This mod adds support for Torchmaster to Cobblemon, allowing Torchmaster's blocks to be used to prevent Cobblemon spawning. This mod is designed
+to only work with natural ("wild") Cobblemon spawns, and will not prevent spawns from player-owned Pokemon.
+
+By default, Cobblemon will be added to the Torchmaster's Dreadlamp's block list. You can also add additional overrides using the `torchmaster.toml` config file.
+
+```toml
+megaTorchEntityBlockListOverrides = [ "+cobblemon:pokemon"]
+```
+
+## Requirements
+
+- [Matthiesen Core](https://modrinth.com/mod/matthiesen-core)
+- [Cobblemon](https://modrinth.com/mod/cobblemon)
+- [Torchmaster](https://modrinth.com/mod/torchmaster)
+
+## FastStats Metrics
+
+This mod uses [FastStats](https://faststats.dev) to collect anonymous usage statistics. This helps the developer understand
+how this mod is being used and improve it over time. You can learn more about the data collected and how it is used by visiting
+[FastStats: Information](https://faststats.dev/info).
+
+You can also view the data collected by this mod on the [FastStats: Cobblemon Torchmaster Fix](https://faststats.dev/project/cobblemon-torchmaster-fix) page.
+
+To opt out of this data collection, set the `enabled` property to `false` in the `<game_directory>/config/matthiesen_core/metrics.properties` file.

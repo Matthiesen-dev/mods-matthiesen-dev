@@ -3,9 +3,6 @@ title: Introduction
 description: Adam Matthiesen's MC Development documentation.
 prev: false
 next: false
-banner:
-  content: |
-    These docs are a work in progress and may be incomplete or contain inaccuracies. (Or be for a newer unreleased version of the mod)
 ---
 
 import { Badge } from '@astrojs/starlight/components';
@@ -20,3 +17,11 @@ If a mod has a <Badge text="S" variant="tip" /> badge, it means it's a server-si
 Mods are listed in the sidebar on the left. Each mod has its own documentation with installation instructions, features, and more.
 
 <ModrinthOverview />
+
+## FastStats Metrics
+
+My mods use [FastStats](https://faststats.dev) to collect anonymous usage statistics. This helps the developer understand
+how this mod is being used and improve it over time. You can learn more about the data collected and how it is used by visiting 
+[FastStats: Information](https://faststats.dev/info).
+
+To opt out of this data collection, set the `enabled` property to `false` in the `<game_directory>/config/matthiesen_core/metrics.properties` file.

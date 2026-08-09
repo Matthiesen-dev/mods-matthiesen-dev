@@ -8,103 +8,228 @@ next: false
 sidebar:
   label: Configuration
   order: 3
-banner:
-  content: |
-    These docs are a work in progress and may be incomplete or contain inaccuracies. (Or be for a newer unreleased version of the mod)
+tableOfContents:
+  minHeadingLevel: 2
+  maxHeadingLevel: 6
 ---
 
 The following configuration options are available in the Falling Star Rewards mod. These options can be set in the mod's configuration file, which can be found in the server's config directory after installing the mod.
 
 ## Config files
 
-- [**Main Config:**](#main-config-options) `<game_directory>/config/falling_star_rewards/config.json`
-- [**Permissions Config:**](#permissions-config-options) `<game_directory>/config/falling_star_rewards/permissions.json`
+- [**Server Config:**](#server-config-options) `<game_directory>/config/falling_star_rewards/server.toml`
+- [**Permissions Config:**](#permissions-config-options) `<game_directory>/config/falling_star_rewards/permissions.toml`
 - [**Scheduling Presets:**](#scheduling-presets) `<game_directory>/config/falling_star_rewards/scheduling/`
 - [**Events Presets:**](#events-presets) `<game_directory>/config/falling_star_rewards/events/`
 - [**Rewards Presets:**](#rewards-presets) `<game_directory>/config/falling_star_rewards/rewards/`
 - [**Visuals Presets:**](#visuals-presets) `<game_directory>/config/falling_star_rewards/visuals/`
 
-## Main Config options
+## Server Config options
 
-These options control the core behavior of the mod, including how falling star events are scheduled, activated, and how the falling stars behave in the world.
+```toml title="<game_directory>/config/falling_star_rewards/server.toml"
+#General configuration settings
+[general]
+	enabled = true
+	enablePresetGeneration = true
+	enabledSchedules = ["base"]
 
-- `enabled`: master switch.
-- `enablePresetGeneration`: whether to generate example preset files on first run. This is intended to help server owners get started with customizing the mod, but can be turned off if not needed. The generated presets are just examples and are not used by default, so they can be safely deleted or modified without affecting the mod's functionality.
-- `enabledSchedules`: list of scheduling presets to use for spawning falling star events. Each preset defines a schedule for when events can occur, allowing server owners to customize the frequency and timing of falling star events. The mod will randomly select from the enabled schedules when determining when to spawn a falling star event.
-- `claim`
-  - `lifeTicks`: despawn timer for spawned stars.
-  - `pickupDelayTicks`: delay before pickup is allowed.
-  - `maxActiveDrops`: hard cap for concurrently tracked star drops.
+	#Claim configuration settings
+	[general.claim]
+		lifeTicks = 900
+		pickupDelayTicks = 10
+		maxActiveDrops = 64
 
-### Example config file
-
-```json title="<game_directory>/config/falling_star_rewards/config.json"
-{
-  "enabled": true,
-  "enablePresetGeneration": true,
-  "enabledSchedules": [
-    "base"
-  ],
-  "claim": {
-    "lifeTicks": 900,
-    "pickupDelayTicks": 10,
-    "maxActiveDrops": 64
-  }
-}
 ```
+
+### General Configuration
+
+#### enabled
+
+Enable or disable the Falling Star Rewards mod.
+
+- Type: Boolean
+- Default: `true`
+
+#### enablePresetGeneration
+
+Enable or disable the generation of default presets for the mod. If set to `true`, the mod will generate default scheduling, events, rewards, and visuals presets in the configuration directory.
+
+- Type: Boolean
+- Default: `true`
+
+#### enabledSchedules
+
+A list of enabled scheduling presets for the Falling Star Rewards mod. Each entry in the list corresponds to a scheduling preset file located in the `scheduling` directory.
+
+- Type: List of Strings
+- Default: `["base"]`
+
+#### Claim Configuration
+
+Claim configuration settings control the behavior of item claims dropped by falling stars.
+
+##### lifeTicks
+
+The lifespan of a claim in ticks (20 ticks = 1 second). After this time, the claim will despawn if not picked up.
+
+- Type: Integer
+- Default: `900`
+- Range: > 1
+
+##### pickupDelayTicks
+
+The delay before a claim can be picked up in ticks (20 ticks = 1 second). This prevents immediate pickup of the claim after it is dropped.
+
+- Type: Integer
+- Default: `10`
+- Range: > 0
+
+##### maxActiveDrops
+
+The maximum number of active drops allowed at once. If the number of active drops exceeds this limit, new drops will not be spawned until the number of active drops decreases.
+
+- Type: Integer
+- Default: `64`
+- Range: > 1
 
 ## Permissions Config options
 
-These options control the permissions required to use the mod's commands and features.
+```toml title="<game_directory>/config/falling_star_rewards/permissions.toml"
+#Permission Configuration
+[permissions]
 
-- `command`: permission levels for commands. The root `command` node sets the default permission level for all commands, which can be overridden by specifying a different level for individual subcommands. Permission levels are defined as integers, where higher values indicate higher required permissions (e.g., 0 for all players, 2 for trusted players, 4 for server operators). The specific permission nodes are structured as follows:
-  - `root`: default permission level for all commands.
-  - `fallingstar`: permission levels for the main `fallingstar` command and its subcommands.
-    - `help`: permission level for the `help` subcommand.
-    - `reload`: permission level for the `reload` subcommand.
-    - `cleanup`: permission level for the `cleanup` subcommand.
-    - `status`: permission level for the `status` subcommand.
-    - `force`: permission level for the `force` subcommand.
-    - `confirm-delete`: permission level for the `confirm-delete` subcommand, which is used to confirm the deletion of tracked drops when using the `cleanup` command.
-    - `preset`: permission levels for the `preset` subcommands, which are used to manage event presets.
-      - `enable`: permission level for the `preset enable` subcommand, which is used to enable specific event presets.
-      - `disable`: permission level for the `preset disable` subcommand, which is used to disable specific event presets.
-      - `list`: permission level for the `preset list` subcommand, which is used to list all available event presets and their statuses.
-      - `create`: permission level for the `preset create` subcommand, which is used to create new event presets.
-      - `delete`: permission level for the `preset delete` subcommand, which is used to delete existing event presets.
-      - `info`: permission level for the `preset info` subcommand, which is used to display detailed information about specific event presets.
-      - `set`: permission level for the `preset set` subcommand, which is used to modify the parameters of existing event presets.
-      - `add`: permission level for the `preset add` subcommand, which is used to add rewards or visuals presets to event presets.
-      - `remove`: permission level for the `preset remove` subcommand, which is used to remove rewards or visuals presets from event presets.
+	#Command Permissions
+	[permissions.command]
+		fallingstar = "ALL_COMMANDS"
+		fallingstar_help = "ALL_COMMANDS"
+		fallingstar_reload = "ALL_COMMANDS"
+		fallingstar_cleanup = "ALL_COMMANDS"
+		fallingstar_status = "ALL_COMMANDS"
+		fallingstar_force = "ALL_COMMANDS"
+		fallingstar_confirm_delete = "ALL_COMMANDS"
 
-### Example config file
+		#Preset Command Permissions
+		[permissions.command.preset]
+			fallingstar_preset_enable = "ALL_COMMANDS"
+			fallingstar_preset_disable = "ALL_COMMANDS"
+			fallingstar_preset_list = "ALL_COMMANDS"
+			fallingstar_preset_create = "ALL_COMMANDS"
+			fallingstar_preset_delete = "ALL_COMMANDS"
+			fallingstar_preset_info = "ALL_COMMANDS"
+			fallingstar_preset_set = "ALL_COMMANDS"
+			fallingstar_preset_add = "ALL_COMMANDS"
+			fallingstar_preset_remove = "ALL_COMMANDS"
 
-```json title="<game_directory>/config/falling_star_rewards/permissions.json"
-{
-  "command": {
-    "root": 4,
-    "fallingstar": {
-      "help": 4,
-      "reload": 4,
-      "cleanup": 4,
-      "status": 4,
-      "force": 4,
-      "confirm-delete": 4,
-      "preset": {
-        "enable": 4,
-        "disable": 4,
-        "list": 4,
-        "create": 4,
-        "delete": 4,
-        "info": 4,
-        "set": 4,
-        "add": 4,
-        "remove": 4
-      }
-    }
-  }
-}
 ```
+
+### Command Permissions Configuration
+
+**Allowed Values:**
+- `NONE` - No permission required.
+- `SPAWN_PROTECTION_BYPASS` - Permission level required to bypass spawn protection
+- `CHEAT_COMMANDS_AND_COMMAND_BLOCKS` - Permission level required to use cheat commands and command blocks.
+- `MULTIPLAYER_MANAGEMENT` - Permission level required to manage multiplayer settings
+- `ALL_COMMANDS` - Permission level required to use all commands.
+
+#### fallingstar
+
+The permission level required to use the `/fallingstar` command.
+
+- Default: `ALL_COMMANDS`
+
+#### fallingstar_help
+
+The permission level required to use the `/fallingstar help` command.
+
+- Default: `ALL_COMMANDS`
+
+#### fallingstar_reload
+
+The permission level required to use the `/fallingstar reload` command.
+
+- Default: `ALL_COMMANDS`
+
+#### fallingstar_cleanup
+
+The permission level required to use the `/fallingstar cleanup` command.
+
+- Default: `ALL_COMMANDS`
+
+#### fallingstar_status
+
+The permission level required to use the `/fallingstar status` command.
+
+- Default: `ALL_COMMANDS`
+
+#### fallingstar_force
+
+The permission level required to use the `/fallingstar force` command.
+
+- Default: `ALL_COMMANDS`
+
+#### fallingstar_confirm_delete
+
+The permission level required to use the `/fallingstar confirm_delete` command.
+
+- Default: `ALL_COMMANDS`
+
+#### Preset Command Permissions Configuration
+
+Contains the permission levels required to use the preset-related commands under the `/fallingstar preset` command.
+
+##### fallingstar_preset_enable
+
+The permission level required to use the `/fallingstar preset enable` command.
+
+- Default: `ALL_COMMANDS`
+
+##### fallingstar_preset_disable
+
+The permission level required to use the `/fallingstar preset disable` command.
+
+- Default: `ALL_COMMANDS`
+
+##### fallingstar_preset_list
+
+The permission level required to use the `/fallingstar preset list` command.
+
+- Default: `ALL_COMMANDS`
+
+##### fallingstar_preset_create
+
+The permission level required to use the `/fallingstar preset create` command.
+
+- Default: `ALL_COMMANDS`
+
+##### fallingstar_preset_delete
+
+The permission level required to use the `/fallingstar preset delete` command.
+
+- Default: `ALL_COMMANDS`
+
+##### fallingstar_preset_info
+
+The permission level required to use the `/fallingstar preset info` command.
+
+- Default: `ALL_COMMANDS`
+
+##### fallingstar_preset_set
+
+The permission level required to use the `/fallingstar preset set` command.
+
+- Default: `ALL_COMMANDS`
+
+##### fallingstar_preset_add
+
+The permission level required to use the `/fallingstar preset add` command.
+
+- Default: `ALL_COMMANDS`
+
+##### fallingstar_preset_remove
+
+The permission level required to use the `/fallingstar preset remove` command.
+
+- Default: `ALL_COMMANDS`
 
 ## Scheduling Presets
 

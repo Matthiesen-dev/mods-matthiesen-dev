@@ -10,194 +10,531 @@ next:
 sidebar:
   label: Configuration
   order: 2
-banner:
-  content: |
-    These docs are a work in progress and may be incomplete or contain inaccuracies. (Or be for a newer unreleased version of the mod)
+tableOfContents:
+  minHeadingLevel: 2
+  maxHeadingLevel: 6
 ---
 
 All of the configuration files for Cobbled Level Control are located in the `<game_directory>/config/cobbled_level_control/` directory.
 
-## Main Configuration
+**Configuration files:**
+- `permissions.toml` - This file contains the permission nodes for Cobbled Level Control. You can use this file to change the permission nodes for the commands and features of the mod.
+- `server.toml` - This file contains the server-side configuration for Cobbled Level Control. You can use this file to change the default settings for the mod, such as the default level cap and scaling method.
 
-- `main.json`: This is the main configuration file for Cobbled Level Control. It contains settings for the mod, including level caps, catch rules, and wild spawn level caps.
+## Permissions Configuration
 
-### Configuration Options
+```toml file="permissions.toml"
+#Permissions Configuration
+[permissions]
 
-- `difficulties`: An array of difficulty preset names that are available in the mod. Each difficulty preset is defined in a separate JSON file located in the `difficulty/` directory.
-- `defaults`: An object containing default settings for the mod, including the default difficulty preset and whether to automatically apply the default settings to new players.
-  - `defaultDifficulty`: The name of the default difficulty preset to use for new players.
-  - `autoApplyDefault`: A boolean value indicating whether to automatically apply the default settings to new players when they first join the server.
-- `spawnConfig`: An object containing settings for wild pokemon spawns, including whether to enable scaling and the method to use for scaling.
-  - `enableScaling`: A boolean value indicating whether to enable scaling for wild pokemon spawns.
-  - `scalingMethod`: A string value indicating the method to use for scaling wild pokemon spawns. See [Scaling Methods](#scaling-methods).
-
-### Example Configuration
-
-```json title="<game_directory>/config/cobbled_level_control/main.json"
-{
-  "difficulties": [
-    "default"
-  ],
-  "defaults": {
-    "defaultDifficulty": "default",
-    "autoApplyDefault": true
-  },
-  "spawnConfig": {
-    "enableScaling": true,
-    "scalingMethod": "+- random7"
-  }
-}
+	#Commands Configuration
+	[permissions.commands]
+		levelControl = "NONE"
+		levelControl_levelUp = "ALL_COMMANDS"
+		levelControl_setLevel = "ALL_COMMANDS"
+		levelControl_status = "NONE"
+		levelControl_statusOther = "ALL_COMMANDS"
 ```
 
-## Messages Configuration
+### Command Permission Levels
 
-- `messages.json`: This file contains all the messages that the mod will send to players. It allows for easy customization of the messages without having to modify the mod's code.
+Command permission levels are used to determine who can use the commands of Cobbled Level Control. The allowed values are:
+- `NONE`: No one can use this command.
+- `SPAWN_PROTECTION_BYPASS`: Only players with spawn protection bypass can use this command.
+- `CHEAT_COMMANDS_AND_COMMAND_BLOCKS`: Only players with cheat commands and command blocks can use this command.
+- `MULTIPLAYER_MANAGEMENT`: Only players with multiplayer management permissions can use this command.
+- `ALL_COMMANDS`: All players can use this command.
 
-### Configuration Options
+#### Level Control
 
-- `messages`: An object containing all the messages that the mod will send to players. Each message can contain placeholders that will be replaced with dynamic values when the message is sent.
-- `errors`: An object containing all the error messages that the mod will send to players.
+Command permission level for the `/levelControl` command.
 
-### Example Configuration
+- Permission Node: `cobbled_level_control.command.level-control`
+- Default Value: `NONE`
 
-```json title="<game_directory>/config/cobbled_level_control/messages.json"
-{
-  "messages": {
-    "useActionBar": false,
-    "reloaded": "Cobbled Level Control configuration reloaded successfully.",
-    "targetCatchingLevelSet": "Your Catching level has been set to %level%.",
-    "sourceCatchingLevelSet": "Set Catching level of %target% to %level%.",
-    "targetLevelingLevelSet": "Your Leveling level has been set to %level%.",
-    "sourceLevelingLevelSet": "Set Leveling level of %target% to %level%.",
-    "targetSetDifficulty": "Your difficulty has been set to %difficulty%!",
-    "sourceSetDifficulty": "Set %target%'s difficulty to %difficulty%!",
-    "targetCatchingTierSet": "Your tier in catching has increased to %tier%!",
-    "sourceCatchingTierSet": "Set %target%'s tier in catching to %tier%!",
-    "targetLevelingTierSet": "Your tier in leveling has increased to %tier%!",
-    "sourceLevelingTierSet": "Set %target%'s tier in leveling to %tier%!"
-  },
-  "errors": {
-    "useActionBar": false,
-    "battle": "One or more of your Pokemon exceeds your leveling cap! Please put it in your PC!",
-    "catchingTier": "Your Catching Tier level is too low for this Pokemon!",
-    "levelingTier": "Your Leveling Tier level is too low to level up this Pokemon!",
-    "missingPermission": "You do not have permission to do that!",
-    "invalidDifficulty": "The difficulty you specified is invalid!",
-    "missingDifficulty": "Target player does not have a difficulty set. Please set a difficulty first.",
-    "difficultyDoesNotExist": "Difficulty %difficultyName% does not exist!",
-    "catchingLevelToHigh": "Level exceeds maximum level for Catching module. Max level is %maxLevel%.",
-    "levelingLevelToHigh": "Level exceeds maximum level for Leveling module. Max level is %maxLevel%.",
-    "invalidModule": "Invalid module specified. Valid modules are: catch, level.",
-    "catchingLevelAlreadyMax": "Target player is already at the maximum level for the Catching module.",
-    "levelingLevelAlreadyMax": "Target player is already at the maximum level for the Leveling module."
-  }
-}
+#### Level Control Level Up
+
+Command permission level for the `/levelControl level-up` command.
+
+- Permission Node: `cobbled_level_control.command.level-control.level-up`
+- Default Value: `ALL_COMMANDS`
+
+#### Level Control Set Level
+
+Command permission level for the `/levelControl set-level` command.
+
+- Permission Node: `cobbled_level_control.command.level-control.set-level`
+- Default Value: `ALL_COMMANDS`
+
+#### Level Control Status
+
+Command permission level for the `/levelControl status` command.
+
+- Permission Node: `cobbled_level_control.command.level-control.status`
+- Default Value: `NONE`
+
+#### Level Control Status Other
+
+Command permission level for the `/levelControl status-other` command.
+
+- Permission Node: `cobbled_level_control.command.level-control.status-other`
+- Default Value: `NONE`
+
+## Server Configuration
+
+```toml file="server.toml"
+#Server Configuration
+[server]
+
+	#Main Configuration
+	[server.main]
+
+		#Battle Module Configuration
+		[server.main.battleModule]
+			restrictBattles = true
+			legendary = "cobbled_level_control.battles.legendary"
+			mythical = "cobbled_level_control.battles.mythical"
+			ultraBeast = "cobbled_level_control.battles.ultraBeast"
+			shiny = "cobbled_level_control.battles.shiny"
+
+			[server.main.battleModule.evoStages]
+				singleEvo = ""
+				firstStageEvo = ""
+				secondStageEvo = "cobbled_level_control.battles.evoStages.secondStageEvo"
+				finalStageEvo = "cobbled_level_control.battles.evoStages.finalStageEvo"
+
+		#Catching Module Configuration
+		[server.main.catchingModule]
+			restrictCatching = true
+			legendary = "cobbled_level_control.catching.legendary"
+			mythical = "cobbled_level_control.catching.mythical"
+			ultraBeast = "cobbled_level_control.catching.ultraBeast"
+			shiny = "cobbled_level_control.catching.shiny"
+
+			[server.main.catchingModule.evoStages]
+				singleEvo = ""
+				firstStageEvo = ""
+				secondStageEvo = "cobbled_level_control.catching.evoStages.secondStageEvo"
+				finalStageEvo = "cobbled_level_control.catching.evoStages.finalStageEvo"
+
+			[[server.main.catchingModule.tiersConfig]]
+				tier = "1"
+				level = 10
+			[[server.main.catchingModule.tiersConfig]]
+				tier = "2"
+				level = 20
+			[[server.main.catchingModule.tiersConfig]]
+				tier = "3"
+				level = 40
+			[[server.main.catchingModule.tiersConfig]]
+				tier = "4"
+				level = 80
+			[[server.main.catchingModule.tiersConfig]]
+				tier = "5"
+				level = 100
+
+		#Leveling Module Configuration
+		[server.main.levelingModule]
+			restrictLeveling = false
+
+			[server.main.levelingModule.evoStages]
+				singleEvo = ""
+				firstStageEvo = ""
+				secondStageEvo = "cobbled_level_control.leveling.evoStages.secondStageEvo"
+				finalStageEvo = "cobbled_level_control.leveling.evoStages.finalStageEvo"
+
+			[[server.main.levelingModule.tiersConfig]]
+				tier = "1"
+				level = 10
+			[[server.main.levelingModule.tiersConfig]]
+				tier = "2"
+				level = 20
+			[[server.main.levelingModule.tiersConfig]]
+				tier = "3"
+				level = 40
+			[[server.main.levelingModule.tiersConfig]]
+				tier = "4"
+				level = 80
+			[[server.main.levelingModule.tiersConfig]]
+				tier = "5"
+				level = 100
+
+		#Scaling Configuration
+		[server.main.scaling]
+			enableScaling = true
+			scalingMethod = "+- random7"
+
+	#Messages Configuration
+	[server.messages]
+
+		#Success Messages Configuration
+		[server.messages.success]
+			useActionBar = false
+			reloaded = "Cobbled Level Control configuration reloaded successfully."
+			targetCatchingLevelSet = "Your Catching level has been set to %level%."
+			sourceCatchingLevelSet = "Set Catching level of %target% to %level%."
+			targetLevelingLevelSet = "Your Leveling level has been set to %level%."
+			sourceLevelingLevelSet = "Set Leveling level of %target% to %level%."
+			targetCatchingTierSet = "Your tier in catching has increased to %tier%!"
+			sourceCatchingTierSet = "Set %target%'s tier in catching to %tier%!"
+			targetLevelingTierSet = "Your tier in leveling has increased to %tier%!"
+			sourceLevelingTierSet = "Set %target%'s tier in leveling to %tier%!"
+
+		#Error Messages Configuration
+		[server.messages.error]
+			useActionBar = false
+			battle = "One or more of your Pokemon exceeds your leveling cap! Please put it in your PC!"
+			catchingTier = "Your Catching Tier level is too low for this Pokemon!"
+			levelingTier = "Your Leveling Tier level is too low to level up this Pokemon!"
+			missingPermission = "You do not have permission to do that!"
+			catchingLevelToHigh = "Level exceeds maximum level for Catching module. Max level is %maxLevel%."
+			levelingLevelToHigh = "Level exceeds maximum level for Leveling module. Max level is %maxLevel%."
+			invalidModule = "Invalid module specified. Valid modules are: catch, level."
+			catchingLevelAlreadyMax = "Target player is already at the maximum level for the Catching module."
+			levelingLevelAlreadyMax = "Target player is already at the maximum level for the Leveling module."
+
 ```
 
-## Difficulty Presets
+### Main Configuration
 
-- `difficulty/<preset_name>.json`: These files define the different difficulty presets available in the mod. Each preset contains settings for level caps, catch rules, and wild spawn level caps.
+Main configuration options for Cobbled Level Control. These options control the behavior of the mod and can be used to customize the player experience on your server.
 
-### Configuration Options
+##### Battle Module Configuration
 
-- `battles`: An object containing settings for battle level caps, including whether to restrict battles and the level cap for each evolution stage.
-  - `restrictBattles`: A boolean value indicating whether to restrict battles based on level caps.
-  - `evolutionStages`: An object containing the required permission for each evolution stage.
-    - `singleEvo`: The required permission for single-stage pokemon.
-    - `firstStageEvo`: The required permission for first-stage evolution pokemon.
-    - `secondStageEvo`: The required permission for second-stage evolution pokemon.
-    - `finalStageEvo`: The required permission for final-stage evolution pokemon.
-  - `legendary`: The required permission for legendary pokemon.
-  - `mythical`: The required permission for mythical pokemon.
-  - `ultraBeast`: The required permission for ultra beast pokemon.
-- `catching`: An object containing settings for catching level caps, including whether to restrict catching, the level cap for each evolution stage, legendary, mythical, ultra beast, and shiny pokemon, as well as the level cap for each catching tier.
-  - `restrictCatching`: A boolean value indicating whether to restrict catching based on level caps.
-  - `evolutionStages`: An object containing the required permission for each evolution stage.
-    - `singleEvo`: The required permission for single-stage pokemon.
-    - `firstStageEvo`: The required permission for first-stage evolution pokemon.
-    - `secondStageEvo`: The required permission for second-stage evolution pokemon.
-    - `finalStageEvo`: The required permission for final-stage evolution pokemon.
-  - `legendary`: The required permission for legendary pokemon.
-  - `mythical`: The required permission for mythical pokemon.
-  - `ultraBeast`: The required permission for ultra beast pokemon.
-  - `shiny`: The required permission for shiny pokemon.
-  - `tiers`: An object containing the level cap for each tier
-- `leveling`: An object containing settings for leveling level caps, including whether to restrict leveling, the level cap for each evolution stage, and the level cap for each leveling tier.
-  - `restrictLeveling`: A boolean value indicating whether to restrict leveling based on level caps.
-  - `evolutionStages`: An object containing the required permission for each evolution stage.
-    - `singleEvo`: The required permission for single-stage pokemon.
-    - `firstStageEvo`: The required permission for first-stage evolution pokemon.
-    - `secondStageEvo`: The required permission for second-stage evolution pokemon.
-    - `finalStageEvo`: The required permission for final-stage evolution pokemon.
-  - `tiers`: An object containing the level cap for each tier.
+The battle module configuration options control the behavior of battles on your server. You can use these options to restrict battles based on player level, and to set permission nodes for legendary, mythical, ultra beast, and shiny Pokémon.
 
-:::tip
-Setting a permission to an empty string will allow all players to use that evolution stage, while setting it to a non-empty string will require players to have that permission in order to use that evolution stage.
-:::
+###### restrictBattles
 
-### Example Configuration
+The `restrictBattles` option allows you to control whether battles are restricted based on player level. Set this option to `true` to enable battle restrictions, or `false` to disable them.
 
-```json title="<game_directory>/config/cobbled_level_control/difficulty/default.json"
-{
-  "battles": {
-    "restrictBattles": false,
-    "evolutionStages": {
-      "singleEvo": "",
-      "firstStageEvo": "",
-      "secondStageEvo": "cobbled_level_control.battles.second_stage_evo",
-      "finalStageEvo": "cobbled_level_control.battles.final_stage_evo"
-    },
-    "legendary": "cobbled_level_control.battles.legendary",
-    "mythical": "cobbled_level_control.battles.mythical",
-    "ultraBeast": "cobbled_level_control.battles.ultra_beast",
-    "shiny": "cobbled_level_control.battles.shiny"
-  },
-  "catching": {
-    "restrictCatching": false,
-    "evolutionStages": {
-      "singleEvo": "",
-      "firstStageEvo": "",
-      "secondStageEvo": "cobbled_level_control.catching.second_stage_evo",
-      "finalStageEvo": "cobbled_level_control.catching.final_stage_evo"
-    },
-    "legendary": "cobbled_level_control.catching.legendary",
-    "mythical": "cobbled_level_control.catching.mythical",
-    "ultraBeast": "cobbled_level_control.catching.ultra_beast",
-    "shiny": "cobbled_level_control.catching.shiny",
-    "tiers": {
-      "5": 100,
-      "4": 80,
-      "3": 40,
-      "2": 20,
-      "1": 10
-    }
-  },
-  "leveling": {
-    "restrictLeveling": false,
-    "evolutionStages": {
-      "singleEvo": "",
-      "firstStageEvo": "",
-      "secondStageEvo": "cobbled_level_control.leveling.second_stage_evo",
-      "finalStageEvo": "cobbled_level_control.leveling.final_stage_evo"
-    },
-    "tiers": {
-      "5": 100,
-      "4": 80,
-      "3": 40,
-      "2": 20,
-      "1": 10
-    }
-  }
-}
-```
+- Default Value: `true`
 
-## Scaling Methods
+###### legendary
 
-Cobbled Level Control supports different scaling methods for wild pokemon spawns. The scaling method determines how the level of wild pokemon spawns is calculated based on the player's max catching level.
+The `legendary` option allows you to set the required permission node for legendary Pokémon that players can battle with. If a player tries to battle with a legendary Pokémon without the required permission, they will be prevented from doing so.
 
-### Supported Scaling Methods
+- Default Value: `cobbled_level_control.battles.legendary`
 
-- `+- randomX`: This method will randomly add or subtract a number between 1 and X levels from the player's max catching level. For example, `+- random5` will result in a wild pokemon spawn level that is randomly between 1 and 5 levels higher or lower than the player's max catching level.
-- `+ X`: This method will add X levels to the player's max catching level. For example, `+ 3` will result in a wild pokemon spawn level that is 3 levels higher than the player's max catching level.
-- `- randomX`: This method will randomly subtract a number between 1 and X levels from the player's max catching level. For example, `- random7` will result in a wild pokemon spawn level that is randomly between 1 and 7 levels lower than the player's max catching level.
-- `+ 0`: This method will set the wild pokemon spawn level to be exactly at the player's max catching level. This is the best way to ensure that wild pokemon spawns are at the player's max catching level without any variation.
+###### mythical
+
+The `mythical` option allows you to set the required permission node for mythical Pokémon that players can battle with. If a player tries to battle with a mythical Pokémon without the required permission, they will be prevented from doing so.
+
+- Default Value: `cobbled_level_control.battles.mythical`
+
+###### ultraBeast
+
+The `ultraBeast` option allows you to set the required permission node for ultra beast Pokémon that players can battle with. If a player tries to battle with an ultra beast Pokémon without the required permission, they will be prevented from doing so.
+
+- Default Value: `cobbled_level_control.battles.ultraBeast`
+
+###### shiny
+
+The `shiny` option allows you to set the required permission node for shiny Pokémon that players can battle with. If a player tries to battle with a shiny Pokémon without the required permission, they will be prevented from doing so.
+
+- Default Value: `cobbled_level_control.battles.shiny`
+
+###### Evolution Stages Configuration
+
+Evolution stages configuration options allow you to set the required permission nodes for different evolution stages of Pokémon that players can battle with. If a player tries to battle with a Pokémon of a certain evolution stage without the required permission, they will be prevented from doing so.
+
+####### singleEvo
+
+The `singleEvo` option allows you to set the required permission node for single evolution stage Pokémon that players can battle with. If a player tries to battle with a single evolution stage Pokémon without the required permission, they will be prevented from doing so.
+
+- Default Value: `""` (no restriction)
+
+####### firstStageEvo
+
+The `firstStageEvo` option allows you to set the required permission node for first evolution stage Pokémon that players can battle with. If a player tries to battle with a first evolution stage Pokémon without the required permission, they will be prevented from doing so.
+
+- Default Value: `""` (no restriction)
+
+####### secondStageEvo
+
+The `secondStageEvo` option allows you to set the required permission node for second evolution stage Pokémon that players can battle with. If a player tries to battle with a second evolution stage Pokémon without the required permission, they will be prevented from doing so.
+
+- Default Value: `cobbled_level_control.battles.evoStages.secondStageEvo`
+
+####### finalStageEvo
+
+The `finalStageEvo` option allows you to set the required permission node for final evolution stage Pokémon that players can battle with. If a player tries to battle with a final evolution stage Pokémon without the required permission, they will be prevented from doing so.
+
+- Default Value: `cobbled_level_control.battles.evoStages.finalStageEvo`
+
+##### Catching Module Configuration
+
+The catching module configuration options control the behavior of catching Pokémon on your server. You can use these options to restrict catching based on player level, and to set permission nodes for legendary, mythical, ultra beast, and shiny Pokémon.
+
+###### restrictCatching
+
+The `restrictCatching` option allows you to control whether catching is restricted based on player level. Set this option to `true` to enable catching restrictions, or `false` to disable them.
+
+- Default Value: `true`
+
+###### legendary
+
+The `legendary` option allows you to set the required permission node for legendary Pokémon that players can catch. If a player tries to catch a legendary Pokémon without the required permission, they will be prevented from doing so.
+
+- Default Value: `cobbled_level_control.catching.legendary`
+
+###### mythical
+
+The `mythical` option allows you to set the required permission node for mythical Pokémon that players can catch. If a player tries to catch a mythical Pokémon without the required permission, they will be prevented from doing so.
+
+- Default Value: `cobbled_level_control.catching.mythical`
+
+###### ultraBeast
+
+The `ultraBeast` option allows you to set the required permission node for ultra beast Pokémon that players can catch. If a player tries to catch an ultra beast Pokémon without the required permission, they will be prevented from doing so.
+
+- Default Value: `cobbled_level_control.catching.ultraBeast`
+
+###### shiny
+
+The `shiny` option allows you to set the required permission node for shiny Pokémon that players can catch. If a player tries to catch a shiny Pokémon without the required permission, they will be prevented from doing so.
+
+- Default Value: `cobbled_level_control.catching.shiny`
+
+###### Evolution Stages Configuration
+
+The evolution stages configuration options allow you to set the required permission nodes for different evolution stages of Pokémon that players can catch. If a player tries to catch a Pokémon of a certain evolution stage without the required permission, they will be prevented from doing so.
+
+####### singleEvo
+
+The `singleEvo` option allows you to set the required permission node for single evolution stage Pokémon that players can catch. If a player tries to catch a single evolution stage Pokémon without the required permission, they will be prevented from doing so.
+
+- Default Value: `""` (no restriction)
+
+####### firstStageEvo
+
+The `firstStageEvo` option allows you to set the required permission node for first evolution stage Pokémon that players can catch. If a player tries to catch a first evolution stage Pokémon without the required permission, they will be prevented from doing so.
+
+- Default Value: `""` (no restriction)
+
+####### secondStageEvo
+
+The `secondStageEvo` option allows you to set the required permission node for second evolution stage Pokémon that players can catch. If a player tries to catch a second evolution stage Pokémon without the required permission, they will be prevented from doing so.
+
+- Default Value: `cobbled_level_control.catching.evoStages.secondStageEvo`
+
+####### finalStageEvo
+
+The `finalStageEvo` option allows you to set the required permission node for final evolution stage Pokémon that players can catch. If a player tries to catch a final evolution stage Pokémon without the required permission, they will be prevented from doing so.
+
+- Default Value: `cobbled_level_control.catching.evoStages.finalStageEvo`
+
+###### tiersConfig
+
+The `tiersConfig` option allows you to define the tiers for catching and the required levels for each tier. The configuration is a list of objects, each object representing a tier. Each object must have the following fields:
+- `tier`: The name of the tier (string)
+- `level`: The level of the tier (integer)
+
+- Default Values:
+  - Tier 1: Level 10
+  - Tier 2: Level 20
+  - Tier 3: Level 40
+  - Tier 4: Level 80
+  - Tier 5: Level 100
+
+##### Leveling Module Configuration
+
+The leveling module configuration options control the behavior of leveling Pokémon on your server. You can use these options to restrict leveling based on player level, and to set permission nodes for legendary, mythical, ultra beast, and shiny Pokémon.
+
+###### restrictLeveling
+
+The `restrictLeveling` option allows you to control whether leveling is restricted based on player level. Set this option to `true` to enable leveling restrictions, or `false` to disable them.
+
+- Default Value: `true`
+
+###### Evolution Stages Configuration
+
+The evolution stages configuration options allow you to set the required permission nodes for different evolution stages of Pokémon that players can level. If a player tries to level a Pokémon of a certain evolution stage without the required permission, they will be prevented from doing so.
+
+####### singleEvo
+
+The `singleEvo` option allows you to set the required permission node for single evolution stage Pokémon that players can level. If a player tries to level a single evolution stage Pokémon without the required permission, they will be prevented from doing so.
+
+- Default Value: `""` (no restriction)
+
+####### firstStageEvo
+
+The `firstStageEvo` option allows you to set the required permission node for first evolution stage Pokémon that players can level. If a player tries to level a first evolution stage Pokémon without the required permission, they will be prevented from doing so.
+
+- Default Value: `""` (no restriction)
+
+####### secondStageEvo
+
+The `secondStageEvo` option allows you to set the required permission node for second evolution stage Pokémon that players can level. If a player tries to level a second evolution stage Pokémon without the required permission, they will be prevented from doing so.
+
+- Default Value: `cobbled_level_control.leveling.evoStages.secondStageEvo`
+
+####### finalStageEvo
+
+The `finalStageEvo` option allows you to set the required permission node for final evolution stage Pokémon that players can level. If a player tries to level a final evolution stage Pokémon without the required permission, they will be prevented from doing so.
+
+- Default Value: `cobbled_level_control.leveling.evoStages.finalStageEvo`
+
+###### tiersConfig
+
+The `tiersConfig` option allows you to define the tiers for leveling and the required levels for each tier. The configuration is a list of objects, each object representing a tier. Each object must have the following fields:
+- `tier`: The name of the tier (string)
+- `level`: The level of the tier (integer)
+
+- Default Values:
+  - Tier 1: Level 10
+  - Tier 2: Level 20
+  - Tier 3: Level 40
+  - Tier 4: Level 80
+  - Tier 5: Level 100
+
+#### Scaling Configuration
+
+Scaling configuration options allow you to control how wild Pokémon levels are scaled based on player level. You can enable or disable scaling, and choose a scaling method to determine how wild Pokémon levels are calculated.
+
+##### Enable Scaling
+
+The `enableScaling` option allows you to control whether wild Pokémon levels are scaled based on player level. Set this option to `true` to enable scaling, or `false` to disable it.
+
+- Default Value: `true`
+
+##### Scaling Method
+
+The `scalingMethod` option allows you to choose a scaling method to determine how wild Pokémon levels are calculated based on the player's max catching level. The supported scaling methods are:
+- `+- randomX`: This method will randomly add or subtract a number between 1 and X levels from the player's max catching level.
+- `+ X`: This method will add X levels to the player's max catching level.
+- `- randomX`: This method will randomly subtract a number between 1 and X levels from the player's max catching level.
+- `+ 0`: This method will set the wild Pokémon spawn level to be exactly at the player's max catching level.
+
+- Default Value: `+- random7`
+
+### Messages Configuration
+
+Configuration options for success and error messages in Cobbled Level Control. You can use these options to customize the messages that players receive when they perform certain actions or encounter errors.
+
+#### Success Messages Configuration
+
+Success messages configuration options allow you to customize the messages that players receive when they perform certain actions successfully. You can choose to send these messages in chat or in the action bar.
+
+##### useActionBar
+
+The `useActionBar` option allows you to choose whether to send success messages in the action bar or in chat. Set this option to `true` to send messages in the action bar, or `false` to send them in chat.
+
+- Default Value: `false`
+
+##### reloaded
+
+The `reloaded` option allows you to customize the message that players receive when the plugin is reloaded.
+
+- Default Value: `"Cobbled Level Control configuration reloaded successfully."`
+
+##### targetCatchingLevelSet
+
+The `targetCatchingLevelSet` option allows you to customize the message that players receive when their catching level is set.
+
+- Default Value: `"Your Catching level has been set to %level%."`
+
+##### sourceCatchingLevelSet
+
+The `sourceCatchingLevelSet` option allows you to customize the message that players receive when they set another player's catching level.
+
+- Default Value: `"Set Catching level of %target% to %level%."`
+
+##### targetLevelingLevelSet
+
+The `targetLevelingLevelSet` option allows you to customize the message that players receive when their leveling level is set.
+
+- Default Value: `"Your Leveling level has been set to %level%."`
+
+##### sourceLevelingLevelSet
+
+The `sourceLevelingLevelSet` option allows you to customize the message that players receive when they set another player's leveling level.
+
+- Default Value: `"Set Leveling level of %target% to %level%."`
+
+##### targetCatchingTierSet
+
+The `targetCatchingTierSet` option allows you to customize the message that players receive when their catching tier is set.
+
+- Default Value: `"Your tier in catching has increased to %tier%!"`
+
+##### sourceCatchingTierSet
+
+The `sourceCatchingTierSet` option allows you to customize the message that players receive when they set another player's catching tier.
+
+- Default Value: `"Set %target%'s tier in catching to %tier%!"`
+
+##### targetLevelingTierSet
+
+The `targetLevelingTierSet` option allows you to customize the message that players receive when their leveling tier is set.
+
+- Default Value: `"Your tier in leveling has increased to %tier%!"`
+
+##### sourceLevelingTierSet
+
+The `sourceLevelingTierSet` option allows you to customize the message that players receive when they set another player's leveling tier.
+
+- Default Value: `"Set %target%'s tier in leveling to %tier%!"`
+
+#### Error Messages Configuration
+
+Error messages configuration options allow you to customize the messages that players receive when they encounter errors. You can choose to send these messages in chat or in the action bar.
+
+##### useActionBar
+
+The `useActionBar` option allows you to customize whether error messages are sent in the action bar or in chat.
+
+- Default Value: `false`
+
+##### battle
+
+The `battle` option allows you to customize the message that players receive when they try to battle with a Pokémon that exceeds their leveling cap.
+
+- Default Value: `"One or more of your Pokemon exceeds your leveling cap! Please put it in your PC!"`
+
+##### catchingTier
+
+The `catchingTier` option allows you to customize the message that players receive when they try to catch a Pokémon that exceeds their catching tier.
+
+- Default Value: `"Your Catching Tier level is too low for this Pokemon!"`
+
+##### levelingTier
+
+The `levelingTier` option allows you to customize the message that players receive when they try to level up a Pokémon that exceeds their leveling tier.
+
+- Default Value: `"Your Leveling Tier level is too low to level up this Pokemon!"`
+
+##### missingPermission
+
+The `missingPermission` option allows you to customize the message that players receive when they try to execute a command without the required permission.
+
+- Default Value: `"You do not have permission to do that!"`
+
+##### catchingLevelToHigh
+
+The `catchingLevelToHigh` option allows you to customize the message that players receive when they try to set a catching level that exceeds the maximum allowed for their difficulty.
+
+- Default Value: `"Level exceeds maximum level for Catching module. Max level is %maxLevel%."`
+
+##### levelingLevelToHigh
+
+The `levelingLevelToHigh` option allows you to customize the message that players receive when they try to set a leveling level that exceeds the maximum allowed for their difficulty.
+
+- Default Value: `"Level exceeds maximum level for Leveling module. Max level is %maxLevel%."`
+
+##### invalidModule
+
+The `invalidModule` option allows you to customize the message that players receive when they try to set a module that does not exist.
+
+- Default Value: `"Invalid module specified. Valid modules are: catch, level."`
+
+##### catchingLevelAlreadyMax
+
+The `catchingLevelAlreadyMax` option allows you to customize the message that players receive when they try to set a catching level that is already at the maximum allowed for their difficulty.
+
+- Default Value: `"Target player is already at the maximum level for the Catching module."`
+
+##### levelingLevelAlreadyMax
+
+The `levelingLevelAlreadyMax` option allows you to customize the message that players receive when they try to set a leveling level that is already at the maximum allowed for their difficulty.
+
+- Default Value: `"Target player is already at the maximum level for the Leveling module."`

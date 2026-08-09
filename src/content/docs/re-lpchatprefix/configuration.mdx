@@ -8,92 +8,126 @@ next: false
 sidebar:
   label: Configuration
   order: 2
-banner:
-  content: |
-    These docs are a work in progress and may be incomplete or contain inaccuracies. (Or be for a newer unreleased version of the mod)
+tableOfContents:
+  minHeadingLevel: 2
+  maxHeadingLevel: 6
 ---
 
-The config is located at `<game_directory>/config/relpchatprefix/config.json` and by default will look like the following:
+All of the configuration files for Re LPChatPrefix are located in the `<game_directory>/config/` directory.
 
-```json title="<game_directory>/config/relpchatprefix/config.json"
-{
-  "mainConfig": {
-    "enablePrefix": true,
-    "enableSuffix": true,
-    "messageFormat": "{prefix}{player}{suffix} <gray><bold>»<reset>",
-    "messageColor": "white"
-  },
-  "chatOverrides": {
-    "joinMessage": "<yellow>{prefix}{player}{suffix} joined the game<reset>",
-    "leaveMessage": "<yellow>{prefix}{player}{suffix} left the game<reset>"
-  },
-  "firstJoin": {
-    "message": "<yellow>Welcome {player} to the server!",
-    "enable": false
-  }
-}
+**Configuration files:**
+- `relpchatprefix-server.toml` - Server side configuration options for Re LPChatPrefix.
+
+## Server Configuration Options
+
+```toml title="relpchatprefix-server.toml"
+#Re-LPChatPrefix Configuration
+[main]
+	textParser = "ADVENTURE"
+	enablePrefix = true
+	enableSuffix = true
+	messageFormat = "{prefix}{player}{suffix} <gray><bold>»<reset>"
+	messageColor = "WHITE"
+
+	#Chat Overrides Configuration
+	[main.chatOverrides]
+		joinMessage = "<yellow>{prefix}{player}{suffix} joined the game<reset>"
+		leaveMessage = "<yellow>{prefix}{player}{suffix} left the game<reset>"
+
+	#First Join Configuration
+	[main.firstJoin]
+		enable = false
+		message = "<yellow>Welcome {player} to the server!<reset>"
 ```
 
-## Main Config options
+### textParser
 
-### `enablePrefix`
+The text parser to use for formatting messages.
 
-Allows you to enable or disable prefixes in the chat
+- Default: `ADVENTURE`
 
-### `enableSuffix`
+**Allowed Values:**
+- `VANILLA` - Use the vanilla Minecraft text parser.
+- `EMBERS` - Use the Embers Text API text parser. (Requires Embers Text API to be installed)
+- `ADVENTURE` - Use the Adventure MiniMessage text parser.
 
-Allows you to enable or disable Suffixes in the chat
+### enablePrefix
 
-### `messageFormat`
+Whether to enable the use of prefixes in chat messages.
 
-The provided format for chat messages being sent by users.
+- Type: Boolean
+- Default: `true`
 
-**Supported Placeholders:**
-- `{prefix}`: The player's LuckPerms prefix
-- `{player}`: The player's username
-- `{suffix}`: The player's LuckPerms suffix
+### enableSuffix
 
-You can use any MiniMessage supported text code for the message format. 
-For more details check out the [Adventure MiniMessage Docs](https://docs.papermc.io/adventure/minimessage/format/)
+Whether to enable the use of suffixes in chat messages.
 
-### `messageColor`
+- Type: Boolean
+- Default: `true`
 
-The provided message color to use for chat messages, by default uses White to align with the Minecraft defaults.
+### messageFormat
 
-You can use any standard Minecraft formatting color name.
+The format of chat messages. Use `{prefix}`, `{player}`, and `{suffix}` as placeholders.
 
-## Chat Overrides
+- Type: String
+- Default: `"{prefix}{player}{suffix} <gray><bold>»<reset>"`
 
-**Supported Placeholders:**
-- `{prefix}`: The player's LuckPerms prefix
-- `{player}`: The player's username
-- `{suffix}`: The player's LuckPerms suffix
+### messageColor
 
-You can use any MiniMessage supported text code for the message format.
-For more details check out the [Adventure MiniMessage Docs](https://docs.papermc.io/adventure/minimessage/format/)
+The color of the chat message text.
 
-### `joinMessage`
+- Default: `WHITE`
 
-This option allows you to override the default join message from Minecraft
+**Allowed Values:**
+- `BLACK`
+- `DARK_BLUE`
+- `DARK_GREEN`
+- `DARK_AQUA`
+- `DARK_RED`
+- `DARK_PURPLE`
+- `GOLD`
+- `GRAY`
+- `DARK_GRAY`
+- `BLUE`
+- `GREEN`
+- `AQUA`
+- `RED`
+- `LIGHT_PURPLE`
+- `YELLOW`
+- `WHITE`
 
-### `leaveMessage`
+### chatOverrides
 
-This option allows you to override the default leave message from Minecraft
+Chat overrides configuration for join and leave messages.
 
-## First Join
+#### joinMessage
 
-**Supported Placeholders:**
-- `{prefix}`: The player's LuckPerms prefix
-- `{player}`: The player's username
-- `{suffix}`: The player's LuckPerms suffix
+The message format for player join messages. Use `{prefix}`, `{player}`, and `{suffix}` as placeholders.
 
-You can use any MiniMessage supported text code for the message format.
-For more details check out the [Adventure MiniMessage Docs](https://docs.papermc.io/adventure/minimessage/format/)
+- Type: String
+- Default: `"<yellow>{prefix}{player}{suffix} joined the game<reset>"`
 
-### `message`
+#### leaveMessage
 
-Allows setting the first join message for players
+The message format for player leave messages. Use `{prefix}`, `{player}`, and `{suffix}` as placeholders.
 
-### `enable`
+- Type: String
+- Default: `"<yellow>{prefix}{player}{suffix} left the game<reset>"`
 
-Toggle for First join message
+### firstJoin
+
+First join configuration for welcome messages.
+
+#### enable
+
+Whether to enable the first join welcome message.
+
+- Type: Boolean
+- Default: `false`
+
+#### message
+
+The welcome message format for players joining for the first time. Use `{player}` as a placeholder.
+
+- Type: String
+- Default: `"<yellow>Welcome {player} to the server!<reset>"`

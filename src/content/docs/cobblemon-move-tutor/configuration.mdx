@@ -10,143 +10,291 @@ next:
 sidebar:
   label: Configuration
   order: 2
-banner:
-  content: |
-    These docs are a work in progress and may be incomplete or contain inaccuracies. (Or be for a newer unreleased version of the mod)
+tableOfContents:
+  minHeadingLevel: 2
+  maxHeadingLevel: 6
 ---
 
-The configuration directory is located at `<game_directory>/config/cobblemon_move_tutor/`. Inside this directory, you will find the following files:
+All of the configuration files for Cobblemon Move Tutor are located in the `<game_directory>/config/cobblemon_move_tutor/` directory.
 
-- `common.json` - Contains the general configuration settings for the mod.
-- `currency_providers.json` - Contains the configuration settings for currency providers, which are used to determine how the currency providers work for the Move Tutor.
-- `permissions.json` - Contains the configuration settings for permissions related to the Move Tutor, which can be used to control access to available commands.
+**Configuration files:**
+- `permissions.toml` - Permissions configuration options for Cobblemon Move Tutor.
+- `server.toml` - Server side configuration options for Cobblemon Move Tutor.
 
-## Common Configuration
+## Permissions Configuration Options
 
-The `common.json` file contains the general configuration settings for Cobblemon Move Tutor. Below is an example of what the `common.json` looks like by default:
-
-```json title="<game_directory>/config/cobblemon_move_tutor/common.json"
-{
-  "currencyConfig": {
-    "currencyType": "item",
-    "levelMovePrice": 16,
-    "tmMovePrice": 16,
-    "hmMovePrice": 32,
-    "tutorMovePrice": 16,
-    "specialMovePrice": 16,
-    "eggMovePrice": 32
-  },
-  "villageTutorConfig": {
-    "hideAlreadyKnownMoves": false,
-    "levelMove": false,
-    "tmMove": false,
-    "hmMove": true,
-    "tutorMove": true,
-    "specialMove": true,
-    "eggMove": false
-  },
-  "adminTutorConfig": {
-    "hideAlreadyKnownMoves": false,
-    "levelMove": false,
-    "tmMove": false,
-    "hmMove": true,
-    "tutorMove": true,
-    "specialMove": true,
-    "eggMove": false
-  }
-}
+```toml title="permissions.toml"
+#Permissions Config
+[permissionLevelsConfig]
+	cmdMoveTutor = "ALL_COMMANDS"
+	cmdMoveTutor_other = "ALL_COMMANDS"
 ```
 
-### `currencyConfig` 
+### Permissions Configuration
 
-Contains the configuration settings for the currency used by the Move Tutor, including the type of currency and the price for each type of move.
+Allows configuration of the permission levels required to use the commands added by Cobblemon Move Tutor.
 
-- `currencyType` - The type of currency used by the Move Tutor. Can be set to `item`, `cobbledollars`, or `impactor`.
-- `levelMovePrice` - The price for learning a level-up move.
-- `tmMovePrice` - The price for learning a TM move.
-- `hmMovePrice` - The price for learning an HM/Legacy move.
-- `tutorMovePrice` - The price for learning a Move Tutor move.
-- `specialMovePrice` - The price for learning a special move.
-- `eggMovePrice` - The price for learning an egg move.
+**Allowed Values:**
+- `NONE` - No permission required.
+- `SPAWN_PROTECTION_BYPASS` - Permission level required to bypass spawn protection
+- `CHEAT_COMMANDS_AND_COMMAND_BLOCKS` - Permission level required to use cheat commands and command blocks.
+- `MULTIPLAYER_MANAGEMENT` - Permission level required to manage multiplayer settings
+- `ALL_COMMANDS` - Permission level required to use all commands.
 
-### `villageTutorConfig` 
+#### cmdMoveTutor
 
-Contains the configuration settings for the Move Tutor that spawns near villages, including which types of moves they offer and whether to hide moves that the player's Pokemon already knows.
+The permission level required to use the `/movetutor` command.
 
-- Options shared with `adminTutorConfig` see [below](#tutor-configuration-options).
-### `adminTutorConfig` 
+- Default: `ALL_COMMANDS`
 
-Contains the configuration settings for the "Admin" Move Tutor, which can be summoned using commands or Molang functions, including which types of moves they offer and whether to hide moves that the player's Pokemon already knows.
+#### cmdMoveTutor_other
 
-- Options shared with `villageTutorConfig` see [below](#tutor-configuration-options).
+The permission level required to use the `/movetutor` command on other players.
 
-#### Tutor Configuration Options
+- Default: `ALL_COMMANDS`
 
-The following options are shared between both the `villageTutorConfig` and `adminTutorConfig`:
-- `hideAlreadyKnownMoves` - If true, the Move Tutor will hide moves that the player's Pokemon already knows from their move list.
-- `levelMove` - If true, the Move Tutor will offer level-up moves for the player's Pokemon to learn.
-- `tmMove` - If true, the Move Tutor will offer TM moves for the player's Pokemon to learn.
-- `hmMove` - If true, the Move Tutor will offer HM/Legacy moves for the player's Pokemon to learn.
-- `tutorMove` - If true, the Move Tutor will offer Move Tutor moves for the player's Pokemon to learn.
-- `specialMove` - If true, the Move Tutor will offer special moves for the player's Pokemon to learn. Special moves are custom moves that can be added by datapacks or other mods.
-- `eggMove` - If true, the Move Tutor will offer egg moves for the player's Pokemon to learn.
+## Server Configuration Options
 
-## Currency Providers Configuration
+```toml title="server.toml"
+#Currency Provider Config
+[currencyProviderConfig]
+	cobbleDollarsProvider_displayName = "CobbleDollars"
+	impactorProvider_displayName = "Dollars"
+	impactorProvider_currency = "impactor:dollars"
+	itemProvider_displayName = "Rare Candy"
+	itemProvider_itemId = "cobblemon:rare_candy"
 
-The `currency_providers.json` file contains the configuration settings for currency providers, which are used to determine how the currency providers work for the Move Tutor. Below is an example of what the `currency_providers.json` looks like by default:
+#Currency Config
+[currencyConfig]
+	currencyType = "item"
+	levelMovePrice = 16
+	tmMovePrice = 16
+	legacyMovePrice = 32
+	tutorMovePrice = 16
+	specialMovePrice = 16
+	eggMovePrice = 32
 
-```json title="<game_directory>/config/cobblemon_move_tutor/currency_providers.json"
-{
-  "cobbleDollarsProvider": {
-    "currencyDisplayName": "CobbleDollars"
-  },
-  "impactorProvider": {
-    "currencyDisplayName": "Dollars",
-    "currency": "impactor:dollars"
-  },
-  "itemProvider": {
-    "currencyDisplayName": "Rare Candy",
-    "itemId": "cobblemon:rare_candy"
-  }
-}
+#Village Tutor Config
+[villageTutorConfig]
+	hideAlreadyKnownMoves = false
+	levelMove = false
+	tmMove = false
+	legacyMove = true
+	tutorMove = true
+	specialMove = true
+	eggMove = false
+
+#Admin Tutor Config
+[adminTutorConfig]
+	hideAlreadyKnownMoves = false
+	levelMove = false
+	tmMove = false
+	legacyMove = true
+	tutorMove = true
+	specialMove = true
+	eggMove = false
 ```
 
-### `cobbleDollarsProvider` 
+### Currency Provider Configuration
 
-The configuration for the CobbleDollars currency provider, which allows the Move Tutor to use CobbleDollars as currency.
+Allows configuration of the currency providers used by Cobblemon Move Tutor.
 
-- `currencyDisplayName` - The display name for the CobbleDollars currency when shown in the Move Tutor's GUI and messages.
+#### cobbleDollarsProvider_displayName
 
-### `impactorProvider`
+The display name for the CobbleDollars currency provider.
 
-The configuration for the Impactor currency provider, which allows the Move Tutor to use Impactor Dollars as currency.
+- Type: `string`
+- Default: `"CobbleDollars"`
 
-- `currencyDisplayName` - The display name for the Impactor currency when shown in the Move Tutor's GUI and messages.
-- `currency` - The impactor currency ID for the currency used by the Impactor provider. This is used for checking if the Impactor mod is present and for displaying the currency in the Move Tutor's GUI.
+#### impactorProvider_displayName
 
-### `itemProvider` 
+The display name for the Impactor currency provider.
 
-The configuration for the item currency provider, which allows the Move Tutor to use a specific item as currency.
+- Type: `string`
+- Default: `"Dollars"`
 
-- `currencyDisplayName` - The display name for the item currency when shown in the Move Tutor's GUI and messages.
-- `itemId` - The item ID for the item used as currency by the item provider. This is used for checking if the item exists and for displaying the currency in the Move Tutor's GUI. By default, this is set to "cobblemon:rare_candy", which is the item ID for Cobblemon's Rare Candy item.
+#### impactorProvider_currency
 
-## Permissions Configuration
+The currency identifier for the Impactor currency provider.
 
-The `permissions.json` file contains the configuration settings for permissions related to the Move Tutor, which can be used to control access to available commands. Below is an example of what the `permissions.json` looks like by default:
+- Type: `string`
+- Default: `"impactor:dollars"`
 
-```json title="<game_directory>/config/cobblemon_move_tutor/permissions.json"
-{
-  "permissionlevels": {
-    "command.move-tutor": 2,
-    "command.move-tutor.other": 2
-  }
-}
-```
+#### itemProvider_displayName
 
-### `permissionlevels` 
+The display name for the Item currency provider.
 
-Contains the permission levels for various permissions related to the Move Tutor commands.
+- Type: `string`
+- Default: `"Rare Candy"`
 
-- `command.move-tutor` - The permission level required to use the `/move-tutor` command, which opens the Move Tutor's GUI for the player.
-- `command.move-tutor.other` - The permission level required to use the `/move-tutor other <player>` command, which opens the Move Tutor's GUI for another player.
+#### itemProvider_itemId
+
+The item ID for the Item currency provider.
+
+- Type: `string`
+- Default: `"cobblemon:rare_candy"`
+
+### Currency Configuration
+
+Allows configuration of the currency used for move tutoring and the prices for each type of move.
+
+#### currencyType
+
+The type of currency used for move tutoring. Options: `'item'`, `'cobbledollars'`, `'impactor'`.
+
+- Type: `string`
+- Default: `"item"`
+
+#### levelMovePrice
+
+The price for level-up moves.
+
+- Type: `integer`
+- Default: `16`
+- Range: `> 0`
+
+#### tmMovePrice
+
+The price for TM moves.
+
+- Type: `integer`
+- Default: `16`
+- Range: `> 0`
+
+#### legacyMovePrice
+
+The price for legacy moves (HMs).
+
+- Type: `integer`
+- Default: `32`
+- Range: `> 0`
+
+#### tutorMovePrice
+
+The price for tutor moves.
+
+- Type: `integer`
+- Default: `16`
+- Range: `> 0`
+
+#### specialMovePrice
+
+The price for special moves.
+
+- Type: `integer`
+- Default: `16`
+- Range: `> 0`
+
+#### eggMovePrice
+
+The price for egg moves.
+
+- Type: `integer`
+- Default: `32`
+- Range: `> 0`
+
+### Village Tutor Configuration
+
+Allows configuration of the moves available in the village tutor interface.
+
+#### hideAlreadyKnownMoves
+
+A boolean value that determines whether to hide moves that the Pokémon already knows in the village tutor interface.
+
+- Type: `boolean`
+- Default: `false`
+
+#### levelMove
+
+A boolean value that determines whether level-up moves are available in the village tutor.
+
+- Type: `boolean`
+- Default: `false`
+
+#### tmMove
+
+A boolean value that determines whether TM moves are available in the village tutor.
+
+- Type: `boolean`
+- Default: `false`
+
+#### legacyMove
+
+A boolean value that determines whether legacy moves (HMs) are available in the village tutor.
+
+- Type: `boolean`
+- Default: `true`
+
+#### tutorMove
+
+A boolean value that determines whether tutor moves are available in the village tutor.
+
+- Type: `boolean`
+- Default: `true`
+
+#### specialMove
+
+A boolean value that determines whether special moves are available in the village tutor.
+
+- Type: `boolean`
+- Default: `true`
+
+#### eggMove
+
+A boolean value that determines whether egg moves are available in the village tutor.
+
+- Type: `boolean`
+- Default: `false`
+
+### Admin Tutor Configuration
+
+Allows configuration of the moves available in the admin tutor interface.
+
+#### hideAlreadyKnownMoves
+
+A boolean value that determines whether to hide moves that the Pokémon already knows in the admin tutor interface.
+
+- Type: `boolean`
+- Default: `false`
+
+#### levelMove
+
+A boolean value that determines whether level-up moves are available in the admin tutor.
+
+- Type: `boolean`
+- Default: `false`
+
+#### tmMove
+
+A boolean value that determines whether TM moves are available in the admin tutor.
+
+- Type: `boolean`
+- Default: `false`
+
+#### legacyMove
+
+A boolean value that determines whether legacy moves (HMs) are available in the admin tutor.
+
+- Type: `boolean`
+- Default: `true`
+
+#### tutorMove
+
+A boolean value that determines whether tutor moves are available in the admin tutor.
+
+- Type: `boolean`
+- Default: `true`
+
+#### specialMove
+
+A boolean value that determines whether special moves are available in the admin tutor.
+
+- Type: `boolean`
+- Default: `true`
+
+#### eggMove
+
+A boolean value that determines whether egg moves are available in the admin tutor.
+
+- Type: `boolean`
+- Default: `false`

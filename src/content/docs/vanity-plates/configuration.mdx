@@ -8,132 +8,284 @@ next: false
 sidebar:
   label: Configuration
   order: 2
-banner:
-  content: |
-    These docs are a work in progress and may be incomplete or contain inaccuracies. (Or be for a newer unreleased version of the mod)
+tableOfContents:
+  minHeadingLevel: 2
+  maxHeadingLevel: 6
 ---
 
-The configuration files will be located at `<game_directory>/config/vanity_plates/`
+All of the configuration files for Vanity Plates are located in the `<game_directory>/config/vanity_plates` directory.
 
-## The Main Configuration File
+**Configuration files:**
+- `server.toml` - Server side configuration options for Vanity Plates.
+- `gui.toml` - GUI configuration options for Vanity Plates.
 
-The main configuration file is `config.json`, which contains the following fields:
+## Server Configuration Options
 
-```json title="<game_directory>/config/vanity_plates/config.json"
-{
-  "prefixPriority": 1000,
-  "availablePlates": [
-    {
-      "displayItem": "minecraft:paper",
-      "customModelData": null,
-      "label": "Demo",
-      "requiredPermission": "demo.plate",
-      "prefix": "[Demo]"
-    }
-  ]
-}
+```toml title="server.toml"
+#Vanity Plates Server Config
+[vanity_plates]
+	prefixPriority = 1000
+	[[vanity_plates.availablePlates]]
+		label = "Demo"
+		requiredPermission = "demo.plate"
+		displayItem = "minecraft:paper"
+		prefix = "[Demo]"
+
 ```
 
 ### prefixPriority
 
-The `prefixPriority` field determines the priority of the vanity plate prefixes compared to other prefixes in the chat. A higher value means that the vanity plate prefix will be displayed before other prefixes with a lower priority.
+The priority of the prefix when displayed in chat.
+
+- Type: Integer
+- Default: `1000`
+- Range: Greater than `-2147483648`
 
 ### availablePlates
 
-The `availablePlates` field is an array of objects, each representing a vanity plate that users can assign to themselves. Each object has the following properties:
+A list of available vanity plates that users can assign to themselves.
 
-- `displayItem`: The item that will be displayed in the GUI for this vanity plate. This should be a valid Minecraft item ID.
-- `customModelData`: (Optional) The custom model data value for the display item, if applicable. This can be used to differentiate between different variants of the same item.
-- `label`: The label that will be shown in the GUI for this vanity plate.
-- `requiredPermission`: The permission node that a user must have to be able to assign this vanity plate to themselves. This should be configured in your permissions plugin (e.g., LuckPerms).
-- `prefix`: The actual prefix that will be displayed in the chat when a user has this vanity plate assigned. This can include formatting codes (e.g., color codes) if desired.
+Each entry should be a config object with the following fields:
+- `displayItem`: The item to display in the GUI (string, e.g., 'minecraft:paper')
+- `label`: The label to display in the GUI (string)
+- `requiredPermission`: The permission required to use this plate (string)
+- `prefix`: The prefix to display in chat (string)
+- `customModelData`: Optional custom model data for the display item (integer, optional)
 
-## UI Configuration
+## GUI Configuration Options
 
-The UI configuration file is `ui.json`, which contains the following fields:
+```toml title="gui.toml"
+#GUI Configuration
+[gui]
 
-```json title="<game_directory>/config/vanity_plates/ui.json"
-{
-  "text": {
-    "displayTitle": "Vanity Plates",
-    "clearPrefix": "Clear Prefix",
-    "exit": "Exit",
-    "previousPage": "Previous Page",
-    "nextPage": "Next Page",
-    "pageIndicator": "Page %current%/%length%"
-  },
-  "displayItems": {
-    "frameItemId": "minecraft:gray_stained_glass_pane",
-    "prevNavigationItemId": "minecraft:arrow",
-    "nextNavigationItemId": "minecraft:arrow",
-    "clearItemId": "minecraft:name_tag",
-    "pageItemId": "minecraft:book",
-    "exitItemId": "minecraft:barrier"
-  },
-  "colors": {
-    "title": "GOLD",
-    "navigationItem": "AQUA",
-    "clearItem": "RED",
-    "pageItem": "GOLD",
-    "exitItem": "RED"
-  },
-  "backButton": {
-    "enabled": false,
-    "itemId": "minecraft:recovery_compass",
-    "label": "Back to Previous Menu",
-    "textColor": "RED",
-    "command": "gui open example-main %player%"
-  },
-  "permissions": {
-    "clearPrefixUiButton": ""
-  }
-}
+	#GUI Text
+	[gui.text]
+		displayTitle = "Vanity Plates"
+		clearPrefix = "Clear Prefix"
+		exit = "Exit"
+		previousPage = "Previous Page"
+		nextPage = "Next Page"
+		pageIndicator = "Page %current%/%length%"
+
+	#GUI Display Items
+	[gui.displayItems]
+		frameItemId = "minecraft:gray_stained_glass_pane"
+		prevNavigationItemId = "minecraft:arrow"
+		nextNavigationItemId = "minecraft:arrow"
+		clearItemId = "minecraft:name_tag"
+		pageItemId = "minecraft:book"
+		exitItemId = "minecraft:barrier"
+
+	#GUI Colors
+	[gui.colors]
+		titleColor = "GOLD"
+		navigationItemColor = "AQUA"
+		clearItemColor = "RED"
+		pageItemColor = "GOLD"
+		exitItemColor = "RED"
+
+	#GUI Back button Configuration
+	[gui.backButton]
+		enabled = false
+		itemId = "minecraft:recovery_compass"
+		label = "Back to Previous Menu"
+		color = "RED"
+		command = "gui open example-main %player%"
+
+	#GUI Permissions
+	[gui.permissions]
+		clearPrefixUiButtonPermission = ""
 ```
 
-### Text
+### GUI Text Configuration
 
-The `text` section of the UI configuration file contains the following fields:
+Allows configuration of the text displayed in the Vanity Plates GUI.
 
-- `displayTitle`: The title that will be displayed at the top of the vanity plates GUI.
-- `clearPrefix`: The label for the button that allows users to clear their assigned vanity plate prefix.
-- `exit`: The label for the button that allows users to exit the vanity plates GUI.
-- `previousPage`: The label for the button that allows users to navigate to the previous page of vanity plates in the GUI.
-- `nextPage`: The label for the button that allows users to navigate to the next page of vanity plates in the GUI.
-- `pageIndicator`: The format for the page indicator that shows the current page number and total number of pages in the vanity plates GUI. The placeholders `%current%` and `%length%` will be replaced with the current page number and total number of pages, respectively.
+#### displayTitle
 
-### Display Items
+The title of the Vanity Plates GUI.
 
-The `displayItems` section of the UI configuration file contains the following fields:
+- Type: String
+- Default: `"Vanity Plates"`
 
-- `frameItemId`: The item that will be used as the frame for the vanity plates GUI. This should be a valid Minecraft item ID.
-- `prevNavigationItemId`: The item that will be used for the previous page navigation button in the vanity plates GUI. This should be a valid Minecraft item ID.
-- `nextNavigationItemId`: The item that will be used for the next page navigation button in the vanity plates GUI. This should be a valid Minecraft item ID.
-- `clearItemId`: The item that will be used for the button that allows users to clear their assigned vanity plate prefix. This should be a valid Minecraft item ID.
-- `pageItemId`: The item that will be used for the page indicator in the vanity plates GUI. This should be a valid Minecraft item ID.
-- `exitItemId`: The item that will be used for the button that allows users to exit the vanity plates GUI. This should be a valid Minecraft item ID.
+#### clearPrefix
 
-### Colors
+The text for the 'Clear Prefix' button in the GUI.
 
-The `colors` section of the UI configuration file contains the following fields:
+- Type: String
+- Default: `"Clear Prefix"`
 
-- `title`: The color of the title text in the vanity plates GUI. This should be a valid Minecraft color name (e.g., "GOLD", "AQUA").
-- `navigationItem`: The color of the navigation buttons (previous and next page) in the vanity plates GUI. This should be a valid Minecraft color name.
-- `clearItem`: The color of the button that allows users to clear their assigned vanity plate prefix in the vanity plates GUI. This should be a valid Minecraft color name.
-- `pageItem`: The color of the page indicator in the vanity plates GUI. This should be a valid Minecraft color name.
-- `exitItem`: The color of the button that allows users to exit the vanity plates GUI. This should be a valid Minecraft color name.
+#### exit
 
-### Back Button
+The text for the 'Exit' button in the GUI.
 
-The `backButton` section allows you to configure an optional back button in the vanity plates GUI that can take users to a previous menu. The fields are as follows:
+- Type: String
+- Default: `"Exit"`
 
-- `enabled`: A boolean value that determines whether the back button is enabled or not. Set to `true` to enable the back button, or `false` to disable it.
-- `itemId`: The item that will be used for the back button in the vanity plates GUI. This should be a valid Minecraft item ID.
-- `label`: The label for the back button in the vanity plates GUI.
-- `textColor`: The color of the back button label text in the vanity plates GUI. This should be a valid Minecraft color name.
-- `command`: The command that will be executed when a user clicks the back button in the vanity plates GUI. You can use `%player%` as a placeholder for the player's name in the command. (you can also use `%uuid%` as a placeholder for the player's UUID)
+#### previousPage
 
-### Permissions
+The text for the 'Previous Page' button in the GUI.
 
-The `permissions` section allows you to configure permissions for certain UI elements in the vanity plates GUI. The fields are as follows:
+- Type: String
+- Default: `"Previous Page"`
 
-- `clearPrefixUiButton`: The permission node required for a user to see and use the button that allows them to clear their assigned vanity plate prefix in the vanity plates GUI. If left empty, all users will be able to see and use the button.
+#### nextPage
+
+The text for the 'Next Page' button in the GUI.
+
+- Type: String
+- Default: `"Next Page"`
+
+#### pageIndicator
+
+The text for the page indicator in the GUI. Use `%current%` and `%length%` as placeholders for the current page and total pages.
+
+- Type: String
+- Default: `"Page %current%/%length%"`
+
+### GUI Display Items Configuration
+
+Allows configuration of the items used in the Vanity Plates GUI.
+
+#### frameItemId
+
+The item ID for the frame item in the GUI.
+
+- Type: String
+- Default: `"minecraft:gray_stained_glass_pane"`
+
+#### prevNavigationItemId
+
+The item ID for the 'Previous Page' button in the GUI.
+
+- Type: String
+- Default: `"minecraft:arrow"`
+
+#### nextNavigationItemId
+
+The item ID for the 'Next Page' button in the GUI.
+
+- Type: String
+- Default: `"minecraft:arrow"`
+
+#### clearItemId
+
+The item ID for the 'Clear Prefix' button in the GUI.
+
+- Type: String
+- Default: `"minecraft:name_tag"`
+
+#### pageItemId
+
+The item ID for the page indicator in the GUI.
+
+- Type: String
+- Default: `"minecraft:book"`
+
+#### exitItemId
+
+The item ID for the 'Exit' button in the GUI.
+
+- Type: String
+- Default: `"minecraft:barrier"`
+
+### GUI Colors Configuration
+
+Allows configuration of the colors used in the Vanity Plates GUI.
+
+**Allowed Values for Colors:**
+- `BLACK`
+- `DARK_BLUE`
+- `DARK_GREEN`
+- `DARK_AQUA`
+- `DARK_RED`
+- `DARK_PURPLE`
+- `GOLD`
+- `GRAY`
+- `DARK_GRAY`
+- `BLUE`
+- `GREEN`
+- `AQUA`
+- `RED`
+- `LIGHT_PURPLE`
+- `YELLOW`
+- `WHITE`
+
+#### titleColor
+
+The color of the GUI title.
+
+- Default: `"GOLD"`
+
+#### navigationItemColor
+
+The color of the navigation items in the GUI.
+
+- Default: `"AQUA"`
+
+#### clearItemColor
+
+The color of the 'Clear Prefix' button in the GUI.
+
+- Default: `"RED"`
+
+#### pageItemColor
+
+The color of the page indicator in the GUI.
+
+- Default: `"GOLD"`
+
+#### exitItemColor
+
+The color of the 'Exit' button in the GUI.
+
+- Default: `"RED"`
+
+### GUI Back Button Configuration
+
+Configuration for the back button in the Vanity Plates GUI.
+
+#### enabled
+
+Whether the back button is enabled in the GUI.
+
+- Type: Boolean
+- Default: `false`
+
+#### itemId
+
+The item ID for the back button in the GUI.
+
+- Type: String
+- Default: `"minecraft:recovery_compass"`
+
+#### label
+
+The label for the back button in the GUI.
+
+- Type: String
+- Default: `"Back to Previous Menu"`
+
+#### color
+
+The color of the back button in the GUI.
+
+- Default: `"RED"`
+
+#### command
+
+The command to execute when the back button is pressed in the GUI.
+
+- Type: String
+- Default: `"gui open example-main %player%"`
+
+### GUI Permissions Configuration
+
+Permissions related to the Vanity Plates GUI.
+
+#### clearPrefixUiButtonPermission
+
+The permission required to see the 'Clear Prefix' button in the GUI.
+
+- Type: String
+- Default: `""` (no permission required)

@@ -10,58 +10,176 @@ next:
 sidebar:
   label: Configuration
   order: 2
-banner:
-  content: |
-    These docs are a work in progress and may be incomplete or contain inaccuracies. (Or be for a newer unreleased version of the mod)
+tableOfContents:
+  minHeadingLevel: 2
+  maxHeadingLevel: 6
 ---
 
-This mod is highly configurable, allowing you to adjust many aspects of the ReBreathers and their Enchantments.
+All of the configuration files for Cobblemon Breathers are located in the `<game_directory>/config/cobblemon_breathers/` directory.
 
-**Configuration File Location:** `<game_directory>/config/cobblemon_breathers/config.json`
+**Configuration files:**
+- `client.toml` - Client side configuration options for Cobblemon Breathers.
+- `server.toml` - Server side configuration options for Cobblemon Breathers.
 
-The default configuration for the ReBreathers is as follows:
+## Client Configuration Options
 
-```json title="<game_directory>/config/cobblemon_breathers/config.json"
-{
-  "reBreatherItemConfig": {
-    "airSupplyRecovery": 50,
-    "effectsConfig": {
-      "showAmbient": false,
-      "visible": false
-    },
-    "maxAirConfig": {
-      "mk1": 300,
-      "mk2": 600,
-      "mk3": 1200
-    }
-  },
-  "breatherUpgradeEnchantConfig": {
-    "disableEnchantmentEffect": false,
-    "levelOneAirAddition": 200,
-    "levelTwoAirAddition": 800,
-    "levelThreeAirAddition": 2000
-  },
-  "hudConfig": {
-    "disableInGameOverlay": false
-  }
-}
+```toml title="client.toml"
+#Hud Configuration
+[hudConfig]
+	disableInGameOverlay = false
 ```
 
-### Configuration Options
+### Hud Configuration
 
-- **`reBreatherItemConfig`:** This section contains the configuration options for the ReBreather items.
-  - **`airSupplyRecovery`:** The amount of air supply recovered when the player finds an air bubble while using a ReBreather. (Default: 50 per second)
-  - **`effectsConfig`:** This section contains the configuration options for the effects granted by the ReBreathers.
-    - **`showAmbient`:** Whether to show the ambient particles for the effects. (Default: false)
-    - **`visible`:** Whether to show the particles for the effects. (Default: false)
-  - **`maxAirConfig`:** This section contains the configuration options for the maximum air supply provided by each tier of ReBreather.
-    - **`mk1`:** The maximum air supply provided by the ReBreather Mk1. (Default: 300 seconds)
-    - **`mk2`:** The maximum air supply provided by the ReBreather Mk2. (Default: 600 seconds)
-    - **`mk3`:** The maximum air supply provided by the ReBreather Mk3. (Default: 1200 seconds)
-- **`breatherUpgradeEnchantConfig`:** This section contains the configuration options for the ReBreather Upgrade enchantment.
-  - **`disableEnchantmentEffect`:** Whether to disable the enchantment. (Default: false)
-  - **`levelOneAirAddition`:** The amount of air supply added by the ReBreather Upgrade I enchantment. (Default: 200 seconds)
-  - **`levelTwoAirAddition`:** The amount of air supply added by the ReBreather Upgrade II enchantment. (Default: 800 seconds)
-  - **`levelThreeAirAddition`:** The amount of air supply added by the ReBreather Upgrade III enchantment. (Default: 2000 seconds)
-- **`hudConfig`:** This section contains the configuration options for the in-game overlay that shows the remaining air supply while using a ReBreather.
-  - **`disableInGameOverlay`:** Whether to disable the in-game overlay. (Default: false)
+Allows configuration of the in-game overlay for Breathers.
+
+#### disableInGameOverlay
+
+A boolean value that determines whether the in-game overlay for Breathers is disabled or not.
+
+- Type: `boolean`
+- Default: `false`
+
+## Server Configuration Options
+
+```toml title="server.toml"
+#General Configuration
+[generalConfig]
+	#How much air supply is recovered per tick when the player is not underwater.
+	# Default: 50
+	# Range: > 1
+	airSupplyRecovery = 50
+
+#Max Air Configuration
+[maxAirConfig]
+	#The maximum air supply for a Mk1 ReBreather.
+	# Default: 300
+	# Range: > 1
+	mk1 = 300
+	#The maximum air supply for a Mk2 ReBreather.
+	# Default: 600
+	# Range: > 1
+	mk2 = 600
+	#The maximum air supply for a Mk3 ReBreather.
+	# Default: 1200
+	# Range: > 1
+	mk3 = 1200
+
+#Effect Control Configuration
+[effectControlConfig]
+	#Whether the ReBreather effect should show ambient particles.
+	showAmbient = false
+	#Whether the ReBreather effect should be visible.
+	visible = false
+
+#Breather Upgrade Enchantment Configuration
+[upgradeEnchantConfig]
+	#Whether the ReBreather Upgrade enchantment should disable the ReBreather effect.
+	disableEnchantmentEffect = false
+	#How much air supply is added to the ReBreather when the ReBreather Upgrade enchantment is at level 1.
+	# Default: 200
+	# Range: > 1
+	levelOneAirAddition = 200
+	#How much air supply is added to the ReBreather when the ReBreather Upgrade enchantment is at level 2.
+	# Default: 800
+	# Range: > 1
+	levelTwoAirAddition = 800
+	#How much air supply is added to the ReBreather when the ReBreather Upgrade enchantment is at level 3.
+	# Default: 2000
+	# Range: > 1
+	levelThreeAirAddition = 2000
+
+```
+
+### General Configuration
+
+General configuration options for Cobblemon Breathers.
+
+#### airSupplyRecovery
+
+An integer that determines how much air supply is recovered per tick when the player is not underwater.
+
+- Type: `integer`
+- Default: `50`
+- Range: `> 1`
+
+### Max Air Configuration
+
+Configuration options for the maximum air supply for each tier of ReBreather.
+
+#### Mk1
+
+The maximum air supply for a Mk1 ReBreather.
+
+- Type: `integer`
+- Default: `300`
+- Range: `> 1`
+
+#### Mk2
+
+The maximum air supply for a Mk2 ReBreather.
+
+- Type: `integer`
+- Default: `600`
+- Range: `> 1`
+
+#### Mk3
+
+The maximum air supply for a Mk3 ReBreather.
+
+- Type: `integer`
+- Default: `1200`
+- Range: `> 1`
+
+### Effect Control Configuration
+
+Allows configuration of the ReBreather effects.
+
+#### showAmbient
+
+A boolean value that determines whether the ReBreather effect should show ambient particles.
+
+- Type: `boolean`
+- Default: `false`
+
+#### visible
+
+A boolean value that determines whether the ReBreather effect should be visible.
+
+- Type: `boolean`
+- Default: `false`
+
+### Breather Upgrade Enchantment Configuration
+
+Allows configuration of the ReBreather Upgrade enchantment.
+
+#### disableEnchantmentEffect
+
+A boolean value that determines whether the ReBreather Upgrade enchantment should disable the ReBreather effect.
+
+- Type: `boolean`
+- Default: `false`
+
+#### levelOneAirAddition
+
+How much air supply is added to the ReBreather when the ReBreather Upgrade enchantment is at level 1.
+
+- Type: `integer`
+- Default: `200`
+- Range: `> 1`
+
+#### levelTwoAirAddition
+
+How much air supply is added to the ReBreather when the ReBreather Upgrade enchantment is at level 2.
+
+- Type: `integer`
+- Default: `800`
+- Range: `> 1`
+
+#### levelThreeAirAddition
+
+How much air supply is added to the ReBreather when the ReBreather Upgrade enchantment is at level 3.
+
+- Type: `integer`
+- Default: `2000`
+- Range: `> 1`

@@ -8,9 +8,6 @@ next:
 sidebar:
   label: Getting Started
   order: 1
-banner:
-  content: |
-    These docs are a work in progress and may be incomplete or contain inaccuracies. (Or be for a newer unreleased version of the mod)
 ---
 
 import ModMeta from '~/components/ModMeta.astro';
@@ -26,7 +23,7 @@ import { commands } from "./commands_data";
   fabric neoforge
 />
 
-<Deps gooeyLibs luckPerms />
+<Deps gooeyLibs luckPerms matthiesenCore />
 
 A simple Server-side mod for "vanity" prefixes that users can assign via a friendly and easy to use in-game GUI.
 
@@ -34,8 +31,12 @@ Simply configure your user-assignable prefixes in the configuration file, and as
 permission node via LuckPerms, and the user can now Set that as a personal prefix.
 
 ## Requirements
+
+- [Matthiesen Core](https://modrinth.com/mod/matthiesen-core)
 - [GooeyLibs v3.1.1-1.21.x+](https://modrinth.com/mod/gooeylibs)
 - [Luckperms 5.4](https://modrinth.com/mod/luckperms)
+- [Fabric API](https://modrinth.com/mod/fabric-api) (Fabric only)
+- [Forge Config API Port](https://modrinth.com/mod/forge-config-api-port) (Fabric only)
 
 <ReadMore>For more detailed instructions on configuring the mod, and setting up your permissions, check out the <a href="/vanity-plates/configuration">configuration docs</a>.</ReadMore>
 

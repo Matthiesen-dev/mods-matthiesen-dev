@@ -8,9 +8,6 @@ next:
 sidebar:
   label: Getting Started
   order: 1
-banner:
-  content: |
-    These docs are a work in progress and may be incomplete or contain inaccuracies. (Or be for a newer unreleased version of the mod)
 ---
 
 import ModMeta from '~/components/ModMeta.astro';
@@ -23,7 +20,7 @@ import Deps from '~/components/Deps.astro';
   fabric neoforge
 />
 
-<Deps cobblemon gooeyLibs matthiesenLibAPI />
+<Deps cobblemon gooeyLibs matthiesenCore />
 
 This is a Server-Side only mod that adds PokeTotems to the game. PokeTotems are item versions of Pokemon.
 There is two versions of PokeTotems, Normal and Clones.
@@ -38,8 +35,20 @@ the server-owner has not restricted the permissions for `/totemtopoke` and `/tot
 If you are planning on creating custom loot rewards using the Totems, it is recommended to use 
 the Cloned PokeTotems instead of the Normal PokeTotems. 
 
-## Dependencies
+## Requirements
 
+- [Matthiesen Core](https://modrinth.com/mod/matthiesen-core/)
 - [Cobblemon v1.7.3+](https://modrinth.com/mod/cobblemon/)
-- [Matthiesen Lib API](https://modrinth.com/mod/matthiesen-lib-api/)
 - [GooeyLibs v3.1.1-1.21.x+](https://modrinth.com/mod/gooeylibs)
+- [Fabric API](https://modrinth.com/mod/fabric-api) (Fabric only)
+- [Forge Config API Port](https://modrinth.com/mod/forge-config-api-port) (Fabric only)
+
+## FastStats Metrics
+
+This mod uses [FastStats](https://faststats.dev) to collect anonymous usage statistics. This helps the developer understand
+how this mod is being used and improve it over time. You can learn more about the data collected and how it is used by visiting
+[FastStats: Information](https://faststats.dev/info).
+
+You can also view the data collected by this mod on the [FastStats: Cobblemon Poketotem](https://faststats.dev/project/cobblemon-poketotem) page.
+
+To opt out of this data collection, set the `enabled` property to `false` in the `<game_directory>/config/matthiesen_core/metrics.properties` file.
