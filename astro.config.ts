@@ -91,8 +91,9 @@ export default defineConfig({
 							docs: "cobblemon-move-tutor",
 						}),
 						buildSidebarFromGlob({
-							name: "Cbmn NPC Extensions",
+							name: "Cbmn NPC Exts",
 							docs: "cobblemon-npc-extensions",
+							badge: "S",
 						}),
 						buildSidebarFromGlob({
 							name: "Cbmn Pokestops",
