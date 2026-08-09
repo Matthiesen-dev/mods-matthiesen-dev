@@ -1,0 +1,477 @@
+---
+title: Cobble Poke Bank - Configuration
+description: Configuration for Cobble Poke Bank.
+prev: 
+  link: /cobble-poke-bank
+  label: "Overview"
+next: 
+  link: /cobble-poke-bank/commands
+  label: "Commands"
+sidebar:
+  label: Configuration
+  order: 2
+tableOfContents:
+  minHeadingLevel: 2
+  maxHeadingLevel: 6
+---
+
+All of the configuration files for Cobble Poke Bank are located in the `<game_directory>/config/cobble_poke_bank/` directory.
+
+**Configuration files:**
+- `database.toml` - Contains the database configuration settings for Cobble Poke Bank. This file allows you to configure the database type (SQLite or MySQL), connection details, and other related settings.
+- `permissions.toml` - Contains the permission settings for Cobble Poke Bank. This file allows you to define the permissions required for various actions within the mod, such as accessing the bank, depositing or withdrawing Pokémon, and managing other players' Pokémon.
+- `server.toml` - Contains the server configuration settings for Cobble Poke Bank. This file allows you to configure server-specific settings, such as enabling or disabling certain features, setting limits on the number of Pokémon that can be stored, and other server-related options.
+
+## Database Configuration
+
+```toml title="database.toml"
+#Database Configuration
+[database]
+	useMySQL = false
+
+	#MySQL Configuration
+	[database.mysql]
+		host = "localhost"
+		port = 3306
+		database = "cobble_poke_bank"
+		username = "root"
+		password = "password"
+		timeout = 5000
+```
+
+### useMySQL
+
+The `useMySQL` setting determines whether the mod will use a MySQL database or a local SQLite database for storage. Set it to `true` to use MySQL, or `false` to use SQLite.
+
+- **Default:** `false` (uses SQLite)
+
+### MySQL Configuration
+
+The MySQL configuration section contains the settings required to connect to a MySQL database. These settings are only relevant if `useMySQL` is set to `true`.
+
+#### host
+
+The `host` setting specifies the hostname or IP address of the MySQL server.
+
+- **Default:** `localhost`
+
+#### port
+
+The `port` setting specifies the port number of the MySQL server.
+
+- **Default:** `3306`
+- **Range:** `1 ~ 65535`
+
+#### database
+
+The `database` setting specifies the name of the MySQL database to use.
+
+- **Default:** `cobble_poke_bank`
+
+#### username
+
+The `username` setting specifies the username to use when connecting to the MySQL server.
+
+- **Default:** `root`
+
+#### password
+
+The `password` setting specifies the password to use when connecting to the MySQL server.
+
+- **Default:** `password`
+
+#### timeout
+
+The `timeout` setting specifies the timeout in milliseconds for connecting to the MySQL server.
+
+- **Default:** `5000`
+- **Range:** `> 1`
+
+## Permissions Configuration
+
+```toml title="permissions.toml"
+#Permissions Configuration
+[permissions]
+
+	#Command Permissions
+	[permissions.command]
+		pokebank = "NONE"
+		pokebank_status = "ALL_COMMANDS"
+		pokebank_reload = "ALL_COMMANDS"
+```
+
+### Command Permissions
+
+Configure the permission levels required to use the commands provided by Cobble Poke Bank.
+
+**Available Permission Levels:**
+- `NONE` - No permission required.
+- `SPAWN_PROTECTION_BYPASS` - Requires the player to have spawn protection bypass permission.
+- `CHEAT_COMMANDS_AND_COMMAND_BLOCKS` - Requires the player to have cheat commands and command blocks permission.
+- `MULTIPLAYER_MANAGEMENT` - Requires the player to have multiplayer management permission.
+- `ALL_COMMANDS` - Requires the player to have permission to use all commands.
+
+#### pokebank
+
+The `pokebank` permission level determines the required permission to use the `/pokebank` command.
+
+- **Default:** `NONE`
+
+#### pokebank_status
+
+The `pokebank_status` permission level determines the required permission to use the `/pokebank status` command.
+
+- **Default:** `ALL_COMMANDS`
+
+#### pokebank_reload
+
+The `pokebank_reload` permission level determines the required permission to use the `/pokebank reload` command.
+
+- **Default:** `ALL_COMMANDS`
+
+## Server Configuration
+
+```toml title="server.toml"
+#Server config
+[server]
+
+	#Bank Configuration Options
+	[server.bank]
+		maxSlots = -1
+		noFainted = false
+		noHeldItems = false
+		noLegendaries = false
+		noMythicals = false
+		noUltraBeasts = false
+
+	#Held Item Restrictions
+	[server.heldItemRestrictions]
+		officialTaggedOnly = false
+		autoStrip = false
+		blacklist = []
+
+	#Messages Configuration
+	[server.messages]
+		messagesTextParser = "VANILLA"
+		messagePrefix = "§f[§6Cobble Poke Bank§f] §r"
+
+		#Messages - Location Labels
+		[server.messages.locationLabels]
+			deposit = "Bank"
+			withdraw = "Server"
+
+		#Messages - Command Messages
+		[server.messages.commandMessages]
+			databaseUnavailable = "§cDatabase is not available. Please try again later."
+			playerNotFound = "§cFailed to find executing player."
+			noBlacklistedItems = "§eNo held items are blacklisted."
+			inBattle = "§cYou cannot access the bank while in battle."
+			configsReloaded = "§aConfigs reloaded successfully."
+
+		#Messages - Database Messages
+		[server.messages.databaseMessages]
+			loadingData = "§eLoading bank data..."
+			failedToLoadData = "§cFailed to load bank data. Please try again later."
+			invalidPokemonData = "§cInvalid Pokemon entry. Check server logs."
+
+		#Messages - Deposit Messages
+		[server.messages.depositMessages]
+			pokemonMissing = "§cPokemon is no longer in your PC"
+			failedToSave = "§cFailed to save Pokemon to bank. Please try again later."
+			bankFull = "§cYour bank is full. Please remove a Pokemon before depositing another."
+			pcRemovalFailed = "§cFailed to remove Pokemon from PC. Please try again later."
+			pokemonDeposited = "§aPokemon has been moved to your Bank."
+
+		#Messages - Withdraw Messages
+		[server.messages.withdrawMessages]
+			pokemonMissing = "§cPokemon is no longer in your Bank."
+			failedToReadData = "§cFailed to read Pokemon data from bank. Please try again later."
+			failedToRemoveFromBank = "§cFailed to remove Pokemon from bank. Please try again later."
+			pcFull = "§cYour PC is full. Please remove a Pokemon before withdrawing another."
+			pokemonDeposited = "§aPokemon has been moved to your PC."
+
+		#Messages - Validation Messages
+		[server.messages.validationMessages]
+			noHeldItems = "§cThis Pokemon is holding an item, which is not allowed in the %s."
+			officialHeldItemsOnly = "§cThis Pokemon is holding an item that is not officially tagged, which is not allowed in the %s."
+			blacklistedHeldItem = "§cThis Pokemon is holding a blacklisted item, which is not allowed in the %s."
+			noLegendaries = "§cThis Pokemon is a legendary, which is not allowed in the %s."
+			noMythicals = "§cThis Pokemon is a mythical, which is not allowed in the %s."
+			noUltraBeasts = "§cThis Pokemon is an Ultra Beast, which is not allowed in the %s."
+			noFainted = "§cThis Pokemon is fainted, which is not allowed in the %s."
+			autoStrippedHeldItem = "§eYour Pokemon's held item has been removed as it is not allowed in the %s."
+
+```
+
+### Bank Configuration Options
+
+Configure the bank settings for Cobble Poke Bank.
+
+#### maxSlots
+
+The `maxSlots` setting determines the maximum number of slots a player can have in their bank. A value of `-1` means unlimited storage.
+
+- **Default:** `-1` (unlimited storage)
+
+#### noFainted
+
+The `noFainted` setting determines whether players are allowed to store fainted Pokémon in the bank. Set it to `true` to disallow fainted Pokémon, or `false` to allow them.
+
+- **Default:** `false` (fainted Pokémon are allowed)
+
+#### noHeldItems
+
+The `noHeldItems` setting determines whether players are allowed to store Pokémon with held items in the bank. Set it to `true` to disallow Pokémon with held items, or `false` to allow them.
+
+- **Default:** `false` (Pokémon with held items are allowed)
+
+#### noLegendaries
+
+The `noLegendaries` setting determines whether players are allowed to store Legendary Pokémon in the bank. Set it to `true` to disallow Legendary Pokémon, or `false` to allow them.
+
+- **Default:** `false` (Legendary Pokémon are allowed)
+
+#### noMythicals
+
+The `noMythicals` setting determines whether players are allowed to store Mythical Pokémon in the bank. Set it to `true` to disallow Mythical Pokémon, or `false` to allow them.
+
+- **Default:** `false` (Mythical Pokémon are allowed)
+
+#### noUltraBeasts
+
+The `noUltraBeasts` setting determines whether players are allowed to store Ultra Beast Pokémon in the bank. Set it to `true` to disallow Ultra Beast Pokémon, or `false` to allow them.
+
+- **Default:** `false` (Ultra Beast Pokémon are allowed)
+
+### Held Item Restrictions
+
+Configure the held item restrictions for Cobble Poke Bank.
+
+#### officialTaggedOnly
+
+The `officialTaggedOnly` setting determines whether players are allowed to store Pokémon with held items that are not officially tagged. Set it to `true` to disallow Pokémon with untagged held items, or `false` to allow them.
+
+- **Default:** `false` (Pokémon with untagged held items are allowed)
+
+#### autoStrip
+
+The `autoStrip` setting determines whether players will have their Pokémon's held items automatically stripped if they are not allowed in the bank. Set it to `true` to automatically strip held items, or `false` to disallow storing Pokémon with unallowed held items.
+
+- **Default:** `false` (Pokémon with unallowed held items are not automatically stripped)
+
+#### blacklist
+
+The `blacklist` setting allows you to specify a list of held items that are not allowed to be stored in the bank. Players will not be able to store Pokémon with these held items in the bank.
+
+- **Default:** `[]` (no held items are blacklisted)
+
+### Messages Configuration
+
+Configure the messages sent to players by Cobble Poke Bank.
+
+#### messagesTextParser
+
+The `messagesTextParser` setting determines the text parser to use for messages sent to players. You can choose from the following options:
+- `VANILLA` - Uses the default Minecraft text formatting.
+- `EMBERS` - Uses the Embers Text API for advanced text formatting.
+- `ADVENTURE` - Uses the Adventure MiniMessage format for advanced text formatting.
+
+* **Default:** `VANILLA` (uses default Minecraft text formatting)
+
+#### messagePrefix
+
+The `messagePrefix` setting allows you to specify a prefix that will be added to all messages sent to players by Cobble Poke Bank. This can be used to provide context or branding for the messages.
+
+- **Default:** `§f[§6Cobble Poke Bank§f] §r` (displays the mod name in gold and white text)
+
+#### locationLabels
+
+The `locationLabels` setting allows you to specify custom labels for the deposit and withdraw locations in messages sent to players. This can be used to provide context or branding for the messages.
+
+##### deposit
+
+The `deposit` label specifies the label to use for the deposit location in messages sent to players.
+
+- **Default:** `Bank`
+
+##### withdraw
+
+The `withdraw` label specifies the label to use for the withdraw location in messages sent to players.
+
+- **Default:** `Server`
+
+#### commandMessages
+
+The `commandMessages` setting allows you to specify custom messages for various command-related events in Cobble Poke Bank. These messages will be sent to players when certain events occur, such as when the database is unavailable or when a player tries to use a command they don't have permission for.
+
+##### databaseUnavailable
+
+The `databaseUnavailable` message is sent to players when the database is unavailable.
+
+- **Default:** `§cDatabase is not available. Please try again later.`
+
+##### playerNotFound
+
+The `playerNotFound` message is sent to players when the executing player cannot be found.
+
+- **Default:** `§cFailed to find executing player.`
+
+##### noBlacklistedItems
+
+The `noBlacklistedItems` message is sent to players when they try to deposit a Pokémon with a held item that is not blacklisted.
+
+- **Default:** `§eNo held items are blacklisted.`
+
+##### inBattle
+
+The `inBattle` message is sent to players when they try to use the bank while in battle.
+
+- **Default:** `§cYou cannot access the bank while in battle.`
+
+##### configsReloaded
+
+The `configsReloaded` message is sent to players when the configuration files are successfully reloaded.
+
+- **Default:** `§aConfigs reloaded successfully.`
+
+#### databaseMessages
+
+The `databaseMessages` setting allows you to specify custom messages for various database-related events in Cobble Poke Bank. These messages will be sent to players when certain events occur, such as when the database is loading data or when there is an error reading or writing data.
+
+##### loadingData
+
+The `loadingData` message is sent to players when the database is loading data.
+
+- **Default:** `§eLoading bank data...`
+
+##### failedToLoadData
+
+The `failedToLoadData` message is sent to players when the database fails to load data.
+
+- **Default:** `§cFailed to load bank data. Please try again later.`
+
+##### invalidPokemonData
+
+The `invalidPokemonData` message is sent to players when the database has invalid Pokémon data.
+
+- **Default:** `§cInvalid Pokemon entry. Check server logs.`
+
+#### depositMessages
+
+The `depositMessages` setting allows you to specify custom messages for various deposit-related events in Cobble Poke Bank. These messages will be sent to players when certain events occur, such as when they try to deposit a Pokémon that is missing or when the bank is full.
+
+##### pokemonMissing
+
+The `pokemonMissing` message is sent to players when they try to deposit a Pokémon that is missing.
+
+- **Default:** `§cPokemon is no longer in your PC`
+
+##### failedToSave
+
+The `failedToSave` message is sent to players when the database fails to save the deposited Pokémon.
+
+- **Default:** `§cFailed to save Pokemon to bank. Please try again later.`
+
+##### bankFull
+
+The `bankFull` message is sent to players when they try to deposit a Pokémon but the bank is full.
+
+- **Default:** `§cYour bank is full. Please remove a Pokemon before depositing another.`
+
+##### pcRemovalFailed
+
+The `pcRemovalFailed` message is sent to players when the database fails to remove the deposited Pokémon from the PC.
+
+- **Default:** `§cFailed to remove Pokemon from PC. Please try again later.`
+
+##### pokemonDeposited
+
+The `pokemonDeposited` message is sent to players when they successfully deposit a Pokémon.
+
+- **Default:** `§aPokemon has been moved to your Bank.`
+
+#### withdrawMessages
+
+The `withdrawMessages` setting allows you to specify custom messages for various withdraw-related events in Cobble Poke Bank. These messages will be sent to players when certain events occur, such as when they try to withdraw a Pokémon that is missing or when their PC is full.
+
+##### pokemonMissing
+
+The `pokemonMissing` message is sent to players when they try to withdraw a Pokémon that is missing.
+
+- **Default:** `§cPokemon is no longer in your Bank.`
+
+##### failedToReadData
+
+The `failedToReadData` message is sent to players when the database fails to read the withdrawn Pokémon's data.
+
+- **Default:** `§cFailed to read Pokemon data from bank. Please try again later.`
+
+##### failedToRemoveFromBank
+
+The `failedToRemoveFromBank` message is sent to players when the database fails to remove the withdrawn Pokémon from the bank.
+
+- **Default:** `§cFailed to remove Pokemon from bank. Please try again later.`
+
+##### pcFull
+
+The `pcFull` message is sent to players when they try to withdraw a Pokémon but their PC is full.
+
+- **Default:** `§cYour PC is full. Please remove a Pokemon before withdrawing another.`
+
+##### pokemonDeposited
+
+The `pokemonDeposited` message is sent to players when they successfully withdraw a Pokémon.
+
+- **Default:** `§aPokemon has been moved to your PC.`
+
+#### validationMessages
+
+The `validationMessages` setting allows you to specify custom messages for various validation-related events in Cobble Poke Bank. These messages will be sent to players when certain events occur, such as when they try to deposit a Pokémon with a held item that is not allowed or when they try to deposit a Legendary Pokémon when Legendary Pokémon are not allowed.
+
+##### noHeldItems
+
+The `noHeldItems` message is sent to players when they try to deposit a Pokémon with a held item when held items are not allowed.
+
+- **Default:** `§cThis Pokemon is holding an item, which is not allowed in the %s.`
+
+##### officialHeldItemsOnly
+
+The `officialHeldItemsOnly` message is sent to players when they try to deposit a Pokémon with a held item that is not officially tagged when only officially tagged held items are allowed.
+
+- **Default:** `§cThis Pokemon is holding an item that is not officially tagged, which is not allowed in the %s.`
+
+##### blacklistedHeldItem
+
+The `blacklistedHeldItem` message is sent to players when they try to deposit a Pokémon with a held item that is blacklisted.
+
+- **Default:** `§cThis Pokemon is holding a blacklisted item, which is not allowed in the %s.`
+
+##### noLegendaries
+
+The `noLegendaries` message is sent to players when they try to deposit a Legendary Pokémon when Legendary Pokémon are not allowed.
+
+- **Default:** `§cThis Pokemon is a legendary, which is not allowed in the %s.`
+
+##### noMythicals
+
+The `noMythicals` message is sent to players when they try to deposit a Mythical Pokémon when Mythical Pokémon are not allowed.
+
+- **Default:** `§cThis Pokemon is a mythical, which is not allowed in the %s.`
+
+##### noUltraBeasts
+
+The `noUltraBeasts` message is sent to players when they try to deposit an Ultra Beast Pokémon when Ultra Beast Pokémon are not allowed.
+
+- **Default:** `§cThis Pokemon is an Ultra Beast, which is not allowed in the %s.`
+
+##### noFainted
+
+The `noFainted` message is sent to players when they try to deposit a fainted Pokémon when fainted Pokémon are not allowed.
+
+- **Default:** `§cThis Pokemon is fainted, which is not allowed in the %s.`
+
+##### autoStrippedHeldItem
+
+The `autoStrippedHeldItem` message is sent to players when they try to deposit a Pokémon with a held item that is not allowed and the held item is automatically stripped.
+
+- **Default:** `§eYour Pokemon's held item has been removed as it is not allowed in the %s.`
