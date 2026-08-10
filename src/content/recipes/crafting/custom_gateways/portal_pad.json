@@ -1,0 +1,21 @@
+{
+    "name": "Portal Pad",
+    "description": "A pad used to create a custom portal gateway.",
+    "modFilter": "custom_gateways",
+    "ingredients": [
+        null,
+        null,
+        null,
+        "ender_pearl",
+        "heavy_weighted_pressure_plate",
+        "ender_pearl",
+        "heavy_weighted_pressure_plate",
+        "chorus_fruit",
+        "heavy_weighted_pressure_plate"
+    ],
+    "resultItem": {
+        "modId": "custom_gateways",
+        "itemId": "portal_pad"
+    },
+    "resultCount": 1
+}

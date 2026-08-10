@@ -1,0 +1,24 @@
+{
+    "name": "Remote Dialer",
+    "description": "A device used to remotely activate custom portal gateways.",
+    "modFilter": "custom_gateways",
+    "ingredients": [
+        "chorus_fruit",
+        "blaze_rod",
+        "chorus_fruit",
+        "ender_pearl",
+        {
+            "modId": "custom_gateways",
+            "itemId": "portal_linking_device"
+        },
+        "ender_pearl",
+        "chorus_fruit",
+        "netherite_ingot",
+        "chorus_fruit"
+    ],
+    "resultItem": {
+        "modId": "custom_gateways",
+        "itemId": "remote_dialer"
+    },
+    "resultCount": 1
+}
