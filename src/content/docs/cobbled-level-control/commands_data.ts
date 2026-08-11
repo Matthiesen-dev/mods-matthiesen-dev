@@ -8,22 +8,10 @@ export const commands: Commands = [
         permissionNode: "cobbled_level_control.command.level-control",
     },
     {
-        command: "level-control reload",
-        description: "Reloads the configuration files.",
-        usage: "/level-control reload",
-        permissionNode: "cobbled_level_control.command.level-control.reload",
-    },
-    {
         command: "level-control level-up",
         description: "Levels up a player's module.",
         usage: "/level-control level-up <player> <module>",
         permissionNode: "cobbled_level_control.command.level-control.level-up",
-    },
-    {
-        command: "level-control set-difficulty",
-        description: "Sets the difficulty of a player.",
-        usage: "/level-control set-difficulty <player> <difficulty>",
-        permissionNode: "cobbled_level_control.command.level-control.set-difficulty",
     },
     {
         command: "level-control set-level",

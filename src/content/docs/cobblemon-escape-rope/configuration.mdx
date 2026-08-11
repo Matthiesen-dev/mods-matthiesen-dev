@@ -10,61 +10,93 @@ next:
 sidebar:
   label: Configuration
   order: 2
-banner:
-  content: |
-    These docs are a work in progress and may be incomplete or contain inaccuracies. (Or be for a newer unreleased version of the mod)
+tableOfContents:
+  minHeadingLevel: 2
+  maxHeadingLevel: 6
 ---
 
-A config file is generated automatically at:
+All of the configuration files for Cobblemon Escape Rope are located in the `<game_directory>/config/cobblemon_escape_rope/` directory.
 
-- `<game_directory>/config/cobblemon_escape_rope/config.json`
+**Configuration files:**
+- `server.toml` - Server side configuration options for Cobblemon Escape Rope.
 
-Default values:
+## Server Configuration Options
 
-```json title="<game_directory>/config/cobblemon_escape_rope/config.json"
-{
-  "serverSaveTicks": 20,
-  "escapeRopeItem": {
-    "cooldownInSeconds": 300,
-    "consumeOnUse": false,
-    "useTimeInSeconds": 3,
-    "teleportSafeSearchRadius": 5,
-    "blacklistedDimensions": []
-  }
-}
+```toml title="server.toml"
+#General Configuration
+[generalConfig]
+	#The number of ticks between server saves. Default is 20 ticks
+	# Default: 20
+	# Range: > 1
+	serverSaveTicks = 20
+
+#Escape Rope Item Configuration
+[escapeRopeItemConfig]
+	#The number of seconds before the Escape Rope can be used again after use. Default is 60 seconds.
+	# Default: 60
+	# Range: > 1
+	cooldownSeconds = 60
+	#The number of seconds it takes to use the Escape Rope. Default is 5 seconds.
+	# Default: 5
+	# Range: > 1
+	useTimeSeconds = 5
+	#The radius in blocks to search for a safe teleport location when using the Escape Rope. Default is 5 blocks.
+	# Default: 5
+	# Range: > 1
+	safeSearchRadius = 5
+	#Whether the Escape Rope item is consumed on use. Default is false.
+	consumeOnUse = false
+	#List of dimension IDs where the Escape Rope cannot be used. Default is an empty list.
+	blacklistedWorlds = []
+
 ```
 
-### Top-level settings:
+### General Configuration
 
-- `serverSaveTicks`: How often (in ticks) to save player positions to disk. Default: 20 (1 second).
+Allows configuration of general server settings for Cobblemon Escape Rope.
 
-### `escapeRopeItem` settings:
+#### serverSaveTicks
 
-- `cooldownInSeconds`: Cooldown duration after using the rope. Default: 300 (5 minutes).
-- `consumeOnUse`: Whether to consume the rope item on use. Default: false.
-- `useTimeInSeconds`: Time required to use the rope (hold right-click). Default: 3 seconds.
-- `teleportSafeSearchRadius`: Radius to search for a safe landing spot around the saved position. Default: 5 blocks.
-- `blacklistedDimensions` accepts dimension IDs (for example: `minecraft:the_nether`).
+An integer that determines how many ticks between server saves. This can be used to reduce server lag caused by frequent saves.
 
-Sample:
+- Type: `integer`
+- Default: `20`
 
-```json title="<game_directory>/config/cobblemon_escape_rope/config.json" add={9-10}
-{
-  "serverSaveTicks": 20,
-  "escapeRopeItem": {
-    "cooldownInSeconds": 300,
-    "consumeOnUse": false,
-    "useTimeInSeconds": 3,
-    "teleportSafeSearchRadius": 5,
-    "blacklistedDimensions": [
-      "minecraft:the_nether",
-      "minecraft:the_end"
-    ]
-  }
-}
-```
+### Escape Rope Item Configuration
 
-When a dimension is blacklisted:
+Allows configuration of the Escape Rope item behavior.
 
-- Escape Rope use is blocked in that dimension.
-- Open-sky return positions are not updated while you are in that dimension.
+#### cooldownSeconds
+
+The number of seconds before the Escape Rope can be used again after use.
+
+- Type: `integer`
+- Default: `60`
+
+#### useTimeSeconds
+
+The number of seconds it takes to use the Escape Rope.
+
+- Type: `integer`
+- Default: `5`
+
+#### safeSearchRadius
+
+The radius in blocks to search for a safe teleport location when using the Escape Rope.
+
+- Type: `integer`
+- Default: `5`
+
+#### consumeOnUse
+
+Whether the Escape Rope item is consumed on use.
+
+- Type: `boolean`
+- Default: `false`
+
+#### blacklistedWorlds
+
+A list of dimension IDs where the Escape Rope cannot be used. This can be used to prevent players from using the Escape Rope in certain dimensions.
+
+- Type: `array`
+- Default: `[]`

@@ -8,9 +8,6 @@ next:
 sidebar:
   label: Getting Started
   order: 1
-banner:
-  content: |
-    These docs are a work in progress and may be incomplete or contain inaccuracies. (Or be for a newer unreleased version of the mod)
 ---
 
 import ModMeta from '~/components/ModMeta.astro';
@@ -24,7 +21,7 @@ import Deps from '~/components/Deps.astro';
   fabric neoforge
 />
 
-<Deps cobblemon gooeyLibsOptional matthiesenLibAPI />
+<Deps cobblemon gooeyLibsOptional matthiesenCore forgeConfigApiPort fabricApi />
 
 This is a Server side mod that adds different types of timed boosters to your server. These boosters can be used to increase the 
 chances of finding Shiny Pokemon, or increases the catch rate!
@@ -35,17 +32,26 @@ chances of finding Shiny Pokemon, or increases the catch rate!
 - **Shiny Boosters**: Increases the chances of finding shiny Pokemon for all players on the server.
 - **Spawn Bucket Boosters**: Increases the spawn rates for Pokemon in a specific spawn bucket for all players on the server.
 
-## Dependencies
-- [Cobblemon 1.7.3+1.21.1](https://www.modrinth.com/mod/cobblemon)
-- [Matthiesen Lib API](https://www.modrinth.com/mod/matthiesen-lib-api)
+## Requirements
+
+- [Matthiesen Core](https://www.modrinth.com/mod/matthiesen-core)
+- [Cobblemon](https://www.modrinth.com/mod/cobblemon)
+- [Fabric API](https://modrinth.com/mod/fabric-api) (Fabric only)
+- [Forge Config API Port](https://modrinth.com/mod/forge-config-api-port) (Fabric only)
 
 ### Optional Dependencies
+- [Matthiesen Core Webhooks](https://modrinth.com/project/XP5CfD30) - Used for sending Discord webhooks when boosters are started or stopped.
 - [GooeyLibs 3.1.1-1.21.x](https://modrinth.com/mod/gooeylibs) - Used for optional GUIs
-- [Matthiesen Lib Webhooks](https://modrinth.com/mod/matthiesen-lib-webhooks) - Used for optional Discord webhook notifications
 
-:::note[Discord Webhook Integration]
-Cobblemon Boosters has optional integration with Discord webhooks to send notifications about booster events. If you have the [Matthiesen Lib Webhooks](https://modrinth.com/mod/matthiesen-lib-webhooks) mod installed, you can configure the webhook settings in the [`webhooks.json` configuration file](/cobblemon-boosters/configuration).
-:::
+## FastStats Metrics
+
+This mod uses [FastStats](https://faststats.dev) to collect anonymous usage statistics. This helps the developer understand
+how this mod is being used and improve it over time. You can learn more about the data collected and how it is used by visiting
+[FastStats: Information](https://faststats.dev/info).
+
+You can also view the data collected by this mod on the [FastStats: Cobblemon Boosters](https://faststats.dev/project/cobblemon-boosters) page.
+
+To opt out of this data collection, set the `enabled` property to `false` in the `<game_directory>/config/matthiesen_core/metrics.properties` file.
 
 ## See Also
 

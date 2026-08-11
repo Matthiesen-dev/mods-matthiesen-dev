@@ -29,3 +29,11 @@ export interface Mod {
     docs: string;
     badge?: string | ModBadge;
 }
+
+export interface MolangFunction {
+    function: string;
+    result: string;
+    description?: string;
+}
+
+export type MolangExtensions = Array<MolangFunction>;

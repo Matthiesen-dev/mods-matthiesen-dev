@@ -8,9 +8,6 @@ next:
 sidebar:
   label: Getting Started
   order: 1
-banner:
-  content: |
-    These docs are a work in progress and may be incomplete or contain inaccuracies. (Or be for a newer unreleased version of the mod)
 ---
 
 import ModMeta from '~/components/ModMeta.astro';
@@ -24,7 +21,7 @@ import Deps from '~/components/Deps.astro';
   fabric neoforge
 />
 
-<Deps cobblemon matthiesenLib matthiesenLibAPI />
+<Deps cobblemon matthiesenCore forgeConfigApiPort fabricApi />
 
 This mod adds a new set of Items to your Cobblemon world, ReBreathers. These items come in 3 tiers, each with a different effect. 
 
@@ -32,10 +29,11 @@ The first tier, the ReBreather Mk1 grants the player the Water Breathing Effect 
 The second tier, the ReBreather Mk2 grants the player the Water Breathing and Night Vision Effects while underwater for 10 minutes (Configurable). without finding an air bubble.
 The third tier, the ReBreather Mk3 grants the player the Conduit Power Effect while underwater for 20 minutes (Configurable) without finding an air bubble.
 
-## Dependencies
-- [Cobblemon 1.7.3+1.21.1](https://modrinth.com/mod/cobblemon)
-- [Matthiesen Lib](https://www.modrinth.com/mod/matthiesen-lib)
-- [Matthiesen Lib API](https://www.modrinth.com/mod/matthiesen-lib-api)
+## Requirements
+- [Matthiesen Core](https://modrinth.com/mod/matthiesen-core)
+- [Cobblemon](https://modrinth.com/mod/cobblemon)
+- [Fabric API](https://modrinth.com/mod/fabric-api) (Fabric only)
+- [Forge Config API Port](https://modrinth.com/mod/forge-config-api-port) (Fabric only)
 
 ### Optional Dependencies
 - [Accessories](https://modrinth.com/mod/accessories) - For equipping the ReBreathers in an accessory slot.
@@ -55,6 +53,16 @@ The enchantment has 3 levels, each increasing the duration by the configured amo
 - **ReBreather Upgrade I:** Increases duration by 200 seconds (Configurable)
 - **ReBreather Upgrade II:** Increases duration by 800 seconds (Configurable)
 - **ReBreather Upgrade III:** Increases duration by 2000 seconds (Configurable)
+
+## FastStats Metrics
+
+This mod uses [FastStats](https://faststats.dev) to collect anonymous usage statistics. This helps the developer understand
+how this mod is being used and improve it over time. You can learn more about the data collected and how it is used by visiting
+[FastStats: Information](https://faststats.dev/info).
+
+You can also view the data collected by this mod on the [FastStats: Cobblemon Breathers](https://faststats.dev/project/cobblemon-breathers) page.
+
+To opt out of this data collection, set the `enabled` property to `false` in the `<game_directory>/config/matthiesen_core/metrics.properties` file.
 
 ## See Also
 

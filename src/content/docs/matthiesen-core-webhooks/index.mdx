@@ -1,0 +1,46 @@
+---
+title: "Getting Started"
+description: "Matthiesen Core Webhooks is a Server-side library mod for Matthiesen Lib projects that want to be able to send discord webhooks easily!"
+prev: false
+next: false
+sidebar:
+  order: 1
+---
+
+import ModMeta from '~/components/ModMeta.astro';
+import ReadMore from '~/components/ReadMore.astro';
+
+<ModMeta 
+  minecraftVersion='1.21.1'
+  github='matthiesen-core-webhooks'
+  modrinth='XP5CfD30'
+  fabric neoforge
+/>
+
+## What is Matthiesen Core Webhooks?
+
+
+This is a server-side library mod for Matthiesen Core that provides Discord webhook functionality. It allows other mods to send messages to Discord channels via the Matthiesen Core webhook service.
+
+```java
+
+import dev.matthiesen.matthiesen_core.common.api.discord.WebhookNotifierInstance;
+import dev.matthiesen.matthiesen_core.common.core.MatthiesenCoreCommon;
+
+public class ExampleWebHook {
+    private WebhookNotifierInstance webhookNotifierInstance;
+    
+    public ExampleWebHook() {
+        var webhookNotifierService = MatthiesenCoreCommon.INSTANCE.getWebhookService();
+        if (!webhookNotifierService.isAvailable()) {
+            throw new IllegalStateException("Webhook service is not available");
+        }
+        webhookNotifierInstance = webhookNotifierService.makeInstance("https://discord.com/api/webhooks/your-webhook-url");
+    }
+    
+    public void sendMessage(String message) {
+        webhookNotifierInstance.sendMessage(builder -> builder.withContent(message));
+    }
+}
+
+```

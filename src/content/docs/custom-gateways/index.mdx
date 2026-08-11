@@ -1,0 +1,48 @@
+---
+title: "Getting Started"
+description: "TODO"
+prev: false
+next: 
+  link: /custom-gateways/configuration
+  label: "Configuration"
+sidebar:
+  order: 1
+---
+
+import ModMeta from '~/components/ModMeta.astro';
+import ReadMore from '~/components/ReadMore.astro';
+import Deps from '~/components/Deps.astro';
+
+<ModMeta 
+  minecraftVersion='1.21.1'
+  github='custom-gateways'
+  modrinth='custom-gateways'
+  fabric neoforge
+/>
+
+<Deps matthiesenCore forgeConfigApiPort geckoLib fabricApi />
+
+Custom Gateways is a Minecraft mod that adds a new way to travel between locations or dimensions using custom gateways. Players
+can create their own gateway frames and pads, then link them together, allowing for travel between them. The mod also includes a remote
+dialer item that can be used to activate the gateways from a distance.
+
+## Requirements
+
+- [Matthiesen Core](https://modrinth.com/mod/matthiesen-core)
+- [GeckoLib](https://modrinth.com/mod/geckolib)
+- [Fabric API](https://modrinth.com/mod/fabric-api) (Fabric only)
+- [Forge Config API Port](https://modrinth.com/mod/forge-config-api-port) (Fabric only)
+
+## Optional Support for:
+
+- [Jade](https://modrinth.com/mod/jade) - Displays information about the gateway when looking at it.
+
+## FastStats Metrics
+
+This mod uses [FastStats](https://faststats.dev) to collect anonymous usage statistics. This helps the developer understand
+how this mod is being used and improve it over time. You can learn more about the data collected and how it is used by visiting
+[FastStats: Information](https://faststats.dev/info).
+
+You can also view the data collected by this mod on the [FastStats: Custom Gateways](https://faststats.dev/project/custom-gateways) page.
+
+To opt out of this data collection, set the `enabled` property to `false` in the `<game_directory>/config/matthiesen_core/metrics.properties` file.

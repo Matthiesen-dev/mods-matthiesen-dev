@@ -1,0 +1,22 @@
+---
+title: "LuckPerms Extensions"
+description: "Extensions for LuckPerms."
+prev: 
+  link: /cobblemon-npc-extensions/griefdefender-extensions
+  label: "GriefDefender Extensions"
+next: 
+  link: /cobblemon-npc-extensions/matthiesen-core-extensions
+  label: "Matthiesen Core Extensions"
+sidebar:
+  order: 3
+---
+
+import MolangExtensions from '~/components/MolangExtensions.astro';
+
+import { luckPermsPlayerExtensions } from './luckperms-extensions';
+
+When using LuckPerms with Cobblemon NPCs, you can use the following Molang extensions to check for player permissions:
+
+## Player Functions
+
+<MolangExtensions extensions={luckPermsPlayerExtensions} />

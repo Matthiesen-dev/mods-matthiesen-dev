@@ -8,9 +8,6 @@ next:
 sidebar:
   label: Getting Started
   order: 1
-banner:
-  content: |
-    These docs are a work in progress and may be incomplete or contain inaccuracies. (Or be for a newer unreleased version of the mod)
 ---
 
 import ModMeta from '~/components/ModMeta.astro';
@@ -24,7 +21,7 @@ import Deps from '~/components/Deps.astro';
   fabric neoforge
 />
 
-<Deps cobblemon matthiesenLibAPI />
+<Deps cobblemon matthiesenCore forgeConfigApiPort fabricApi />
 
 This server-side mod gives the server-owner full control over level caps on pokemons using permission nodes for absolute control. Perfect for a tailored player experience!
 
@@ -51,6 +48,19 @@ set catch rules, and even control the level of wild pokemon spawns. All of this 
 - `PokemonSpawnEvent` - Triggered when a Pokemon spawns in the world.
 - `EvolutionEvent` - Triggered when a Pokemon evolves.
 
-## Dependencies
-- [Cobblemon 1.7.3+1.21.1](https://www.modrinth.com/mod/cobblemon)
-- [Matthiesen Lib API](https://www.modrinth.com/mod/matthiesen-lib-api)
+## Requirements
+
+- [Matthiesen Core](https://modrinth.com/mod/matthiesen-core)
+- [Cobblemon](https://modrinth.com/mod/cobblemon)
+- [Fabric API](https://modrinth.com/mod/fabric-api) (Fabric only)
+- [Forge Config API Port](https://modrinth.com/mod/forge-config-api-port) (Fabric only)
+
+## FastStats Metrics
+
+This mod uses [FastStats](https://faststats.dev) to collect anonymous usage statistics. This helps the developer understand
+how this mod is being used and improve it over time. You can learn more about the data collected and how it is used by visiting 
+[FastStats: Information](https://faststats.dev/info).
+
+You can also view the data collected by this mod on the [FastStats: Cobbled Level Control](https://faststats.dev/project/cobbled-level-control) page.
+
+To opt out of this data collection, set the `enabled` property to `false` in the `<game_directory>/config/matthiesen_core/metrics.properties` file.

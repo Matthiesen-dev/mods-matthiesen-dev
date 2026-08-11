@@ -10,27 +10,207 @@ next:
 sidebar:
   label: Configuration
   order: 2
-banner:
-  content: |
-    These docs are a work in progress and may be incomplete or contain inaccuracies. (Or be for a newer unreleased version of the mod)
+tableOfContents:
+  minHeadingLevel: 2
+  maxHeadingLevel: 6
 ---
 
-The configuration for PackWiz-ard is done through a config file located at `<game_directory>/config/packwiz_ard/config.json`.
+All of the configuration files for PackWiz-ard are located in the `<game_directory>/config/packwiz_ard/` directory.
 
-## Config Options
+**Configuration files:**
+- `common.toml`: The main configuration file for PackWiz-ard, where you can set the URL to your PackWiz `pack.toml` file, configure automatic updates, and set the minimum permission level for the mod's commands.
+- `server.toml`: The server-specific configuration file for PackWiz-ard, where you can set the URL to your PackWiz `pack.toml` file, configure automatic updates, and set the minimum permission level for the mod's commands.
 
-- `pack_toml` (string, required): The web URL to your PackWiz `pack.toml` file. This is used by the mod to determine which modpack to load and update.
-- `minimum_permission_level` (integer, optional, default: 4): The minimum permission level required to use the mod's commands. This is used to restrict access to the mod's commands to certain players, such as server operators.
-- `auto_update` (boolean, optional, default: false): Enables or disables automatic updates for the server's modpack.
-- `auto_update_interval_minutes` (integer, optional, default: 1440): Sets the interval (in minutes) for automatic updates.
+## Common Configuration
 
-## Example Config
-
-```json title="<game_directory>/config/packwiz_ard/config.json"
-{
-  "pack_toml": "",
-  "minimum_permission_level": 4,
-  "auto_update": false,
-  "auto_update_interval_minutes": 1440
-}
+```toml title="common.toml"
+#Common config
+[common]
+	#The URL to the pack.toml file for this pack
+	#This is used to check for updates and download the pack.toml file
+	#If this is not set, the mod will not be able to check for updates or download the pack.toml file
+	pack_toml = ""
 ```
+
+### pack_toml
+
+The URL to the `pack.toml` file for this pack. This is used to check for updates and download the `pack.toml` file. If this is not set, the mod will not be able to check for updates or download the `pack.toml` file.
+
+- Default: `""` (empty string)
+
+## Server Configuration
+
+```toml title="server.toml"
+#Server Configuration
+[server]
+	minimumPermissionLevel = 4
+	autoUpdate = false
+	autoUpdateInterval = 1440
+
+	#Discord Webhooks Configuration
+	[server.discordWebhooks]
+		enabled = false
+		webhookUrl = "DISCORD_WEBHOOK_URL_HERE"
+		discordAuthorName = "PackWiz ARD"
+		discordAuthorIconUrl = "https://raw.githubusercontent.com/Matthiesen-dev/.github/refs/heads/main/mod-logos/packwiz-ard.png"
+
+		#Webhook messages for various server events
+		[server.discordWebhooks.webhookMessages]
+			bootstrapDownloadTriggered_title = "Bootstrap Download Triggered!"
+			bootstrapDownloadTriggered_description = "A new bootstrap download has been triggered, and the download process has started!"
+			bootstrapDownloadTriggered_color = "GOLD"
+			bootstrapDownloadFinished_title = "Bootstrap Download Finished!"
+			bootstrapDownloadFinished_description = "The bootstrap download process has finished successfully! The update process will now continue."
+			bootstrapDownloadFinished_color = "GREEN"
+			bootstrapDownloadFailed_title = "Bootstrap Download Failed!"
+			bootstrapDownloadFailed_description = "The bootstrap download process has failed! Please check the logs for more information."
+			bootstrapDownloadFailed_color = "RED"
+			packUpdateTriggered_title = "Modpack Update Triggered!"
+			packUpdateTriggered_description = "A new modpack update has been triggered, and the update process has started!"
+			packUpdateTriggered_color = "GOLD"
+			packUpdateFinished_title = "Modpack Update Finished!"
+			packUpdateFinished_description = "The modpack update process has finished successfully! Server restart pending to apply update"
+			packUpdateFinished_color = "GREEN"
+			packUpdateFailed_title = "Modpack Update Failed!"
+			packUpdateFailed_description = "The modpack update process has failed! Please check the logs for more information."
+			packUpdateFailed_color = "RED"
+			packTomlLinkUpdated_title = "Pack.toml Link Updated!"
+			packTomlLinkUpdated_description = "The pack.toml link has been updated! The new link is: %newLink%"
+			packTomlLinkUpdated_color = "GOLD"
+			minimumPermissionLevelUpdated_title = "Minimum Permission Level Updated!"
+			minimumPermissionLevelUpdated_description = "The minimum permission level has been updated! The new level is: %newLevel%"
+			minimumPermissionLevelUpdated_color = "GOLD"
+			autoUpdateUpdated_title = "Auto Update Updated!"
+			autoUpdateUpdated_description = "The auto update setting has been updated! The new setting is: %newSetting%"
+			autoUpdateUpdated_color = "GOLD"
+			autoUpdateIntervalUpdated_title = "Auto Update Interval Updated!"
+			autoUpdateIntervalUpdated_description = "The auto update interval has been updated! The new interval is: %newInterval% minutes"
+			autoUpdateIntervalUpdated_color = "GOLD"
+```
+
+### minimumPermissionLevel
+
+The minimum permission level required to use the mod's commands. This can be set to any value between 0 and 4, where 0 is the lowest permission level and 4 is the highest.
+
+- Type: Integer
+- Default: `4`
+
+### autoUpdate
+
+Whether to enable or disable automatic updates for the modpack. If enabled, the mod will check for updates at the interval specified by `autoUpdateInterval`.
+
+- Type: Boolean
+- Default: `false`
+
+### autoUpdateInterval
+
+The interval in minutes for automatic updates. This determines how often the mod will check for updates to the modpack.
+
+- Type: Integer
+- Default: `1440` (24 hours)
+
+### Discord Webhooks Configuration
+
+Discord webhooks can be configured to send notifications for various server events, such as when a modpack update is triggered or completed. The webhook settings can be found under the `[server.discordWebhooks]` section in the `server.toml` file.
+
+#### enabled
+
+Whether to enable or disable Discord webhooks for server events.
+
+- Type: Boolean
+- Default: `false`
+
+#### webhookUrl
+
+The Discord Webhook URL to send server event notifications to.
+
+- Type: String
+- Default: `"DISCORD_WEBHOOK_URL_HERE"`
+
+#### discordAuthorName
+
+The name to display as the author of the Discord webhook messages.
+
+- Type: String
+- Default: `"PackWiz ARD"`
+
+#### discordAuthorIconUrl
+
+The URL of the icon to display as the author of the Discord webhook messages.
+
+- Type: String
+- Default: `"https://raw.githubusercontent.com/Matthiesen-dev/.github/refs/heads/main/mod-logos/packwiz-ard.png"`
+
+#### webhookMessages
+
+The webhook messages for various server events can be customized under the `[server.discordWebhooks.webhookMessages]` section in the `server.toml` file. Each event has a title, description, and embed color that can be set to your preference.
+
+**Title**:
+- Type: String
+**Description**:
+- Type: String
+**Embed Color**:
+- Type: Enum
+- Allowed Values:
+  - `RED`
+  - `GREEN`
+  - `BLUE`
+  - `PURPLE`
+  - `ORANGE`
+  - `GOLD`
+  - `GREY`
+  - `DARK_RED`
+  - `DARK_GREEN`
+  - `DARK_BLUE`
+  - `BLACK`
+  - `WHITE`
+
+##### bootstrapDownloadTriggered
+- Title: `bootstrapDownloadTriggered_title`
+- Description: `bootstrapDownloadTriggered_description`
+- Embed Color: `bootstrapDownloadTriggered_color`
+
+##### bootstrapDownloadFinished
+- Title: `bootstrapDownloadFinished_title`
+- Description: `bootstrapDownloadFinished_description`
+- Embed Color: `bootstrapDownloadFinished_color`
+
+##### bootstrapDownloadFailed
+- Title: `bootstrapDownloadFailed_title`
+- Description: `bootstrapDownloadFailed_description`
+- Embed Color: `bootstrapDownloadFailed_color`
+
+#### packUpdateTriggered
+- Title: `packUpdateTriggered_title`
+- Description: `packUpdateTriggered_description`
+- Embed Color: `packUpdateTriggered_color`
+
+#### packUpdateFinished
+- Title: `packUpdateFinished_title`
+- Description: `packUpdateFinished_description`
+- Embed Color: `packUpdateFinished_color`
+
+#### packUpdateFailed
+- Title: `packUpdateFailed_title`
+- Description: `packUpdateFailed_description`
+- Embed Color: `packUpdateFailed_color`
+
+#### packTomlLinkUpdated
+- Title: `packTomlLinkUpdated_title`
+- Description: `packTomlLinkUpdated_description`
+- Embed Color: `packTomlLinkUpdated_color`
+
+#### minimumPermissionLevelUpdated
+- Title: `minimumPermissionLevelUpdated_title`
+- Description: `minimumPermissionLevelUpdated_description`
+- Embed Color: `minimumPermissionLevelUpdated_color`
+
+#### autoUpdateUpdated
+- Title: `autoUpdateUpdated_title`
+- Description: `autoUpdateUpdated_description`
+- Embed Color: `autoUpdateUpdated_color`
+
+#### autoUpdateIntervalUpdated
+- Title: `autoUpdateIntervalUpdated_title`
+- Description: `autoUpdateIntervalUpdated_description`
+- Embed Color: `autoUpdateIntervalUpdated_color`

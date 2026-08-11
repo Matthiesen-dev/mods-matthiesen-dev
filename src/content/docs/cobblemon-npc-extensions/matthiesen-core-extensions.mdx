@@ -1,0 +1,34 @@
+---
+title: "Matthiesen Core Extensions"
+description: "Extensions for Matthiesen Core."
+prev: 
+  link: /cobblemon-npc-extensions/luckperms-extensions
+  label: "LuckPerms Extensions"
+next: false
+sidebar:
+  order: 4
+---
+
+import MolangExtensions from '~/components/MolangExtensions.astro';
+
+import {
+  matthiesenCoreEconomyPlayerExtensions,
+  matthiesenCoreTextParserPlayerExtensions,
+  matthiesenCoreTextParserServerExtensions,
+} from './matthiesen-core-extensions';
+
+## Economy
+
+### Player Functions
+
+<MolangExtensions extensions={matthiesenCoreEconomyPlayerExtensions} />
+            
+## Text Parsing
+
+### Player Functions
+
+<MolangExtensions extensions={matthiesenCoreTextParserPlayerExtensions} />
+
+### Server Functions
+
+<MolangExtensions extensions={matthiesenCoreTextParserServerExtensions} />

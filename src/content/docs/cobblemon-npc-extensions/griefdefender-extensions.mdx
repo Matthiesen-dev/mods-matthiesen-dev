@@ -1,0 +1,39 @@
+---
+title: "GriefDefender Extensions"
+description: "Extensions for GriefDefender."
+prev: 
+  link: /cobblemon-npc-extensions/
+  label: "Getting Started"
+next: 
+  link: /cobblemon-npc-extensions/luckperms-extensions
+  label: "LuckPerms Extensions"
+sidebar:
+  order: 2
+---
+
+import MolangExtensions from '~/components/MolangExtensions.astro';
+
+import {
+  griefDefenderNpcExtensions,
+  griefDefenderPlayerExtensions,
+  griefDefenderServerExtensions,
+  griefDefenderWorldExtensions,
+} from './griefdefender-extensions';
+
+When using GriefDefender, you can use the following extensions to add additional functionality to your NPCs.
+
+## NPC Functions
+
+<MolangExtensions extensions={griefDefenderNpcExtensions} />
+
+## Player Functions
+
+<MolangExtensions extensions={griefDefenderPlayerExtensions} />
+
+## Server Functions
+
+<MolangExtensions extensions={griefDefenderServerExtensions} />
+
+## World Functions
+
+<MolangExtensions extensions={griefDefenderWorldExtensions} />

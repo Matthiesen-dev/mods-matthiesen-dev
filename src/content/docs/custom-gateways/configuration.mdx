@@ -1,0 +1,79 @@
+---
+title: Custom Gateways Configuration
+description: Configuration options for Custom Gateways.
+prev: 
+  link: /custom-gateways
+  label: "Overview"
+next: 
+  link: /custom-gateways/recipes
+  label: "Crafting Recipes"
+sidebar:
+  label: Configuration
+  order: 2
+tableOfContents:
+  minHeadingLevel: 2
+  maxHeadingLevel: 6
+---
+
+import ReadMore from '~/components/ReadMore.astro';
+
+All of the configuration files for Custom Gateways are located in the `<game_directory>/config/custom_gateways/` directory.
+
+**Configuration Files:**
+- `server.toml` - Server side configuration options for Custom Gateways.
+
+## Server Configuration Options
+
+```toml title="server.toml"
+#Custom Gateways Server Configuration
+[server]
+
+	#Teleport Validation Configuration
+	[server.teleportValidation]
+		cooldownMS = 5000
+		safeSearchRadius = 5
+		allowNonPlayerTeleport = false
+
+	#Remote Dialer Configuration
+	[server.remoteDialer]
+		maxPortalEntries = 32
+```
+
+### Teleport Validation Configuration
+
+Allows configuration of the teleportation validation settings for Custom Gateways, including cooldowns and safe search radius.
+
+#### cooldownMS
+
+The cooldown in milliseconds between teleportation attempts.
+
+- Type: Integer
+- Default: `5000`
+- Range: `0 ~ 9223372036854775807`
+
+#### safeSearchRadius
+
+The radius in blocks to search for a safe teleportation location.
+
+- Type: Integer
+- Default: `5`
+- Range: `> 0`
+
+#### allowNonPlayerTeleport
+
+Whether to allow non-player entities to teleport using the custom gateways.
+
+- Type: Boolean
+- Default: `false`
+
+### Remote Dialer Configuration
+
+Allows configuration of the Remote Dialer item settings for Custom Gateways, including maximum portal entries.
+
+#### maxPortalEntries
+
+The maximum number of portal entries that can be stored in a Remote Dialer item.
+
+- Type: Integer
+- Default: `32`
+- Range: `> 1`

@@ -59,86 +59,104 @@ try {
 </div>
 
 <script>
-    const detectorElements = document.querySelectorAll(
-        "[data-live-version-detector]",
-    );
+    const updateLiveVersionDetectors = async () => {
+        const detectorElements = document.querySelectorAll(
+            "[data-live-version-detector]",
+        );
 
-    detectorElements.forEach(async (element) => {
-        const projectId = element.getAttribute("data-project-id");
+        await Promise.all(
+            Array.from(detectorElements).map(async (element) => {
+                const projectId = element.getAttribute("data-project-id");
 
-        if (!projectId) {
-            return;
-        }
-
-        const versionStatus = element.querySelector("[data-version-status]");
-        const versionLink = element.querySelector("[data-version-link]");
-
-        try {
-            const response = await fetch(
-                `https://api.modrinth.com/v2/project/${projectId}/version`,
-                {
-                    cache: "no-store",
-                },
-            );
-
-            if (!response.ok) {
-                throw new Error(
-                    `Modrinth API request failed: ${response.status}`,
-                );
-            }
-
-            const data = await response.json();
-            if (!Array.isArray(data) || data.length === 0) {
-                if (versionStatus) {
-                    versionStatus.textContent = "No releases found";
-                    versionStatus.classList.remove(
-                        "status-success",
-                        "status-error",
-                    );
-                    versionStatus.classList.add("status-warning");
+                if (!projectId) {
+                    return;
                 }
-                return;
-            }
 
-            const latestVersion = data[0];
-            const version = latestVersion.version_number ?? latestVersion.name;
-            const modrinthUrl = `https://modrinth.com/mod/${projectId}`;
+                const versionStatus = element.querySelector(
+                    "[data-version-status]",
+                );
+                const versionLink = element.querySelector("[data-version-link]");
+                const versionValue = element.querySelector(
+                    "[data-version-value]",
+                );
 
-            if (!version) {
-                if (versionStatus) {
-                    versionStatus.textContent = "No releases found";
-                    versionStatus.classList.remove(
-                        "status-success",
-                        "status-error",
+                try {
+                    const response = await fetch(
+                        `https://api.modrinth.com/v2/project/${projectId}/version`,
+                        {
+                            cache: "no-store",
+                        },
                     );
-                    versionStatus.classList.add("status-warning");
+
+                    if (!response.ok) {
+                        throw new Error(
+                            `Modrinth API request failed: ${response.status}`,
+                        );
+                    }
+
+                    const data = await response.json();
+                    if (!Array.isArray(data) || data.length === 0) {
+                        if (versionStatus) {
+                            versionStatus.textContent = "No releases found";
+                            versionStatus.classList.remove(
+                                "status-success",
+                                "status-error",
+                            );
+                            versionStatus.classList.add("status-warning");
+                        }
+                        return;
+                    }
+
+                    const latestVersion = data[0];
+                    const version =
+                        latestVersion.version_number ?? latestVersion.name;
+                    const modrinthUrl = `https://modrinth.com/mod/${projectId}`;
+
+                    if (!version) {
+                        if (versionStatus) {
+                            versionStatus.textContent = "No releases found";
+                            versionStatus.classList.remove(
+                                "status-success",
+                                "status-error",
+                            );
+                            versionStatus.classList.add("status-warning");
+                        }
+                        return;
+                    }
+
+                    if (versionValue) {
+                        versionValue.textContent = version;
+                    }
+
+                    if (versionLink) {
+                        versionLink.setAttribute("href", modrinthUrl);
+                    }
+
+                    if (versionStatus) {
+                        versionStatus.textContent = "Up to date";
+                        versionStatus.classList.remove(
+                            "status-warning",
+                            "status-error",
+                        );
+                        versionStatus.classList.add("status-success");
+                    }
+                } catch {
+                    if (versionStatus) {
+                        versionStatus.textContent = "Not available";
+                        versionStatus.classList.remove(
+                            "status-success",
+                            "status-warning",
+                        );
+                        versionStatus.classList.add("status-error");
+                    }
                 }
-                return;
-            }
+            }),
+        );
+    };
 
-            if (versionLink) {
-                versionLink.setAttribute("href", modrinthUrl);
-            }
-
-            if (versionStatus) {
-                versionStatus.textContent = "Up to date";
-                versionStatus.classList.remove(
-                    "status-warning",
-                    "status-error",
-                );
-                versionStatus.classList.add("status-success");
-            }
-        } catch {
-            if (versionStatus) {
-                versionStatus.textContent = "Not available";
-                versionStatus.classList.remove(
-                    "status-success",
-                    "status-warning",
-                );
-                versionStatus.classList.add("status-error");
-            }
-        }
-    });
+    // Re-run after client-side navigations as well as on the initial load.
+    document.addEventListener("astro:page-load", updateLiveVersionDetectors);
+    updateLiveVersionDetectors();
 </script>
 
 <style is:global>

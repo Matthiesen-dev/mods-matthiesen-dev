@@ -7,6 +7,9 @@ import GooeyLibsOptional from "~/assets/deps/gooeylibs_optional.svg";
 import LuckPerms from "~/assets/deps/luckperms.svg";
 import MatthiesenLib from "~/assets/deps/matthiesenLib.svg";
 import MatthiesenLibAPI from "~/assets/deps/matthiesenLibAPI.svg";
+import MatthiesenCore from "~/assets/deps/matthiesenCore.svg";
+import FabricApi from "~/assets/deps/fabric-api.svg";
+import ForgeConfigApiPort from "~/assets/deps/forgeConfigApiPort.svg";
 
 interface Props {
     architecturyApi?: boolean;
@@ -17,6 +20,9 @@ interface Props {
     luckPerms?: boolean;
     matthiesenLib?: boolean;
     matthiesenLibAPI?: boolean;
+    matthiesenCore?: boolean;
+    fabricApi?: boolean;
+    forgeConfigApiPort?: boolean;
 }
 
 const {
@@ -28,6 +34,9 @@ const {
     luckPerms,
     matthiesenLib,
     matthiesenLibAPI,
+    matthiesenCore,
+    fabricApi,
+    forgeConfigApiPort,
 } = Astro.props;
 
 const depMap = [
@@ -78,6 +87,24 @@ const depMap = [
         enabled: matthiesenLibAPI,
         Icon: MatthiesenLibAPI,
         url: "https://modrinth.com/mod/matthiesen-lib-api",
+    },
+    {
+        name: "Matthiesen Core",
+        enabled: matthiesenCore,
+        Icon: MatthiesenCore,
+        url: "https://modrinth.com/mod/matthiesen-core",
+    },
+    {
+        name: "Fabric API",
+        enabled: fabricApi,
+        Icon: FabricApi,
+        url: "https://modrinth.com/mod/fabric-api",
+    },
+    {
+        name: "Forge Config API Port",
+        enabled: forgeConfigApiPort,
+        Icon: ForgeConfigApiPort,
+        url: "https://modrinth.com/mod/forge-config-api-port",
     },
 ];
 ---

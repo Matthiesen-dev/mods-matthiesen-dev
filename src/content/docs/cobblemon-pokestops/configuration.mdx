@@ -10,66 +10,141 @@ next:
 sidebar:
   label: Configuration
   order: 2
-banner:
-  content: |
-    These docs are a work in progress and may be incomplete or contain inaccuracies. (Or be for a newer unreleased version of the mod)
 ---
 
 import ReadMore from '~/components/ReadMore.astro';
 
-The cooldown time and rewards can be configured in the mod's configuration file. This allows server owners to customize the
-Pokestop experience to fit their server's needs. The configuration file can be found in the server's config directory after installing the mod.
+All of the configuration files for Cobblemon Pokestops are located in the `<game_directory>/config/` directory.
 
-- **Default config location:** `<game_directory>/config/cobblemon_pokestops/config.json`
+**Configuration Files:**
+- `cobblemon_pokestops-server.toml` - Server side configuration options for Cobblemon Pokestops.
 
-## Default Configuration Example
+## Server Configuration Options
 
-```json title="<game_directory>/config/cobblemon_pokestops/config.json"
-{
-  "broadcastSettings": {
-    "enableGlobalBroadcast": false,
-    "localBroadcastRadius": 50.0
-  },
-  "cooldowns": {
-    "pokestops": 300,
-    "wingedstops": 300,
-    "pokeballstops": 300,
-    "healingstops": 600
-  },
-  "stopRemoverConfig": {
-    "requireOp": false,
-    "permissionLevel": 2,
-    "dropsStopItem": false,
-    "confirmWindowSeconds": 5
-  },
-  "extraRarities": [
-    "cobblemon:master_ball",
-    "cobblemon:ancient_origin_ball",
-    "cobblemon:ability_capsule",
-    "cobblemon:max_revive",
-    "cobblemon:hyper_potion",
-    "cobblemon:ultra_ball",
-    "cobblemon:master_rod"
-  ]
-}
+```toml title="cobblemon_pokestops-server.toml"
+#Pokestops Configuration
+[pokestopsConfig]
+	extraRarities = ["cobblemon:master_ball", "cobblemon:ancient_origin_ball", "cobblemon:ability_capsule", "cobblemon:max_revive", "cobblemon:hyper_potion", "cobblemon:ultra_ball", "cobblemon:master_rod"]
+
+#Broadcast Settings
+[broadcastSettings]
+	enableGlobalBroadcast = false
+	localBroadcastRadius = 50.0
+
+#Cooldown Settings
+[cooldownSettings]
+	pokestops = 300
+	wingedstops = 300
+	pokeballstops = 300
+	healingstops = 600
+
+#Stop Remover Configuration
+[stopRemoverConfig]
+	requireOp = false
+	permissionLevel = "NONE"
+	dropsStopItem = false
+	confirmWindowSeconds = 5
+
 ```
 
-## Main Config options
+### Pokestops Configuration
 
-- **`broadcastSettings`:** This section contains the configuration options for the broadcast settings of Pokestops.
-  - **`enableGlobalBroadcast`:** Whether to enable global broadcast messages when a player interacts with a Pokestop. (Default: false)
-  - **`localBroadcastRadius`:** The radius in blocks for local broadcast messages when a player interacts with a Pokestop. (Default: 50.0)
-- **`cooldowns`:** This section contains the configuration options for the cooldown times of different types of Pokestops.
-  - **`pokestops`:** The cooldown time in seconds for regular Pokestops. (Default: 300)
-  - **`wingedstops`:** The cooldown time in seconds for WingedStops. (Default: 300)
-  - **`pokeballstops`:** The cooldown time in seconds for Pokeball Stops. (Default: 300)
-  - **`healingstops`:** The cooldown time in seconds for Healing Stops. (Default: 600)
-- **`stopRemoverConfig`:** This section contains the configuration options for the Stop Remover item.
-  - **`requireOp`:** Whether to require the player to be an operator to use the Stop Remover item. (Default: false)
-  - **`permissionLevel`:** The permission level required to use the Stop Remover item. (Default: 2)
-  - **`dropsStopItem`:** Whether the Stop Remover item drops the Pokestop item when used. (Default: false)
-  - **`confirmWindowSeconds`:** The number of seconds the player has to confirm the use of the Stop Remover item. (Default: 5)
-- **`extraRarities`:** This section contains a list of additional items that can be added to the Pokestop loot tables. These items will be added to the loot tables in addition to the default items. (Default: shown in the example above)
+Allows configuration of the Pokestops mod, including extra rarities to be used in the Pokestops.
+
+#### extraRarities
+
+A list of extra rarities to be used in the Pokestops mod.
+
+- Type: List of Strings
+- Default: `["cobblemon:master_ball", "cobblemon:ancient_origin_ball", "cobblemon:ability_capsule", "cobblemon:max_revive", "cobblemon:hyper_potion", "cobblemon:ultra_ball", "cobblemon:master_rod"]`
+
+### Broadcast Settings
+
+The broadcast settings for Pokestops, including global and local broadcast options.
+
+#### enableGlobalBroadcast
+
+Whether to enable global broadcast for Pokestops.
+
+- Type: Boolean
+- Default: `false`
+
+#### localBroadcastRadius
+
+The radius in blocks for local broadcast of Pokestops.
+
+- Type: Double
+- Default: `50.0`
+
+### Cooldown Settings
+
+The cooldown settings for the different types of Pokestops, including Pokestops, Winged Stops, Pokeball Stops, and Healing Stops.
+
+#### pokestops
+
+The cooldown in seconds for Pokestops.
+
+- Type: Integer
+- Default: `300`
+
+#### wingedstops
+
+The cooldown in seconds for Winged Stops.
+
+- Type: Integer
+- Default: `300`
+
+#### pokeballstops
+
+The cooldown in seconds for Pokeball Stops.
+
+- Type: Integer
+- Default: `300`
+
+#### healingstops
+
+The cooldown in seconds for Healing Stops.
+
+- Type: Integer
+- Default: `600`
+
+### Stop Remover Configuration
+
+Allows configuration of the Stop Remover, including OP privileges, permission levels, and confirmation windows.
+
+#### requireOp
+
+Whether the Stop Remover requires OP privileges to use.
+
+- Type: Boolean
+- Default: `false`
+
+#### permissionLevel
+
+The permission level required to use the Stop Remover.
+
+**Available Values:**
+- `NONE` - No permission required.
+- `SPAWN_PROTECTION_BYPASS` - Permission level required to bypass spawn protection
+- `CHEAT_COMMANDS_AND_COMMAND_BLOCKS` - Permission level required to use cheat commands and command blocks.
+- `MULTIPLAYER_MANAGEMENT` - Permission level required to manage multiplayer settings
+- `ALL_COMMANDS` - Permission level required to use all commands.
+
+- Default: `NONE`
+
+#### dropsStopItem
+
+Whether the Stop Remover drops the stop item when used.
+
+- Type: Boolean
+- Default: `false`
+
+#### confirmWindowSeconds
+
+The number of seconds for the confirmation window when using the Stop Remover.
+
+- Type: Integer
+- Default: `5`
 
 ## LootTable Configuration
 

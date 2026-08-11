@@ -1,0 +1,21 @@
+{
+    "name": "Portal Linking Device",
+    "description": "A device used to link custom portal gateways together.",
+    "modFilter": "custom_gateways",
+    "ingredients": [
+        "redstone",
+        "iron_nugget",
+        "redstone",
+        "paper",
+        "ender_eye",
+        "paper",
+        "redstone",
+        "iron_nugget",
+        "redstone"
+    ],
+    "resultItem": {
+        "modId": "custom_gateways",
+        "itemId": "portal_linking_device"
+    },
+    "resultCount": 1
+}

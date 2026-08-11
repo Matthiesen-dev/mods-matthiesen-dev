@@ -8,9 +8,6 @@ next:
 sidebar:
   label: Getting Started
   order: 1
-banner:
-  content: |
-    These docs are a work in progress and may be incomplete or contain inaccuracies. (Or be for a newer unreleased version of the mod)
 ---
 
 import ModMeta from '~/components/ModMeta.astro';
@@ -24,7 +21,7 @@ import ReadMore from '~/components/ReadMore.astro';
   fabric neoforge
 />
 
-<Deps cobblemon geckoLib matthiesenLib matthiesenLibAPI />
+<Deps cobblemon geckoLib matthiesenCore forgeConfigApiPort fabricApi />
 
 This mod adds Pokemon GO inspired Pokestops to Cobblemon. Pokestops can be used to get items, and they have a cooldown period after being used.
 
@@ -34,7 +31,7 @@ Find Pokestops scattered throughout the world! Pokestops can be found throughout
 
 ### Trophies
 
-In addition to the standard Pokestop blocks, there are also Trophies that can be obtained by using Pokestops. These trophies are purely 
+In addition to the standard Pokestop blocks, there are also Trophies that can be obtained by using Pokestops. These trophies are purely
 cosmetic and serve as a way to show off your dedication to the Pokestop system. They can be displayed in item frames or used as decorative items in your builds.
 
 Finish the Advancement Chain in-game to obtain the Trophies, which include:
@@ -45,10 +42,11 @@ Finish the Advancement Chain in-game to obtain the Trophies, which include:
 
 ## Dependencies
 
-- [Cobblemon 1.7.3+1.21.1](https://modrinth.com/mod/cobblemon)
-- [Matthiesen Lib API](https://modrinth.com/mod/matthiesen-lib-api)
-- [Matthiesen Lib](https://modrinth.com/mod/matthiesen-lib)
-- [Geckolib 4.8.3+](https://modrinth.com/mod/geckolib)
+- [Matthiesen Core](https://modrinth.com/mod/matthiesen-core)
+- [Cobblemon](https://modrinth.com/mod/cobblemon)
+- [Geckolib](https://modrinth.com/mod/geckolib)
+- [Fabric API](https://modrinth.com/mod/fabric-api) (Fabric only)
+- [Forge Config API Port](https://modrinth.com/mod/forge-config-api-port) (Fabric only)
 
 ## Optional Dependencies
 - [Jade 15.10.5+](https://modrinth.com/mod/jade) (For in-game Pokestop information display)
@@ -62,10 +60,10 @@ The standard Pokestop design, which can be found in various colors.
 - **Cooldown:** 5 minutes
 - **Rewards:** 1-2 random items from the Pokestop loot table
 - **Color Variants:**
-  - Blue
-  - Gold
-  - Green
-  - Black
+    - Blue
+    - Gold
+    - Green
+    - Black
 
 ### Wingedstop
 
@@ -74,9 +72,9 @@ A Pokestop variant with wings, giving it a more unique appearance.
 - **Cooldown:** 5 minutes
 - **Rewards:** 1-2 random items from the Wingedstop loot table
 - **Color Variants:**
-  - Blue
-  - Gold
-  - Green
+    - Blue
+    - Gold
+    - Green
 
 ### Pokeball Stop
 
@@ -85,10 +83,10 @@ A Pokestop variant designed to look like a giant Pokeball.
 - **Cooldown:** 5 minutes
 - **Rewards:** 1-2 random items from the Pokeball Stop loot table
 - **Variants:**
-  - Park Ball
-  - Premier Ball
-  - Ultra Ball
-  - Master Ball
+    - Park Ball
+    - Premier Ball
+    - Ultra Ball
+    - Master Ball
 
 ### Healing Stop
 
@@ -97,6 +95,16 @@ A Pokestop variant designed to look like a healing station, providing players wi
 - **Cooldown:** 10 minutes
 - **Rewards:** Heals the player's Pokemon when used
 - **Variants:** N/A (Currently only one design, but more may be added in the future)
+
+## FastStats Metrics
+
+This mod uses [FastStats](https://faststats.dev) to collect anonymous usage statistics. This helps the developer understand
+how this mod is being used and improve it over time. You can learn more about the data collected and how it is used by visiting
+[FastStats: Information](https://faststats.dev/info).
+
+You can also view the data collected by this mod on the [FastStats: Cobblemon Pokestops](https://faststats.dev/project/cobblemon-pokestops) page.
+
+To opt out of this data collection, set the `enabled` property to `false` in the `<game_directory>/config/matthiesen_core/metrics.properties` file.
 
 ## See Also
 

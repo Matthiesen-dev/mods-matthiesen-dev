@@ -1,0 +1,47 @@
+---
+title: "Getting Started"
+description: "Cobble Poke Bank is a Server-Side mod for Cobblemon that allows players to store their Pokémon in a database-backed bank."
+prev: false
+next: false
+sidebar:
+  order: 1
+---
+
+import ModMeta from '~/components/ModMeta.astro';
+import ReadMore from '~/components/ReadMore.astro';
+import Deps from '~/components/Deps.astro';
+
+<ModMeta 
+  minecraftVersion='1.21.1'
+  github='cobble-poke-bank'
+  modrinth='cobble-poke-bank'
+  fabric neoforge
+/>
+
+<Deps cobblemon matthiesenCore gooeyLibs forgeConfigApiPort fabricApi />
+
+Cobble Poke Bank is a Server-Side mod for Cobblemon that allows players to store their Pokémon in a database-backed bank. Designed for use in single (SQLite) 
+or multiserver (MySQL) environments, this mod provides a persistent storage solution for Pokémon, ensuring that they are not lost during world resets or server transitions.
+
+## Requirements
+
+- [Matthiesen Core](https://modrinth.com/mod/matthiesen-core)
+- [Cobblemon](https://modrinth.com/mod/cobblemon)
+- [GooeyLibs](https://modrinth.com/mod/gooeylibs)
+- [Minecraft SQLite JDBC](https://modrinth.com/plugin/minecraft-sqlite-jdbc)
+- [Fabric API](https://modrinth.com/mod/fabric-api) (Fabric only)
+- [Forge Config API Port](https://modrinth.com/mod/forge-config-api-port) (Fabric only)
+
+## Optional Dependencies
+
+- [Minecraft MySQL JDBC](https://modrinth.com/plugin/minecraft-mysql-jdbc) (Required for Multi-Server setups)
+
+## FastStats Metrics
+
+This mod uses [FastStats](https://faststats.dev) to collect anonymous usage statistics. This helps the developer understand
+how this mod is being used and improve it over time. You can learn more about the data collected and how it is used by visiting
+[FastStats: Information](https://faststats.dev/info).
+
+You can also view the data collected by this mod on the [FastStats: Cobble Poke Bank](https://faststats.dev/project/cobble-poke-bank) page.
+
+To opt out of this data collection, set the `enabled` property to `false` in the `<game_directory>/config/matthiesen_core/metrics.properties` file.
