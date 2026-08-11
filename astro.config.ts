@@ -11,6 +11,11 @@ export default defineConfig({
 	redirects: {
 		...matthiesenLibWebhooksRedirects,
 	},
+	markdown: {
+		shikiConfig: {
+			theme: "github-dark",
+		}
+	},
 	integrations: [
 		starlightSocialIcons({
 			modrinth: "https://modrinth.com/user/Adammatthiesen",
