@@ -3,10 +3,14 @@ import { defineConfig } from "astro/config";
 import { HEAD_CONFIG } from "./src/head.config";
 import starlightSocialIcons from "./src/plugins/socialIcons";
 import { buildSidebarFromGlob } from "./src/sidebar.config";
+import { matthiesenLibWebhooksRedirects } from "./src/redirects.config";
 
 // https://astro.build/config
 export default defineConfig({
 	site: "https://mods.matthiesen.dev/",
+	redirects: {
+		...matthiesenLibWebhooksRedirects,
+	},
 	integrations: [
 		starlightSocialIcons({
 			modrinth: "https://modrinth.com/user/Adammatthiesen",
