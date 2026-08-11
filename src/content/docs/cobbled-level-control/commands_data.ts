@@ -30,5 +30,11 @@ export const commands: Commands = [
         description: "Displays another player's current level and difficulty.",
         usage: "/level-control status-other <player>",
         permissionNode: "cobbled_level_control.command.level-control.status-other",
+    },
+    {
+        command: "level-control configure",
+        description: "Allows operators to adjust server config values at runtime without restarting the server.",
+        usage: "/level-control configure <module> <property> <value>",
+        permissionNode: "cobbled_level_control.command.level-control.configure",
     }
 ];
