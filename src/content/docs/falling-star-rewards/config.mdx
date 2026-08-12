@@ -19,10 +19,10 @@ The following configuration options are available in the Falling Star Rewards mo
 
 - [**Server Config:**](#server-config-options) `<game_directory>/config/falling_star_rewards/server.toml`
 - [**Permissions Config:**](#permissions-config-options) `<game_directory>/config/falling_star_rewards/permissions.toml`
-- [**Scheduling Presets:**](#scheduling-presets) `<game_directory>/config/falling_star_rewards/scheduling/`
-- [**Events Presets:**](#events-presets) `<game_directory>/config/falling_star_rewards/events/`
-- [**Rewards Presets:**](#rewards-presets) `<game_directory>/config/falling_star_rewards/rewards/`
-- [**Visuals Presets:**](#visuals-presets) `<game_directory>/config/falling_star_rewards/visuals/`
+- [**Scheduling Presets:**](#scheduling-presets) `<game_directory>/config/falling_star_rewards/schedules.toml`
+- [**Events Presets:**](#events-presets) `<game_directory>/config/falling_star_rewards/events.toml`
+- [**Rewards Presets:**](#rewards-presets) `<game_directory>/config/falling_star_rewards/rewards.toml`
+- [**Visuals Presets:**](#visuals-presets) `<game_directory>/config/falling_star_rewards/visuals.toml`
 
 ## Server Config options
 
@@ -233,192 +233,572 @@ The permission level required to use the `/fallingstar preset remove` command.
 
 ## Scheduling Presets
 
-Scheduling presets are JSON files that define the timing and frequency of falling star events. These presets allow server owners to customize when and how often falling star events occur, providing flexibility in event scheduling. Each preset can specify conditions such as time of day, weather, and other factors that influence when events can be triggered.
+```toml title="<game_directory>/config/falling_star_rewards/schedules.toml"
+	#List of schedule presets. Each preset defines the configuration for a specific schedule.
+	[[schedules.schedulePresets]]
+		baseIntervalTicks = 2400
+		intervalJitterTicks = 600
+		maxStarsPerCycle = 1
+		scheduleId = "base"
+		enabled = true
+		selectionMode = "RANDOM"
 
-- `enabled`: toggles this schedule.
-- `baseIntervalTicks`: base delay between schedule cycles.
-- `intervalJitterTicks`: random extra delay (0..jitter).
-- `maxStarsPerCycle`: cap events started for this schedule cycle.
-- `selectionMode`: `random | weighted | rotation`.
-- `eventEntries[]`
-  - `eventPresetId`: event preset to select from.
-  - `enabled`: include/exclude this entry.
-  - `weight`: used by `weighted` mode, defaults to `1` when missing/non-positive.
-- `conditions`
-  - `timeMode`: `any | day | night`.
-  - `requireSurfaceAccess`: skip players in covered areas/caves.
-  - `weatherMode`: `any | clear | rain | thunder`.
-  - `moonPhases`: accepts names and/or numeric IDs (`0..7`), mixed values are de-duplicated.
-- `state.rotationCursor`: persisted rotation pointer for deterministic `rotation` mode.
+		[schedules.schedulePresets.state]
+			rotationCursor = 0
 
-### Example config file
+		[schedules.schedulePresets.conditions]
+			requireSurfaceAccess = true
+			timeMode = "ANY"
+			weatherMode = "ANY"
+			moonPhases = []
 
-```json title="<game_directory>/config/falling_star_rewards/scheduling/<preset_id>.json"
-{
-  "enabled": true,
-  "baseIntervalTicks": 2400,
-  "intervalJitterTicks": 600,
-  "maxStarsPerCycle": 1,
-  "selectionMode": "random",
-  "eventEntries": [
-    {
-      "eventPresetId": "base",
-      "enabled": true,
-      "weight": 1
-    }
-  ],
-  "conditions": {
-    "timeMode": "any",
-    "requireSurfaceAccess": true,
-    "weatherMode": "any",
-    "moonPhases": []
-  },
-  "state": {
-    "rotationCursor": 0
-  }
-}
+		[[schedules.schedulePresets.eventEntries]]
+			eventId = "base"
+			weight = 1
+			enabled = true
 ```
+
+### Scheduling Presets Configuration
+
+List of scheduling presets. Each preset defines the configuration for a specific schedule.
+
+#### baseIntervalTicks
+
+The base interval in ticks (20 ticks = 1 second) between falling star events. This value determines how often falling star events can occur.
+
+- Type: Integer
+- Default: `2400`
+
+#### intervalJitterTicks
+
+The amount of random jitter in ticks (20 ticks = 1 second) added to the base interval between falling star events. This value introduces variability in the timing of falling star events.
+
+- Type: Integer
+- Default: `600`
+
+#### maxStarsPerCycle
+
+The maximum number of falling stars that can occur in a single cycle. A cycle is defined as the period between the start of one falling star event and the start of the next.
+
+- Type: Integer
+- Default: `1`
+
+#### scheduleId
+
+The unique identifier for the scheduling preset. This ID is used to reference the preset in other configuration files.
+
+- Type: String
+- Default: `"base"`
+
+#### enabled
+
+A boolean value indicating whether the scheduling preset is enabled. If set to `false`, the preset will not be used in the scheduling of falling star events.
+
+- Type: Boolean
+- Default: `true`
+
+#### selectionMode
+
+The mode used to select events from the scheduling preset.
+
+- Type: Enum (String)
+- Default: `"RANDOM"`
+
+Possible values are:
+- `"RANDOM"` - Events are selected randomly based on their weights.
+- `"WEIGHTED"` - Events are selected based on their weights, with higher-weighted events being more likely to be selected.
+- `"ROTATION"` - Events are selected in a fixed rotation order.
+
+#### state
+
+The state of the scheduling preset, which includes the rotation cursor used for selecting events in rotation mode.
+
+##### rotationCursor
+
+The current position in the rotation order for selecting events. This value is used when the selection mode is set to `"ROTATION"`.
+
+- Type: Integer
+- Default: `0`
+
+#### Conditions
+
+The conditions that must be met for the scheduling preset to be active. These conditions include surface access, time mode, weather mode, and moon phases.
+
+##### requireSurfaceAccess
+
+A boolean value indicating whether surface access is required for the scheduling preset to be active. If set to `true`, falling star events will only occur if the player has access to the surface.
+
+- Type: Boolean
+- Default: `true`
+
+##### timeMode
+
+The time mode that determines when falling star events can occur.
+
+- Type: Enum (String)
+- Default: `"ANY"`
+
+Possible values are:
+- `"ANY"` - Events can occur at any time.
+- `"DAY"` - Events can only occur during the day.
+- `"NIGHT"` - Events can only occur during the night.
+
+##### weatherMode
+
+The weather mode that determines when falling star events can occur.
+
+- Type: Enum (String)
+- Default: `"ANY"`
+
+Possible values are:
+- `"ANY"` - Events can occur in any weather.
+- `"CLEAR"` - Events can only occur during clear weather.
+- `"RAIN"` - Events can only occur during rain.
+- `"THUNDER"` - Events can only occur during thunderstorms.
+
+##### moonPhases
+
+A list of moon phases during which falling star events can occur. If the list is empty, events can occur during any moon phase.
+
+- Type: List of Strings
+- Default: `[]`
+
+Possible values are:
+- `"full"` / `"full_moon"` / `"0"`
+- `"waning_gibbous"` / `"1"`
+- `"last_quarter"` / `"last_quarter"` / `"2"`
+- `"waning_crescent"` / `"3"`
+- `"new"` / `"new_moon"` / `"4"`
+- `"waxing_crescent"` / `"5"`
+- `"first_quarter"` / `"6"`
+- `"waxing_gibbous"` / `"7"`
+
+#### eventEntries
+
+A list of event entries that define the events associated with the scheduling preset. Each entry includes the event ID, weight, and enabled status.
+
+- Type: List of Event Entries
 
 ## Events Presets
 
-Events presets are JSON files that define the conditions and parameters for falling star events. These presets can be used to create different types of events with varying difficulty, rewards, and visuals. Server owners can create their own presets by following the structure of the example preset files generated by the mod.
+```toml title="<game_directory>/config/falling_star_rewards/events.toml"
+	#List of event presets. Each preset defines the configuration for a specific event.
+	[[events.eventPresets]]
+		eventId = "base"
+		visualsPresetId = "base"
+		rewardsPresetId = "base"
+		enabled = true
+		commands = []
 
-- `enabled`: whether this event can be selected for spawning. This allows server owners to have a library of presets and easily enable or disable them without deleting the files.
-- `rewardsPresetId`: the ID of the rewards preset to use for this event.
-- `visualsPresetId`: the ID of the visuals preset to use for this event.
-- `commands[]`: optional server commands to run after a successful spawn.
-  - Leading `/` is optional.
-  - Supports `%nearbyPlayer%`, `%spawnPos%`, and `%rewardItem%` placeholders.
-- `spawn`: parameters for spawning the falling star.
-  - `targetScope`: `per_player | global` - whether to spawn stars targeting each player individually, or just spawn a single star globally.
-  - `minRadius`: minimum spawn radius from the target player (or players, if `targetScope` is `per_player`).
-  - `maxRadius`: maximum spawn radius from the target player (or players, if `targetScope` is `per_player`).
-  - `maxLocationAttempts`: maximum number of attempts to find a valid spawn location.
-  - `allowWaterSpawns`: whether stars can spawn in water.
-- `announcement`: parameters for the in-game announcement when a star spawns.
-  - `enabled`: whether to show a spawn message.
-  - `scope`: `nearby | global` - whether to show the message to nearby players or all players on the server.
-  - `useActionBar`: whether to show the message in the action bar instead of chat.
-  - `messages`: an array of possible messages to display when a star spawns. One message will be randomly selected from this list each time an event occurs.
+		[events.eventPresets.spawn]
+			maxRadius = 48
+			maxLocationAttempts = 12
+			minRadius = 16
+			targetScope = "per_player"
+			allowWaterSpawns = false
 
-```json title="<game_directory>/config/falling_star_rewards/events/<event_id>.json"
-{
-  "enabled": true,
-  "rewardsPresetId": "base",
-  "visualsPresetId": "base",
-  "commands": [
-    "tellraw %nearbyPlayer% {\"text\":\"A star landed at %spawnPos% with %rewardItem%!\",\"color\":\"gold\"}",
-    "playsound minecraft:entity.experience_orb.pickup player %nearbyPlayer%"
-  ],
-  "spawn": {
-    "targetScope": "per_player",
-    "minRadius": 16,
-    "maxRadius": 48,
-    "maxLocationAttempts": 12,
-    "allowWaterSpawns": false
-  },
-  "announcement": {
-    "enabled": true,
-    "scope": "nearby",
-    "useActionBar": false,
-    "messages": [
-      "A falling star has appeared nearby!",
-      "A falling star has appeared in the sky!",
-      "A falling star has appeared in the world!"
-    ]
-  }
-}
+		[events.eventPresets.announcement]
+			messages = ["A falling star has appeared nearby!", "A falling star has appeared in the sky!", "A falling star has appeared in the world!"]
+			enabled = true
+			scope = "nearby"
+			useActionBar = false
 ```
+
+### Events Presets Configuration
+
+An Array of event presets. Each preset defines the configuration for a specific event.
+
+#### eventId
+
+The unique identifier for the event preset. This ID is used to reference the preset in other configuration files.
+
+- Type: String
+- Default: `"base"`
+
+#### visualsPresetId
+
+The unique identifier for the visuals preset associated with the event. This ID is used to reference the visuals preset in the event configuration.
+
+- Type: String
+- Default: `"base"`
+
+#### rewardsPresetId
+
+The unique identifier for the rewards preset associated with the event. This ID is used to reference the rewards preset in the event configuration.
+
+- Type: String
+- Default: `"base"`
+
+#### enabled
+
+A boolean value indicating whether the event preset is enabled. If set to `false`, the preset will not be used in the scheduling of falling star events.
+
+- Type: Boolean
+- Default: `true`
+
+#### commands
+
+A list of commands to be executed when the event occurs. Commands can include placeholders for dynamic values, such as the player's name or the location of the falling star.
+
+- Type: List of Strings
+- Default: `[]`
+
+**Available Placeholders:**
+- `%nearbyPlayer%` - The name of a nearby player to the falling star event.
+- `%spawnPos%` - The spawn position of the falling star event in the format `x,y,z`.
+- `%rewardItem%` - The item that was rewarded to the player as a result of the falling star event.
+
+#### Spawn Configuration
+
+Contains the spawn configuration settings for the event preset, which define how and where falling stars can spawn.
+
+##### maxRadius
+
+The maximum radius in blocks from the target location within which the falling star can spawn. This value determines how far away from the target location the falling star can appear.
+
+- Type: Integer
+- Default: `48`
+
+##### maxLocationAttempts
+
+The maximum number of attempts the mod will make to find a valid spawn location for the falling star. If a valid location is not found within this number of attempts, the event will not occur.
+
+- Type: Integer
+- Default: `12`
+
+##### minRadius
+
+The minimum radius in blocks from the target location within which the falling star can spawn. This value determines how close to the target location the falling star can appear.
+
+- Type: Integer
+- Default: `16`
+
+##### targetScope
+
+The scope of the target location for the falling star event.
+
+- Type: Enum (String)
+- Default: `"per_player"`
+
+Possible values are:
+- `"per_player"` - The target location is determined individually for each player.
+- `"global"` - The target location is determined globally for all players.
+
+##### allowWaterSpawns
+
+A boolean value indicating whether falling stars are allowed to spawn in water. If set to `false`, falling stars will not spawn in water.
+
+- Type: Boolean
+- Default: `false`
+
+#### Announcement Configuration
+
+Contains the announcement configuration settings for the event preset, which define how and when announcements are made to players about falling star events.
+
+##### messages
+
+A list of messages to be broadcast to players when the falling star event occurs.
+
+- Type: List of Strings
+- Default: `["A falling star has appeared nearby!", "A falling star has appeared in the sky!", "A falling star has appeared in the world!"]`
+
+##### enabled
+
+A boolean value indicating whether announcements are enabled for the event preset. If set to `false`, no announcements will be made when the event occurs.
+
+- Type: Boolean
+- Default: `true`
+
+##### scope
+
+The scope of the announcement for the falling star event.
+
+- Type: Enum (String)
+- Default: `"nearby"`
+
+Possible values are:
+- `"nearby"` - Announcements are made to players near the falling star event.
+- `"global"` - Announcements are made to all players on the server.
+
+##### useActionBar
+
+A boolean value indicating whether announcements should be displayed in the action bar instead of the chat. If set to `true`, announcements will appear in the action bar.
+
+- Type: Boolean
+- Default: `false`
 
 ## Rewards Presets
 
-Rewards presets are JSON files that define the rewards that can be dropped by falling stars during events. These presets allow server owners to customize the loot that players can receive from falling star events, and can include a variety of items with different rarities and drop chances. Server owners can create their own rewards presets by following the structure of the example preset files generated by the mod.
-
-- `entries`: a list of possible rewards that can be dropped by the falling star. Each entry includes:
-  - `id`: the item ID of the reward (e.g., `minecraft:diamond`).
-  - `weight`: the relative chance of this reward being selected compared to other entries in the same preset. Higher weight means higher chance.
-  - `minCount`: the minimum quantity of the item that can be dropped when this reward is selected.
-  - `maxCount`: the maximum quantity of the item that can be dropped when this reward is selected.
-  - `customModelData`: (optional) the custom model data value (integer) to apply to the item, if applicable.
-  - `customData`: (optional) a String containing custom JSON data to apply to the item, which can be used for mod-specific features or integrations with other mods that read custom data from items.
-
-```json title="<game_directory>/config/falling_star_rewards/rewards/<rewards_id>.json"
-{
-  "entries": [
-    {
-      "id": "minecraft:amethyst_shard",
-      "weight": 20,
-      "minCount": 1,
-      "maxCount": 3
-    },
-    {
-      "id": "minecraft:glowstone_dust",
-      "weight": 12,
-      "minCount": 2,
-      "maxCount": 5
-    },
-    {
-      "id": "minecraft:nether_star",
-      "weight": 1,
-      "minCount": 1,
-      "maxCount": 1
-    }
-  ]
-}
+```toml title="<game_directory>/config/falling_star_rewards/rewards.toml"
+	#List of reward presets. Each preset defines the configuration for a specific reward.
+	[[rewards.rewardPresets]]
+		rewardId = "base"
+		[[rewards.rewardPresets.entries]]
+			itemId = "minecraft:amethyst_shard"
+			weight = 20
+			minCount = 1
+			maxCount = 3
+		[[rewards.rewardPresets.entries]]
+			itemId = "minecraft:glowstone_dust"
+			weight = 12
+			minCount = 2
+			maxCount = 5
+		[[rewards.rewardPresets.entries]]
+			itemId = "minecraft:nether_star"
+			weight = 1
+			minCount = 1
+			maxCount = 1
 ```
+
+### Rewards Presets Configuration
+
+An Array of reward presets. Each preset defines the configuration for a specific reward.
+
+#### rewardId
+
+The unique identifier for the reward preset. This ID is used to reference the preset in other configuration files.
+
+- Type: String
+- Default: `"base"`
+
+#### entries
+
+A list of reward entries that define the items and their properties associated with the reward preset. Each entry includes the item ID, weight, minimum count, and maximum count.
+
+##### itemId
+
+The unique identifier for the item to be rewarded. This ID corresponds to the item's registry name in Minecraft.
+
+- Type: String
+- Default: `"minecraft:amethyst_shard"`
+
+##### weight
+
+The weight of the item in the reward preset. Higher weights increase the likelihood of the item being selected as a reward.
+
+- Type: Integer
+- Default: `20`
+
+##### minCount
+
+The minimum number of items to be rewarded when the item is selected. This value determines the lower bound of the quantity of the item given to the player.
+
+- Type: Integer
+- Default: `1`
+
+##### maxCount
+
+The maximum number of items to be rewarded when the item is selected. This value determines the upper bound of the quantity of the item given to the player.
+
+- Type: Integer
+- Default: `3`
+
+##### customModelData
+
+The custom model data value for the item to be rewarded. This value can be used to apply custom textures or models to the item in Minecraft.
+
+- Type: `Integer` | `null`
+- Default: `null`
+
+##### customData
+
+The custom data for the item to be rewarded. This value can be used to apply additional NBT data to the item in Minecraft.
+
+- Type: `String` | `null`
+- Default: `null`
 
 ## Visuals Presets
 
-Visuals presets are JSON files that define the visual and audio effects associated with falling star events. These presets allow server owners to customize the appearance and sounds of falling stars, making each event more unique and immersive. Server owners can create their own visuals presets by following the structure of the example preset files generated by the mod.
+```toml title="<game_directory>/config/falling_star_rewards/visuals.toml"
+	#List of Visuals Presets. Each preset defines the visuals for a falling star event.
+	[[visuals.visualsPresets]]
+		particlesPerEmission = 2
+		fallDistance = 10
+		particlePreset = "END_ROD"
+		visualsId = "base"
+		emissionIntervalTicks = 3
+		enabled = true
 
-- `enabled`: toggles falling-star particle trail above active drops.
-- `particlePreset`: `end_rod | ash | glow | firework`.
-- `fallDistance`: vertical distance above drop where the trail starts.
-- `emissionIntervalTicks`: particle emission cadence.
-- `particlesPerEmission`: how many particles to emit each time.
-- `impact`: parameters for the impact effects when the star lands.
-  - `burstEnabled`: whether to spawn a burst of particles on impact.
-  - `particlePreset`: `end_rod | ash | glow | firework` - the type of particles to use for the impact burst.
-  - `particleCount`: how many particles to emit in the impact burst.
-  - `spread`: how far from the impact center to randomly spawn particles (in blocks).
-  - `soundEnabled`: whether to play a sound on impact.
-  - `soundId`: the ID of the sound to play on impact (e.g., `minecraft:entity.firework_rocket.twinkle`).
-  - `soundVolume`: the volume at which to play the impact sound.
-  - `soundPitchMin`: the minimum pitch for the impact sound (the actual pitch will be a random value between `soundPitchMin` and `soundPitchMax`).
-  - `soundPitchMax`: the maximum pitch for the impact sound.
-- `travelSound`: parameters for the sound played while the star is falling.
-  - `enabled`: whether to play a sound while the star is falling.
-  - `id`: the ID of the sound to play while the star is falling (e.g., `minecraft:entity.phantom.flap`).
-  - `volume`: the volume at which to play the travel sound.
-  - `pitchMin`: the minimum pitch for the travel sound (the actual pitch will be a random value between `pitchMin` and `pitchMax`).
-  - `pitchMax`: the maximum pitch for the travel sound.
-  - `intervalTicks`: the interval in ticks between each travel sound emission.
+		[visuals.visualsPresets.travelSound]
+			volume = 0.12
+			pitchMax = 1.7
+			id = "minecraft:entity.phantom.flap"
+			intervalTicks = 12
+			pitchMin = 1.3
+			enabled = true
 
-```json title="<game_directory>/config/falling_star_rewards/visuals/<visuals_id>.json"
-{
-  "enabled": true,
-  "particlePreset": "end_rod",
-  "fallDistance": 10,
-  "emissionIntervalTicks": 3,
-  "particlesPerEmission": 2,
-  "impact": {
-    "burstEnabled": true,
-    "particlePreset": "firework",
-    "particleCount": 14,
-    "spread": 0.4,
-    "soundEnabled": true,
-    "soundId": "minecraft:entity.firework_rocket.twinkle",
-    "soundVolume": 0.8,
-    "soundPitchMin": 0.9,
-    "soundPitchMax": 1.2
-  },
-  "travelSound": {
-    "enabled": true,
-    "id": "minecraft:entity.phantom.flap",
-    "volume": 0.12,
-    "pitchMin": 1.3,
-    "pitchMax": 1.7,
-    "intervalTicks": 12
-  }
-}
+		[visuals.visualsPresets.impact]
+			soundId = "minecraft:entity.firework_rocket.twinkle"
+			soundVolume = 0.8
+			soundPitchMin = 0.9
+			soundPitchMax = 1.2
+			burstEnabled = true
+			particlePreset = "FIREWORK"
+			soundEnabled = true
+			particleCount = 13
+			spread = 0.4
 ```
+
+### Visuals Presets Configuration
+
+An Array of visuals presets. Each preset defines the visuals for a falling star event.
+
+#### particlesPerEmission
+
+The number of particles emitted per emission during the falling star event. This value determines the visual density of the falling star's particle effects.
+
+- Type: Integer
+- Default: `2`
+
+#### fallDistance
+
+The distance in blocks that the falling star will travel before impacting the ground. This value determines how high the falling star starts from.
+
+- Type: Integer
+- Default: `10`
+
+#### particlePreset
+
+The unique identifier for the particle preset used for the falling star's particle effects.
+
+- Type: Enum (String)
+- Default: `"END_ROD"`
+
+**Allowed Values:**
+- `"ASH"` - Ash particles
+- `"GLOW"` - Glow particles
+- `"END_ROD"` - End rod particles
+- `"FIREWORK"` - Firework particles
+
+#### visualsId
+
+The unique identifier for the visuals preset. This ID is used to reference the preset in other configuration files.
+
+- Type: String
+- Default: `"base"`
+
+#### emissionIntervalTicks
+
+The interval in ticks (20 ticks = 1 second) between particle emissions during the falling star event. This value determines how frequently particles are emitted.
+
+- Type: Integer
+- Default: `3`
+
+#### enabled
+
+A boolean value indicating whether the visuals preset is enabled. If set to `false`, the preset will not be used in the falling star event.
+
+- Type: Boolean
+- Default: `true`
+
+#### Travel Sound Configuration
+
+Contains the travel sound configuration settings for the visuals preset, which define the sound effects played while the falling star is in motion.
+
+##### volume
+
+The volume of the travel sound effect. This value determines how loud the sound is when played.
+
+- Type: Float
+- Default: `0.12`
+
+##### pitchMax
+
+The maximum pitch of the travel sound effect. This value determines the highest pitch that can be played for the sound.
+
+- Type: Float
+- Default: `1.7`
+
+##### pitchMin
+
+The minimum pitch of the travel sound effect. This value determines the lowest pitch that can be played for the sound.
+
+- Type: Float
+- Default: `1.3`
+
+##### id
+
+The unique identifier for the travel sound effect. This ID corresponds to the sound's registry name in Minecraft.
+
+- Type: String
+- Default: `"minecraft:entity.phantom.flap"`
+
+##### intervalTicks
+
+The interval in ticks (20 ticks = 1 second) between travel sound effects during the falling star event. This value determines how frequently the sound is played.
+
+- Type: Integer
+- Default: `12`
+
+#### Impact Configuration
+
+Contains the impact configuration settings for the visuals preset, which define the sound and particle effects played when the falling star impacts the ground.
+
+##### soundId
+
+The unique identifier for the impact sound effect. This ID corresponds to the sound's registry name in Minecraft.
+
+- Type: String
+- Default: `"minecraft:entity.firework_rocket.twinkle"`
+
+##### soundVolume
+
+The volume of the impact sound effect. This value determines how loud the sound is when played.
+
+- Type: Float
+- Default: `0.8`
+
+##### soundPitchMin
+
+The minimum pitch of the impact sound effect. This value determines the lowest pitch that can be played for the sound.
+
+- Type: Float
+- Default: `0.9`
+
+##### soundPitchMax
+
+The maximum pitch of the impact sound effect. This value determines the highest pitch that can be played for the sound.
+
+- Type: Float
+- Default: `1.2`
+
+##### burstEnabled
+
+A boolean value indicating whether a particle burst effect is enabled upon impact. If set to `true`, a burst of particles will be emitted when the falling star impacts the ground.
+
+- Type: Boolean
+- Default: `true`
+
+##### particlePreset
+
+The unique identifier for the particle preset used for the impact particle effects.
+
+- Type: Enum (String)
+- Default: `"FIREWORK"`
+
+**Allowed Values:**
+- `"ASH"` - Ash particles
+- `"GLOW"` - Glow particles
+- `"END_ROD"` - End rod particles
+- `"FIREWORK"` - Firework particles
+
+##### soundEnabled
+
+A boolean value indicating whether the impact sound effect is enabled. If set to `true`, the impact sound will be played when the falling star impacts the ground.
+
+- Type: Boolean
+- Default: `true`
+
+##### particleCount
+
+The number of particles emitted during the impact particle burst effect. This value determines the visual density of the impact's particle effects.
+
+- Type: Integer
+- Default: `13`
+
+##### spread
+
+The spread of the impact particle burst effect. This value determines how far apart the particles are emitted from the impact point.
+
+- Type: Float
+- Default: `0.4`
