@@ -1,0 +1,24 @@
+{
+    "name": "Portal Stone",
+    "description": "A portal stone used as a destination for custom portal gateways.",
+    "modFilter": "custom_gateways",
+    "ingredients": [
+        null,
+        "cobbled_deepslate",
+        null,
+        "cobbled_deepslate",
+        "amethyst_shard",
+        "cobbled_deepslate",
+        "cobbled_deepslate",
+        {
+            "modId": "custom_gateways",
+            "itemId": "portal_pad"
+        },
+        "cobbled_deepslate"
+    ],
+    "resultItem": {
+        "modId": "custom_gateways",
+        "itemId": "portal_stone"
+    },
+    "resultCount": 1
+}

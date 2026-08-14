@@ -1,0 +1,24 @@
+{
+    "name": "Ancient Portal",
+    "description": "An ancient portal gateway for creating custom gateways.",
+    "modFilter": "custom_gateways",
+    "ingredients": [
+        "redstone_lamp",
+        null,
+        "redstone_lamp",
+        "cobbled_deepslate",
+        "ender_eye",
+        "cobbled_deepslate",
+        "cobbled_deepslate",
+        {
+            "modId": "custom_gateways",
+            "itemId": "portal_pad"
+        },
+        "cobbled_deepslate"
+    ],
+    "resultItem": {
+        "modId": "custom_gateways",
+        "itemId": "ancient_portal"
+    },
+    "resultCount": 1
+}
