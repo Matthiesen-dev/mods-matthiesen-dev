@@ -1,0 +1,24 @@
+{
+    "name": "Nether Gate",
+    "description": "A nether gate used to create a custom portal gateway.",
+    "modFilter": "custom_gateways",
+    "ingredients": [
+        null,
+        null,
+        null,
+        null,
+        "nether_bricks",
+        null,
+        "nether_bricks",
+        {
+            "modId": "custom_gateways",
+            "itemId": "portal_pad"
+        },
+        "nether_bricks"
+    ],
+    "resultItem": {
+        "modId": "custom_gateways",
+        "itemId": "nether_gate"
+    },
+    "resultCount": 1
+}
