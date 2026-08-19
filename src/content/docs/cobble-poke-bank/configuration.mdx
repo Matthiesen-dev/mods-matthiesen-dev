@@ -143,6 +143,7 @@ The `pokebank_reload` permission level determines the required permission to use
 		noLegendaries = false
 		noMythicals = false
 		noUltraBeasts = false
+		pokemonBlacklist = []
 
 	#Held Item Restrictions
 	[server.heldItemRestrictions]
@@ -242,6 +243,14 @@ The `noMythicals` setting determines whether players are allowed to store Mythic
 The `noUltraBeasts` setting determines whether players are allowed to store Ultra Beast Pokémon in the bank. Set it to `true` to disallow Ultra Beast Pokémon, or `false` to allow them.
 
 - **Default:** `false` (Ultra Beast Pokémon are allowed)
+
+#### pokemonBlacklist
+
+The `pokemonBlacklist` setting allows you to specify a list of Pokémon that are not allowed to be stored in the bank. Players will not be able to store these Pokémon in the bank.
+
+> **Note:** The Pokémon should be specified using their internal names without the `cobblemon:` prefix (e.g., `pikachu`, `charizard`, etc.).
+
+- **Default:** `[]` (no Pokémon are blacklisted)
 
 ### Held Item Restrictions
 
