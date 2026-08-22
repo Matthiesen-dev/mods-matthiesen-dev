@@ -20,6 +20,7 @@ All of the configuration files for Cobbled Level Control are located in the `<ga
 **Configuration files:**
 - `permissions.toml` - This file contains the permission nodes for Cobbled Level Control. You can use this file to change the permission nodes for the commands and features of the mod.
 - `server.toml` - This file contains the server-side configuration for Cobbled Level Control. You can use this file to change the default settings for the mod, such as the default level cap and scaling method.
+- `client.toml` - This file contains the client-side configuration for Cobbled Level Control. You can use this file to change the default settings for the client-side features of the mod.
 
 ## Permissions Configuration
 
@@ -538,3 +539,58 @@ The `catchingLevelAlreadyMax` option allows you to customize the message that pl
 The `levelingLevelAlreadyMax` option allows you to customize the message that players receive when they try to set a leveling level that is already at the maximum allowed for their difficulty.
 
 - Default Value: `"Target player is already at the maximum level for the Leveling module."`
+
+## Client Configuration
+
+```toml file="client.toml"
+#Client Configuration
+[client]
+
+	#HUD Configuration
+	[client.hud]
+		enabled = true
+		mode = "COMPACT"
+		showWarningLine = true
+		offsetX = 2
+		offsetY = 4
+```
+
+### HUD Configuration
+
+The HUD configuration options allow you to customize the display of the account status HUD in-game. You can enable or disable the HUD, choose a display mode, and adjust the position of the HUD on the screen.
+
+#### enabled
+
+The `enabled` option allows you to control whether the account status HUD is displayed in-game. Set this option to `true` to enable the HUD, or `false` to disable it.
+
+- Default Value: `true`
+
+#### mode
+
+The `mode` option allows you to choose the display mode for the account status HUD. 
+
+- Default Value: `COMPACT`
+
+**The allowed values are:**
+- `COMPACT`: Displays a compact version of the HUD with minimal information.
+- `DETAILED`: Displays a detailed version of the HUD with more information.
+
+#### showWarningLine
+
+The `showWarningLine` option allows you to control whether warning messages are displayed on the account status HUD. Set this option to `true` to show warning messages, or `false` to hide them.
+
+- Default Value: `true`
+
+#### offsetX
+
+The `offsetX` option allows you to adjust the horizontal position of the account status HUD on the screen. The value is in pixels and is based on GUI scale 1.
+
+- Default Value: `2`
+- Range: `0 ~ 500`
+
+#### offsetY
+
+The `offsetY` option allows you to adjust the vertical position of the account status HUD on the screen. The value is in pixels and is based on GUI scale 1.
+
+- Default Value: `4`
+- Range: `0 ~ 500`
