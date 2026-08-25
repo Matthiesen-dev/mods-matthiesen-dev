@@ -1,0 +1,45 @@
+---
+title: "Getting Started"
+description: "Cobblemon Poke Power is a simple mod that adds a new block to your Cobblemon world: The Poke Power Block. This block allows you to use your Electric type Pokemon to generate power for your machines and devices."
+prev: false
+next: 
+  link: /poke-power/configuration
+  label: "Configuration"
+sidebar:
+  order: 1
+---
+
+import ModMeta from '~/components/ModMeta.astro';
+import ReadMore from '~/components/ReadMore.astro';
+import Deps from '~/components/Deps.astro';
+
+<ModMeta 
+  minecraftVersion='1.21.1'
+  github='poke-power'
+  modrinth='cobblemon-poke-power'
+  fabric neoforge
+/>
+
+<Deps cobblemon matthiesenCore gooeyLibs forgeConfigApiPort fabricApi />
+
+Cobblemon Poke Power is a simple mod that adds a new block to your Cobblemon world: The Poke Power Block. This block allows you
+to use your Electric type Pokemon to generate power for your machines and devices. Simply place the block in your world, and connect it to your machines using
+the energy cables from any mod that supports Forge Energy or Fabric Energy. Then, use your Electric type Pokemon to generate power for your machines and devices.
+
+## Requirements
+
+- [Matthiesen Core](https://modrinth.com/mod/matthiesen-core)
+- [Cobblemon](https://modrinth.com/mod/cobblemon)
+- [GeckoLib](https://modrinth.com/mod/geckolib)
+- [Fabric API](https://modrinth.com/mod/fabric-api) (Fabric only)
+- [Forge Config API Port](https://modrinth.com/mod/forge-config-api-port) (Fabric only)
+
+## FastStats Metrics
+
+This mod uses [FastStats](https://faststats.dev) to collect anonymous usage statistics. This helps the developer understand
+how this mod is being used and improve it over time. You can learn more about the data collected and how it is used by visiting
+[FastStats: Information](https://faststats.dev/info).
+
+You can also view the data collected by this mod on the [FastStats: Cobble Poke Bank](https://faststats.dev/project/cobble-poke-bank) page.
+
+To opt out of this data collection, set the `enabled` property to `false` in the `<game_directory>/config/matthiesen_core/metrics.properties` file.

@@ -132,6 +132,10 @@ export default defineConfig({
 							badge: "S",
 						}),
 						buildSidebarFromGlob({
+							name: "Poke Power",
+							docs: "poke-power",
+						}),
+						buildSidebarFromGlob({
 							name: "PackWiz-ard",
 							docs: "packwiz-ard",
 							badge: "S",

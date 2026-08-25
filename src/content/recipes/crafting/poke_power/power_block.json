@@ -1,0 +1,24 @@
+{
+    "name": "Power Block",
+    "description": "A block that generates power based on the contained Pokemon's level.",
+    "modFilter": "poke_power",
+    "ingredients": [
+        "iron_block",
+        "redstone_block",
+        "iron_block",
+        "redstone_block",
+        {
+            "modId": "cobblemon",
+            "itemId": "electirizer"
+        },
+        "redstone_block",
+        "iron_block",
+        "redstone_block",
+        "iron_block"
+    ],
+    "resultItem": {
+        "modId": "poke_power",
+        "itemId": "power_block"
+    },
+    "resultCount": 1
+}
