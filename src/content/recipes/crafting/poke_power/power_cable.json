@@ -1,0 +1,27 @@
+{
+    "name": "Power Cable",
+    "description": "A cable for moving power from one block to another.",
+    "modFilter": "poke_power",
+    "ingredients": [
+        "glass_pane",
+        "glass_pane",
+        "glass_pane",
+        {
+            "modId": "cobblemon",
+            "itemId": "black_tumblestone"
+        },
+        "redstone_block",
+        {
+            "modId": "cobblemon",
+            "itemId": "black_tumblestone"
+        },
+        "glass_pane",
+        "glass_pane",
+        "glass_pane"
+    ],
+    "resultItem": {
+        "modId": "poke_power",
+        "itemId": "power_cable"
+    },
+    "resultCount": 1
+}
