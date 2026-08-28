@@ -73,6 +73,11 @@ export default defineConfig({
 					label: "Mods",
 					items: [
 						buildSidebarFromGlob({
+							name: "Cobble Paste",
+							docs: "cobble-paste",
+							badge: "S",
+						}),
+						buildSidebarFromGlob({
 							name: "Cobble Poke Bank",
 							docs: "cobble-poke-bank",
 							badge: "S",

@@ -1,0 +1,35 @@
+---
+title: "Getting Started"
+description: "Pokepast.es support for Cobblemon importing and exporting!"
+prev: false
+next: 
+  link: /cobble-paste/configuration
+  label: "Configuration"
+sidebar:
+  order: 1
+---
+
+import ModMeta from '~/components/ModMeta.astro';
+import ReadMore from '~/components/ReadMore.astro';
+import Deps from '~/components/Deps.astro';
+
+<ModMeta 
+  minecraftVersion='1.21.1'
+  github='cobble-paste'
+  modrinth='cobble-paste'
+  fabric neoforge
+/>
+
+<Deps cobblemon matthiesenCore forgeConfigApiPort fabricApi />
+
+This is a Server-side mod that adds support for importing and exporting Pokémon from [Pokepast.es](https://pokepast.es) into Cobblemon. 
+It allows players to easily share their Pokémon with others or import Pokémon from the web into their game.
+
+Note: Importing and exporting Pokémon from Pokepast.es is only available for players with appropriate permissions. Please check with your server administrator if you are unsure about your permissions.
+
+## Requirements
+
+- [Matthiesen Core](https://modrinth.com/mod/matthiesen-core)
+- [Cobblemon](https://modrinth.com/mod/cobblemon)
+- [Fabric API](https://modrinth.com/mod/fabric-api) (Fabric only)
+- [Forge Config API Port](https://modrinth.com/mod/forge-config-api-port) (Fabric only)
