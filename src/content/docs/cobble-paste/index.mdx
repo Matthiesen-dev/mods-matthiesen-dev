@@ -37,3 +37,21 @@ Note: Importing and exporting Pokémon from Pokepast.es is only available for pl
 ### Optional Dependencies
 
 - [GooeyLibs](https://modrinth.com/mod/gooeylibs)
+
+## Cobblemon NPC Party Provider
+
+Cobble Paste also adds a new NPC Party Provider for Cobblemon, allowing NPCs to have their parties defined by Pokepast.es URLs.
+
+> For more information about NPC Presets and Party providers, see the [Cobblemon NPC API documentation](https://gitlab.com/cable-mc/cobblemon/-/blob/1.7.3/common/src/main/kotlin/com/cobblemon/mod/common/api/npc/README.md?ref_type=tags#party)
+
+In your Cobblemon NPC Datapack json, you can use the following format to define an NPC's party:
+
+```json
+{
+  "party": {
+    "type": "cobble_paste:poke_paste",
+    "isStatic": true,
+    "pokePasteId": "your-paste-id-or-url"
+  }
+}
+```
