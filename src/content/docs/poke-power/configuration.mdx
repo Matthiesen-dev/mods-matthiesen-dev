@@ -19,16 +19,69 @@ All of the configuration files for Poke Power are located in the `<game_director
 ## Server Configuration
 
 ```toml title="server.toml"
-#Server Config
-[server]
-	powerPerPokeLevel = 50
+#Blocks Config
+[blocks]
 
+	#Power Block Config
+	[blocks.powerBlock]
+		powerPerPokeLevel = 50
+		capacity = 120000
+		maxExtract = 16000
+
+	#Cable Config
+	[blocks.cable]
+		capacity = 32000
+		maxExtract = 16000
 ```
 
-### powerPerPokeLevel
+### Blocks Configuration
 
-This option determines how much power is generated per level of the Pokémon used in the Poke Power Block. The default value is 50, and it must be greater than 1. Adjust this value to balance the power generation according to your server's needs.
+Allows configuration of the Poke Power blocks and cables. This allows you to customize the power generation and storage capabilities of the blocks and cables.
 
+#### Power Block Configuration
+
+The Power Block is the main block of the Poke Power mod. It generates power based on the level of the Electric type Pokemon that is placed inside it.
+
+##### `powerPerPokeLevel`
+
+The amount of power per tick gained per poke level.
+
+- Type: `integer`
 - Default: `50`
 - Range: `> 1`
 
+##### `capacity`
+
+The amount of power that a power block can store.
+
+- Type: `integer`
+- Default: `120000`
+- Range: `1 ~ 9223372036854775807`
+
+##### `maxExtract`
+
+The maximum amount of power that can be extracted from a power block per tick.
+
+- Type: `integer`
+- Default: `16000`
+- Range: `1 ~ 9223372036854775807`
+
+#### Cable Configuration
+
+The Cable is used to transfer power from the Power Block to other machines and devices.
+
+##### `capacity`
+
+The amount of power that a cable can store.
+
+- Type: `integer`
+- Default: `32000`
+- Range: `1 ~ 9223372036854775807`
+
+##### `maxExtract`
+
+The maximum amount of power that can be extracted from a cable per tick.
+
+- Type: `integer`
+- Default: `16000`
+- Range: `1 ~ 9223372036854775807`
