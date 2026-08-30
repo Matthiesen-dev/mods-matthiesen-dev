@@ -12,5 +12,11 @@ export const commands: Commands = [
         description: "Exports a Cobblemon Team to a Pokepast.es URL.",
         usage: "/cobble-paste export",
         permissionNode: "cobble_paste.command.cobble-paste.export",
+    },
+    {
+        command: "cobble-paste preview",
+        description: "Previews a Cobblemon Poke Paste from a Pokepast.es URL.",
+        usage: "/cobble-paste preview <url>",
+        permissionNode: "cobble_paste.command.cobble-paste.preview",
     }
 ];

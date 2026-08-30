@@ -61,6 +61,9 @@ A list of Showdown item name to registry id mappings. Use `UNMAPPED:prefix` to s
 	#The permission level required to use the /cobble-paste export command.
 	#Allowed Values: NONE, SPAWN_PROTECTION_BYPASS, CHEAT_COMMANDS_AND_COMMAND_BLOCKS, MULTIPLAYER_MANAGEMENT, ALL_COMMANDS
 	commandPasteExportPermLevel = "ALL_COMMANDS"
+	#The permission level required to use the /cobble-paste preview command.
+	#Allowed Values: NONE, SPAWN_PROTECTION_BYPASS, CHEAT_COMMANDS_AND_COMMAND_BLOCKS, MULTIPLAYER_MANAGEMENT, ALL_COMMANDS
+	commandPastePreviewPermLevel = "ALL_COMMANDS"
 
 ```
 
@@ -85,6 +88,13 @@ The permission level required to use the `/cobble-paste import` command.
 ### `commandPasteExportPermLevel`
 
 The permission level required to use the `/cobble-paste export` command.
+
+- Type: `enum`
+- Default: `ALL_COMMANDS`
+
+### `commandPastePreviewPermLevel`
+
+The permission level required to use the `/cobble-paste preview` command.
 
 - Type: `enum`
 - Default: `ALL_COMMANDS`
