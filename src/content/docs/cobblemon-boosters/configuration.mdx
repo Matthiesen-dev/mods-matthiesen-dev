@@ -40,6 +40,12 @@ All of the configuration files for Cobblemon Boosters are located in the `<game_
 
 #Messages Configuration
 [messages]
+	#The text parser to use for messages.
+	#Note: Switching to another parser may break existing messages if they rely on specific formatting.
+	#For example, if you switch from Vanilla, to Adventure MiniMessage, the Adventure parser does not support
+	#legacy color codes, so any messages using them will appear broken, or return errors.
+	#Allowed Values: VANILLA, EMBERS, ADVENTURE
+	textParser = "VANILLA"
 	prefix = "&7[&6Boosters&7]"
 	sidebarTitle = "&6&lBoosters"
 	commandReload = "%prefix% &aReloaded Cobblemon Boosters!"
@@ -163,6 +169,16 @@ Enables or disables active preemption in the queue. When enabled, new boosts can
 - Default Value: `false`
 
 ### Messages Configuration
+
+#### textParser
+
+The text parser to use for messages. This setting determines how messages are formatted and displayed in the game.
+
+- Available Options:
+  - `VANILLA` - Uses Minecraft's native text formatting.
+  - `EMBERS` - Uses the [Embers Text API](https://tysontheember.dev/embers-text-api/) formatting system.
+  - `ADVENTURE` - Uses the [Adventure MiniMessage](https://docs.papermc.io/adventure/minimessage/) text formatting system.
+- Default Value: `VANILLA`
 
 #### prefix
 
