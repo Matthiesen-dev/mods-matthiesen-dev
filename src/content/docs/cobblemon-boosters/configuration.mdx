@@ -15,13 +15,15 @@ tableOfContents:
   maxHeadingLevel: 6
 ---
 
+import ReadMore from '~/components/ReadMore.astro';
+
 All of the configuration files for Cobblemon Boosters are located in the `<game_directory>/config/cobblemon_boosters/` directory.
 
 **Configuration files:**
-- `cache.toml` - This file contains cached data for the boosters. It is automatically generated and should not be edited manually.
 - `core.toml` - This file contains the core configuration options for Cobblemon Boosters.
 - `permissions.toml` - This file contains the permission nodes for Cobblemon Boosters.
 - `webhooks.toml` - This file contains the configuration options for Discord webhooks. This file is only used if the `matthiesen_core_webhooks` mod is installed.
+- `cache.toml` - This file contains cached data for the boosters. It is automatically generated and should not be edited manually.
 
 ## Core Configuration
 
@@ -455,6 +457,9 @@ The permission level required to use the `/boosters shiny status` command. This 
 
 #Bucket Event Webhook Configuration
 [bucketEvent]
+	embedPingRole = ""
+	embedPingStartEnabled = false
+	embedPingEndEnabled = false
 
 	#Bucket Start Event
 	[bucketEvent.bucketStart]
@@ -470,6 +475,9 @@ The permission level required to use the `/boosters shiny status` command. This 
 
 #Catch Event Webhook Configuration
 [catchEvent]
+	embedPingRole = ""
+	embedPingStartEnabled = false
+	embedPingEndEnabled = false
 
 	#Catch Start Event
 	[catchEvent.catchStart]
@@ -485,6 +493,9 @@ The permission level required to use the `/boosters shiny status` command. This 
 
 #Experience Event Webhook Configuration
 [experienceEvent]
+	embedPingRole = ""
+	embedPingStartEnabled = false
+	embedPingEndEnabled = false
 
 	#Experience Start Event
 	[experienceEvent.experienceStart]
@@ -500,6 +511,9 @@ The permission level required to use the `/boosters shiny status` command. This 
 
 #Shiny Event Webhook Configuration
 [shinyEvent]
+	embedPingRole = ""
+	embedPingStartEnabled = false
+	embedPingEndEnabled = false
 
 	#Shiny Start Event
 	[shinyEvent.shinyStart]
@@ -543,6 +557,29 @@ The URL of the icon to display as the author of the Discord webhook messages. Th
 ### Bucket Event Webhook Configuration
 
 Spawn Bucket Boost events can trigger Discord webhooks when they start and end. The configuration options for these events allow you to customize the messages sent to Discord.
+
+#### embedPingRole
+
+The Discord Role ID to ping for Spawn Bucket Boost events. If left empty, no role will be pinged.
+
+- Default Value: `""`
+- Type: `string`
+
+<ReadMore>For more information on how to find your Discord Role ID, see the [Discord Role ID Guide](https://docs.monni.fyi/blog/role-id).</ReadMore>
+
+#### embedPingStartEnabled
+
+Enables or disables pinging the specified Discord Role for the start of a Spawn Bucket Boost event. When enabled, the role will be mentioned in the webhook message when a Spawn Bucket Boost event starts.
+
+- Default Value: `false`
+- Type: `boolean`
+
+#### embedPingEndEnabled
+
+Enables or disables pinging the specified Discord Role for the end of a Spawn Bucket Boost event. When enabled, the role will be mentioned in the webhook message when a Spawn Bucket Boost event ends.
+
+- Default Value: `false`
+- Type: `boolean`
 
 #### Start Event
 
@@ -592,6 +629,29 @@ The color of the Discord webhook embed for the end of a Spawn Bucket Boost event
 
 The Catch Boost events can trigger Discord webhooks when they start and end. The configuration options for these events allow you to customize the messages sent to Discord.
 
+#### embedPingRole
+
+The Discord Role ID to ping for Catch Boost events. If left empty, no role will be pinged.
+
+- Default Value: `""`
+- Type: `string`
+
+<ReadMore>For more information on how to find your Discord Role ID, see the [Discord Role ID Guide](https://docs.monni.fyi/blog/role-id).</ReadMore>
+
+#### embedPingStartEnabled
+
+Enables or disables pinging the specified Discord Role for the start of a Catch Boost event. When enabled, the role will be mentioned in the webhook message when a Catch Boost event starts.
+
+- Default Value: `false`
+- Type: `boolean`
+
+#### embedPingEndEnabled
+
+Enables or disables pinging the specified Discord Role for the end of a Catch Boost event. When enabled, the role will be mentioned in the webhook message when a Catch Boost event ends.
+
+- Default Value: `false`
+- Type: `boolean`
+
 #### Start Event
 
 The configuration for the start of a Catch Boost event includes the title, description, and embed color for the Discord webhook message.
@@ -639,6 +699,29 @@ The color of the Discord webhook embed for the end of a Catch Boost event. Allow
 ### Experience Event Webhook Configuration
 
 The Experience Boost events can trigger Discord webhooks when they start and end. The configuration options for these events allow you to customize the messages sent to Discord.
+
+#### embedPingRole
+
+The Discord Role ID to ping for Experience Boost events. If left empty, no role will be pinged.
+
+- Default Value: `""`
+- Type: `string`
+
+<ReadMore>For more information on how to find your Discord Role ID, see the [Discord Role ID Guide](https://docs.monni.fyi/blog/role-id).</ReadMore>
+
+#### embedPingStartEnabled
+
+Enables or disables pinging the specified Discord Role for the start of an Experience Boost event. When enabled, the role will be mentioned in the webhook message when an Experience Boost event starts.
+
+- Default Value: `false`
+- Type: `boolean`
+
+#### embedPingEndEnabled
+
+Enables or disables pinging the specified Discord Role for the end of an Experience Boost event. When enabled, the role will be mentioned in the webhook message when an Experience Boost event ends.
+
+- Default Value: `false`
+- Type: `boolean`
 
 #### Start Event
 
@@ -688,6 +771,29 @@ The color of the Discord webhook embed for the end of an Experience Boost event.
 
 The Shiny Boost events can trigger Discord webhooks when they start and end. The configuration options for these events allow you to customize the messages sent to Discord.
 
+#### embedPingRole
+
+The Discord Role ID to ping for Shiny Boost events. If left empty, no role will be pinged.
+
+- Default Value: `""`
+- Type: `string`
+
+<ReadMore>For more information on how to find your Discord Role ID, see the [Discord Role ID Guide](https://docs.monni.fyi/blog/role-id).</ReadMore>
+
+#### embedPingStartEnabled
+
+Enables or disables pinging the specified Discord Role for the start of a Shiny Boost event. When enabled, the role will be mentioned in the webhook message when a Shiny Boost event starts.
+
+- Default Value: `false`
+- Type: `boolean`
+
+#### embedPingEndEnabled
+
+Enables or disables pinging the specified Discord Role for the end of a Shiny Boost event. When enabled, the role will be mentioned in the webhook message when a Shiny Boost event ends.
+
+- Default Value: `false`
+- Type: `boolean`
+
 #### Start Event
 
 The configuration for the start of a Shiny Boost event includes the title, description, and embed color for the Discord webhook message.
@@ -731,3 +837,47 @@ The description of the Discord webhook message for the end of a Shiny Boost even
 The color of the Discord webhook embed for the end of a Shiny Boost event. Allowed values include: RED, GREEN, BLUE, PURPLE, ORANGE, GOLD, GREY, DARK_RED, DARK_GREEN, DARK_BLUE, BLACK, WHITE.
 
 - Default Value: `GOLD`
+
+## Cache Configuration
+
+```toml title="cache.toml"
+#Boosters Cache
+#This file should not be edited manually
+[cache]
+
+	#Active Boosts
+	[cache.activeBoosts]
+		#The currently active Shiny Boost, serialized as a string
+		activeShinyBoost = ""
+		#The currently active Catch Boost, serialized as a string
+		activeCatchBoost = ""
+		#The currently active Experience Boost, serialized as a string
+		activeExperienceBoost = ""
+		#The currently active Spawn Bucket Boost, serialized as a string
+		activeSpawnBucketBoost = ""
+
+	#Queued Boosts
+	[cache.queuedBoosts]
+		#The queued Shiny Boosts, serialized as a list of strings
+		queuedShinyBoosts = []
+		#The queued Catch Boosts, serialized as a list of strings
+		queuedCatchBoosts = []
+		#The queued Experience Boosts, serialized as a list of strings
+		queuedExperienceBoosts = []
+		#The queued Spawn Bucket Boosts, serialized as a list of strings
+		queuedSpawnBucketBoosts = []
+```
+
+### Cache Configuration
+
+Unlike the other configuration files, the `cache.toml` file is automatically generated and should not be edited manually. It contains cached data for the boosters, including the currently active boosts and the queued boosts.
+
+If needed, the cache file can be cleared manually, and it will be regenerated automatically in an empty state. However, it is recommended to use the `/boosters clear-queues` command to clear the cache instead of manually editing the file.
+
+#### activeBoosts
+
+The `activeBoosts` section contains the currently active boosts for Shiny, Catch, Experience, and Spawn Bucket. Each boost is serialized as a string and represents the current state of the boost.
+
+#### queuedBoosts
+
+The `queuedBoosts` section contains the queued boosts for Shiny, Catch, Experience, and Spawn Bucket. Each boost is serialized as a list of strings and represents the boosts that are waiting to be activated.
