@@ -1,0 +1,57 @@
+---
+title: "Configuration - CobbleHardcoreMon"
+description: Configuration for CobbleHardcoreMon.
+prev: 
+  link: /cobblehardcoremon
+  label: "Overview"
+next: false
+sidebar:
+  label: Configuration
+  order: 2
+tableOfContents:
+  minHeadingLevel: 2
+  maxHeadingLevel: 6
+---
+
+All of the configuration files for CobbleHardcoreMon are located in the `<game_directory>/config/` directory.
+
+**Configuration files:**
+- `cobblehardcoremon-server.toml` - This file contains the server-side configuration options for CobbleHardcoreMon.
+
+## Server Configuration
+
+```toml title="cobblehardcoremon-server.toml"
+#Server configuration for CobbleHardcoreMon mod
+[server]
+	totemItemId = "minecraft:totem_of_undying"
+
+	#Messages displayed to the player when a Cobblemon faints and is removed from their party. You can use {pokemon} as a placeholder for the Pokemon's name.
+	[server.messages]
+		totemConsumed = "{pokemon} was holding a totem, which has been consumed to prevent it from being removed from your party."
+		pokemonRemoved = "{pokemon} has fainted and is not holding a totem, and has been removed from your party."
+```
+
+### totemItemId
+
+The item ID of the Totem item that prevents a Cobblemon from being lost when it faints. By default, this is set to Minecraft's "Totem of Undying" item, but you can change it to any other item ID if you want to use a different item as the Totem.
+
+- Type: `string`
+- Default: `minecraft:totem_of_undying`
+
+### Messages Configuration
+
+Allows you to customize the messages displayed to the player when a Cobblemon faints and is removed from their party. You can use `{pokemon}` as a placeholder for the Pokemon's name in the messages.
+
+#### totemConsumed
+
+The message displayed when a Cobblemon faints and the player has a Totem item. The Totem item will be consumed and the Cobblemon will be saved.
+
+- Type: `string`
+- Default: `"{pokemon} was holding a totem, which has been consumed to prevent it from being removed from your party."`
+
+#### pokemonRemoved
+
+The message displayed when a Cobblemon faints and is removed from the player's party.
+
+- Type: `string`
+- Default: `"{pokemon} has fainted and is not holding a totem, and has been removed from your party."`

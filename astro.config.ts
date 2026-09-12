@@ -88,6 +88,11 @@ export default defineConfig({
 							badge: "S",
 						}),
 						buildSidebarFromGlob({
+							name: "CobbleHardcoreMon",
+							docs: "cobblehardcoremon",
+							badge: "S",
+						}),
+						buildSidebarFromGlob({
 							name: "Cbmn Boosters",
 							docs: "cobblemon-boosters",
 							badge: "S",
