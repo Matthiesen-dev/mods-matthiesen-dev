@@ -25,6 +25,12 @@ All of the configuration files for CobbleHardcoreMon are located in the `<game_d
 [server]
 	totemItemId = "minecraft:totem_of_undying"
 
+	#Battle tracking configuration. These settings determine which types of battles are tracked for Cobblemon fainting events.
+	[server.battles]
+		trackPlayerBattles = true
+		trackNPCBattles = true
+		trackWildBattles = true
+
 	#Messages displayed to the player when a Cobblemon faints and is removed from their party. You can use {pokemon} as a placeholder for the Pokemon's name.
 	[server.messages]
 		totemConsumed = "{pokemon} was holding a totem, which has been consumed to prevent it from being removed from your party."
@@ -37,6 +43,31 @@ The item ID of the Totem item that prevents a Cobblemon from being lost when it 
 
 - Type: `string`
 - Default: `minecraft:totem_of_undying`
+
+### Battles Configuration
+
+Allows you to configure which types of battles are tracked for Cobblemon fainting events. You can choose to track player battles, NPC battles, and/or wild battles.
+
+#### trackPlayerBattles
+
+Whether to track battles between players and their Cobblemon. If set to `true`, Cobblemon that faint in player battles will be removed from the player's party if they are not holding a Totem item.
+
+- Type: `boolean`
+- Default: `true`
+
+#### trackNPCBattles
+
+Whether to track battles between players and NPCs (non-player characters) and their Cobblemon. If set to `true`, Cobblemon that faint in NPC battles will be removed from the player's party if they are not holding a Totem item.
+
+- Type: `boolean`
+- Default: `true`
+
+#### trackWildBattles
+
+Whether to track battles between players and wild Cobblemon. If set to `true`, Cobblemon that faint in wild battles will be removed from the player's party if they are not holding a Totem item.
+
+- Type: `boolean`
+- Default: `true`
 
 ### Messages Configuration
 
