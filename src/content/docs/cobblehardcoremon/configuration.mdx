@@ -4,7 +4,9 @@ description: Configuration for CobbleHardcoreMon.
 prev: 
   link: /cobblehardcoremon
   label: "Overview"
-next: false
+next: 
+  link: /cobblehardcoremon/commands
+  label: "Commands"
 sidebar:
   label: Configuration
   order: 2
@@ -13,17 +15,19 @@ tableOfContents:
   maxHeadingLevel: 6
 ---
 
-All of the configuration files for CobbleHardcoreMon are located in the `<game_directory>/config/` directory.
+All of the configuration files for CobbleHardcoreMon are located in the `<game_directory>/config/cobblehardcoremon/` directory.
 
 **Configuration files:**
-- `cobblehardcoremon-server.toml` - This file contains the server-side configuration options for CobbleHardcoreMon.
+- `server.toml` - This file contains the server-side configuration options for CobbleHardcoreMon.
+- `permissions.toml` - This file contains the permissions configuration for CobbleHardcoreMon.
 
 ## Server Configuration
 
-```toml title="cobblehardcoremon-server.toml"
+```toml title="server.toml"
 #Server configuration for CobbleHardcoreMon mod
 [server]
 	totemItemId = "minecraft:totem_of_undying"
+	globalHealthLinkEnabled = false
 
 	#Battle tracking configuration. These settings determine which types of battles are tracked for Cobblemon fainting events.
 	[server.battles]
@@ -43,6 +47,13 @@ The item ID of the Totem item that prevents a Cobblemon from being lost when it 
 
 - Type: `string`
 - Default: `minecraft:totem_of_undying`
+
+### globalHealthLinkEnabled
+
+Whether the Health Link feature is enabled by default for all players. If set to `false`, players can enable it individually in their settings.
+
+- Type: `boolean`
+- Default: `false`
 
 ### Battles Configuration
 
@@ -86,3 +97,46 @@ The message displayed when a Cobblemon faints and is removed from the player's p
 
 - Type: `string`
 - Default: `"{pokemon} has fainted and is not holding a totem, and has been removed from your party."`
+
+## Permissions Configuration
+
+```toml title="permissions.toml"
+#Permissions configuration for CobbleHardcoreMon mod
+[permissions]
+
+	#Command permissions configuration
+	[permissions.commands]
+		hardcoremon = "NONE"
+		setHealthLink = "NONE"
+		forceHealthLink = "ALL_COMMANDS"
+```
+
+### Command Permissions
+
+Allows you to configure the permission levels required to use the commands provided by the CobbleHardcoreMon mod. The available permission levels are:
+- `NONE` - No permission required.
+- `SPAWN_PROTECTION_BYPASS` - Permission level for bypassing spawn protection
+- `CHEAT_COMMANDS_AND_COMMAND_BLOCKS` - Permission level for using cheat commands and command blocks
+- `MULTIPLAYER_MANAGEMENT` - Permission level for managing multiplayer settings
+- `ALL_COMMANDS` - Permission level for using all commands
+
+#### hardcoremon
+
+The permission level required to use the `/hardcoremon` command.
+
+- Type: `enum`
+- Default: `NONE`
+
+#### setHealthLink
+
+The permission level required to use the `/hardcoremon setHealthLink` command.
+
+- Type: `enum`
+- Default: `NONE`
+
+#### forceHealthLink
+
+The permission level required to use the `/hardcoremon forceHealthLink <player>` command.
+
+- Type: `enum`
+- Default: `ALL_COMMANDS`
