@@ -57,8 +57,8 @@ export const commands: Commands = [
     },
     {
         command: "hardcoremon soulLink remove",
-        description: "Removes the Soul Link between the player and another player.",
-        usage: "/hardcoremon soulLink remove <player>",
+        description: "Removes the current Soul Link between the player and their partner.",
+        usage: "/hardcoremon soulLink remove",
         permissionNode: "cobblehardcoremon.command.hardcoremon.soul-link.remove",
     }
 ];
