@@ -1,0 +1,19 @@
+import type { MolangExtensions } from '../../../types';
+
+export const playerMolangExtensions: MolangExtensions = [
+    {
+        function: 'q.player.hardcoremon()',
+        description: 'Returns the player\'s UUID for use with the hardcoremon functions.',
+        result: '{ "playerUUID": "string" }'
+    },
+    {
+        function: 'q.player.hardcoremon.get_health_link()',
+        description: 'Checks whether the Health Link feature is enabled or disabled for the player.',
+        result: '1 for true, otherwise 0'
+    },
+    {
+        function: 'q.player.hardcoremon.set_health_link(<int enabled>)',
+        description: 'Enables or disables the Health Link feature for the player. Use 1 to enable and 0 to disable.',
+        result: '1 for success, otherwise 0'
+    }
+];
