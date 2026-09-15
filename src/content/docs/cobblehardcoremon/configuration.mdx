@@ -108,7 +108,9 @@ The message displayed when a Cobblemon faints and is removed from the player's p
 	[permissions.commands]
 		hardcoremon = "NONE"
 		setHealthLink = "NONE"
+    getHealthLink = "NONE"
 		forceHealthLink = "ALL_COMMANDS"
+    getHealthLinkOther = "ALL_COMMANDS"
 ```
 
 ### Command Permissions
@@ -134,9 +136,23 @@ The permission level required to use the `/hardcoremon setHealthLink` command.
 - Type: `enum`
 - Default: `NONE`
 
+#### getHealthLink
+
+The permission level required to use the `/hardcoremon getHealthLink` command.
+
+- Type: `enum`
+- Default: `NONE`
+
 #### forceHealthLink
 
 The permission level required to use the `/hardcoremon forceHealthLink <player>` command.
+
+- Type: `enum`
+- Default: `ALL_COMMANDS`
+
+#### getHealthLinkOther
+
+The permission level required to use the `/hardcoremon getHealthLinkOther <player>` command.
 
 - Type: `enum`
 - Default: `ALL_COMMANDS`
