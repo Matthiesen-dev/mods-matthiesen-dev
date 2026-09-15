@@ -30,5 +30,35 @@ export const commands: Commands = [
         description: "Checks whether the Health Link feature is enabled or disabled for a specific player.",
         usage: "/hardcoremon getHealthLinkOther <player>",
         permissionNode: "cobblehardcoremon.command.hardcoremon.get-health-link-other",
+    },
+    {
+        command: "hardcoremon soulLink",
+        description: "Checks whether the Soul Link feature is enabled or disabled for the player.",
+        usage: "/hardcoremon soulLink",
+        permissionNode: "cobblehardcoremon.command.hardcoremon.soul-link",
+    },
+    {
+        command: "hardcoremon soulLink invite",
+        description: "Invites another player to link their parties together.",
+        usage: "/hardcoremon soulLink invite <player>",
+        permissionNode: "cobblehardcoremon.command.hardcoremon.soul-link.invite",
+    },
+    {
+        command: "hardcoremon soulLink accept",
+        description: "Accepts a Soul Link invitation from another player.",
+        usage: "/hardcoremon soulLink accept <player>",
+        permissionNode: "cobblehardcoremon.command.hardcoremon.soul-link.accept",
+    },
+    {
+        command: "hardcoremon soulLink decline",
+        description: "Declines a Soul Link invitation from another player.",
+        usage: "/hardcoremon soulLink decline <player>",
+        permissionNode: "cobblehardcoremon.command.hardcoremon.soul-link.decline",
+    },
+    {
+        command: "hardcoremon soulLink remove",
+        description: "Removes the Soul Link between the player and another player.",
+        usage: "/hardcoremon soulLink remove <player>",
+        permissionNode: "cobblehardcoremon.command.hardcoremon.soul-link.remove",
     }
 ];
