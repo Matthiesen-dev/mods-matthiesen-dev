@@ -124,6 +124,11 @@ export default defineConfig({
 							badge: "S",
 						}),
 						buildSidebarFromGlob({
+							name: "Cbmn Skills",
+							docs: "cobblemon-skills",
+							badge: "S",
+						}),
+						buildSidebarFromGlob({
 							name: "Cbmn Tablet",
 							docs: "cobblemon-tablet",
 						}),

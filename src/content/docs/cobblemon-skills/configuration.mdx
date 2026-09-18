@@ -1,0 +1,1093 @@
+---
+title: "Configuration"
+description: "Configuration options for Cobblemon Skills."
+prev: 
+  link: /cobblemon-skills
+  label: "Getting Started"
+next: 
+  link: /cobblemon-skills/commands
+  label: "Commands"
+sidebar:
+  order: 2
+---
+
+All of the configuration files for Cobblemon Skills are located in the `<game_directory>/config/cobblemon_skills/` directory.
+
+**Configuration files:**
+- `experience.toml` - This file contains the configuration for experience gain and level-up mechanics for each profession.
+- `permissions.toml` - This file contains the configuration related to Command and GUI permissions.
+- `professions.toml` - This file contains the configuration for each profession, including their Tier rewards.
+- `rewards.toml` - This file contains the configuration for each profession's passive rewards and benefits.
+
+## Experience Configuration
+
+```toml title="experience.toml"
+[experience]
+	[experience.archeology]
+		fossilRevivalBaseXp = 500.0
+		fossilRevivalShinyBonusXp = 400.0
+		oreBlockXp = 400
+		deepslateOreBlockXp = 500
+		miscOreBlockXp = 300
+		tumblestoneClusterSmallXp = 100
+		tumblestoneClusterMediumXp = 200
+		tumblestoneClusterLargeXp = 300
+		tumblestoneClusterFullXp = 400
+		typeClusterXp = 500
+		relicCoinSackXp = 600
+		relicCoinPouchXp = 700
+		commonItemXp = 200
+		uncommonItemXp = 400
+		rareItemXp = 600
+	[experience.botany]
+		apricornHarvestXp = 150.0
+		berryHarvestXp = 200.0
+		woodcuttingBaseXp = 100
+		woodcuttingTier1Xp = 150
+		farmingBaseXp = 150
+		farmingTier1Xp = 200
+	[experience.cooking]
+		baseXp = 100
+		tier1Xp = 150
+		tier2Xp = 200
+		tier3Xp = 250
+		tier4Xp = 300
+	[experience.fishing]
+		statsXpMultiplier = 150.0
+		catchBaseXp = 200.0
+		catchLevelXpMultiplier = 10.0
+		catchUltraBeastBonusXp = 100.0
+		catchMythicalBonusXp = 200.0
+		catchLegendaryBonusXp = 300.0
+		catchShinyBonusXp = 400.0
+		craftAncientRodXp = 900
+		craftFishingRodXp = 700
+	[experience.catching]
+		catchBaseXp = 200.0
+		catchLevelXpMultiplier = 8.0
+		catchCriticalBonusXp = 150.0
+	[experience.training]
+		baseXp = 300.0
+		leftoversXp = 100.0
+		levelUpXpMultiplier = 100.0
+	[experience.breeding]
+		eggCollectedBaseXp = 100.0
+		eggHatchedBaseXp = 200.0
+		eggHatchedCycleBonusXp = 4.0
+
+```
+
+### Archeology Profession Configuration
+
+Configuration for the Archeology profession, including experience gained from reviving fossils, mining ore blocks, and mining tumblestone clusters.
+
+#### fossilRevivalBaseXp
+
+The base experience gained from reviving a fossil.
+
+- Type: `double`
+- Default: `500.0`
+- Range: `0.0 ~ 1.7976931348623157E308`
+
+#### fossilRevivalShinyBonusXp
+
+The bonus experience gained from reviving a fossil containing a shiny Pokemon.
+
+- Type: `double`
+- Default: `400.0`
+- Range: `0.0 ~ 1.7976931348623157E308`
+
+#### oreBlockXp
+
+The experience gained from mining an ore block.
+
+- Type: `integer`
+- Default: `400`
+- Range: `> 0`
+
+#### deepslateOreBlockXp
+
+The experience gained from mining a deepslate ore block.
+
+- Type: `integer`
+- Default: `500`
+- Range: `> 0`
+
+#### miscOreBlockXp
+
+The experience gained from mining a miscellaneous ore block.
+
+- Type: `integer`
+- Default: `300`
+- Range: `> 0`
+
+#### tumblestoneClusterSmallXp
+
+The experience gained from mining a small tumblestone cluster.
+
+- Type: `integer`
+- Default: `100`
+- Range: `> 0`
+
+#### tumblestoneClusterMediumXp
+
+The experience gained from mining a medium tumblestone cluster.
+
+- Type: `integer`
+- Default: `200`
+- Range: `> 0`
+
+#### tumblestoneClusterLargeXp
+
+The experience gained from mining a large tumblestone cluster.
+
+- Type: `integer`
+- Default: `300`
+- Range: `> 0`
+
+#### tumblestoneClusterFullXp
+
+The experience gained from mining a full tumblestone cluster.
+
+- Type: `integer`
+- Default: `400`
+- Range: `> 0`
+
+#### typeClusterXp
+
+The experience gained from mining a type cluster.
+
+- Type: `integer`
+- Default: `500`
+- Range: `> 0`
+
+#### relicCoinSackXp
+
+The experience gained from mining a relic coin sack.
+
+- Type: `integer`
+- Default: `600`
+- Range: `> 0`
+
+#### relicCoinPouchXp
+
+The experience gained from mining a relic coin pouch.
+
+- Type: `integer`
+- Default: `700`
+- Range: `> 0`
+
+#### commonItemXp
+
+The experience gained from mining a common archeology item.
+
+- Type: `integer`
+- Default: `200`
+- Range: `> 0`
+
+#### uncommonItemXp
+
+The experience gained from mining an uncommon archeology item.
+
+- Type: `integer`
+- Default: `400`
+- Range: `> 0`
+
+#### rareItemXp
+
+The experience gained from mining a rare archeology item.
+
+- Type: `integer`
+- Default: `600`
+- Range: `> 0`
+
+### Botany Profession Configuration
+
+Configuration for the Botany profession, including experience gained from harvesting apricorns and berries, woodcutting, and farming.
+
+#### apricornHarvestXp
+
+The experience gained from harvesting an apricorn.
+
+- Type: `double`
+- Default: `150.0`
+- Range: `0.0 ~ 1.7976931348623157E308`
+
+#### berryHarvestXp
+
+The experience gained from harvesting a berry.
+
+- Type: `double`
+- Default: `200.0`
+- Range: `0.0 ~ 1.7976931348623157E308`
+
+#### woodcuttingBaseXp
+
+The base experience gained from woodcutting.
+
+- Type: `integer`
+- Default: `100`
+- Range: `> 0`
+
+#### woodcuttingTier1Xp
+
+The experience gained from woodcutting a Tier 1 tree.
+
+- Type: `integer`
+- Default: `150`
+- Range: `> 0`
+
+#### farmingBaseXp
+
+The base experience gained from farming.
+
+- Type: `integer`
+- Default: `150`
+- Range: `> 0`
+
+#### farmingTier1Xp
+
+The experience gained from farming a Tier 1 crop.
+
+- Type: `integer`
+- Default: `200`
+- Range: `> 0`
+
+### Cooking Profession Configuration
+
+Configuration for the Cooking profession, including the base experience and experience gained for cooking dishes of each tier.
+
+#### baseXp
+
+The base experience gained from cooking.
+
+- Type: `integer`
+- Default: `100`
+- Range: `> 0`
+
+#### tier1Xp
+
+The experience gained from cooking a Tier 1 dish.
+
+- Type: `integer`
+- Default: `150`
+- Range: `> 0`
+
+#### tier2Xp
+
+The experience gained from cooking a Tier 2 dish.
+
+- Type: `integer`
+- Default: `200`
+- Range: `> 0`
+
+#### tier3Xp
+
+The experience gained from cooking a Tier 3 dish.
+
+- Type: `integer`
+- Default: `250`
+- Range: `> 0`
+
+#### tier4Xp
+
+The experience gained from cooking a Tier 4 dish.
+
+- Type: `integer`
+- Default: `300`
+- Range: `> 0`
+
+### Fishing Profession Configuration
+
+Configuration for the Fishing profession, including experience gained from fishing, catching Pokemon, and crafting fishing rods.
+
+#### statsXpMultiplier
+
+The multiplier applied to experience gained from fishing stats.
+
+- Type: `double`
+- Default: `150.0`
+- Range: `0.0 ~ 1.7976931348623157E308`
+
+#### catchBaseXp
+
+The base experience gained from catching a Pokemon while fishing.
+
+- Type: `double`
+- Default: `200.0`
+- Range: `0.0 ~ 1.7976931348623157E308`
+
+#### catchLevelXpMultiplier
+
+The multiplier applied based on the level of the Pokemon caught while fishing.
+
+- Type: `double`
+- Default: `10.0`
+- Range: `0.0 ~ 1.7976931348623157E308`
+
+#### catchUltraBeastBonusXp
+
+The bonus experience gained from catching an Ultra Beast while fishing.
+
+- Type: `double`
+- Default: `100.0`
+- Range: `0.0 ~ 1.7976931348623157E308`
+
+#### catchMythicalBonusXp
+
+The bonus experience gained from catching a Mythical Pokemon while fishing.
+
+- Type: `double`
+- Default: `200.0`
+- Range: `0.0 ~ 1.7976931348623157E308`
+
+#### catchLegendaryBonusXp
+
+The bonus experience gained from catching a Legendary Pokemon while fishing.
+
+- Type: `double`
+- Default: `300.0`
+- Range: `0.0 ~ 1.7976931348623157E308`
+
+#### catchShinyBonusXp
+
+The bonus experience gained from catching a shiny Pokemon while fishing.
+
+- Type: `double`
+- Default: `400.0`
+- Range: `0.0 ~ 1.7976931348623157E308`
+
+#### craftAncientRodXp
+
+The experience gained from crafting an Ancient Rod.
+
+- Type: `integer`
+- Default: `900`
+- Range: `> 0`
+
+#### craftFishingRodXp
+
+The experience gained from crafting a Fishing Rod.
+
+- Type: `integer`
+- Default: `700`
+- Range: `> 0`
+
+### Catching Profession Configuration
+
+Configuration for the Catching profession, including experience gained from catching Pokemon and making critical captures.
+
+#### catchBaseXp
+
+The base experience gained from catching a Pokemon.
+
+- Type: `double`
+- Default: `200.0`
+- Range: `0.0 ~ 1.7976931348623157E308`
+
+#### catchLevelXpMultiplier
+
+The multiplier applied based on the level of the Pokemon caught.
+
+- Type: `double`
+- Default: `8.0`
+- Range: `0.0 ~ 1.7976931348623157E308`
+
+#### catchCriticalBonusXp
+
+The bonus experience gained from catching a Pokemon with a critical capture.
+
+- Type: `double`
+- Default: `150.0`
+- Range: `0.0 ~ 1.7976931348623157E308`
+
+### Training Profession Configuration
+
+Configuration for the Training profession, including experience gained from training Pokemon, using Leftovers, and leveling up Pokemon.
+
+#### baseXp
+
+The base experience gained from training a Pokemon.
+
+- Type: `double`
+- Default: `300.0`
+- Range: `0.0 ~ 1.7976931348623157E308`
+
+#### leftoversXp
+
+The experience gained from using Leftovers on a Pokemon.
+
+- Type: `double`
+- Default: `100.0`
+- Range: `0.0 ~ 1.7976931348623157E308`
+
+#### levelUpXpMultiplier
+
+The multiplier applied to experience gained when a Pokemon levels up.
+
+- Type: `double`
+- Default: `100.0`
+- Range: `0.0 ~ 1.7976931348623157E308`
+
+### Breeding Profession Configuration
+
+Configuration for the Breeding profession, including experience gained from collecting and hatching eggs.
+
+#### eggCollectedBaseXp
+
+The base experience gained from collecting an egg.
+
+- Type: `double`
+- Default: `100.0`
+- Range: `0.0 ~ 1.7976931348623157E308`
+
+#### eggHatchedBaseXp
+
+The base experience gained from hatching an egg.
+
+- Type: `double`
+- Default: `200.0`
+- Range: `0.0 ~ 1.7976931348623157E308`
+
+#### eggHatchedCycleBonusXp
+
+The bonus experience gained for each cycle of hatching an egg.
+
+- Type: `double`
+- Default: `4.0`
+- Range: `0.0 ~ 1.7976931348623157E308`
+
+
+## Permissions Configuration
+
+```toml title="permissions.toml"
+[permissions]
+	[permissions.command]
+		cobbleskills = "NONE"
+		cobbleskills_reset = "NONE"
+		cobbleskills_reset_self = "NONE"
+		cobbleskills_reset_player = "MULTIPLAYER_MANAGEMENT"
+		cobbleskills_reset_all = "ALL_COMMANDS"
+		cobbleskills_leaderboard = "NONE"
+		cobbleskills_profile = "NONE"
+		cobbleskills_profession = "NONE"
+		cobbleskills_admin = "ALL_COMMANDS"
+		cobbleskills_admin_add_exp = "ALL_COMMANDS"
+		cobbleskills_admin_set_level = "ALL_COMMANDS"
+		cobbleskills_admin_reload = "ALL_COMMANDS"
+	[permissions.gui]
+		main_menu = "NONE"
+		leaderboard = "NONE"
+		profile = "NONE"
+		profile_other = "NONE"
+
+```
+
+### Permissions Configuration
+
+Allowed Values:
+- `NONE` - No one can use this command.
+- `SPAWN_PROTECTION_BYPASS` - Only players with spawn protection bypass can use this command.
+- `CHEAT_COMMANDS_AND_COMMAND_BLOCKS` - Only players with cheat commands and command blocks can use this command.
+- `MULTIPLAYER_MANAGEMENT` - Only players with multiplayer management permissions can use this command.
+- `ALL_COMMANDS` - All players can use this command.
+
+#### command permissions
+
+Permissions for accessing the commands of Cobblemon Skills.
+
+##### cobbleskills
+
+The permission level required to use the `/cobbleskills` command.
+
+- Type: `enum`
+- Default: `NONE`
+
+##### cobbleskills_reset
+
+The permission level required to use the `/cobbleskills reset` command.
+
+- Type: `enum`
+- Default: `NONE`
+
+##### cobbleskills_reset_self
+
+The permission level required to use the `/cobbleskills reset self` command.
+
+- Type: `enum`
+- Default: `NONE`
+
+##### cobbleskills_reset_player
+
+The permission level required to use the `/cobbleskills reset player` command.
+
+- Type: `enum`
+- Default: `MULTIPLAYER_MANAGEMENT`
+
+##### cobbleskills_reset_all
+
+The permission level required to use the `/cobbleskills reset all` command.
+
+- Type: `enum`
+- Default: `ALL_COMMANDS`
+
+##### cobbleskills_leaderboard
+
+The permission level required to use the `/cobbleskills leaderboard` command.
+
+- Type: `enum`
+- Default: `NONE`
+
+##### cobbleskills_profile
+
+The permission level required to use the `/cobbleskills profile` command.
+
+- Type: `enum`
+- Default: `NONE`
+
+##### cobbleskills_profession
+
+The permission level required to use the `/cobbleskills profession` command.
+
+- Type: `enum`
+- Default: `NONE`
+
+##### cobbleskills_admin
+
+The permission level required to use the `/cobbleskills admin` command.
+
+- Type: `enum`
+- Default: `ALL_COMMANDS`
+
+##### cobbleskills_admin_add_exp
+
+The permission level required to use the `/cobbleskills admin addExp` command.
+
+- Type: `enum`
+- Default: `ALL_COMMANDS`
+
+##### cobbleskills_admin_set_level
+
+The permission level required to use the `/cobbleskills admin setLevel` command.
+
+- Type: `enum`
+- Default: `ALL_COMMANDS`
+
+##### cobbleskills_admin_reload
+
+The permission level required to use the `/cobbleskills admin reload` command.
+
+- Type: `enum`
+- Default: `ALL_COMMANDS`
+
+#### GUI permissions
+
+Permissions for accessing the GUI components of Cobblemon Skills.
+
+##### main_menu
+
+The permission level required to access the main menu GUI.
+
+- Type: `enum`
+- Default: `NONE`
+
+##### leaderboard
+
+The permission level required to access the leaderboard GUI.
+
+- Type: `enum`
+- Default: `NONE`
+
+##### profile
+
+The permission level required to access the profile GUI.
+
+- Type: `enum`
+- Default: `NONE`
+
+##### profile_other
+
+The permission level required to access another player's profile GUI.
+
+- Type: `enum`
+- Default: `NONE`
+
+## Professions Configuration
+
+```toml title="professions.toml"
+#Professions configuration for Cobblemon Skills
+[professions]
+	#Maximum level for all professions
+	# Default: 100
+	# Range: > 1
+	professionMaxLevel = 100
+	#Base experience required for each level
+	# Default: 1020
+	# Range: > 1
+	professionBaseExpPerLevel = 1020
+	#Multiplier for experience required per level
+	# Default: 20
+	# Range: > 1
+	professionExpLevelMultiplier = 20
+
+    [professions.<profession>]
+        professionName = "Archeology"
+
+        [[professions.<profession>.professionRewards]]
+            levelRequirement = 10
+            displayName = "Novice"
+
+            [[professions.<profession>.professionRewards.rewards]]
+                type = "EXPERIENCE"
+                experience = 20
+
+            [[professions.<profession>.professionRewards.rewards]]
+                type = "ITEM"
+                item = "minecraft:iron_ingot"
+                amount = 3
+
+            [[professions.<profession>.professionRewards.rewards]]
+                type = "COMMAND"
+                command = "say You have reached level 10 in Archeology!"
+```
+
+### professionMaxLevel
+
+The maximum level for all professions.
+
+- Type: `integer`
+- Default: `100`
+- Range: `> 1`
+
+### professionBaseExpPerLevel
+
+The base experience required for each level.
+
+- Type: `integer`
+- Default: `1020`
+- Range: `> 1`
+
+### professionExpLevelMultiplier
+
+The multiplier for experience required per level.
+
+- Type: `integer`
+- Default: `20`
+- Range: `> 1`
+
+### Profession Configuration
+
+Available professions are:
+- Archeology
+- Botany
+- Cooking
+- Fishing
+- Catching
+- Training
+- Breeding
+
+#### professionName
+
+The display name for the profession.
+
+- Type: `string`
+
+#### professionRewards
+
+An array of rewards for the profession, each with a level requirement and a list of rewards.
+
+##### levelRequirement
+
+The level requirement for the reward.
+
+- Type: `integer`
+
+##### displayName
+
+The display name for the reward.
+
+- Type: `string`
+
+##### rewards
+
+An array of rewards for the profession reward, each with a type and associated data.
+
+###### type
+
+The type of reward. Can be one of the following:
+- `EXPERIENCE` - Grants experience points to the player.
+- `ITEM` - Grants an item to the player.
+- `COMMAND` - Executes a command as the player.
+
+###### experience
+
+The amount of experience points to grant to the player.
+
+###### item
+
+The registry ID of the item to grant to the player.
+
+###### amount
+
+The amount of the item to grant to the player.
+
+###### command
+
+The command to execute as the server. Available placeholders:
+- `{player}` - The player's username.
+
+## Rewards Configuration
+
+```toml title="rewards.toml"
+[rewards]
+	[rewards.archeology]
+		randomExtraDrops = true
+		randomExtraDropsMinLvl = 10
+		randomExtraDropsChance = 0.25
+	[rewards.botany]
+		randomExtraDrops = true
+		randomExtraDropsMinLvl = 10
+		randomExtraDropsChance = 0.25
+	[rewards.cooking]
+		randomExtraPlayerExp = true
+		randomExtraPlayerExpMinLvl = 10
+		randomExtraPlayerExpBaseAmount = 10
+		randomExtraPlayerExpLevelMultiplier = 2
+	[rewards.fishing]
+		randomLuckOfTheSea = true
+		randomUnbreaking = true
+		randomMending = true
+		randomLure = true
+		luckOfTheSeaTierOneMinLvl = 10
+		luckOfTheSeaTierTwoMinLvl = 30
+		luckOfTheSeaTierThreeMinLvl = 50
+		unbreakingTierOneMinLvl = 20
+		unbreakingTierTwoMinLvl = 40
+		unbreakingTierThreeMinLvl = 60
+		mendingMinLvl = 70
+		lureTierOneMinLvl = 15
+		lureTierTwoMinLvl = 35
+		lureTierThreeMinLvl = 55
+		enchantmentChance = 0.25
+	[rewards.catching]
+		enableShinyCalculationBoosting = true
+		shinyCalculationMaxMultiplier = 10.0
+		shinyCalculationPerLevelMultiplier = 0.01
+		captureRateBonusPercentMax = 10.0
+		captureRateLevelMultiplier = 0.1
+	[rewards.training]
+		experienceFromBattleMax = 20.0
+		experienceFromBattleExpMultiplier = 0.2
+		levelUpBonusExpPercentageMax = 25.0
+		levelUpBonusExpPercentageLevelMultiplier = 0.25
+	[rewards.breeding]
+		baseShinyChange = 0.01
+		shinyLevelBonusMultiplier = 0.001
+		shinyMaxPercentage = 0.1
+		friendshipBonusMax = 20
+		friendshipBonusLevelDivider = 5
+
+```
+
+### Archeology Profession Configuration
+
+#### randomExtraDrops
+
+Whether extra drops are randomly applied to block breaking rewards in archeology profession.
+
+- Type: `boolean`
+- Default: `true`
+
+#### randomExtraDropsMinLvl
+
+The minimum level required for extra drops in archeology profession.
+
+- Type: `integer`
+- Default: `10`
+
+#### randomExtraDropsChance
+
+The chance for extra drops to be applied to block breaking rewards in archeology profession.
+
+- Type: `double`
+- Range: `0.0 ~ 1.0`
+- Default: `0.25`
+
+### Botany Profession Configuration
+
+#### randomExtraDrops
+
+Whether extra drops are randomly applied to block breaking rewards in botany profession.
+
+- Type: `boolean`
+- Default: `true`
+
+#### randomExtraDropsMinLvl
+
+The minimum level required for extra drops in botany profession.
+
+- Type: `integer`
+- Default: `10`
+
+#### randomExtraDropsChance
+
+The chance for extra drops to be applied to block breaking rewards in botany profession.
+
+- Type: `double`
+- Range: `0.0 ~ 1.0`
+- Default: `0.25`
+
+### Cooking Profession Configuration
+
+#### randomExtraPlayerExp
+
+Whether extra player experience is randomly applied to cooking rewards.
+
+- Type: `boolean`
+- Default: `true`
+
+#### randomExtraPlayerExpMinLvl
+
+The minimum level required for extra player experience in cooking profession.
+
+- Type: `integer`
+- Default: `10`
+
+#### randomExtraPlayerExpBaseAmount
+
+The base amount of extra player experience applied to cooking rewards.
+
+- Type: `integer`
+- Default: `10`
+
+#### randomExtraPlayerExpLevelMultiplier
+
+The multiplier for extra player experience based on cooking level.
+
+- Type: `integer`
+- Default: `2`
+
+### Fishing Profession Configuration
+
+#### randomLuckOfTheSea
+
+Whether the Luck of the Sea enchantment is randomly applied to fishing rewards.
+
+- Type: `boolean`
+- Default: `true`
+
+#### randomUnbreaking
+
+Whether the Unbreaking enchantment is randomly applied to fishing rewards.
+
+- Type: `boolean`
+- Default: `true`
+
+#### randomMending
+
+Whether the Mending enchantment is randomly applied to fishing rewards.
+
+- Type: `boolean`
+- Default: `true`
+
+#### randomLure
+
+Whether the Lure enchantment is randomly applied to fishing rewards.
+
+- Type: `boolean`
+- Default: `true`
+
+#### luckOfTheSeaTierOneMinLvl
+
+The minimum level required for Luck of the Sea Tier 1 in fishing profession.
+
+- Type: `integer`
+- Default: `10`
+
+#### luckOfTheSeaTierTwoMinLvl
+
+The minimum level required for Luck of the Sea Tier 2 in fishing profession.
+
+- Type: `integer`
+- Default: `30`
+
+#### luckOfTheSeaTierThreeMinLvl
+
+The minimum level required for Luck of the Sea Tier 3 in fishing profession.
+
+- Type: `integer`
+- Default: `50`
+
+#### unbreakingTierOneMinLvl
+
+The minimum level required for Unbreaking Tier 1 in fishing profession.
+
+- Type: `integer`
+- Default: `20`
+
+#### unbreakingTierTwoMinLvl
+
+The minimum level required for Unbreaking Tier 2 in fishing profession.
+
+- Type: `integer`
+- Default: `40`
+
+#### unbreakingTierThreeMinLvl
+
+The minimum level required for Unbreaking Tier 3 in fishing profession.
+
+- Type: `integer`
+- Default: `60`
+
+#### mendingMinLvl
+
+The minimum level required for Mending enchantment in fishing profession.
+
+- Type: `integer`
+- Default: `70`
+
+#### lureTierOneMinLvl
+
+The minimum level required for Lure Tier 1 in fishing profession.
+
+- Type: `integer`
+- Default: `15`
+
+#### lureTierTwoMinLvl
+
+The minimum level required for Lure Tier 2 in fishing profession.
+
+- Type: `integer`
+- Default: `35`
+
+#### lureTierThreeMinLvl
+
+The minimum level required for Lure Tier 3 in fishing profession.
+
+- Type: `integer`
+- Default: `55`
+
+#### enchantmentChance
+
+The chance for an enchantment to be applied to fishing rewards.
+
+- Type: `double`
+- Range: `0.0 ~ 1.0`
+- Default: `0.25`
+
+### Catching Profession Configuration
+
+#### enableShinyCalculationBoosting
+
+Whether shiny calculation boosting is enabled in catching profession.
+
+- Type: `boolean`
+- Default: `true`
+
+#### shinyCalculationMaxMultiplier
+
+The maximum multiplier for shiny calculation in catching profession.
+
+- Type: `double`
+- Range: `0.0 ~ 10.0`
+- Default: `10.0`
+
+#### shinyCalculationPerLevelMultiplier
+
+The multiplier for shiny calculation per level in catching profession.
+
+- Type: `double`
+- Range: `0.0 ~ 1.0`
+- Default: `0.01`
+
+#### captureRateBonusPercentMax
+
+The maximum bonus percent for capture rate in catching profession.
+
+- Type: `double`
+- Range: `0.0 ~ 100.0`
+- Default: `10.0`
+
+#### captureRateLevelMultiplier
+
+The bonus multiplier for capture rate based on catching level.
+
+- Type: `double`
+- Range: `0.0 ~ 1.0`
+- Default: `0.1`
+
+### Training Profession Configuration
+
+#### experienceFromBattleMax
+
+The maximum experience from battle in training profession.
+
+- Type: `double`
+- Range: `0.0 ~ 1000.0`
+- Default: `20.0`
+
+#### experienceFromBattleExpMultiplier
+
+The experience multiplier from battle based on training level.
+
+- Type: `double`
+- Range: `0.0 ~ 10.0`
+- Default: `0.2`
+
+#### levelUpBonusExpPercentageMax
+
+The maximum bonus experience percentage for level up in training profession.
+
+- Type: `double`
+- Range: `0.0 ~ 100.0`
+- Default: `25.0`
+
+#### levelUpBonusExpPercentageLevelMultiplier
+
+The bonus experience percentage multiplier for level up based on training level.
+
+- Type: `double`
+- Range: `0.0 ~ 1.0`
+- Default: `0.25`
+
+### Breeding Profession Configuration
+
+#### baseShinyChange
+
+The base shiny chance for breeding profession.
+
+- Type: `double`
+- Range: `0.0 ~ 1.0`
+- Default: `0.01`
+
+#### shinyLevelBonusMultiplier
+
+The bonus multiplier for shiny chance based on breeding level.
+
+- Type: `double`
+- Range: `0.0 ~ 1.0`
+- Default: `0.001`
+
+#### shinyMaxPercentage
+
+The maximum shiny percentage for breeding profession.
+
+- Type: `double`
+- Range: `0.0 ~ 1.0`
+- Default: `0.1`
+
+#### friendshipBonusMax
+
+The maximum friendship bonus for breeding profession.
+
+- Type: `integer`
+- Range: `0 ~ 100`
+- Default: `20`
+
+#### friendshipBonusLevelDivider
+
+The level divider for friendship bonus in breeding profession.
+
+- Type: `integer`
+- Range: `1 ~ 100`
+- Default: `5`
