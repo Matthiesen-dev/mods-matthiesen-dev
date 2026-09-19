@@ -14,14 +14,33 @@ sidebar:
 
 import ReadMore from '~/components/ReadMore.astro';
 
-All of the configuration files for Cobblemon Pokestops are located in the `<game_directory>/config/` directory.
+All of the configuration files for Cobblemon Pokestops are located in the `<game_directory>/config/cobblemon_pokestops/` directory.
 
 **Configuration Files:**
-- `cobblemon_pokestops-server.toml` - Server side configuration options for Cobblemon Pokestops.
+- `common.toml` - Contains common configuration options for both client and server.
+- `client.toml` - Contains client-side configuration options.
 
-## Server Configuration Options
+## Client Configuration Options
 
-```toml title="cobblemon_pokestops-server.toml"
+```toml title="client.toml"
+# Client Settings
+[client]
+	# Whether Pokestops should have beacon beams. Default is true.
+	pokestopBeaconBeamsEnabled = true
+```
+
+## Client Settings
+
+### pokestopBeaconBeamsEnabled
+
+Whether Pokestops should have beacon beams.
+
+- Type: Boolean
+- Default: `true`
+
+## Common Configuration Options
+
+```toml title="common.toml"
 #Pokestops Configuration
 [pokestopsConfig]
 	extraRarities = ["cobblemon:master_ball", "cobblemon:ancient_origin_ball", "cobblemon:ability_capsule", "cobblemon:max_revive", "cobblemon:hyper_potion", "cobblemon:ultra_ball", "cobblemon:master_rod"]
