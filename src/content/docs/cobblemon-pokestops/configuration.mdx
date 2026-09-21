@@ -17,16 +17,32 @@ import ReadMore from '~/components/ReadMore.astro';
 All of the configuration files for Cobblemon Pokestops are located in the `<game_directory>/config/cobblemon_pokestops/` directory.
 
 **Configuration Files:**
+- `startup.toml` - Contains startup configuration options for the Pokestops mod.
 - `common.toml` - Contains common configuration options for both client and server.
 - `client.toml` - Contains client-side configuration options.
+
+## Startup Configuration Options
+
+```toml title="startup.toml"
+# Startup Settings
+[startupSettings]
+	pokestopBlockCollisionEnabled = true
+```
+
+### pokestopBlockCollisionEnabled
+
+Whether Pokestops should have block collision.
+
+- Type: Boolean
+- Default: `true`
 
 ## Client Configuration Options
 
 ```toml title="client.toml"
 # Client Settings
 [client]
-	# Whether Pokestops should have beacon beams. Default is true.
 	pokestopBeaconBeamsEnabled = true
+	pokestopBeaconHideDistance = 12.0
 ```
 
 ## Client Settings
@@ -37,6 +53,14 @@ Whether Pokestops should have beacon beams.
 
 - Type: Boolean
 - Default: `true`
+
+### pokestopBeaconHideDistance
+
+The distance in blocks when a beacon beam from a Pokestop should be hidden when approaching. Default is 12.0 blocks.
+
+- Type: Double
+- Default: `12.0`
+- Range: `1.0` - `256.0`
 
 ## Common Configuration Options
 
