@@ -142,6 +142,10 @@ export default defineConfig({
 							docs: "custom-gateways",
 						}),
 						buildSidebarFromGlob({
+							name: "Default Server Listings",
+							docs: "default-server-listings",
+						}),
+						buildSidebarFromGlob({
 							name: "Falling Star Rewards",
 							docs: "falling-star-rewards",
 							badge: "S",
