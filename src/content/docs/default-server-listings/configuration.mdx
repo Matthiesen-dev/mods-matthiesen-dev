@@ -1,0 +1,66 @@
+---
+title: Default Server Listings - Configuration
+description: Configuration options for Default Server Listings, a mod that adds default server list entries to the server-list.
+prev: 
+  label: Getting Started
+  link: /default-server-listings
+next: false
+sidebar:
+  label: Configuration
+  order: 2
+tableOfContents:
+  minHeadingLevel: 2
+  maxHeadingLevel: 6
+---
+
+All of the configuration files for Default Server Listings are located in the `<game_directory>/config/` directory.
+
+**Configuration files:**
+- `default-server-listings.toml`: The configuration file for Default Server Listings, which contains settings that apply to the mod.
+
+## Configuration Options
+
+```toml title="default-server-listings.toml"
+[config]
+	enabled = true
+		[[config.serverListings.entries]]
+			name = "Local Host"
+			resourcePackStatus = "PROMPT"
+			address = "127.0.0.1"
+```
+
+### enabled
+
+Whether the Default Server Listings mod is enabled or disabled. If disabled, no entries will be added to the server list.
+
+- Type: Boolean
+- Default: `true`
+
+### Server Listings
+
+Each entry in the `serverListings.entries` list should be a configuration object with the following fields:
+- `name`: The display name of the server.
+- `address`: The IP address or domain of the server.
+- `resourcePackStatus`: The resource pack status for the server. This can be one of the following values:
+  - `ENABLED`: The resource pack will be automatically downloaded and applied.
+  - `DISABLED`: The resource pack will not be downloaded or applied.
+  - `PROMPT`: The user will be prompted to download and apply the resource pack.
+
+#### entries
+
+The `entries` field is a list of server listing objects.
+
+**Example of more than one entry:**
+
+```toml
+[config]
+	enabled = true
+		[[config.serverListings.entries]]
+			name = "Local Host"
+			resourcePackStatus = "PROMPT"
+			address = "127.0.0.1"
+		[[config.serverListings.entries]]
+			name = "Example Server"
+			resourcePackStatus = "ENABLED"
+			address = "example.com"
+```

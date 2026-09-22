@@ -1,0 +1,32 @@
+---
+title: Default Server Listings
+description: Default Server Listings is a Simple client side mod that adds default server list entries to the server-list.
+prev: false
+next: 
+  label: Configuration
+  link: /default-server-listings/configuration
+sidebar:
+  label: Getting Started
+  order: 1
+---
+
+import ModMeta from '~/components/ModMeta.astro';
+import Deps from '~/components/Deps.astro';
+import ReadMore from '~/components/ReadMore.astro';
+
+<ModMeta 
+  minecraftVersion='1.21.1'
+  github='default-server-listings'
+  modrinth='default-server-listings'
+  neoforge fabric
+/>
+
+<Deps matthiesenCore fabricApi forgeConfigApiPort />
+
+Default Server Listings is a Simple client side mod that adds default server list entries to the server-list. This is useful for modpacks that want to provide a curated list (or even just a single entry) of servers for their pack users to connect to. When the mod is installed and enabled, missing entries from the configured list will be automatically added to the client's server list. If the mod is disabled, no entries will be added to the server list.
+
+## Requirements
+
+- [Matthiesen Core](https://modrinth.com/mod/matthiesen-core)
+- [Fabric API](https://modrinth.com/mod/fabric-api) (Fabric only)
+- [Forge Config API Port](https://modrinth.com/mod/forge-config-api-port) (Fabric only)
