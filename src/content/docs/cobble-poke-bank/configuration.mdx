@@ -151,6 +151,61 @@ The `pokebank_reload` permission level determines the required permission to use
 		autoStrip = false
 		blacklist = []
 
+	#GUI Configuration
+	[server.gui]
+		frameItemId = "minecraft:gray_stained_glass_pane"
+		pcItemId = "cobblemon:pc"
+		bankItemId = "minecraft:ender_chest"
+		infoItemId = "minecraft:paper"
+		navPrevItemId = "minecraft:arrow"
+		navNextItemId = "minecraft:arrow"
+		backItemId = "minecraft:oak_sign"
+		confirmItemId = "minecraft:lime_dye"
+		cancelItemId = "minecraft:red_dye"
+		invalidItemId = "minecraft:barrier"
+
+		#GUI Text Configuration
+		[server.gui.text]
+			buttonWithdraw = "Move Pokemon to PC?"
+			buttonDeposit = "Move Pokemon to bank?"
+			buttonConfirmTransfer = "Confirm Transfer"
+			mainMenuInfo = "Move Pokemon between PC and Bank"
+			mainMenuTitle = "{player}'s Poke Bank"
+			userBankScreenTitle = "{player}'s Bank"
+			userPCScreenTitle = "{player}'s PC"
+			buttonOpenPC = "Open PC"
+			buttonOpenBank = "Open Bank"
+			buttonBack = "Back"
+			buttonPreviousPage = "Previous"
+			buttonNextPage = "Next"
+			buttonConfirm = "Confirm"
+			buttonCancel = "Cancel"
+			buttonInvalidEntry = "Invalid Pokemon Data"
+			pokemonMovesListLabel = "Moves:"
+			pokemonEmptyMoveSlot = "Empty"
+			pokemonNoNickname = "No nickname"
+			pokemonNoHeldItem = "No held item"
+			pokemonOTUnknown = "Unknown"
+			pokemonIVs = "IVs:"
+			pokemonEVs = "EVs:"
+			pokemonLevel = "Level:"
+			pokemonNickname = "Nickname:"
+			pokemonHeldItem = "Held Item:"
+			pokemonOT = "OT:"
+			pokemonNature = "Nature:"
+			pokemonAbility = "Ability:"
+			pokemonForm = "Form:"
+
+			[server.gui.text.pokemonStats]
+				hp = "HP"
+				attack = "Atk"
+				defense = "Def"
+				specialAttack = "SpAtk"
+				specialDefense = "SpDef"
+				speed = "Spd"
+				evasion = "Evasion"
+				accuracy = "Accuracy"
+
 	#Messages Configuration
 	[server.messages]
 		messagesTextParser = "VANILLA"
@@ -168,6 +223,12 @@ The `pokebank_reload` permission level determines the required permission to use
 			noBlacklistedItems = "§eNo held items are blacklisted."
 			inBattle = "§cYou cannot access the bank while in battle."
 			configsReloaded = "§aConfigs reloaded successfully."
+			noBlacklistedPokemon = "§eNo Pokemon are blacklisted."
+			invalidConfigType = "§cInvalid config type. Valid types are: %s"
+			invalidConfigName = "§cInvalid config name. Valid names are: %s"
+			invalidIntegerValue = "§cInvalid value for %s. Please provide a valid integer."
+			invalidBooleanValue = "§cInvalid value for %s. Please provide a valid boolean (true/false)."
+			configUpdated = "§aUpdated %s successfully."
 
 		#Messages - Database Messages
 		[server.messages.databaseMessages]
@@ -201,6 +262,34 @@ The `pokebank_reload` permission level determines the required permission to use
 			noUltraBeasts = "§cThis Pokemon is an Ultra Beast, which is not allowed in the %s."
 			noFainted = "§cThis Pokemon is fainted, which is not allowed in the %s."
 			autoStrippedHeldItem = "§eYour Pokemon's held item has been removed as it is not allowed in the %s."
+
+		#Messages - Status Display
+		[server.messages.statusDisplay]
+			title = "Cobble Poke Bank Status"
+			sectionDatabase = "Database"
+			sectionBankConfiguration = "Bank Configuration"
+			pokemonBlacklistTitle = "Cobble Poke Bank Pokemon Blacklist"
+			sectionBlacklistedPokemon = "Blacklisted Pokemon"
+			heldItemBlacklistTitle = "Cobble Poke Bank Held Item Blacklist"
+			sectionBlacklistedHeldItems = "Blacklisted Held Items"
+			labelDatabaseType = "Database Type"
+			labelDatabaseStatus = "Database Status"
+			labelBankMaxSlots = "Bank Max Slots"
+			labelNoFainted = "No Fainted"
+			labelNoHeldItems = "No Held Items"
+			labelNoLegendaries = "No Legendaries"
+			labelNoMythicals = "No Mythicals"
+			labelNoUltraBeasts = "No Ultra Beasts"
+			labelPokemonBlacklistEntries = "Pokemon Blacklist Entries"
+			labelOfficialHeldItemsOnly = "Official Held Items Only"
+			labelHeldItemBlacklistEntries = "Held Item Blacklist Entries"
+			valueMySQL = "MySQL"
+			valueSQLite = "SQLite"
+			valueConnected = "§aConnected"
+			valueOffline = "§cOffline"
+			valueUnlimited = "Unlimited"
+			valueEnabled = "§aEnabled"
+			valueDisabled = "§cDisabled"
 
 ```
 
@@ -274,6 +363,248 @@ The `blacklist` setting allows you to specify a list of held items that are not 
 
 - **Default:** `[]` (no held items are blacklisted)
 
+### GUI Configuration
+
+Configure the GUI settings for Cobble Poke Bank.
+
+#### frameItemId
+
+The `frameItemId` setting specifies the item ID to use for the frame of the bank GUI.
+
+- **Default:** `minecraft:gray_stained_glass_pane`
+
+#### pcItemId
+
+The `pcItemId` setting specifies the item ID to use for the PC button in the bank GUI.
+
+- **Default:** `cobblemon:pc`
+
+#### bankItemId
+
+The `bankItemId` setting specifies the item ID to use for the Bank button in the bank GUI.
+
+- **Default:** `minecraft:ender_chest`
+
+#### infoItemId
+
+The `infoItemId` setting specifies the item ID to use for the Info button in the bank GUI.
+
+- **Default:** `minecraft:paper`
+
+#### navPrevItemId
+
+The `navPrevItemId` setting specifies the item ID to use for the Previous button in the bank GUI.
+
+- **Default:** `minecraft:arrow`
+
+#### navNextItemId
+
+The `navNextItemId` setting specifies the item ID to use for the Next button in the bank GUI.
+
+- **Default:** `minecraft:arrow`
+
+#### backItemId
+
+The `backItemId` setting specifies the item ID to use for the Back button in the bank GUI.
+
+- **Default:** `minecraft:oak_sign`
+
+#### confirmItemId
+
+The `confirmItemId` setting specifies the item ID to use for the Confirm button in the bank GUI.
+
+- **Default:** `minecraft:lime_dye`
+
+#### cancelItemId
+
+The `cancelItemId` setting specifies the item ID to use for the Cancel button in the bank GUI.
+
+- **Default:** `minecraft:red_dye`
+
+#### invalidItemId
+
+The `invalidItemId` setting specifies the item ID to use for the Invalid button in the bank GUI.
+
+- **Default:** `minecraft:barrier`
+
+#### GUI Text Configuration
+
+Configuration for the text displayed in the Cobble Poke Bank GUI. You can customize the text for various buttons, labels, and messages shown to players.
+
+##### buttonWithdraw
+
+The `buttonWithdraw` setting specifies the text to display on the Withdraw button in the bank GUI.
+
+- **Default:** `Move Pokemon to PC?`
+
+##### buttonDeposit
+
+The `buttonDeposit` setting specifies the text to display on the Deposit button in the bank GUI.
+
+- **Default:** `Move Pokemon to bank?`
+
+##### buttonConfirmTransfer
+
+The `buttonConfirmTransfer` setting specifies the text to display on the Confirm Transfer button in the bank GUI.
+
+- **Default:** `Confirm Transfer`
+
+##### mainMenuInfo
+
+The `mainMenuInfo` setting specifies the text to display on the Info button in the main menu GUI.
+
+- **Default:** `Move Pokemon between PC and Bank`
+
+##### mainMenuTitle
+
+The `mainMenuTitle` setting specifies the text to display as the title of the main menu GUI. You can use `{player}` as a placeholder for the player's name.
+
+- **Default:** `{player}'s Poke Bank`
+
+##### userBankScreenTitle
+
+The `userBankScreenTitle` setting specifies the text to display as the title of the user bank screen GUI. You can use `{player}` as a placeholder for the player's name.
+
+- **Default:** `{player}'s Bank`
+
+##### userPCScreenTitle
+
+The `userPCScreenTitle` setting specifies the text to display as the title of the user PC screen GUI. You can use `{player}` as a placeholder for the player's name.
+
+- **Default:** `{player}'s PC`
+
+##### buttonOpenPC
+
+The `buttonOpenPC` setting specifies the text to display on the Open PC button in the main menu GUI.
+
+- **Default:** `Open PC`
+
+##### buttonOpenBank
+
+The `buttonOpenBank` setting specifies the text to display on the Open Bank button in the main menu GUI.
+
+- **Default:** `Open Bank`
+
+##### buttonBack
+
+The `buttonBack` setting specifies the text to display on the Back button in the main menu GUI.
+
+- **Default:** `Back`
+
+##### buttonPreviousPage
+
+The `buttonPreviousPage` setting specifies the text to display on the Previous Page button in the main menu GUI.
+
+- **Default:** `Previous`
+
+##### buttonNextPage
+
+The `buttonNextPage` setting specifies the text to display on the Next Page button in the main menu GUI.
+
+- **Default:** `Next`
+
+##### buttonConfirm
+
+The `buttonConfirm` setting specifies the text to display on the Confirm button in the main menu GUI.
+
+- **Default:** `Confirm`
+
+##### buttonCancel
+
+The `buttonCancel` setting specifies the text to display on the Cancel button in the main menu GUI.
+
+- **Default:** `Cancel`
+
+##### buttonInvalidEntry
+
+The `buttonInvalidEntry` setting specifies the text to display on the Invalid Entry button in the main menu GUI.
+
+- **Default:** `Invalid Pokemon Data`
+
+##### pokemonMovesListLabel
+
+The `pokemonMovesListLabel` setting specifies the text to display as the label for the Pokémon moves list in the main menu GUI.
+
+- **Default:** `Moves:`
+
+##### pokemonEmptyMoveSlot
+
+The `pokemonEmptyMoveSlot` setting specifies the text to display for empty move slots in the Pokémon moves list in the main menu GUI.
+
+- **Default:** `Empty`
+
+##### pokemonNoNickname
+
+The `pokemonNoNickname` setting specifies the text to display when a Pokémon has no nickname in the main menu GUI.
+
+- **Default:** `No nickname`
+
+##### pokemonNoHeldItem
+
+The `pokemonNoHeldItem` setting specifies the text to display when a Pokémon has no held item in the main menu GUI.
+
+- **Default:** `No held item`
+
+##### pokemonOTUnknown
+
+The `pokemonOTUnknown` setting specifies the text to display when a Pokémon's original trainer is unknown in the main menu GUI.
+
+- **Default:** `Unknown`
+
+##### pokemonIVs
+
+The `pokemonIVs` setting specifies the text to display as the label for a Pokémon's IVs in the main menu GUI.
+
+- **Default:** `IVs:`
+
+##### pokemonEVs
+
+The `pokemonEVs` setting specifies the text to display as the label for a Pokémon's EVs in the main menu GUI.
+
+- **Default:** `EVs:`
+
+##### pokemonLevel
+
+The `pokemonLevel` setting specifies the text to display as the label for a Pokémon's level in the main menu GUI.
+
+- **Default:** `Level:`
+
+##### pokemonNickname
+
+The `pokemonNickname` setting specifies the text to display as the label for a Pokémon's nickname in the main menu GUI.
+
+- **Default:** `Nickname:`
+
+##### pokemonHeldItem
+
+The `pokemonHeldItem` setting specifies the text to display as the label for a Pokémon's held item in the main menu GUI.
+
+- **Default:** `Held Item:`
+
+##### pokemonOT
+
+The `pokemonOT` setting specifies the text to display as the label for a Pokémon's original trainer in the main menu GUI.
+
+- **Default:** `OT:`
+
+##### pokemonNature
+
+The `pokemonNature` setting specifies the text to display as the label for a Pokémon's nature in the main menu GUI.
+
+- **Default:** `Nature:`
+
+##### pokemonAbility
+
+The `pokemonAbility` setting specifies the text to display as the label for a Pokémon's ability in the main menu GUI.
+
+- **Default:** `Ability:`
+
+##### pokemonForm
+
+The `pokemonForm` setting specifies the text to display as the label for a Pokémon's form in the main menu GUI.
+
+- **Default:** `Form:`
+
 ### Messages Configuration
 
 Configure the messages sent to players by Cobble Poke Bank.
@@ -342,6 +673,42 @@ The `inBattle` message is sent to players when they try to use the bank while in
 The `configsReloaded` message is sent to players when the configuration files are successfully reloaded.
 
 - **Default:** `§aConfigs reloaded successfully.`
+
+##### noBlacklistedPokemon
+
+The `noBlacklistedPokemon` message is sent to players when they try to deposit a Pokémon that is not blacklisted.
+
+- **Default:** `§eNo Pokemon are blacklisted.`
+
+##### invalidConfigType
+
+The `invalidConfigType` message is sent to players when the configuration file contains an invalid type.
+
+- **Default:** `§cInvalid configuration type. Check server logs.`
+
+##### invalidConfigName
+
+The `invalidConfigName` message is sent to players when the configuration file contains an invalid name.
+
+- **Default:** `§cInvalid configuration name. Check server logs.`
+
+##### invalidIntegerValue
+
+The `invalidIntegerValue` message is sent to players when the configuration file contains an invalid integer value.
+
+- **Default:** `§cInvalid integer value. Check server logs.`
+
+##### invalidBooleanValue
+
+The `invalidBooleanValue` message is sent to players when the configuration file contains an invalid boolean value.
+
+- **Default:** `§cInvalid boolean value. Check server logs.`
+
+##### configUpdated
+
+The `configUpdated` message is sent to players when the configuration file is successfully updated.
+
+- **Default:** `§aConfiguration updated successfully.`
 
 #### databaseMessages
 
@@ -484,3 +851,157 @@ The `noFainted` message is sent to players when they try to deposit a fainted Po
 The `autoStrippedHeldItem` message is sent to players when they try to deposit a Pokémon with a held item that is not allowed and the held item is automatically stripped.
 
 - **Default:** `§eYour Pokemon's held item has been removed as it is not allowed in the %s.`
+
+#### Status Display Messages
+
+The `statusDisplay` setting allows you to specify custom messages for the status display of Cobble Poke Bank. These messages will be shown to players when they use the `/pokebank status` command to view the current status of the bank, including database connection, bank configuration, and blacklisted Pokémon and held items.
+
+##### title
+
+The `title` message is shown as the title of the `/pokebank status` table.
+
+- **Default:** `Cobble Poke Bank Status`
+
+##### sectionDatabase
+
+The `sectionDatabase` message is shown as the section header for the database information in the `/pokebank status` table.
+
+- **Default:** `Database`
+
+##### sectionBankConfiguration
+
+The `sectionBankConfiguration` message is shown as the section header for the bank configuration information in the `/pokebank status` table.
+
+- **Default:** `Bank Configuration`
+
+##### pokemonBlacklistTitle
+
+The `pokemonBlacklistTitle` message is shown as the title for the Pokémon blacklist table in the `/pokebank status` command.
+
+- **Default:** `Cobble Poke Bank Pokemon Blacklist`
+
+##### sectionBlacklistedPokemon
+
+The `sectionBlacklistedPokemon` message is shown as the section header for the blacklisted Pokémon in the `/pokebank status` command.
+
+- **Default:** `Blacklisted Pokemon`
+
+##### heldItemBlacklistTitle
+
+The `heldItemBlacklistTitle` message is shown as the title for the held item blacklist table in the `/pokebank status` command.
+
+- **Default:** `Cobble Poke Bank Held Item Blacklist`
+
+##### sectionBlacklistedHeldItems
+
+The `sectionBlacklistedHeldItems` message is shown as the section header for the blacklisted held items in the `/pokebank status` command.
+
+- **Default:** `Blacklisted Held Items`
+
+##### labelDatabaseType
+
+The `labelDatabaseType` message is shown as the label for the database type row in the `/pokebank status` table.
+
+- **Default:** `Database Type`
+
+##### labelDatabaseStatus
+
+The `labelDatabaseStatus` message is shown as the label for the database status row in the `/pokebank status` table.
+
+- **Default:** `Database Status`
+
+##### labelBankMaxSlots
+
+The `labelBankMaxSlots` message is shown as the label for the bank max slots row in the `/pokebank status` table.
+
+- **Default:** `Bank Max Slots`
+
+##### labelNoFainted
+
+The `labelNoFainted` message is shown as the label for the no fainted row in the `/pokebank status` table.
+
+- **Default:** `No Fainted`
+
+##### labelNoHeldItems
+
+The `labelNoHeldItems` message is shown as the label for the no held items row in the `/pokebank status` table.
+
+- **Default:** `No Held Items`
+
+##### labelNoLegendaries
+
+The `labelNoLegendaries` message is shown as the label for the no legendaries row in the `/pokebank status` table.
+
+- **Default:** `No Legendaries`
+
+##### labelNoMythicals
+
+The `labelNoMythicals` message is shown as the label for the no mythicals row in the `/pokebank status` table.
+
+- **Default:** `No Mythicals`
+
+##### labelNoUltraBeasts
+
+The `labelNoUltraBeasts` message is shown as the label for the no ultra beasts row in the `/pokebank status` table.
+
+- **Default:** `No Ultra Beasts`
+
+##### labelPokemonBlacklistEntries
+
+The `labelPokemonBlacklistEntries` message is shown as the label for the Pokémon blacklist entry count row in the `/pokebank status` table.
+
+- **Default:** `Pokemon Blacklist Entries`
+
+##### labelOfficialHeldItemsOnly
+
+The `labelOfficialHeldItemsOnly` message is shown as the label for the official held items only row in the `/pokebank status` table.
+
+- **Default:** `Official Held Items Only`
+
+##### labelHeldItemBlacklistEntries
+
+The `labelHeldItemBlacklistEntries` message is shown as the label for the held item blacklist entry count row in the `/pokebank status` table.
+
+- **Default:** `Held Item Blacklist Entries`
+
+##### valueMySQL
+
+The `valueMySQL` message is shown as the value for the database type row in the `/pokebank status` table when MySQL is in use.
+
+- **Default:** `MySQL`
+
+##### valueSQLite
+
+The `valueSQLite` message is shown as the value for the database type row in the `/pokebank status` table when SQLite is in use.
+
+- **Default:** `SQLite`
+
+##### valueConnected
+
+The `valueConnected` message is shown as the value for the database status row in the `/pokebank status` table when the database is connected.
+
+- **Default:** `§aConnected`
+
+##### valueOffline
+
+The `valueOffline` message is shown as the value for the database status row in the `/pokebank status` table when the database is offline.
+
+- **Default:** `§cOffline`
+
+##### valueUnlimited
+
+The `valueUnlimited` message is shown as the value for the bank max slots row in the `/pokebank status` table when bank storage is unlimited.
+
+- **Default:** `Unlimited`
+
+##### valueEnabled
+
+The `valueEnabled` message is shown as the value for an enabled option in the `/pokebank status` table.
+
+- **Default:** `§aEnabled`
+
+##### valueDisabled
+
+The `valueDisabled` message is shown as the value for a disabled option in the `/pokebank status` table.
+
+- **Default:** `§cDisabled`
