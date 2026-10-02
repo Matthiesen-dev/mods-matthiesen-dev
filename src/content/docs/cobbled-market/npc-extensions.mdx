@@ -1,0 +1,47 @@
+---
+title: Cobbled Market - NPC Extensions
+description: NPC extensions for Cobbled Market.
+prev: 
+  link: /cobbled-market/commands
+  label: "Commands"
+next: false
+sidebar:
+  label: NPC Extensions
+  order: 4
+---
+
+import MolangExtensions from '~/components/MolangExtensions.astro';
+import { playerMolangExtensions } from './npc-extensions_data';
+
+Cobbled Market includes extensions for Cobblemon NPCs, allowing them to interact with PokeTotems in various ways. These extensions can be used to create custom NPC dialogues and interactions involving PokeTotems.
+
+## Player Functions
+
+<MolangExtensions extensions={playerMolangExtensions} />
+
+## NPC Behaviors
+
+The `cobbled_market:market_keeper` behaviour is provided for use with Cobblemon NPCs. It can be used to create a market NPC that opens the shop directory or a specific shop when interacted with.
+
+In your NPC's configuration, add the following:
+
+```json
+{
+  ...other npc config options...,
+  "ai": [
+    {
+      "type": "apply_behaviours",
+      "behaviours": [
+        ...other behaviours...,
+        "cobbled_market:market_keeper"
+      ]
+    }
+  ]
+}
+```
+
+## Molang Scripts
+
+The behaviour above uses the following Molang scripts to determine which shop to open when the NPC is interacted with.
+
+- `cobbled_market:market_keeper_interaction` - Simple script that checks for a shop ID in the NPC's data and opens that shop if it exists.

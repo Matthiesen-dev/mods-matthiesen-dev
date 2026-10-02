@@ -1,0 +1,52 @@
+---
+title: Cobbled Market
+description: 
+prev: false
+next: 
+  link: /cobbled-market/configuration
+  label: "Configuration"
+sidebar:
+  label: Getting Started
+  order: 1
+---
+
+import ModMeta from '~/components/ModMeta.astro';
+import ReadMore from '~/components/ReadMore.astro';
+import Deps from '~/components/Deps.astro';
+
+<ModMeta 
+  minecraftVersion='1.21.1'
+  github='cobbled-market'
+  modrinth='cobbled-market'
+  fabric neoforge
+/>
+
+<Deps cobblemon matthiesenCore forgeConfigApiPort fabricApi gooeyLibs />
+
+This mod provides a simple, configurable shop system for Cobblemon servers. It allows server owners to define shops in a configuration file, 
+which players can access via Cobblemon NPC Molang functions or the `/market` command. The mod supports multiple shops, each with its own set 
+of items and prices, and can be easily customized to fit the needs of any server.
+
+## Requirements
+
+- [Matthiesen Core](https://modrinth.com/mod/matthiesen-core)
+- [Cobblemon](https://modrinth.com/mod/cobblemon)
+- [GooeyLibs](https://modrinth.com/mod/gooeylibs)
+- [Fabric API](https://modrinth.com/mod/fabric-api) (Fabric only)
+- [Forge Config API Port](https://modrinth.com/mod/forge-config-api-port) (Fabric only)
+
+### Supported Economy Providers
+
+- Item (Built-in)
+- [CobbleDollars](https://modrinth.com/mod/cobbledollars)
+- [Impactor](https://modrinth.com/mod/impactor)
+
+## FastStats Metrics
+
+This mod uses [FastStats](https://faststats.dev) to collect anonymous usage statistics. This helps the developer understand
+how this mod is being used and improve it over time. You can learn more about the data collected and how it is used by visiting
+[FastStats: Information](https://faststats.dev/info).
+
+You can also view the data collected by this mod on the [FastStats: Cobbled Market](https://faststats.dev/project/cobbled-market) page.
+
+To opt out of this data collection, set the `enabled` property to `false` in the `<game_directory>/config/matthiesen_core/metrics.properties` file.

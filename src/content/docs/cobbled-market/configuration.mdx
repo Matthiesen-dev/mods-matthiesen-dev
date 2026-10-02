@@ -1,0 +1,326 @@
+---
+title: Cobbled Market - Configuration
+description: Configuration for Cobbled Market.
+prev: 
+  link: /cobbled-market
+  label: "Overview"
+next: 
+  link: /cobbled-market/commands
+  label: "Commands"
+sidebar:
+  label: Configuration
+  order: 2
+tableOfContents:
+  minHeadingLevel: 2
+  maxHeadingLevel: 6
+---
+
+import { Aside } from "@astrojs/starlight/components";
+
+All of the configuration files for Cobbled Market are located in the `<game_directory>/config/cobbled_market/` directory.
+
+**Configuration files:**
+- `permissions.toml` - This file contains the permission nodes for Cobbled Market. You can use this file to change the permission nodes for the commands and features of the mod.
+- `server.toml` - This file contains the server-side configuration for Cobbled Market. You can use this file to change the default settings for the mod, such as the default level cap and scaling method.
+
+## Permissions Configuration
+
+```toml file="permissions.toml"
+[permissions]
+	[permissions.command]
+		market = "CHEAT_COMMANDS_AND_COMMAND_BLOCKS"
+		market_shop = "CHEAT_COMMANDS_AND_COMMAND_BLOCKS"
+		market_reload = "ALL_COMMANDS"
+```
+
+### Command Permission Levels
+
+Available permission levels for commands are as follows:
+
+- `NONE` - No permission.
+- `SPAWN_PROTECTION_BYPASS` - Bypass spawn protection.
+- `CHEAT_COMMANDS_AND_COMMAND_BLOCKS` - Access to cheat commands and command blocks.
+- `MULTIPLAYER_MANAGEMENT` - Manage multiplayer settings.
+- `ALL_COMMANDS` - Access to all commands.
+
+#### market
+
+Permission level for the `/market` command, which opens the shop directory.
+
+- Type: `enum`
+- Default: `CHEAT_COMMANDS_AND_COMMAND_BLOCKS`
+
+#### market_shop
+
+Permission level for the `/market <shopId>` command, which opens a specific shop.
+
+- Type: `enum`
+- Default: `CHEAT_COMMANDS_AND_COMMAND_BLOCKS`
+
+#### market_reload
+
+Permission level for the `/market reload` command, which reloads the configuration files.
+
+- Type: `enum`
+- Default: `ALL_COMMANDS`
+
+## Server Configuration
+
+```toml file="server.toml"
+[server]
+	currencyProvider = "IMPACTOR"
+	currencyId = "impactor:dollars"
+	currencyDisplayName = "Dollars"
+
+	[server.menu]
+		backgroundItemId = "minecraft:gray_stained_glass_pane"
+		pageIndicatorItemId = "minecraft:paper"
+		navNextItemId = "minecraft:arrow"
+		navPrevItemId = "minecraft:arrow"
+		navBackItemId = "minecraft:barrier"
+		pageIndicatorText = "Page %current%/%total%"
+		navBackText = "Back to Market"
+		navPrevText = "Previous"
+		navNextText = "Next"
+		shopLoreLn1_single = "item"
+		shopLoreLn1_multiple = "items"
+		shopLoreLn2 = "Click to browse"
+		shopItemLoreLn1 = "Quantity: %quantity%"
+		shopItemLoreLn2 = "Price: %price% %currency%"
+		shopItemLoreLn3 = "Click to purchase"
+		errorNoShopsConfigured = "There are no shops configured."
+		errorUnknownShop = "Unknown shop: %shopId%"
+
+	[server.messages]
+		notEnoughFunds = "You do not have enough %s to purchase this item. You need %d %s."
+		withdrawError = "An error occurred while processing your purchase. Please try again later."
+		purchaseSuccess = "You have purchased %d x %s for %d %s."
+		purchaseFailure = "An error occurred while processing the purchase. Please try again later."
+		reloadConfig = "Cobbled Market configuration reloaded successfully. Reloaded %d shops."
+
+	[[server.shops]]
+		shopName = "Example Shop"
+		shopIcon = "minecraft:chest"
+		shopId = "example_shop"
+		[[server.shops.entries]]
+			itemId = "minecraft:stone"
+			price = 10
+			quantity = 64
+		[[server.shops.entries]]
+			itemId = "minecraft:dirt"
+			price = 5
+			quantity = 64
+```
+
+### currencyProvider
+
+Set the currency provider for the market NPCs.
+
+- Type: `enum`
+- Allowed Values:
+   - `ITEM` - Use an item as currency.
+   - `IMPACTOR` - Use Impactor's currency system.
+   - `COBBLEDOLLARS` - Use CobbleDollars as currency.
+- Default: `IMPACTOR`
+
+### currencyId
+
+Set the currency ID for the market NPCs. This is used to identify the currency item or system.
+
+- Type: `string`
+- Default: `impactor:dollars`
+
+<Aside type="note">
+When using `ITEM` as the currency provider, this should be the item ID of the currency item (e.g., `minecraft:emerald`).
+When using `IMPACTOR` as the currency provider, this should be the currency ID registered with Impactor (e.g., `impactor:dollars`).
+
+When using `COBBLEDOLLARS` as the currency provider, this value is ignored, as CobbleDollars has its own currency system.
+</Aside>
+
+### currencyDisplayName
+
+Set the display name for the currency used in the market NPCs. This is used in messages and menus to refer to the currency.
+
+- Type: `string`
+- Default: `Dollars`
+
+#### Menu Configuration
+
+Allows you to customize the appearance and text of the market menu.
+
+##### backgroundItemId
+
+Set the item ID for the background item in the market menu.
+
+- Type: `string`
+- Default: `minecraft:gray_stained_glass_pane`
+
+##### pageIndicatorItemId
+
+Set the item ID for the page indicator in the market menu.
+
+- Type: `string`
+- Default: `minecraft:paper`
+
+##### navNextItemId
+
+Set the item ID for the "Next" navigation button in the market menu.
+
+- Type: `string`
+- Default: `minecraft:arrow`
+
+##### navPrevItemId
+
+Set the item ID for the "Previous" navigation button in the market menu.
+
+- Type: `string`
+- Default: `minecraft:arrow`
+
+##### navBackItemId
+
+Set the item ID for the "Back" navigation button in the market menu.
+
+- Type: `string`
+- Default: `minecraft:barrier`
+
+##### pageIndicatorText
+
+Set the text for the page indicator in the market menu. Use `%current%` for the current page and `%total%` for the total number of pages.
+
+- Type: `string`
+- Default: `Page %current%/%total%`
+
+##### navBackText
+
+Set the text for the "Back" navigation button in the market menu.
+
+- Type: `string`
+- Default: `Back to Market`
+
+##### navPrevText
+
+Set the text for the "Previous" navigation button in the market menu.
+
+- Type: `string`
+- Default: `Previous`
+
+##### navNextText
+
+Set the text for the "Next" navigation button in the market menu.
+
+- Type: `string`
+- Default: `Next`
+
+##### shopLoreLn1_single
+
+Set the text for the first line of lore for a shop entry with a single item.
+
+- Type: `string`
+- Default: `item`
+
+##### shopLoreLn1_multiple
+
+Set the text for the first line of lore for a shop entry with multiple items.
+
+- Type: `string`
+- Default: `items`
+
+##### shopLoreLn2
+
+Set the text for the second line of lore for a shop entry.
+
+- Type: `string`
+- Default: `Click to browse`
+
+##### shopItemLoreLn1
+
+Set the text for the first line of lore for a shop item entry. Use `%quantity%` for the quantity of the item.
+
+- Type: `string`
+- Default: `Quantity: %quantity%`
+
+##### shopItemLoreLn2
+
+Set the text for the second line of lore for a shop item entry. Use `%price%` for the price of the item and `%currency%` for the currency name.
+
+- Type: `string`
+- Default: `Price: %price% %currency%`
+
+##### shopItemLoreLn3
+
+Set the text for the third line of lore for a shop item entry.
+
+- Type: `string`
+- Default: `Click to purchase`
+
+##### errorNoShopsConfigured
+
+Set the error message displayed when there are no shops configured.
+
+- Type: `string`
+- Default: `There are no shops configured.`
+
+##### errorUnknownShop
+
+Set the error message displayed when an unknown shop ID is accessed. Use `%shopId%` for the unknown shop ID.
+
+- Type: `string`
+- Default: `Unknown shop: %shopId%`
+
+#### Messages Configuration
+
+Allows you to customize the messages displayed to players when interacting with the market NPCs.
+
+##### notEnoughFunds
+
+Set the message displayed when a player does not have enough funds to make a purchase. Use `%s` for the currency name and `%d` for the amount needed.
+
+- Type: `string`
+- Default: `You do not have enough %s to purchase this item. You need %d %s.`
+
+##### withdrawError
+
+Set the message displayed when there is an error processing a purchase.
+
+- Type: `string`
+- Default: `An error occurred while processing your purchase. Please try again later.`
+
+##### purchaseSuccess
+
+Set the message displayed when a player successfully makes a purchase. Use `%d` for the quantity purchased, `%s` for the item name, and `%s` for the currency name.
+
+- Type: `string`
+- Default: `You have purchased %d x %s for %d %s.`
+
+##### purchaseFailure
+
+Set the message displayed when a purchase fails for any reason.
+
+- Type: `string`
+- Default: `An error occurred while processing the purchase. Please try again later.`
+
+##### reloadConfig
+
+Set the message displayed when the configuration files are reloaded. Use `%d` for the number of shops reloaded.
+
+- Type: `string`
+- Default: `Cobbled Market configuration reloaded successfully. Reloaded %d shops.`
+
+#### Shops Configuration
+
+Shops are defined in the `server.toml` configuration file. Shops are stored as an Array of entries. Each shop has a unique ID, name, icon, and a list of entries (items for sale).
+
+```toml title="Example Shop Configuration"
+[[server.shops]]
+  shopName = "Example Shop" # The display name of the shop.
+  shopIcon = "minecraft:chest" # The item ID used as the icon for the shop.
+  shopId = "example_shop" # The unique ID of the shop.
+  [[server.shops.entries]]
+	itemId = "minecraft:stone" # The item ID of the item for sale.
+	price = 10 # The price of the item.
+	quantity = 64 # The quantity of the item for sale.
+  [[server.shops.entries]]
+	itemId = "minecraft:dirt" # The item ID of the item for sale.
+	price = 5 # The price of the item.
+	quantity = 64 # The quantity of the item for sale.
+```

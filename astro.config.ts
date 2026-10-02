@@ -88,6 +88,11 @@ export default defineConfig({
 							badge: "S",
 						}),
 						buildSidebarFromGlob({
+							name: "Cobbled Market",
+							docs: "cobbled-market",
+							badge: "S",
+						}),
+						buildSidebarFromGlob({
 							name: "CobbleHardcoreMon",
 							docs: "cobblehardcoremon",
 							badge: "S",
