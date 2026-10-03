@@ -23,7 +23,7 @@ All of the configuration files for Default Server Listings are located in the `<
 ```toml title="default-server-listings.toml"
 [config]
 	enabled = true
-		[[config.serverListings.entries]]
+		[[config.serverListings]]
 			name = "Local Host"
 			resourcePackStatus = "PROMPT"
 			address = "127.0.0.1"
@@ -38,7 +38,7 @@ Whether the Default Server Listings mod is enabled or disabled. If disabled, no 
 
 ### Server Listings
 
-Each entry in the `serverListings.entries` list should be a configuration object with the following fields:
+Each entry in the `serverListings` list should be a configuration object with the following fields:
 - `name`: The display name of the server.
 - `address`: The IP address or domain of the server.
 - `resourcePackStatus`: The resource pack status for the server. This can be one of the following values:
@@ -48,18 +48,18 @@ Each entry in the `serverListings.entries` list should be a configuration object
 
 #### entries
 
-The `entries` field is a list of server listing objects.
+The `serverListings` field is a list of server listing objects.
 
 **Example of more than one entry:**
 
 ```toml
 [config]
 	enabled = true
-		[[config.serverListings.entries]]
+		[[config.serverListings]]
 			name = "Local Host"
 			resourcePackStatus = "PROMPT"
 			address = "127.0.0.1"
-		[[config.serverListings.entries]]
+		[[config.serverListings]]
 			name = "Example Server"
 			resourcePackStatus = "ENABLED"
 			address = "example.com"
