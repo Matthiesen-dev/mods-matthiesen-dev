@@ -80,6 +80,8 @@ Permission level for the `/market reload` command, which reloads the configurati
 		navBackItemId = "minecraft:barrier"
 		pageIndicatorText = "Page %current%/%total%"
 		navBackText = "Back to Market"
+		currencyItemId = "minecraft:emerald"
+		currencyText = "Current Balance: %balance% %currency%"
 		navPrevText = "Previous"
 		navNextText = "Next"
 		shopLoreLn1_single = "item"
@@ -193,6 +195,20 @@ Set the item ID for the "Back" navigation button in the market menu.
 
 - Type: `string`
 - Default: `minecraft:barrier`
+
+##### currencyItemId
+
+Set the item ID for the currency display in the market menu.
+
+- Type: `string`
+- Default: `minecraft:emerald`
+
+##### currencyText
+
+Set the text for the currency display in the market menu. Use `%balance%` for the player's current balance and `%currency%` for the currency name.
+
+- Type: `string`
+- Default: `Current Balance: %balance% %currency%`
 
 ##### pageIndicatorText
 
