@@ -88,6 +88,10 @@ Permission level for the `/market reload` command, which reloads the configurati
 		shopItemLoreLn1 = "Quantity: %quantity%"
 		shopItemLoreLn2 = "Price: %price% %currency%"
 		shopItemLoreLn3 = "Click to purchase"
+		shopOptionsLoreLn1 = "Purchase options: %count%"
+		shopOptionsLoreLn2 = "Click to choose quantity"
+		purchaseOptionsTitle = "%item% - Purchase Options"
+		navBackToShopText = "Back to %shop%"
 		errorNoShopsConfigured = "There are no shops configured."
 		errorUnknownShop = "Unknown shop: %shopId%"
 
@@ -108,8 +112,15 @@ Permission level for the `/market reload` command, which reloads the configurati
 			quantity = 64
 		[[server.shops.entries]]
 			itemId = "minecraft:dirt"
-			price = 5
-			quantity = 64
+			[[server.shops.entries.options]]
+				price = 1
+				quantity = 1
+			[[server.shops.entries.options]]
+				price = 15
+				quantity = 32
+			[[server.shops.entries.options]]
+				price = 30
+				quantity = 64
 ```
 
 ### currencyProvider
@@ -253,6 +264,34 @@ Set the text for the third line of lore for a shop item entry.
 - Type: `string`
 - Default: `Click to purchase`
 
+##### shopOptionsLoreLn1
+
+Set the text for the first line of lore for a shop item entry with purchase options. Use `%count%` for the number of purchase options.
+
+- Type: `string`
+- Default: `Purchase options: %count%`
+
+##### shopOptionsLoreLn2
+
+Set the text for the second line of lore for a shop item entry with purchase options.
+
+- Type: `string`
+- Default: `Click to choose quantity`
+
+##### purchaseOptionsTitle
+
+Set the title for the purchase options menu. Use `%item%` for the item name and `%shop%` for the shop name.
+
+- Type: `string`
+- Default: `%item% - Purchase Options`
+
+##### navBackToShopText
+
+Set the text for the "Back to Shop" navigation button in the purchase options menu. Use `%shop%` for the shop name.
+
+- Type: `string`
+- Default: `Back to %shop%`
+
 ##### errorNoShopsConfigured
 
 Set the error message displayed when there are no shops configured.
@@ -321,6 +360,13 @@ Shops are defined in the `server.toml` configuration file. Shops are stored as a
 	quantity = 64 # The quantity of the item for sale.
   [[server.shops.entries]]
 	itemId = "minecraft:dirt" # The item ID of the item for sale.
-	price = 5 # The price of the item.
-	quantity = 64 # The quantity of the item for sale.
+	[[server.shops.entries.options]] # The purchase options for the item. Allows for multiple purchase options with different prices and quantities.
+		price = 1
+		quantity = 1
+	[[server.shops.entries.options]]
+		price = 15
+		quantity = 32
+	[[server.shops.entries.options]]
+		price = 30
+		quantity = 64
 ```
