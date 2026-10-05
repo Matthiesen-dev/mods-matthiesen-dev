@@ -31,6 +31,7 @@ All of the configuration files for Cobbled Market are located in the `<game_dire
 		market = "CHEAT_COMMANDS_AND_COMMAND_BLOCKS"
 		market_shop = "CHEAT_COMMANDS_AND_COMMAND_BLOCKS"
 		market_reload = "ALL_COMMANDS"
+		market_debug = "ALL_COMMANDS"
 ```
 
 ### Command Permission Levels
@@ -60,6 +61,13 @@ Permission level for the `/market <shopId>` command, which opens a specific shop
 #### market_reload
 
 Permission level for the `/market reload` command, which reloads the configuration files.
+
+- Type: `enum`
+- Default: `ALL_COMMANDS`
+
+#### market_debug
+
+Permission level for the `/market debug` command, which provides debug information.
 
 - Type: `enum`
 - Default: `ALL_COMMANDS`
@@ -385,4 +393,17 @@ Shops are defined in the `server.toml` configuration file. Shops are stored as a
 	[[server.shops.entries.options]]
 		price = 30
 		quantity = 64
+```
+
+##### Using Custom NBT Data for Shop Items
+
+The `shopId` and `itemId` can also include custom NBT data for the items. This allows you to create shops that sell items with specific NBT data, such as enchanted items or items with custom names and lore.
+
+An example of a shop entry with custom NBT data is shown below:
+
+```toml title="Shop Entry with Custom NBT Data"
+[[server.shops.entries]]
+  itemId = "minecraft:diamond_sword[minecraft:damage=5,minecraft:unbreakable={}]" # The item ID with custom NBT data.
+  price = 100 # The price of the item.
+  quantity = 1 # The quantity of the item for sale.
 ```

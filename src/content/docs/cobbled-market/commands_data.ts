@@ -18,5 +18,11 @@ export const commands: Commands = [
         description: "Reloads the market configuration and shop data from the server.",
         usage: "/market reload",
         permissionNode: "cobbled_market.command.market.reload",
+    },
+    {
+        command: "market debug main-hand-nbt",
+        description: "Displays the NBT data of the item in the player's main hand.",
+        usage: "/market debug main-hand-nbt",
+        permissionNode: "cobbled_market.command.market.debug.main-hand-nbt",
     }
 ];
