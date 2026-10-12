@@ -1,0 +1,426 @@
+---
+title: Global Ban - Configuration
+description: Configuration for Global Ban.
+prev: 
+  link: /global-ban
+  label: "Overview"
+next: 
+  link: /global-ban/commands
+  label: "Commands"
+sidebar:
+  label: Configuration
+  order: 2
+tableOfContents:
+  minHeadingLevel: 2
+  maxHeadingLevel: 6
+---
+
+import { Aside } from "@astrojs/starlight/components";
+
+All of the configuration files for Global Ban are located in the `<game_directory>/config/global_ban/` directory.
+
+**Configuration files:**
+- `server-config.toml` - This file contains the server-side configuration for Global Ban. You can use this file to change the default settings for the mod, such as the default level cap and scaling method.
+- `permissions.toml` - This file contains the permission nodes for Global Ban. You can use this file to change the permission nodes for the commands and features of the mod.
+- `punished-accounts.toml` - This file contains the list of accounts that have been punished by Global Ban. You can use this file to view and manage the punished accounts.
+
+## Server Configuration
+
+```toml title="server-config.toml"
+[server]
+	serverUUID = "d445bb2d-7054-4844-bc12-8e5eb5900788"
+	autoBanPlayersByIP = false
+	showKnownAccounts = false
+	showPunishActionsInChat = false
+	defaultBanReason = "Unknown reason"
+	textParser = "VANILLA"
+	[server.scheduler]
+		cpuCorePoolSize = 1
+		expiredPunishmentsCheckInterval = 5
+		apiSyncEnabled = false
+		apiSyncInterval = 30
+		apiSyncUrl = ""
+	[server.messages]
+		banChatMessage = ["Player &c%player% &rhas been banned by &6%operator%&r!", "Reason: &e%reason%&r"]
+		tempBanChatMessage = ["Player &c%player% &rhas been temp banned by &6%operator%&r!", "Reason: &e%reason%&r", "Expires in: &e%expiration_time%&r"]
+		ipBanChatMessage = ["Player &c%player% &rhas been IP banned by &6%operator%&r!", "Reason: &e%reason%&r"]
+		tempIpBanChatMessage = ["Player &c%player% &rhas been temp IP banned by &6%operator%&r!", "Reason: &e%reason%&r", "Expires in: &e%expiration_time%&r"]
+		kickMessage = ["Player &c%player% &rhas been kicked by &6%operator%&r!", "Reason: &e%reason%&r"]
+		unbanChatMessage = ["Player &c%player% &rhas been unbanned by &6%operator%&r!"]
+		ipUnbanChatMessage = ["Player &c%player% &rhas been IP unbanned by &6%operator%&r!"]
+		pardonChatMessage = ["Player &c%player% &rhas been pardoned by &6%operator%&r!"]
+		banScreen = ["&c&lYou have been banned from this server!&r", "&7Reason: &e%reason%&r", "&7By: &6%operator%&r"]
+		tempBanScreen = ["&c&lYou have been temporarily banned from this server!&r", "&7Reason: &e%reason%&r", "&7By: &6%operator%&r", "&7Expires in: &e%expiration_time%&r"]
+		ipBanScreen = ["&c&lYou have been banned from this server!&r", "&7Reason: &e%reason%&r", "&7By: &6%operator%&r"]
+		tempIpBanScreen = ["&c&lYou have been temporarily banned from this server!&r", "&7Reason: &e%reason%&r", "&7By: &6%operator%&r", "&7Expires in: &e%expiration_time%&r"]
+		kickScreen = ["&c&lYou have been kicked from this server!&r", "&7Reason: &e%reason%&r", "&7By: &6%operator%&r"]
+
+```
+
+### serverUUID
+
+The UUID of the server. This is used to identify the server when syncing punishments between servers. If you want to reset your server's UUID, delete this config and restart the server.
+
+- Type: `string`
+- Default: randomly generated UUID
+
+### autoBanPlayersByIP
+
+Whether to automatically ban alt accounts by IP address when a player is banned.
+
+- Type: `boolean`
+- Default: `true`
+
+### showKnownAccounts
+
+Whether to show known accounts for a player when they join the server.
+
+- Type: `boolean`
+- Default: `false`
+
+### showPunishActionsInChat
+
+Whether to show punish actions publicly in chat.
+
+- Type: `boolean`
+- Default: `false`
+
+### defaultBanReason
+
+The default reason to use when banning a player without a reason.
+
+- Type: `string`
+- Default: `Unknown reason`
+
+### textParser
+
+The text parser to use for parsing text. This can be used to change the way text is displayed in chat and on the disconnect screen.
+
+- Type: `enum`
+- Allowed Values: `VANILLA`, `EMBERS`, `ADVENTURE`
+- Default: `VANILLA`
+
+### Scheduler Config
+
+#### cpuCorePoolSize
+
+The number of CPU cores to use for the scheduler. This can be used to improve performance on servers with multiple CPU cores.
+
+- Type: `integer`
+- Default: `1`
+
+#### expiredPunishmentsCheckInterval
+
+The interval in minutes to check for and process expired punishments. This can be used to reduce the load on the server by checking for expired punishments less frequently.
+
+- Type: `integer`
+- Default: `5`
+
+#### apiSyncEnabled
+
+Whether to enable syncing of punishments to a remote API. This requires a compatible API to be set up.
+
+- Type: `boolean`
+- Default: `false`
+
+#### apiSyncInterval
+
+The interval in minutes to sync punishments to the remote API. This can be used to reduce the load on the server by syncing punishments less frequently.
+
+- Type: `integer`
+- Default: `30`
+
+#### apiSyncUrl
+
+The URL of the remote API to sync punishments with. This is required if `apiSyncEnabled` is set to `true`.
+
+- Type: `string`
+- Default: `""`
+
+### Messages Configuration
+
+Messages to display to players when they are banned, temp banned, or kicked. These messages can be customized to fit the needs of the server.
+
+#### banChatMessage
+
+The message to display to players when they are banned in chat.
+
+- Type: `string[]`
+- Default: `["Player &c%player% &rhas been banned by &6%operator%&r!", "Reason: &e%reason%&r"]`
+
+#### tempBanChatMessage
+
+The message to display to players when they are temp banned in chat.
+
+- Type: `string[]`
+- Default: `["Player &c%player% &rhas been temp banned by &6%operator%&r!", "Reason: &e%reason%&r", "Expires in: &e%expiration_time%&r"]`
+
+#### ipBanChatMessage
+
+The message to display to players when they are IP banned in chat.
+
+- Type: `string[]`
+- Default: `["Player &c%player% &rhas been IP banned by &6%operator%&r!", "Reason: &e%reason%&r"]`
+
+#### tempIpBanChatMessage
+
+The message to display to players when they are temp IP banned in chat.
+
+- Type: `string[]`
+- Default: `["Player &c%player% &rhas been temp IP banned by &6%operator%&r!", "Reason: &e%reason%&r", "Expires in: &e%expiration_time%&r"]`
+
+#### kickMessage
+
+The message to display to players when they are kicked.
+
+- Type: `string[]`
+- Default: `["Player &c%player% &rhas been kicked by &6%operator%&r!", "Reason: &e%reason%&r"]`
+
+#### unbanChatMessage
+
+The message to display to players when they are unbanned in chat.
+
+- Type: `string[]`
+- Default: `["Player &c%player% &rhas been unbanned by &6%operator%&r!"]`
+
+#### ipUnbanChatMessage
+
+The message to display to players when they are IP unbanned in chat.
+
+- Type: `string[]`
+- Default: `["Player &c%player% &rhas been IP unbanned by &6%operator%&r!"]`
+
+#### pardonChatMessage
+
+The message to display to players when they are pardoned in chat.
+
+- Type: `string[]`
+- Default: `["Player &c%player% &rhas been pardoned by &6%operator%&r!"]`
+
+#### banScreen
+
+The message to display to players when they are banned on the disconnect screen.
+
+- Type: `string[]`
+- Default: `["&c&lYou have been banned from this server!&r", "&7Reason: &e%reason%&r", "&7By: &6%operator%&r"]`
+
+#### tempBanScreen
+
+The message to display to players when they are temp banned on the disconnect screen.
+
+- Type: `string[]`
+- Default: `["&c&lYou have been temporarily banned from this server!&r", "&7Reason: &e%reason%&r", "&7By: &6%operator%&r", "&7Expires in: &e%expiration_time%&r"]
+
+#### ipBanScreen
+
+The message to display to players when they are IP banned on the disconnect screen.
+
+- Type: `string[]`
+- Default: `["&c&lYou have been banned from this server!&r", "&7Reason: &e%reason%&r", "&7By: &6%operator%&r"]`
+
+#### tempIpBanScreen
+
+The message to display to players when they are temp IP banned on the disconnect screen.
+
+- Type: `string[]`
+- Default: `["&c&lYou have been temporarily banned from this server!&r", "&7Reason: &e%reason%&r", "&7By: &6%operator%&r", "&7Expires in: &e%expiration_time%&r"]
+
+#### kickScreen
+
+The message to display to players when they are kicked on the disconnect screen.
+
+- Type: `string[]`
+- Default: `["&c&lYou have been kicked from this server!&r", "&7Reason: &e%reason%&r", "&7By: &6%operator%&r"]`
+
+## Permissions Configuration
+
+```toml title="permissions.toml"
+[permissions]
+	seeKnownAccounts = "ALL_COMMANDS"
+	seeBans = "ALL_COMMANDS"
+	canBanAdmins = "ALL_COMMANDS"
+	blockPunishments = "ALL_COMMANDS"
+	[permissions.commands]
+		root = "ALL_COMMANDS"
+		reload = "ALL_COMMANDS"
+		import = "ALL_COMMANDS"
+		kick = "ALL_COMMANDS"
+		ban = "ALL_COMMANDS"
+		ban-ip = "ALL_COMMANDS"
+		temp-ban = "ALL_COMMANDS"
+		temp-ban-ip = "ALL_COMMANDS"
+		ban-list = "ALL_COMMANDS"
+		pardon = "ALL_COMMANDS"
+		pardon-ip = "ALL_COMMANDS"
+		unban = "ALL_COMMANDS"
+		unban-ip = "ALL_COMMANDS"
+
+```
+
+### seeKnownAccounts
+
+Permission level required to see known accounts for a player when they join the server.
+
+- Type: [`PermissionLevel`](#permissionlevel)
+- Default: `ALL_COMMANDS`
+
+### seeBans
+
+Permission level required to see bans in chat when a player is banned.
+
+- Type: [`PermissionLevel`](#permissionlevel)
+- Default: `ALL_COMMANDS`
+
+### canBanAdmins
+
+Permission level required to ban admins.
+
+- Type: [`PermissionLevel`](#permissionlevel)
+- Default: `ALL_COMMANDS`
+
+### blockPunishments
+
+Permission level required to block punishments.
+
+- Type: [`PermissionLevel`](#permissionlevel)
+- Default: `ALL_COMMANDS`
+
+### Commands Permissions
+
+Permission level required to use the `/global-ban` command and its subcommands.
+
+#### root
+
+Permission level required to use the `/global-ban` command.
+
+- Type: [`PermissionLevel`](#permissionlevel)
+- Default: `ALL_COMMANDS`
+
+#### reload
+
+Permission level required to use the `/global-ban reload` command.
+
+- Type: [`PermissionLevel`](#permissionlevel)
+- Default: `ALL_COMMANDS`
+
+#### import
+
+Permission level required to use the `/global-ban import` command.
+
+- Type: [`PermissionLevel`](#permissionlevel)
+- Default: `ALL_COMMANDS`
+
+#### kick
+
+Permission level required to use the `/kick` command.
+
+- Type: [`PermissionLevel`](#permissionlevel)
+- Default: `ALL_COMMANDS`
+
+#### ban
+
+Permission level required to use the `/ban` command.
+
+- Type: [`PermissionLevel`](#permissionlevel)
+- Default: `ALL_COMMANDS`
+
+#### ban-ip
+
+Permission level required to use the `/ban-ip` command.
+
+- Type: [`PermissionLevel`](#permissionlevel)
+- Default: `ALL_COMMANDS`
+
+#### temp-ban
+
+Permission level required to use the `/temp-ban` command.
+
+- Type: [`PermissionLevel`](#permissionlevel)
+- Default: `ALL_COMMANDS`
+
+#### temp-ban-ip
+
+Permission level required to use the `/temp-ban-ip` command.
+
+- Type: [`PermissionLevel`](#permissionlevel)
+- Default: `ALL_COMMANDS`
+
+#### ban-list
+
+Permission level required to use the `/banlist` and `/global-ban banlist` commands.
+
+- Type: [`PermissionLevel`](#permissionlevel)
+- Default: `ALL_COMMANDS`
+
+#### pardon
+
+Permission level required to use the `/pardon` command.
+
+- Type: [`PermissionLevel`](#permissionlevel)
+- Default: `ALL_COMMANDS`
+
+#### pardon-ip
+
+Permission level required to use the `/pardon-ip` command.
+
+- Type: [`PermissionLevel`](#permissionlevel)
+- Default: `ALL_COMMANDS`
+
+#### unban
+
+Permission level required to use the `/unban` command.
+
+- Type: [`PermissionLevel`](#permissionlevel)
+- Default: `ALL_COMMANDS`
+
+#### unban-ip
+
+Permission level required to use the `/unban-ip` command.
+
+- Type: [`PermissionLevel`](#permissionlevel)
+- Default: `ALL_COMMANDS`
+
+## Punished Accounts
+
+```toml title="punished-accounts.toml"
+accounts = []
+accounts_pending_sync = []
+```
+
+### accounts
+
+List of punished accounts. Each entry is a serialized [PunishmentRecord](#punishmentrecord) object.
+
+### accounts_pending_sync
+
+List of punished accounts that are pending sync. Each entry is a serialized [PunishmentRecord](#punishmentrecord) object.
+
+## Types
+
+### PunishmentRecord
+
+A PunishmentRecord object represents a record of a punished account.
+
+#### Fields
+
+- `type` - The type of punishment (e.g. ban, mute, kick).
+- `timestamp` - The timestamp of when the punishment was issued.
+- `duration` - The duration of the punishment (in seconds). A value of `-1` indicates a permanent punishment.
+- `playerUuid` - The UUID of the punished player.
+- `playerDisplayName` - The display name of the punished player.
+- `punisherUuid` - The UUID of the player who issued the punishment.
+- `punisherDisplayName` - The display name of the player who issued the punishment.
+- `reason` - The reason for the punishment.
+- `serverUuid` - The UUID of the server where the punishment was issued.
+
+### PermissionLevel
+
+A PermissionLevel object represents a level of permission that can be assigned to a player.
+
+#### Allowed Values
+
+- `NONE` - No permissions.
+- `SPAWN_PROTECTION_BYPASS` - Can bypass spawn protection.
+- `CHEAT_COMMANDS_AND_COMMAND_BLOCKS` - Can use cheat commands and command blocks.
+- `MULTIPLAYER_MANAGEMENT` - Can manage multiplayer settings.
+- `ALL_COMMANDS` - Can use all commands.

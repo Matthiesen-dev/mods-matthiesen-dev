@@ -1,0 +1,51 @@
+---
+title: Global Ban
+description: Server side ban management plugin, sync multiple servers, or connect multiple communities together.
+prev: false
+next: 
+  link: /global-ban/configuration
+  label: "Configuration"
+sidebar:
+  label: Getting Started
+  order: 1
+---
+
+import ModMeta from '~/components/ModMeta.astro';
+import ReadMore from '~/components/ReadMore.astro';
+import Deps from '~/components/Deps.astro';
+
+<ModMeta 
+  minecraftVersion='1.21.1'
+  github='global-ban'
+  modrinth='global-ban'
+  fabric neoforge
+/>
+
+<Deps matthiesenCore forgeConfigApiPort fabricApi gooeyLibs />
+
+Server side ban management plugin, sync multiple servers, or connect multiple communities together. Gives server owner's the 
+ability to ban players across multiple servers, and even across multiple communities.
+
+Custom ban messages, reasons, and durations can be set for the different punishment types, and can be configured to be different for each server. 
+This allows for a more personalized experience for the player, and can help to reduce confusion when a player is banned from multiple servers.
+
+## Requirements
+
+- [Matthiesen Core](https://modrinth.com/mod/matthiesen-core)
+- [Fabric API](https://modrinth.com/mod/fabric-api) (Fabric only)
+- [Forge Config API Port](https://modrinth.com/mod/forge-config-api-port) (Fabric only)
+
+### Optional Dependencies
+
+- [GooeyLibs](https://modrinth.com/mod/gooeylibs) - Required for GUI-based moderation tools, otherwise all moderation is done via commands.
+- [LuckPerms](https://modrinth.com/mod/luckperms) - Required for permission management, otherwise all permissions are managed via the Vanilla Permissions System.
+
+## FastStats Metrics
+
+This mod uses [FastStats](https://faststats.dev) to collect anonymous usage statistics. This helps the developer understand
+how this mod is being used and improve it over time. You can learn more about the data collected and how it is used by visiting
+[FastStats: Information](https://faststats.dev/info).
+
+You can also view the data collected by this mod on the [FastStats: Global Ban](https://faststats.dev/project/global-ban) page.
+
+To opt out of this data collection, set the `enabled` property to `false` in the `<game_directory>/config/matthiesen_core/metrics.properties` file.

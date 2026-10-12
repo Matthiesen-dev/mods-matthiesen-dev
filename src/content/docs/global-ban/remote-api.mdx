@@ -1,0 +1,81 @@
+---
+title: Remote API
+description: ""
+prev: 
+  link: /global-ban/commands
+  label: "Commands and Permissions"
+next: false
+sidebar:
+  label: Remote API
+  order: 4
+---
+
+import { Aside, Steps } from "@astrojs/starlight/components";
+
+Global Ban has the ability to sync punishments to a remote API, allowing for multiple servers to share the same ban list.
+This allows for Admins to ban players across multiple servers, and if desired, across multiple connected communities. 
+This feature is disabled by default, and can be enabled in the configuration file.
+
+A Remote API server implementation is required to use this feature, and is not included with the mod itself, and must be hosted separately.
+
+<Aside title="Public API server">
+A public Remote API server is also available for use, and can be found at [`global-ban.matthiesen.dev`](https://global-ban.matthiesen.dev). This server is maintained by the mod developer, and is available for use by anyone. However, it is recommended to host your own Remote API server for better performance and reliability.
+</Aside>
+
+## Remote API Setup
+
+Available at the [Global Ban Web API](https://github.com/Matthiesen-dev/global-ban-webapi) GitHub repository, this is a separate project that provides a Remote API server implementation for Global Ban.
+
+This project is a Web API and dashboard that servers sync punishments to and from it with a single POST request, and server owners manage servers, communities and members in the dashboard.
+
+Once you have the Remote API server set up and running, or you choose to use the public Remote API server, you can follow these steps to configure Global Ban to sync with the Remote API server.
+
+<Steps>
+
+1. Sign in to the Remote API server dashboard using Discord OAuth.
+2. Copy the Server UUID from the mods [`server-config.toml`](/global-ban/configuration#server-configuration) file.
+3. In the Remote API server dashboard, Click on the **Servers** page if not already on that page
+   a. Enter your server's UUID in the **Server UUID** field.
+   b. Enter a name for your server in the **Server Name** field.
+   c. Select a community for your server in the **Community** dropdown. (If you don't have a community yet, you can create one on the **Communities** page.)
+   d. Click **Add Server**.
+4. In the mods [`server-config.toml`](/global-ban/configuration#server-configuration) file, set the `server.scheduler.apiSyncUrl` property to the URL of the Remote API server. (For example: `https://global-ban.matthiesen.dev/api/v1/sync`)
+5. In the mods [`server-config.toml`](/global-ban/configuration#server-configuration) file, set the `server.scheduler.apiSyncEnabled` property to `true`.
+
+</Steps>
+
+### Roles and access
+
+New accounts only see their own servers and communities.
+
+| Role | Can do |
+| --- | --- |
+| Owner | Everything, including promoting admins, transferring ownership and deleting the community |
+| Admin | Invite members, approve join requests, remove members, approve subscriptions, revoke punishments, decide appeals and manage ban overrides |
+| Member | View members and punishments, add their own servers, leave |
+
+- Invites are tied to an immutable Discord user ID and can only be accepted by the linked Discord account. Users can copy their ID from Discord with Developer Mode enabled.
+- A subscription lets one community receive another's punishments. It stays pending until an admin of the source community approves it, and sync ignores pending ones.
+- Removing a member detaches their servers from the community.
+- Ownership transfers need the recipient to accept. A transferred server leaves its community if the new owner is not a member of it.
+- Deleting a server or community requires typing its name. Deleting a community removes its punishment records. Deleting a server keeps the punishments it originated.
+
+### Appeals
+
+Players can appeal bans without an account. Only `BAN` and `IP_BAN` punishments are appealable; `KICK` never reaches this API.
+
+1. At `/appeal` the player looks up their name or IP address. Only active (not revoked, not expired) bans are listed, and only the community, type, reason and date are shown. The IP, punisher and server are never exposed.
+2. The player picks the bans and communities to appeal to and submits a message with an optional contact. Each community gets its own appeal. Eligible communities are the one that issued the ban plus every community with an approved subscription to it.
+3. The player receives a private link, `/appeal/case/<token>`, to read replies, answer or withdraw. The token is shown once and only its SHA-256 hash is stored, so keep the link.
+4. Admins of the receiving community review it under **Appeals** in the dashboard and can reply, approve or deny.
+
+What approval does depends on who decides:
+
+- **Issuing community:** the punishment is revoked everywhere, and servers receive a `REMOVE` on their next sync.
+- **Subscribing community:** a ban override is created. The ban is lifted for that community's servers only and stays active elsewhere. Admins list and remove overrides on the community page; removing one re-sends the ban to the community's servers.
+
+The deciding admin is recorded as `decidedByUserId` on the appeal and `revokedByUserId` on a revoked punishment. Dashboard revokes record it too; revokes that arrive through sync do not.
+
+Each punishment and community pair can be appealed once. A withdrawn appeal can be filed again; a decided one cannot.
+
+Because there is no login, anyone who knows a player's name can look up and appeal that player's bans. Lookups and submissions are rate limited per client IP, with the strictest limit on IP lookups.

@@ -1,0 +1,62 @@
+---
+title: Commands and Permissions
+description: "Commands and Permissions for Global Ban."
+prev: 
+  link: /global-ban/configuration
+  label: "Configuration"
+next: 
+  link: /global-ban/remote-api
+  label: "Remote API"
+sidebar:
+  label: Commands
+  order: 3
+---
+
+import Commands from '~/components/Commands.astro';
+import { commands } from "./commands_data";
+
+## Commands
+
+<Commands commands={commands} />
+
+### Overridden Vanilla Commands
+
+The following vanilla commands have been overridden to use the global-ban system instead of the vanilla ban system. This allows for a more 
+seamless experience for server owners and players, as they can use the same commands they are used to, but with the added functionality of the global-ban system.
+
+To continue using the vanilla commands, you can use the `minecraft:` prefix before the command. For example, to use the vanilla `ban` command, you would use `/minecraft:ban <player> [reason]`.
+
+| Vanilla Command | Replaced with         |
+|-----------------|-----------------------|
+| `ban`           | `minecraft:ban`       |
+| `ban-ip`        | `minecraft:ban-ip`    |
+| `banlist`       | `minecraft:banlist`   |
+| `kick`          | `minecraft:kick`      |
+| `pardon`        | `minecraft:pardon`    |
+| `pardon-ip`     | `minecraft:pardon-ip` |
+
+## Permissions
+
+The following permission nodes can be used to control access to the various commands and features of the global-ban system. 
+These permission nodes can be used with any permission management system, such as LuckPerms, to control access to the 
+commands and features of the global-ban system.
+
+| Permission Node                        | Description                                                             |
+|----------------------------------------|-------------------------------------------------------------------------|
+| `global_ban.see_known_accounts`        | Allows Admins to see all known accounts for a player when they connect. |
+| `global_ban.see_bans`                  | Allows Admins to see bans when they happen, and when they are applied.  |
+| `global_ban.can_ban_admins`            | Allows Admins to ban other Admins.                                      |
+| `global_ban.block_punishments`         | Blocks all punishments from being applied to the player.                |
+| `global_ban.command.global_ban`        | Allows Admins to use the `/global-ban` command.                         |
+| `global_ban.command.global_ban.reload` | Allows Admins to use the `/global-ban reload` command.                  |
+| `global_ban.command.global_ban.import` | Allows Admins to use the `/global-ban import` command.                  |
+| `global_ban.command.kick`              | Allows Admins to use the `/kick` command.                               |
+| `global_ban.command.ban`               | Allows Admins to use the `/ban` command.                                |
+| `global_ban.command.temp_ban`          | Allows Admins to use the `/tempban` command.                            |
+| `global_ban.command.ban_ip`            | Allows Admins to use the `/ban-ip` command.                             |
+| `global_ban.command.temp_ban_ip`       | Allows Admins to use the `/tempban-ip` command.                         |
+| `global_ban.command.unban`             | Allows Admins to use the `/unban` command.                              |
+| `global_ban.command.unban_ip`          | Allows Admins to use the `/unban-ip` command.                           |
+| `global_ban.command.pardon`            | Allows Admins to use the `/pardon` command.                             |
+| `global_ban.command.pardon_ip`         | Allows Admins to use the `/pardon-ip` command.                          |
+| `global_ban.command.ban_list`          | Allows Admins to use the `/global-ban banlist` & `/banlist` commands.   |

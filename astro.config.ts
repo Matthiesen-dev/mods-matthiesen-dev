@@ -156,6 +156,11 @@ export default defineConfig({
 							badge: "S",
 						}),
 						buildSidebarFromGlob({
+							name: "Global Ban",
+							docs: "global-ban",
+							badge: "S",
+						}),
+						buildSidebarFromGlob({
 							name: "Poke Power",
 							docs: "poke-power",
 						}),
