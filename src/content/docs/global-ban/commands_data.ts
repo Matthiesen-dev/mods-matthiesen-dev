@@ -23,13 +23,13 @@ export const commands: Commands = [
         command: "global-ban banlist",
         description: "Displays the list of banned players and IPs.",
         permissionNode: "global_ban.command.ban_list",
-        usage: "/global-ban banlist [page integer]",
+        usage: "/global-ban banlist",
     },
     {
         command: "banlist",
         description: "Displays the list of banned players and IPs.",
         permissionNode: "global_ban.command.ban_list",
-        usage: "/banlist [page integer]",
+        usage: "/banlist",
     },
     {
         command: "kick",
