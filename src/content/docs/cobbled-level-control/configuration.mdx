@@ -35,6 +35,37 @@ All of the configuration files for Cobbled Level Control are located in the `<ga
 		levelControl_setLevel = "ALL_COMMANDS"
 		levelControl_status = "NONE"
 		levelControl_statusOther = "ALL_COMMANDS"
+
+	#Battles Configuration
+	[permissions.battles]
+		legendary = "CHEAT_COMMANDS_AND_COMMAND_BLOCKS"
+		mythical = "CHEAT_COMMANDS_AND_COMMAND_BLOCKS"
+		ultraBeast = "CHEAT_COMMANDS_AND_COMMAND_BLOCKS"
+		shiny = "CHEAT_COMMANDS_AND_COMMAND_BLOCKS"
+		[permissions.battles.evoStages]
+			singleEvo = "CHEAT_COMMANDS_AND_COMMAND_BLOCKS"
+			firstStageEvo = "CHEAT_COMMANDS_AND_COMMAND_BLOCKS"
+			secondStageEvo = "CHEAT_COMMANDS_AND_COMMAND_BLOCKS"
+			finalStageEvo = "CHEAT_COMMANDS_AND_COMMAND_BLOCKS"
+
+	#Catching Configuration
+	[permissions.catching]
+		legendary = "CHEAT_COMMANDS_AND_COMMAND_BLOCKS"
+		mythical = "CHEAT_COMMANDS_AND_COMMAND_BLOCKS"
+		ultraBeast = "CHEAT_COMMANDS_AND_COMMAND_BLOCKS"
+		shiny = "CHEAT_COMMANDS_AND_COMMAND_BLOCKS"
+		[permissions.catching.evoStages]
+			singleEvo = "CHEAT_COMMANDS_AND_COMMAND_BLOCKS"
+			firstStageEvo = "CHEAT_COMMANDS_AND_COMMAND_BLOCKS"
+			secondStageEvo = "CHEAT_COMMANDS_AND_COMMAND_BLOCKS"
+			finalStageEvo = "CHEAT_COMMANDS_AND_COMMAND_BLOCKS"
+
+	#Leveling Configuration
+	[permissions.leveling]
+		singleEvo = "CHEAT_COMMANDS_AND_COMMAND_BLOCKS"
+		firstStageEvo = "CHEAT_COMMANDS_AND_COMMAND_BLOCKS"
+		secondStageEvo = "CHEAT_COMMANDS_AND_COMMAND_BLOCKS"
+		finalStageEvo = "CHEAT_COMMANDS_AND_COMMAND_BLOCKS"
 ```
 
 ### Command Permission Levels
@@ -81,6 +112,162 @@ Command permission level for the `/levelControl status-other` command.
 - Permission Node: `cobbled_level_control.command.level-control.status-other`
 - Default Value: `NONE`
 
+### Battle Permission Nodes
+
+Permission nodes for battling Pokémon. These permission nodes are used to determine who can battle certain types of Pokémon based on their rarity and evolution stage.
+
+#### Legendary
+
+The `legendary` permission node is used to determine who can battle legendary Pokémon.
+
+- Permission Node: `cobbled_level_control.battles.legendary`
+- Default Value: `CHEAT_COMMANDS_AND_COMMAND_BLOCKS`
+
+#### Mythical
+
+The `mythical` permission node is used to determine who can battle mythical Pokémon.
+
+- Permission Node: `cobbled_level_control.battles.mythical`
+- Default Value: `CHEAT_COMMANDS_AND_COMMAND_BLOCKS`
+
+#### Ultra Beast
+
+The `ultraBeast` permission node is used to determine who can battle ultra beast Pokémon.
+
+- Permission Node: `cobbled_level_control.battles.ultra-beast`
+- Default Value: `CHEAT_COMMANDS_AND_COMMAND_BLOCKS`
+
+#### Shiny
+
+The `shiny` permission node is used to determine who can battle shiny Pokémon.
+
+- Permission Node: `cobbled_level_control.battles.shiny`
+- Default Value: `CHEAT_COMMANDS_AND_COMMAND_BLOCKS`
+
+#### Evolution Stages Permission Nodes
+
+#### Single Evolution
+
+The `singleEvo` permission node is used to determine who can battle Pokémon with a single evolution stage.
+
+- Permission Node: `cobbled_level_control.battles.evo-stages.single-evo`
+- Default Value: `CHEAT_COMMANDS_AND_COMMAND_BLOCKS`
+
+#### First Stage Evolution
+
+The `first-stage-evo` permission node is used to determine who can battle Pokémon in their first stage of evolution.
+
+- Permission Node: `cobbled_level_control.battles.evo-stages.first-stage-evo`
+- Default Value: `CHEAT_COMMANDS_AND_COMMAND_BLOCKS`
+
+#### Second Stage Evolution
+
+The `second-stage-evo` permission node is used to determine who can battle Pokémon in their second stage of evolution.
+
+- Permission Node: `cobbled_level_control.battles.evo-stages.second-stage-evo`
+- Default Value: `CHEAT_COMMANDS_AND_COMMAND_BLOCKS`
+
+#### Final Stage Evolution
+
+The `final-stage-evo` permission node is used to determine who can battle Pokémon in their final stage of evolution.
+
+- Permission Node: `cobbled_level_control.battles.evo-stages.final-stage-evo`
+- Default Value: `CHEAT_COMMANDS_AND_COMMAND_BLOCKS`
+
+### Catching Permission Nodes
+
+Permission nodes for catching Pokémon. These permission nodes are used to determine who can catch certain types of Pokémon based on their rarity and evolution stage.
+
+#### Legendary
+
+The `legendary` permission node is used to determine who can catch legendary Pokémon.
+
+- Permission Node: `cobbled_level_control.catching.legendary`
+- Default Value: `CHEAT_COMMANDS_AND_COMMAND_BLOCKS`
+
+#### Mythical
+
+The `mythical` permission node is used to determine who can catch mythical Pokémon.
+
+- Permission Node: `cobbled_level_control.catching.mythical`
+- Default Value: `CHEAT_COMMANDS_AND_COMMAND_BLOCKS`
+
+#### Ultra Beast
+
+The `ultraBeast` permission node is used to determine who can catch ultra beast Pokémon.
+
+- Permission Node: `cobbled_level_control.catching.ultraBeast`
+- Default Value: `CHEAT_COMMANDS_AND_COMMAND_BLOCKS`
+
+#### Shiny
+
+The `shiny` permission node is used to determine who can catch shiny Pokémon.
+
+- Permission Node: `cobbled_level_control.catching.shiny`
+- Default Value: `CHEAT_COMMANDS_AND_COMMAND_BLOCKS`
+
+#### Evolution Stages Permission Nodes
+
+#### Single Evolution
+
+The `single-evo` permission node is used to determine who can catch Pokémon with a single evolution stage.
+
+- Permission Node: `cobbled_level_control.catching.evo-stages.single-evo`
+- Default Value: `CHEAT_COMMANDS_AND_COMMAND_BLOCKS`
+
+#### First Stage Evolution
+
+The `first-stage-evo` permission node is used to determine who can catch Pokémon in their first stage of evolution.
+
+- Permission Node: `cobbled_level_control.catching.evo-stages.first-stage-evo`
+- Default Value: `CHEAT_COMMANDS_AND_COMMAND_BLOCKS`
+
+#### Second Stage Evolution
+
+The `second-stage-evo` permission node is used to determine who can catch Pokémon in their second stage of evolution.
+
+- Permission Node: `cobbled_level_control.catching.evo-stages.second-stage-evo`
+- Default Value: `CHEAT_COMMANDS_AND_COMMAND_BLOCKS`
+
+#### Final Stage Evolution
+
+The `final-stage-evo` permission node is used to determine who can catch Pokémon in their final stage of evolution.
+
+- Permission Node: `cobbled_level_control.catching.evo-stages.final-stage-evo`
+- Default Value: `CHEAT_COMMANDS_AND_COMMAND_BLOCKS`
+
+### Leveling Permission Nodes
+
+Permission nodes for leveling Pokémon. These permission nodes are used to determine who can level certain types of Pokémon based on their evolution stage.
+
+#### Single Evolution
+
+The `single-evo` permission node is used to determine who can level Pokémon with a single evolution stage.
+
+- Permission Node: `cobbled_level_control.leveling.evo-stages.single-evo`
+- Default Value: `CHEAT_COMMANDS_AND_COMMAND_BLOCKS`
+
+#### First Stage Evolution
+
+The `first-stage-evo` permission node is used to determine who can level Pokémon in their first stage of evolution.
+
+- Permission Node: `cobbled_level_control.leveling.evo-stages.first-stage-evo`
+- Default Value: `CHEAT_COMMANDS_AND_COMMAND_BLOCKS`
+
+#### Second Stage Evolution
+
+The `second-stage-evo` permission node is used to determine who can level Pokémon in their second stage of evolution.
+
+- Permission Node: `cobbled_level_control.leveling.evo-stages.second-stage-evo`
+- Default Value: `CHEAT_COMMANDS_AND_COMMAND_BLOCKS`
+
+#### Final Stage Evolution
+
+The `final-stage-evo` permission node is used to determine who can level Pokémon in their final stage of evolution.
+
+- Permission Node: `cobbled_level_control.leveling.evo-stages.final-stage-evo`
+- Default Value: `CHEAT_COMMANDS_AND_COMMAND_BLOCKS`
+
 ## Server Configuration
 
 ```toml file="server.toml"
@@ -93,31 +280,28 @@ Command permission level for the `/levelControl status-other` command.
 		#Battle Module Configuration
 		[server.main.battleModule]
 			restrictBattles = true
-			legendary = "cobbled_level_control.battles.legendary"
-			mythical = "cobbled_level_control.battles.mythical"
-			ultraBeast = "cobbled_level_control.battles.ultraBeast"
-			shiny = "cobbled_level_control.battles.shiny"
-
+			legendary = true
+			mythical = true
+			ultraBeast = true
+			shiny = true
 			[server.main.battleModule.evoStages]
-				singleEvo = ""
-				firstStageEvo = ""
-				secondStageEvo = "cobbled_level_control.battles.evoStages.secondStageEvo"
-				finalStageEvo = "cobbled_level_control.battles.evoStages.finalStageEvo"
+				singleEvo = false
+				firstStageEvo = false
+				secondStageEvo = true
+				finalStageEvo = true
 
 		#Catching Module Configuration
 		[server.main.catchingModule]
 			restrictCatching = true
-			legendary = "cobbled_level_control.catching.legendary"
-			mythical = "cobbled_level_control.catching.mythical"
-			ultraBeast = "cobbled_level_control.catching.ultraBeast"
-			shiny = "cobbled_level_control.catching.shiny"
-
+			legendary = true
+			mythical = true
+			ultraBeast = true
+			shiny = true
 			[server.main.catchingModule.evoStages]
-				singleEvo = ""
-				firstStageEvo = ""
-				secondStageEvo = "cobbled_level_control.catching.evoStages.secondStageEvo"
-				finalStageEvo = "cobbled_level_control.catching.evoStages.finalStageEvo"
-
+				singleEvo = false
+				firstStageEvo = false
+				secondStageEvo = true
+				finalStageEvo = true
 			[[server.main.catchingModule.tiersConfig]]
 				tier = "1"
 				level = 10
@@ -136,14 +320,12 @@ Command permission level for the `/levelControl status-other` command.
 
 		#Leveling Module Configuration
 		[server.main.levelingModule]
-			restrictLeveling = false
-
+			restrictLeveling = true
 			[server.main.levelingModule.evoStages]
-				singleEvo = ""
-				firstStageEvo = ""
-				secondStageEvo = "cobbled_level_control.leveling.evoStages.secondStageEvo"
-				finalStageEvo = "cobbled_level_control.leveling.evoStages.finalStageEvo"
-
+				singleEvo = false
+				firstStageEvo = false
+				secondStageEvo = true
+				finalStageEvo = true
 			[[server.main.levelingModule.tiersConfig]]
 				tier = "1"
 				level = 10
@@ -214,25 +396,29 @@ The `restrictBattles` option allows you to control whether battles are restricte
 
 The `legendary` option allows you to set the required permission node for legendary Pokémon that players can battle with. If a player tries to battle with a legendary Pokémon without the required permission, they will be prevented from doing so.
 
-- Default Value: `cobbled_level_control.battles.legendary`
+- Type: `boolean`
+- Default Value: `true`
 
 ###### mythical
 
 The `mythical` option allows you to set the required permission node for mythical Pokémon that players can battle with. If a player tries to battle with a mythical Pokémon without the required permission, they will be prevented from doing so.
 
-- Default Value: `cobbled_level_control.battles.mythical`
+- Type: `boolean`
+- Default Value: `true`
 
 ###### ultraBeast
 
 The `ultraBeast` option allows you to set the required permission node for ultra beast Pokémon that players can battle with. If a player tries to battle with an ultra beast Pokémon without the required permission, they will be prevented from doing so.
 
-- Default Value: `cobbled_level_control.battles.ultraBeast`
+- Type: `boolean`
+- Default Value: `true`
 
 ###### shiny
 
 The `shiny` option allows you to set the required permission node for shiny Pokémon that players can battle with. If a player tries to battle with a shiny Pokémon without the required permission, they will be prevented from doing so.
 
-- Default Value: `cobbled_level_control.battles.shiny`
+- Type: `boolean`
+- Default Value: `true`
 
 ###### Evolution Stages Configuration
 
@@ -242,25 +428,29 @@ Evolution stages configuration options allow you to set the required permission 
 
 The `singleEvo` option allows you to set the required permission node for single evolution stage Pokémon that players can battle with. If a player tries to battle with a single evolution stage Pokémon without the required permission, they will be prevented from doing so.
 
-- Default Value: `""` (no restriction)
+- Type: `boolean`
+- Default Value: `false` (no restriction)
 
 ####### firstStageEvo
 
 The `firstStageEvo` option allows you to set the required permission node for first evolution stage Pokémon that players can battle with. If a player tries to battle with a first evolution stage Pokémon without the required permission, they will be prevented from doing so.
 
-- Default Value: `""` (no restriction)
+- Type: `boolean`
+- Default Value: `false` (no restriction)
 
 ####### secondStageEvo
 
 The `secondStageEvo` option allows you to set the required permission node for second evolution stage Pokémon that players can battle with. If a player tries to battle with a second evolution stage Pokémon without the required permission, they will be prevented from doing so.
 
-- Default Value: `cobbled_level_control.battles.evoStages.secondStageEvo`
+- Type: `boolean`
+- Default Value: `true`
 
 ####### finalStageEvo
 
 The `finalStageEvo` option allows you to set the required permission node for final evolution stage Pokémon that players can battle with. If a player tries to battle with a final evolution stage Pokémon without the required permission, they will be prevented from doing so.
 
-- Default Value: `cobbled_level_control.battles.evoStages.finalStageEvo`
+- Type: `boolean`
+- Default Value: `true`
 
 ##### Catching Module Configuration
 
@@ -276,53 +466,61 @@ The `restrictCatching` option allows you to control whether catching is restrict
 
 The `legendary` option allows you to set the required permission node for legendary Pokémon that players can catch. If a player tries to catch a legendary Pokémon without the required permission, they will be prevented from doing so.
 
-- Default Value: `cobbled_level_control.catching.legendary`
+- Type: `boolean`
+- Default Value: `true`
 
 ###### mythical
 
 The `mythical` option allows you to set the required permission node for mythical Pokémon that players can catch. If a player tries to catch a mythical Pokémon without the required permission, they will be prevented from doing so.
 
-- Default Value: `cobbled_level_control.catching.mythical`
+- Type: `boolean`
+- Default Value: `true`
 
 ###### ultraBeast
 
 The `ultraBeast` option allows you to set the required permission node for ultra beast Pokémon that players can catch. If a player tries to catch an ultra beast Pokémon without the required permission, they will be prevented from doing so.
 
-- Default Value: `cobbled_level_control.catching.ultraBeast`
+- Type: `boolean`
+- Default Value: `true`
 
 ###### shiny
 
 The `shiny` option allows you to set the required permission node for shiny Pokémon that players can catch. If a player tries to catch a shiny Pokémon without the required permission, they will be prevented from doing so.
 
-- Default Value: `cobbled_level_control.catching.shiny`
+- Type: `boolean`
+- Default Value: `true`
 
 ###### Evolution Stages Configuration
 
-The evolution stages configuration options allow you to set the required permission nodes for different evolution stages of Pokémon that players can catch. If a player tries to catch a Pokémon of a certain evolution stage without the required permission, they will be prevented from doing so.
+The evolution stages configuration options allow you to set if a player requires a permission node for different evolution stages of Pokémon that players can level. If a player tries to level a Pokémon of a certain evolution stage without the required permission, they will be prevented from doing so.
 
 ####### singleEvo
 
-The `singleEvo` option allows you to set the required permission node for single evolution stage Pokémon that players can catch. If a player tries to catch a single evolution stage Pokémon without the required permission, they will be prevented from doing so.
+The `singleEvo` option allows you to set if the player requires a permission node for single evolution stage Pokémon that players can level. If a player tries to level a single evolution stage Pokémon without the required permission, they will be prevented from doing so.
 
-- Default Value: `""` (no restriction)
+- Type: `boolean`
+- Default Value: `false` (no restriction)
 
 ####### firstStageEvo
 
-The `firstStageEvo` option allows you to set the required permission node for first evolution stage Pokémon that players can catch. If a player tries to catch a first evolution stage Pokémon without the required permission, they will be prevented from doing so.
+The `firstStageEvo` option allows you to set if the player requires a permission node for first evolution stage Pokémon that players can level. If a player tries to level a first evolution stage Pokémon without the required permission, they will be prevented from doing so.
 
-- Default Value: `""` (no restriction)
+- Type: `boolean`
+- Default Value: `false` (no restriction)
 
 ####### secondStageEvo
 
-The `secondStageEvo` option allows you to set the required permission node for second evolution stage Pokémon that players can catch. If a player tries to catch a second evolution stage Pokémon without the required permission, they will be prevented from doing so.
+The `secondStageEvo` option allows you to set if the player requires a permission node for second evolution stage Pokémon that players can level. If a player tries to level a second evolution stage Pokémon without the required permission, they will be prevented from doing so.
 
-- Default Value: `cobbled_level_control.catching.evoStages.secondStageEvo`
+- Type: `boolean`
+- Default Value: `true`
 
 ####### finalStageEvo
 
-The `finalStageEvo` option allows you to set the required permission node for final evolution stage Pokémon that players can catch. If a player tries to catch a final evolution stage Pokémon without the required permission, they will be prevented from doing so.
+The `finalStageEvo` option allows you to set if the player requires a permission node for final evolution stage Pokémon that players can level. If a player tries to level a final evolution stage Pokémon without the required permission, they will be prevented from doing so.
 
-- Default Value: `cobbled_level_control.catching.evoStages.finalStageEvo`
+- Type: `boolean`
+- Default Value: `true`
 
 ###### tiersConfig
 
@@ -349,31 +547,35 @@ The `restrictLeveling` option allows you to control whether leveling is restrict
 
 ###### Evolution Stages Configuration
 
-The evolution stages configuration options allow you to set the required permission nodes for different evolution stages of Pokémon that players can level. If a player tries to level a Pokémon of a certain evolution stage without the required permission, they will be prevented from doing so.
+The evolution stages configuration options allow you to set if a player requires a permission node for different evolution stages of Pokémon that players can level. If a player tries to level a Pokémon of a certain evolution stage without the required permission, they will be prevented from doing so.
 
 ####### singleEvo
 
-The `singleEvo` option allows you to set the required permission node for single evolution stage Pokémon that players can level. If a player tries to level a single evolution stage Pokémon without the required permission, they will be prevented from doing so.
+The `singleEvo` option allows you to set if the player requires a permission node for single evolution stage Pokémon that players can level. If a player tries to level a single evolution stage Pokémon without the required permission, they will be prevented from doing so.
 
-- Default Value: `""` (no restriction)
+- Type: `boolean`
+- Default Value: `false` (no restriction)
 
 ####### firstStageEvo
 
-The `firstStageEvo` option allows you to set the required permission node for first evolution stage Pokémon that players can level. If a player tries to level a first evolution stage Pokémon without the required permission, they will be prevented from doing so.
+The `firstStageEvo` option allows you to set if the player requires a permission node for first evolution stage Pokémon that players can level. If a player tries to level a first evolution stage Pokémon without the required permission, they will be prevented from doing so.
 
-- Default Value: `""` (no restriction)
+- Type: `boolean`
+- Default Value: `false` (no restriction)
 
 ####### secondStageEvo
 
-The `secondStageEvo` option allows you to set the required permission node for second evolution stage Pokémon that players can level. If a player tries to level a second evolution stage Pokémon without the required permission, they will be prevented from doing so.
+The `secondStageEvo` option allows you to set if the player requires a permission node for second evolution stage Pokémon that players can level. If a player tries to level a second evolution stage Pokémon without the required permission, they will be prevented from doing so.
 
-- Default Value: `cobbled_level_control.leveling.evoStages.secondStageEvo`
+- Type: `boolean`
+- Default Value: `true`
 
 ####### finalStageEvo
 
-The `finalStageEvo` option allows you to set the required permission node for final evolution stage Pokémon that players can level. If a player tries to level a final evolution stage Pokémon without the required permission, they will be prevented from doing so.
+The `finalStageEvo` option allows you to set if the player requires a permission node for final evolution stage Pokémon that players can level. If a player tries to level a final evolution stage Pokémon without the required permission, they will be prevented from doing so.
 
-- Default Value: `cobbled_level_control.leveling.evoStages.finalStageEvo`
+- Type: `boolean`
+- Default Value: `true`
 
 ###### tiersConfig
 

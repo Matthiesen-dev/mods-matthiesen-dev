@@ -1,6 +1,6 @@
 ---
-title: "Commands"
-description: "Commands for Cobbled Level Control."
+title: "Commands and Permissions"
+description: "Commands and permissions for Cobbled Level Control."
 prev: 
   link: /cobbled-level-control/configuration
   label: "Configuration"
@@ -16,3 +16,36 @@ import Commands from '~/components/Commands.astro';
 import { commands } from "./commands_data";
 
 <Commands commands={commands} />
+
+## Permissions
+
+Cobbled Level Control uses permission nodes to control access to the various commands and features of the mod. These permission nodes can be used with any permission management system, such as LuckPerms, to control access to the commands and features of Cobbled Level Control.
+
+| Permission Node                                              | Description                                                                  |
+|--------------------------------------------------------------|------------------------------------------------------------------------------|
+| `cobbled_level_control.command.level-control`                | Allows Players to use the `/level-control` command.                          |
+| `cobbled_level_control.command.level-control.level-up`       | Allows Players to use the `/level-control level-up` command.                 |
+| `cobbled_level_control.command.level-control.set-level`      | Allows Players to use the `/level-control set-level` command.                |
+| `cobbled_level_control.command.level-control.status`         | Allows Players to use the `/level-control status` command.                   |
+| `cobbled_level_control.command.level-control.status-other`   | Allows Players to use the `/level-control status-other` command.             |
+| `cobbled_level_control.command.level-control.configure`      | Allows Players to use the `/level-control configure` command.                |
+| `cobbled_level_control.battles.legendary`                    | Allows Players to battle Legendary Pokemon.                                  |
+| `cobbled_level_control.battles.mythical`                     | Allows Players to battle Mythical Pokemon.                                   |
+| `cobbled_level_control.battles.ultra_beast`                  | Allows Players to battle Ultra Beast Pokemon.                                |
+| `cobbled_level_control.battles.shiny`                        | Allows Players to battle Shiny Pokemon.                                      |
+| `cobbled_level_control.battles.evo-stages.single-evo`        | Allows Players to battle Pokemon with a single evolution stage.              |
+| `cobbled_level_control.battles.evo-stages.first-stage-evo`   | Allows Players to battle Pokemon with a first evolution stage.               |
+| `cobbled_level_control.battles.evo-stages.second-stage-evo`  | Allows Players to battle Pokemon with a second evolution stage.              |
+| `cobbled_level_control.battles.evo-stages.final-stage-evo`   | Allows Players to battle Pokemon with a final evolution stage.               |
+| `cobbled_level_control.catching.legendary`                   | Allows Players to catch Legendary Pokemon.                                   |
+| `cobbled_level_control.catching.mythical`                    | Allows Players to catch Mythical Pokemon.                                    |
+| `cobbled_level_control.catching.ultra_beast`                 | Allows Players to catch Ultra Beast Pokemon.                                 |
+| `cobbled_level_control.catching.shiny`                       | Allows Players to catch Shiny Pokemon.                                       |
+| `cobbled_level_control.catching.evo-stages.single-evo`       | Allows Players to catch Pokemon that are at their single evolution stage.    |
+| `cobbled_level_control.catching.evo-stages.first-stage-evo`  | Allows Players to catch Pokemon that are at their first evolution stage.     |
+| `cobbled_level_control.catching.evo-stages.second-stage-evo` | Allows Players to catch Pokemon that are at their second evolution stage.    |
+| `cobbled_level_control.catching.evo-stages.final-stage-evo`  | Allows Players to catch Pokemon that are at their final evolution stage.     |
+| `cobbled_level_control.leveling.evo-stages.single-evo`       | Allows Players to level Pokemon that have a single evolution stage.          |
+| `cobbled_level_control.leveling.evo-stages.first-stage-evo`  | Allows Players to level Pokemon that have a first evolution stage.           |
+| `cobbled_level_control.leveling.evo-stages.second-stage-evo` | Allows Players to level Pokemon that have a second evolution stage.          |
+| `cobbled_level_control.leveling.evo-stages.final-stage-evo`  | Allows Players to level Pokemon that have a final evolution stage.           |
