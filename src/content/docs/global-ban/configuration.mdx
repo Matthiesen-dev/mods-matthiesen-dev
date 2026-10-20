@@ -27,6 +27,7 @@ All of the configuration files for Global Ban are located in the `<game_director
 ## Server Configuration
 
 ```toml title="server-config.toml"
+#Server Config
 [server]
 	serverUUID = "00000000-0000-0000-0000-000000000000"
 	autoBanPlayersByIP = false
@@ -34,15 +35,22 @@ All of the configuration files for Global Ban are located in the `<game_director
 	showPunishActionsInChat = false
 	defaultBanReason = "Unknown reason"
 	textParser = "VANILLA"
-	securityLoggingEnabled = true
-	securityAuditLoggingEnabled = false
-	securityAuditLoggingMaxDays = 30
+	#Security Config
+	[server.security]
+		securityLoggingEnabled = true
+		securityAuditLoggingEnabled = false
+		securityAuditLoggingMaxDays = 30
+	#Scheduler Config
 	[server.scheduler]
 		cpuCorePoolSize = 1
 		expiredPunishmentsCheckInterval = 5
 		apiSyncEnabled = false
 		apiSyncInterval = 30
 		apiSyncUrl = ""
+	#Storage Config
+	[server.storage]
+		type = "CONFIG"
+	#Messages to display to players when they are banned, temp banned, or kicked
 	[server.messages]
 		banChatMessage = ["Player &c%player% &rhas been banned by &6%operator%&r!", "Reason: &e%reason%&r"]
 		tempBanChatMessage = ["Player &c%player% &rhas been temp banned by &6%operator%&r!", "Reason: &e%reason%&r", "Expires in: &e%expiration_time%&r"]
@@ -57,7 +65,12 @@ All of the configuration files for Global Ban are located in the `<game_director
 		ipBanScreen = ["&c&lYou have been banned from this server!&r", "&7Reason: &e%reason%&r", "&7By: &6%operator%&r"]
 		tempIpBanScreen = ["&c&lYou have been temporarily banned from this server!&r", "&7Reason: &e%reason%&r", "&7By: &6%operator%&r", "&7Expires in: &e%expiration_time%&r"]
 		kickScreen = ["&c&lYou have been kicked from this server!&r", "&7Reason: &e%reason%&r", "&7By: &6%operator%&r"]
-
+	#GUI Config
+	[server.gui]
+		banReasons = ["Cheating", "Griefing", "Harassment", "Spamming", "Other"]
+		tempBanReasons = ["Cheating", "Griefing", "Harassment", "Spamming", "Other"]
+		tempDurations = ["1h", "6h", "12h", "1d", "3d", "1w", "2w", "1m"]
+		kickReasons = ["Cheating", "Griefing", "Harassment", "Spamming", "Other"]
 ```
 
 ### serverUUID
@@ -103,21 +116,23 @@ The text parser to use for parsing text. This can be used to change the way text
 - Allowed Values: `VANILLA`, `EMBERS`, `ADVENTURE`
 - Default: `VANILLA`
 
-### securityLoggingEnabled
+### Security Config
+
+#### securityLoggingEnabled
 
 Whether to enable security logging. This will log all punish actions to the server log.
 
 - Type: `boolean`
 - Default: `true`
 
-### securityAuditLoggingEnabled
+#### securityAuditLoggingEnabled
 
 Whether to enable security audit logging. This will log all punish actions to a separate audit log file.
 
 - Type: `boolean`
 - Default: `false`
 
-### securityAuditLoggingMaxDays
+#### securityAuditLoggingMaxDays
 
 The maximum number of days to keep security audit logs. This is only applicable if `securityAuditLoggingEnabled` is set to `true`.
 
@@ -160,6 +175,16 @@ The URL of the remote API to sync punishments with. This is required if `apiSync
 
 - Type: `string`
 - Default: `""`
+
+### Storage Config
+
+#### type
+
+The type of storage to use for punishments. This feature is currently WIP and only supports the CONFIG storage type, which stores punishments in a config file. Other storage types may be added in the future.
+
+- Type: `enum`
+- Allowed Values: `CONFIG`
+- Default: `CONFIG`
 
 ### Messages Configuration
 
@@ -256,6 +281,36 @@ The message to display to players when they are kicked on the disconnect screen.
 - Type: `string[]`
 - Default: `["&c&lYou have been kicked from this server!&r", "&7Reason: &e%reason%&r", "&7By: &6%operator%&r"]`
 
+### GUI Config
+
+#### banReasons
+
+List of reasons to display in the GUI for banning players.
+
+- Type: `string[]`
+- Default: `["Cheating", "Griefing", "Harassment", "Spamming", "Other"]`
+
+#### tempBanReasons
+
+List of reasons to display in the GUI for temp banning players.
+
+- Type: `string[]`
+- Default: `["Cheating", "Griefing", "Harassment", "Spamming", "Other"]`
+
+#### tempDurations
+
+List of durations to display in the GUI for temp banning players.
+
+- Type: `string[]`
+- Default: `["1h", "6h", "12h", "1d", "3d", "1w", "2w", "1m"]`
+
+#### kickReasons
+
+List of reasons to display in the GUI for kicking players.
+
+- Type: `string[]`
+- Default: `["Cheating", "Griefing", "Harassment", "Spamming", "Other"]`
+
 ## Permissions Configuration
 
 ```toml title="permissions.toml"
@@ -278,7 +333,7 @@ The message to display to players when they are kicked on the disconnect screen.
 		pardon-ip = "ALL_COMMANDS"
 		unban = "ALL_COMMANDS"
 		unban-ip = "ALL_COMMANDS"
-
+		force_sync = "ALL_COMMANDS"
 ```
 
 ### seeKnownAccounts
@@ -404,20 +459,22 @@ Permission level required to use the `/unban-ip` command.
 - Type: [`PermissionLevel`](#permissionlevel)
 - Default: `ALL_COMMANDS`
 
+#### force_sync
+
+Permission level required to use the `/global-ban force-sync` command.
+
+- Type: [`PermissionLevel`](#permissionlevel)
+- Default: `ALL_COMMANDS`
+
 ## Punished Accounts
 
 ```toml title="punished-accounts.toml"
 accounts = []
-accounts_pending_sync = []
 ```
 
 ### accounts
 
 List of punished accounts. Each entry is a serialized [PunishmentRecord](#punishmentrecord) object.
-
-### accounts_pending_sync
-
-List of punished accounts that are pending sync. Each entry is a serialized [PunishmentRecord](#punishmentrecord) object.
 
 ## Types
 
