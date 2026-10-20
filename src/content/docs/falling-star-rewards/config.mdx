@@ -234,6 +234,7 @@ The permission level required to use the `/fallingstar preset remove` command.
 		scheduleId = "base"
 		enabled = true
 		selectionMode = "RANDOM"
+		startCallback = []
 
 		[schedules.schedulePresets.state]
 			rotationCursor = 0
@@ -300,6 +301,13 @@ Possible values are:
 - `"RANDOM"` - Events are selected randomly based on their weights.
 - `"WEIGHTED"` - Events are selected based on their weights, with higher-weighted events being more likely to be selected.
 - `"ROTATION"` - Events are selected in a fixed rotation order.
+
+#### startCallback
+
+A list of commands to be executed when the scheduling preset starts.
+
+- Type: List of Strings
+- Default: `[]`
 
 #### state
 
