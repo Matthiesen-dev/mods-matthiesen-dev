@@ -226,7 +226,9 @@ The permission level required to use the `/fallingstar preset remove` command.
 ## Scheduling Presets
 
 ```toml title="<game_directory>/config/falling_star_rewards/schedules.toml"
-	#List of schedule presets. Each preset defines the configuration for a specific schedule.
+#List of schedule presets. Each preset defines the configuration for a specific schedule.
+[schedules]
+	configVersion = 1
 	[[schedules.schedulePresets]]
 		baseIntervalTicks = 2400
 		intervalJitterTicks = 600
@@ -250,6 +252,15 @@ The permission level required to use the `/fallingstar preset remove` command.
 			weight = 1
 			enabled = true
 ```
+
+### configVersion
+
+The version of the configuration file format. This value is used to determine if the configuration file is compatible with the current version of the Falling Star Rewards mod.
+
+- Type: Integer
+- Default: `1`
+
+> **Note:** If you update the mod and the configuration file format has changed, you may need to update your configuration file to match the new format. Always back up your configuration files before making changes.
 
 ### Scheduling Presets Configuration
 
@@ -382,7 +393,9 @@ A list of event entries that define the events associated with the scheduling pr
 ## Events Presets
 
 ```toml title="<game_directory>/config/falling_star_rewards/events.toml"
-	#List of event presets. Each preset defines the configuration for a specific event.
+#List of event presets. Each preset defines the configuration for a specific event.
+[events]
+	configVersion = 1
 	[[events.eventPresets]]
 		eventId = "base"
 		visualsPresetId = "base"
@@ -403,6 +416,15 @@ A list of event entries that define the events associated with the scheduling pr
 			scope = "nearby"
 			useActionBar = false
 ```
+
+### configVersion
+
+The version of the configuration file format. This value is used to determine if the configuration file is compatible with the current version of the Falling Star Rewards mod.
+
+- Type: Integer
+- Default: `1`
+
+> **Note:** If you update the mod and the configuration file format has changed, you may need to update your configuration file to match the new format. Always back up your configuration files before making changes.
 
 ### Events Presets Configuration
 
@@ -530,7 +552,9 @@ A boolean value indicating whether announcements should be displayed in the acti
 ## Rewards Presets
 
 ```toml title="<game_directory>/config/falling_star_rewards/rewards.toml"
-	#List of reward presets. Each preset defines the configuration for a specific reward.
+#List of reward presets. Each preset defines the configuration for a specific reward.
+[rewards]
+	configVersion = 1
 	[[rewards.rewardPresets]]
 		rewardId = "base"
 		[[rewards.rewardPresets.entries]]
@@ -549,6 +573,15 @@ A boolean value indicating whether announcements should be displayed in the acti
 			minCount = 1
 			maxCount = 1
 ```
+
+### configVersion
+
+The version of the configuration file format. This value is used to determine if the configuration file is compatible with the current version of the Falling Star Rewards mod.
+
+- Type: Integer
+- Default: `1`
+
+> **Note:** If you update the mod and the configuration file format has changed, you may need to update your configuration file to match the new format. Always back up your configuration files before making changes.
 
 ### Rewards Presets Configuration
 
@@ -610,7 +643,9 @@ The custom data for the item to be rewarded. This value can be used to apply add
 ## Visuals Presets
 
 ```toml title="<game_directory>/config/falling_star_rewards/visuals.toml"
-	#List of Visuals Presets. Each preset defines the visuals for a falling star event.
+#List of Visuals Presets. Each preset defines the visuals for a falling star event.
+[visuals]
+	configVersion = 1
 	[[visuals.visualsPresets]]
 		particlesPerEmission = 2
 		fallDistance = 10
@@ -639,6 +674,15 @@ The custom data for the item to be rewarded. This value can be used to apply add
 			spread = 0.4
 ```
 
+### configVersion
+
+The version of the configuration file format. This value is used to determine if the configuration file is compatible with the current version of the Falling Star Rewards mod.
+
+- Type: Integer
+- Default: `1`
+
+> **Note:** If you update the mod and the configuration file format has changed, you may need to update your configuration file to match the new format. Always back up your configuration files before making changes.
+
 ### Visuals Presets Configuration
 
 An Array of visuals presets. Each preset defines the visuals for a falling star event.
@@ -664,11 +708,17 @@ The unique identifier for the particle preset used for the falling star's partic
 - Type: Enum (String)
 - Default: `"END_ROD"`
 
-**Allowed Values:**
-- `"ASH"` - Ash particles
-- `"GLOW"` - Glow particles
-- `"END_ROD"` - End rod particles
-- `"FIREWORK"` - Firework particles
+```toml title="Allowed Particle Preset Values"
+# ANGRY_VILLAGER, BUBBLE, CLOUD, CRIT, DAMAGE_INDICATOR, DRAGON_BREATH, DRIPPING_LAVA, FALLING_LAVA, DRIPPING_WATER, FALLING_WATER
+# EFFECT, ELDER_GUARDIAN, ENCHANT, END_ROD, EXPLOSION_EMITTER, EXPLOSION, GUST, SMALL_GUST, GUST_EMITTER_LARGE, GUST_EMITTER_SMALL
+# SONIC_BOOM, FIREWORK, FISHING, FLAME, INFESTED, CHERRY_LEAVES, SCULK_SOUL, SCULK_CHARGE_POP, SOUL_FIRE_FLAME, SOUL
+# FLASH, HAPPY_VILLAGER, COMPOSTER, HEART, INSTANT_EFFECT, ITEM_SLIME, ITEM_COBWEB, ITEM_SNOWBALL, LARGE_SMOKE, LAVA
+# MYCELIUM, NOTE, POOF, PORTAL, RAIN, SMOKE, SNEEZE, SPIT, SQUID_INK, SWEEP_ATTACK, OMINOUS_SPAWNING, RAID_OMEN, TRIAL_OMEN
+# TOTEM_OF_UNDYING, UNDERWATER, SPLASH, WITCH, BUBBLE_POP, CURRENT_DOWN, BUBBLE_COLUMN_UP, NAUTILUS, DOLPHIN, CAMPFIRE_COSY_SMOKE
+# CAMPFIRE_SIGNAL_SMOKE, DRIPPING_HONEY, FALLING_HONEY, LANDING_HONEY, FALLING_NECTAR, ASH, CRIMSON_SPORE, WARPED_SPORE, SPORE_BLOSSOM_AIR, DRIPPING_OBSIDIAN_TEAR
+# FALLING_OBSIDIAN_TEAR, LANDING_OBSIDIAN_TEAR, REVERSE_PORTAL, WHITE_ASH, SMALL_FLAME, DRIPPING_DROPSTONE_LAVA, FALLING_DROPSTONE_LAVA, DRIPPING_DRIPSTONE_WATER, FALLING_DRIPSTONE_WATER, GLOW_SQUID_INK
+# GLOW, WAX_ON, WAX_OFF, ELECTRIC_SPARK, SCRAPE, EGG_CRACK, DUST_PLUME, TRIAL_SPAWNER_DETECTED_PLAYER, TRIAL_SPAWNER_DETECTED_PLAYER_OMINOUS, VAULT_CONNECTION
+```
 
 #### visualsId
 
@@ -776,11 +826,17 @@ The unique identifier for the particle preset used for the impact particle effec
 - Type: Enum (String)
 - Default: `"FIREWORK"`
 
-**Allowed Values:**
-- `"ASH"` - Ash particles
-- `"GLOW"` - Glow particles
-- `"END_ROD"` - End rod particles
-- `"FIREWORK"` - Firework particles
+```toml title="Allowed Particle Preset Values"
+# ANGRY_VILLAGER, BUBBLE, CLOUD, CRIT, DAMAGE_INDICATOR, DRAGON_BREATH, DRIPPING_LAVA, FALLING_LAVA, DRIPPING_WATER, FALLING_WATER
+# EFFECT, ELDER_GUARDIAN, ENCHANT, END_ROD, EXPLOSION_EMITTER, EXPLOSION, GUST, SMALL_GUST, GUST_EMITTER_LARGE, GUST_EMITTER_SMALL
+# SONIC_BOOM, FIREWORK, FISHING, FLAME, INFESTED, CHERRY_LEAVES, SCULK_SOUL, SCULK_CHARGE_POP, SOUL_FIRE_FLAME, SOUL
+# FLASH, HAPPY_VILLAGER, COMPOSTER, HEART, INSTANT_EFFECT, ITEM_SLIME, ITEM_COBWEB, ITEM_SNOWBALL, LARGE_SMOKE, LAVA
+# MYCELIUM, NOTE, POOF, PORTAL, RAIN, SMOKE, SNEEZE, SPIT, SQUID_INK, SWEEP_ATTACK, OMINOUS_SPAWNING, RAID_OMEN, TRIAL_OMEN
+# TOTEM_OF_UNDYING, UNDERWATER, SPLASH, WITCH, BUBBLE_POP, CURRENT_DOWN, BUBBLE_COLUMN_UP, NAUTILUS, DOLPHIN, CAMPFIRE_COSY_SMOKE
+# CAMPFIRE_SIGNAL_SMOKE, DRIPPING_HONEY, FALLING_HONEY, LANDING_HONEY, FALLING_NECTAR, ASH, CRIMSON_SPORE, WARPED_SPORE, SPORE_BLOSSOM_AIR, DRIPPING_OBSIDIAN_TEAR
+# FALLING_OBSIDIAN_TEAR, LANDING_OBSIDIAN_TEAR, REVERSE_PORTAL, WHITE_ASH, SMALL_FLAME, DRIPPING_DROPSTONE_LAVA, FALLING_DROPSTONE_LAVA, DRIPPING_DRIPSTONE_WATER, FALLING_DRIPSTONE_WATER, GLOW_SQUID_INK
+# GLOW, WAX_ON, WAX_OFF, ELECTRIC_SPARK, SCRAPE, EGG_CRACK, DUST_PLUME, TRIAL_SPAWNER_DETECTED_PLAYER, TRIAL_SPAWNER_DETECTED_PLAYER_OMINOUS, VAULT_CONNECTION
+```
 
 ##### soundEnabled
 
