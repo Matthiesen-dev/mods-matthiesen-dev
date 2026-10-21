@@ -605,6 +605,18 @@ The unique identifier for the item to be rewarded. This ID corresponds to the it
 - Type: String
 - Default: `"minecraft:amethyst_shard"`
 
+**Applying custom NBT data for items**
+
+```toml title="Shop Entry with Custom NBT Data"
+[[rewards.rewardPresets.entries]]
+	itemId = "minecraft:diamond_sword[minecraft:damage=5,minecraft:unbreakable={}]"
+	weight = 5
+	minCount = 1
+	maxCount = 1
+```
+
+The `itemId` can include custom NBT data by appending it in square brackets after the item registry name. The NBT data should be formatted as a valid JSON object. This field also supports the use of SNBT (Stringified NBT) format for more complex item configurations.
+
 ##### weight
 
 The weight of the item in the reward preset. Higher weights increase the likelihood of the item being selected as a reward.
@@ -625,20 +637,6 @@ The maximum number of items to be rewarded when the item is selected. This value
 
 - Type: Integer
 - Default: `3`
-
-##### customModelData
-
-The custom model data value for the item to be rewarded. This value can be used to apply custom textures or models to the item in Minecraft.
-
-- Type: `Integer` | `null`
-- Default: `null`
-
-##### customData
-
-The custom data for the item to be rewarded. This value can be used to apply additional NBT data to the item in Minecraft.
-
-- Type: `String` | `null`
-- Default: `null`
 
 ## Visuals Presets
 
