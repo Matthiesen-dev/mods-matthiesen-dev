@@ -62,11 +62,6 @@ export default defineConfig({
 							name: "Matthiesen Core",
 							docs: "matthiesen-core"
 						}),
-						buildSidebarFromGlob({
-							name: "Matthiesen Core Webhooks",
-							docs: "matthiesen-core-webhooks",
-							badge: "S",
-						}),
 					],
 				},
 				{
@@ -208,6 +203,11 @@ export default defineConfig({
 								text: "Deprecated",
 								variant: "caution"
 							}
+						}),
+						buildSidebarFromGlob({
+							name: "Matthiesen Core Webhooks",
+							docs: "matthiesen-core-webhooks",
+							badge: "S",
 						}),
 						buildSidebarFromGlob({
 							name: "Matthiesen Lib",
