@@ -24,6 +24,7 @@ All of the configuration files for Cobblemon Boosters are located in the `<game_
 - `permissions.toml` - This file contains the permission nodes for Cobblemon Boosters.
 - `webhooks.toml` - This file contains the configuration options for Discord webhooks. This file is only used if the `matthiesen_core_webhooks` mod is installed.
 - `cache.toml` - This file contains cached data for the boosters. It is automatically generated and should not be edited manually.
+- `text.toml` - This file contains the text messages and GUI configuration for Cobblemon Boosters.
 
 ## Core Configuration
 
@@ -37,76 +38,6 @@ All of the configuration files for Cobblemon Boosters are located in the `<game_
 	queuePriorityMode = "FIFO"
 	timePriorityDirection = "SHORTEST_FIRST"
 	activePreemptionEnabled = false
-
-#Messages Configuration
-[messages]
-	#The text parser to use for messages.
-	#Note: Switching to another parser may break existing messages if they rely on specific formatting.
-	#For example, if you switch from Vanilla, to Adventure MiniMessage, the Adventure parser does not support
-	#legacy color codes, so any messages using them will appear broken, or return errors.
-	#Allowed Values: VANILLA, EMBERS, ADVENTURE
-	textParser = "VANILLA"
-	prefix = "&7[&6Boosters&7]"
-	sidebarTitle = "&6&lBoosters"
-	commandReload = "%prefix% &aReloaded Cobblemon Boosters!"
-	queuePriorityStatus = "%prefix% &7Queue priority -> enabled: &f%s&7, mode: &f%s&7, timeDirection: &f%s&7, preemption: &f%s"
-	queuePriorityUpdated = "%prefix% &aUpdated queue priority setting: &f%s"
-
-	#Shiny Boost Messages
-	[messages.shinyMessages]
-		barColor = "YELLOW"
-		barOverlay = "PROGRESS"
-		barText = "&6%multiplier%x Shiny Boost &7| &a%time_remaining% Remaining"
-		sidebarLine = "&7%time_remaining_short2% &6Shiny &f%multiplier%x"
-		noActiveBoosts = "%prefix% &aThere are currently no active Shiny Boosts!"
-		boostStarted = "%prefix% &aStarted an Shiny %multiplier%x boost for %duration%!"
-		boostAddedToQueue = "%prefix% &aAdded an Shiny %multiplier%x boost with a %duration% duration to queue!"
-		boostStopped = "%prefix% &aStopped the current Shiny boost!"
-		boostQueueCleared = "%prefix% &aCleared the Shiny queued boosts!"
-		boostInfo = "%prefix% &f&lMultiplier: &r&6%multiplier%x &7&l| &r&f&lTimer: &r&a%time_remaining% &7/ &a%duration%"
-		noQueuedBoosts = "%prefix% &aThere are currently no Shiny Boosts in the queue!"
-
-	#Catch Boost Messages
-	[messages.catchBoostMessages]
-		barColor = "PURPLE"
-		barOverlay = "PROGRESS"
-		barText = "&d%multiplier%x Catch Boost &7| &a%time_remaining% Remaining"
-		sidebarLine = "&7%time_remaining_short2% &dCatch &f%multiplier%x"
-		noActiveBoosts = "%prefix% &aThere are currently no active Catch Boosts!"
-		boostStarted = "%prefix% &aStarted an Catch %multiplier%x boost for %duration%!"
-		boostAddedToQueue = "%prefix% &aAdded an Catch %multiplier%x boost with a %duration% duration to queue!"
-		boostStopped = "%prefix% &aStopped the current Catch boost!"
-		boostQueueCleared = "%prefix% &aCleared the Catch queued boosts!"
-		boostInfo = "%prefix% &f&lMultiplier: &r&d%multiplier%x &7&l| &r&f&lTimer: &r&a%time_remaining% &7/ &a%duration%"
-		noQueuedBoosts = "%prefix% &aThere are currently no Catch Boosts in the queue!"
-
-	#Experience Boost Messages
-	[messages.experienceBoostMessages]
-		barColor = "GREEN"
-		barOverlay = "PROGRESS"
-		barText = "&a%multiplier%x Experience Boost &7| &a%time_remaining% Remaining"
-		sidebarLine = "&7%time_remaining_short2% &aExp &f%multiplier%x"
-		noActiveBoosts = "%prefix% &aThere are currently no active Experience Boosts!"
-		boostStarted = "%prefix% &aStarted an Experience %multiplier%x boost for %duration%!"
-		boostAddedToQueue = "%prefix% &aAdded an Experience %multiplier%x boost with a %duration% duration to queue!"
-		boostStopped = "%prefix% &aStopped the current Experience boost!"
-		boostQueueCleared = "%prefix% &aCleared the Experience queued boosts!"
-		boostInfo = "%prefix% &f&lMultiplier: &r&a%multiplier%x &7&l| &r&f&lTimer: &r&a%time_remaining% &7/ &a%duration%"
-		noQueuedBoosts = "%prefix% &aThere are currently no Experience Boosts in the queue!"
-
-	#Spawn Bucket Boost Messages
-	[messages.spawnBucketBoostMessages]
-		barColor = "BLUE"
-		barOverlay = "PROGRESS"
-		barText = "&b%bucket% Spawn Bucket Boost &7| &a%time_remaining% Remaining"
-		sidebarLine = "&7%time_remaining_short2% &b%bucket% &f%multiplier%x"
-		noActiveBoosts = "%prefix% &aThere are currently no active Spawn Bucket Boosts!"
-		boostStarted = "%prefix% &aStarted a %bucket% Spawn Bucket boost for %duration%!"
-		boostAddedToQueue = "%prefix% &aAdded a %bucket% Spawn Bucket Boost with a %duration% duration to queue!"
-		boostStopped = "%prefix% &aStopped the current Spawn Bucket boost!"
-		boostQueueCleared = "%prefix% &aCleared the Spawn Bucket queued boosts!"
-		boostInfo = "%prefix% &f&lBucket: &r&b%bucket% &7&l| &r&f&lTimer: &r&a%time_remaining% &7/ &a%duration%"
-		noQueuedBoosts = "%prefix% &aThere are currently no Spawn Bucket Boosts in the queue!"
 
 ```
 
@@ -167,112 +98,6 @@ Specifies the direction for time-based priority when `queuePriorityMode` is set 
 Enables or disables active preemption in the queue. When enabled, new boosts can preempt currently active boosts based on the priority settings.
 
 - Default Value: `false`
-
-### Messages Configuration
-
-#### textParser
-
-The text parser to use for messages. This setting determines how messages are formatted and displayed in the game.
-
-- Available Options:
-  - `VANILLA` - Uses Minecraft's native text formatting.
-  - `EMBERS` - Uses the [Embers Text API](https://tysontheember.dev/embers-text-api/) formatting system.
-  - `ADVENTURE` - Uses the [Adventure MiniMessage](https://docs.papermc.io/adventure/minimessage/) text formatting system.
-- Default Value: `VANILLA`
-
-#### prefix
-
-The prefix for all messages sent by the mod. This is typically used to identify messages related to Cobblemon Boosters.
-
-- Default Value: `&7[&6Boosters&7]`
-
-#### sidebarTitle
-
-The title displayed on the sidebar for the boosts. This is used when the display mode is set to `SIDEBAR`.
-
-- Default Value: `&6&lBoosters`
-
-#### commandReload
-
-The message displayed when the booster services are reloaded. This message is sent to the player who executed the reload command.
-
-- Default Value: `&7Booster services reloaded successfully.`
-
-#### queuePriorityStatus
-
-The message displayed to show the current status of the queue priority system. This includes whether it is enabled, the current mode, time direction, and preemption status.
-
-- Default Value: `&7Queue priority -> enabled: &f%s&7, mode: &f%s&7, timeDirection: &f%s&7, preemption: &f%s`
-
-#### queuePriorityUpdated
-
-The message displayed when the queue priority settings are updated. This message includes the new settings for the queue priority system.
-
-- Default Value: `&7Updated queue priority setting: &f%s`
-
-#### Boost Messages
-
-Shiny Boost Messages, Catch Boost Messages, Experience Boost Messages, and Spawn Bucket Boost Messages each have their own set of messages for various events such as starting a boost, adding to the queue, stopping a boost, clearing the queue, and displaying information about the boost. Each of these message sets includes customizable text for the boss bar, sidebar, and chat messages.
-
-##### barColor
-
-The color of the boss bar for the respective boost type.
-
-**Allowed Values:**
-- `PINK`
-- `BLUE`
-- `RED`
-- `GREEN`
-- `YELLOW`
-- `PURPLE`
-- `WHITE`
-
-##### barOverlay
-
-The overlay style of the boss bar for the respective boost type.
-
-**Allowed Values:**
-- `PROGRESS`
-- `NOTCHED_6`
-- `NOTCHED_10`
-- `NOTCHED_12`
-- `NOTCHED_20`
-
-##### barText
-
-The text displayed on the boss bar for the respective boost type. This can include placeholders such as `%multiplier%` and `%time_remaining%`.
-
-##### sidebarLine
-
-The line text for the sidebar display for the respective boost type. This can include placeholders such as `%time_remaining_short2%` and `%multiplier%`.
-
-##### noActiveBoosts
-
-The message displayed when there are no active boosts of the respective type.
-
-##### boostStarted
-
-The message displayed when a boost of the respective type is started. This can include placeholders such as `%multiplier%` and `%duration%`.
-
-##### boostAddedToQueue
-
-The message displayed when a boost of the respective type is added to the queue. This can include placeholders such as `%multiplier%` and `%duration%`.
-
-##### boostStopped
-
-The message displayed when a boost of the respective type is stopped.
-
-##### boostQueueCleared
-
-The message displayed when the queue for boosts of the respective type is cleared.
-
-##### boostInfo
-
-The message displayed to show information about the current boost of the respective type. This can include placeholders such as `%multiplier%`, `%time_remaining%`, and `%duration%`.
-
-##### noQueuedBoosts
-
-The message displayed when there are no queued boosts of the respective type.
 
 ## Permissions Configuration
 
@@ -897,3 +722,289 @@ The `activeBoosts` section contains the currently active boosts for Shiny, Catch
 #### queuedBoosts
 
 The `queuedBoosts` section contains the queued boosts for Shiny, Catch, Experience, and Spawn Bucket. Each boost is serialized as a list of strings and represents the boosts that are waiting to be activated.
+
+## Text Configuration
+
+```toml title="text.toml"
+textParser = "VANILLA"
+
+#Spawn Bucket Configuration
+[spawnBuckets]
+	common = "Common"
+	uncommon = "Uncommon"
+	rare = "Rare"
+	ultraRare = "Ultra Rare"
+	boss = "Alpha"
+
+#GUI Configuration
+[gui]
+	mainMenu_unknownBoosterType = "%prefix% &cUnknown booster type: %s&c."
+	CheckQueues_title = "&aAll Boost Queues&r"
+	stopActiveBoost_title = "&cConfirm to stop active boost!"
+	baseTitle = "&6Cobblemon Boosters&r"
+	text_nextPage = "Next"
+	text_previousPage = "Previous"
+
+	#Admin GUI Configuration
+	[gui.adminGui]
+		title = "&cAdmin Menu&r"
+		button_reloadTitle = "&cConfirm to reload"
+		button_clearQueuesTitle = "&cConfirm to clear all Queues"
+
+	#Booster Builder
+	[gui.boosterBuilder]
+		boosterBuilder_title = "&6%booster_name% Booster Builder&r"
+		boosterBuilder_mode_current = "&aCurrent Mode: &f%s"
+		boosterBuilder_mode_notSet = "&cCurrent Mode: &fNot Set"
+		boosterBuilder_noValue = "&cNot Set"
+		boosterBuilder_multiplier = "&7Multiplier: &f%s"
+		boosterBuilder_duration = "&7Duration: &f%s"
+		boosterBuilder_boostType = "&7Boost Type: &f%s"
+		boosterBuilder_bucket = "&7Bucket: &f%s"
+		boosterBuilder_unit = "&7Unit: &f%s"
+		boosterBuilder_details = "&6Details"
+		boosterBuilder_label_multiplier = "Multiplier"
+		boosterBuilder_label_duration = "Duration"
+		boosterBuilder_label_unit = "Unit"
+		boosterBuilder_label_bucket = "Bucket"
+		boosterBuilder_confirm_title = "&aConfirm to start/queue boost!"
+
+	#Queue GUI Configuration
+	[gui.queueGui]
+		queue_title = "&b%s Queue"
+		queue_duration = "&fDuration: &a%duration%"
+		queue_bucket = "&aBucket: &c%bucket%"
+
+	#Booster Titles Configuration
+	[gui.boosterTitles]
+		catch = "&a%multiplier%x Catch Boost&r"
+		catch_displayName = "Catch"
+		catch_menuTitle = "&aCatch Boosters&r"
+		experience = "&a%multiplier%x Experience Boost&r"
+		experience_displayName = "Experience"
+		experience_menuTitle = "&aExperience Boosters&r"
+		shiny = "&a%multiplier%x Shiny Boost&r"
+		shiny_displayName = "Shiny"
+		shiny_menuTitle = "&aShiny Boosters&r"
+		spawnBucket = "&a%bucket% Spawn Bucket Boost&r"
+		spawnBucket_displayName = "Spawn Bucket"
+		spawnBucket_menuTitle = "&aSpawn Bucket Boosters&r"
+
+	#Buttons Configuration
+	[gui.buttons]
+		confirmBoost = "Confirm Boost"
+		boostQueueEntry = "Boost Queue Entry"
+		boostQueueEntry_color = "AQUA"
+		viewBoostDetails = "View Boost Details"
+		viewBoostDetails_color = "AQUA"
+		increment = "Increment"
+		increment_color = "GREEN"
+		decrement = "Decrement"
+		decrement_color = "RED"
+		spawnBucketBoosters = "Spawn Bucket Boosters"
+		spawnBucketBoosters_color = "AQUA"
+		shinyBoosters = "Shiny Boosters"
+		shinyBoosters_color = "AQUA"
+		catchBoosters = "Catch Boosters"
+		catchBoosters_color = "AQUA"
+		experienceBoosters = "Experience Boosters"
+		experienceBoosters_color = "AQUA"
+		viewQueue = "View %s Queue"
+		viewQueue_color = "AQUA"
+		viewQueue_multiple = "View %s Queues"
+		viewQueue_multiple_color = "AQUA"
+		adminMenu = "Admin Menu"
+		adminMenu_color = "RED"
+		reloadConfig = "Reload Config"
+		reloadConfig_color = "RED"
+		clearAllQueues = "Clear All Queues"
+		clearAllQueues_color = "RED"
+		cancel = "Cancel"
+		cancel_color = "RED"
+		confirm = "Confirm"
+		confirm_color = "GREEN"
+		stopActiveBoost = "Stop Active Boost"
+		stopActiveBoost_color = "RED"
+		viewActiveBoost = "View Active Boost"
+		viewActiveBoost_color = "AQUA"
+		startBoost = "Start New %s"
+		startBoost_color = "GREEN"
+		pageText = "Page %s of %s"
+		pageText_color = "GRAY"
+
+#Messages Configuration
+[messages]
+	prefix = "&7[&6Boosters&7]"
+	sidebarTitle = "&6&lBoosters"
+	commandReload = "%prefix% &aReloaded Cobblemon Boosters!"
+	queuePriorityStatus = "%prefix% &7Queue priority -> enabled: &f%s&7, mode: &f%s&7, timeDirection: &f%s&7, preemption: &f%s"
+	queuePriorityUpdated = "%prefix% &aUpdated queue priority setting: &f%s"
+
+	#Shiny Boost Messages
+	[messages.shinyMessages]
+		barColor = "YELLOW"
+		barOverlay = "PROGRESS"
+		barText = "&6%multiplier%x Shiny Boost &7| &a%time_remaining% Remaining"
+		sidebarLine = "&7%time_remaining_short2% &6Shiny &f%multiplier%x"
+		noActiveBoosts = "%prefix% &aThere are currently no active Shiny Boosts!"
+		boostStarted = "%prefix% &aStarted an Shiny %multiplier%x boost for %duration%!"
+		boostAddedToQueue = "%prefix% &aAdded an Shiny %multiplier%x boost with a %duration% duration to queue!"
+		boostStopped = "%prefix% &aStopped the current Shiny boost!"
+		boostQueueCleared = "%prefix% &aCleared the Shiny queued boosts!"
+		boostInfo = "%prefix% &f&lMultiplier: &r&6%multiplier%x &7&l| &r&f&lTimer: &r&a%time_remaining% &7/ &a%duration%"
+		noQueuedBoosts = "%prefix% &aThere are currently no Shiny Boosts in the queue!"
+
+	#Catch Boost Messages
+	[messages.catchBoostMessages]
+		barColor = "PURPLE"
+		barOverlay = "PROGRESS"
+		barText = "&d%multiplier%x Catch Boost &7| &a%time_remaining% Remaining"
+		sidebarLine = "&7%time_remaining_short2% &dCatch &f%multiplier%x"
+		noActiveBoosts = "%prefix% &aThere are currently no active Catch Boosts!"
+		boostStarted = "%prefix% &aStarted an Catch %multiplier%x boost for %duration%!"
+		boostAddedToQueue = "%prefix% &aAdded an Catch %multiplier%x boost with a %duration% duration to queue!"
+		boostStopped = "%prefix% &aStopped the current Catch boost!"
+		boostQueueCleared = "%prefix% &aCleared the Catch queued boosts!"
+		boostInfo = "%prefix% &f&lMultiplier: &r&d%multiplier%x &7&l| &r&f&lTimer: &r&a%time_remaining% &7/ &a%duration%"
+		noQueuedBoosts = "%prefix% &aThere are currently no Catch Boosts in the queue!"
+
+	#Experience Boost Messages
+	[messages.experienceBoostMessages]
+		barColor = "GREEN"
+		barOverlay = "PROGRESS"
+		barText = "&a%multiplier%x Experience Boost &7| &a%time_remaining% Remaining"
+		sidebarLine = "&7%time_remaining_short2% &aExp &f%multiplier%x"
+		noActiveBoosts = "%prefix% &aThere are currently no active Experience Boosts!"
+		boostStarted = "%prefix% &aStarted an Experience %multiplier%x boost for %duration%!"
+		boostAddedToQueue = "%prefix% &aAdded an Experience %multiplier%x boost with a %duration% duration to queue!"
+		boostStopped = "%prefix% &aStopped the current Experience boost!"
+		boostQueueCleared = "%prefix% &aCleared the Experience queued boosts!"
+		boostInfo = "%prefix% &f&lMultiplier: &r&a%multiplier%x &7&l| &r&f&lTimer: &r&a%time_remaining% &7/ &a%duration%"
+		noQueuedBoosts = "%prefix% &aThere are currently no Experience Boosts in the queue!"
+
+	#Spawn Bucket Boost Messages
+	[messages.spawnBucketBoostMessages]
+		barColor = "BLUE"
+		barOverlay = "PROGRESS"
+		barText = "&b%bucket% Spawn Bucket Boost &7| &a%time_remaining% Remaining"
+		sidebarLine = "&7%time_remaining_short2% &b%bucket% &f%multiplier%x"
+		noActiveBoosts = "%prefix% &aThere are currently no active Spawn Bucket Boosts!"
+		boostStarted = "%prefix% &aStarted a %bucket% Spawn Bucket boost for %duration%!"
+		boostAddedToQueue = "%prefix% &aAdded a %bucket% Spawn Bucket Boost with a %duration% duration to queue!"
+		boostStopped = "%prefix% &aStopped the current Spawn Bucket boost!"
+		boostQueueCleared = "%prefix% &aCleared the Spawn Bucket queued boosts!"
+		boostInfo = "%prefix% &f&lBucket: &r&b%bucket% &7&l| &r&f&lTimer: &r&a%time_remaining% &7/ &a%duration%"
+		noQueuedBoosts = "%prefix% &aThere are currently no Spawn Bucket Boosts in the queue!"
+
+	#Error Messages
+	[messages.errorMessages]
+		unknownBoostType = "%prefix% &cUnknown booster type. Valid types are: %s"
+		invalidMode = "%prefix% &cInvalid mode. Valid values: fifo, multiplier, time"
+		invalidDirection = "%prefix% &cInvalid direction. Valid values: shortest, longest"
+		selectModeFirst = "&cPlease select a field to modify first by clicking on its button!"
+		missingFields = "&cYou must fill out all fields before confirming!"
+
+```
+
+### Text Parser
+
+#### textParser
+
+Specifies the parser used to format configured messages. Existing messages may need to be updated when changing parsers, because each parser supports different formatting codes.
+
+**Allowed Values:**
+- `VANILLA` - Uses vanilla Minecraft formatting codes.
+- `EMBERS` - Uses the formatting supported by the Embers parser.
+- `ADVENTURE` - Uses Adventure MiniMessage formatting.
+
+- Default Value: `VANILLA`
+
+### Spawn Bucket Configuration
+
+The `spawnBuckets` section sets the display names used for each spawn bucket. These names are inserted into GUI text and boost messages.
+
+- `common` - Display name for the common bucket. Default: `Common`
+- `uncommon` - Display name for the uncommon bucket. Default: `Uncommon`
+- `rare` - Display name for the rare bucket. Default: `Rare`
+- `ultraRare` - Display name for the ultra-rare bucket. Default: `Ultra Rare`
+- `boss` - Display name for the boss bucket. Default: `Alpha`
+
+### GUI Configuration
+
+The `gui` section customizes menu titles, button labels, and other text shown in booster GUIs. Text values use the format supported by `textParser`. Values containing `%s` or named placeholders retain those placeholders so the mod can insert the relevant name, value, or page number.
+
+#### Main GUI
+
+- `mainMenu_unknownBoosterType` - Message shown if the main menu encounters an unknown booster type.
+- `CheckQueues_title` - Title of the queue overview GUI.
+- `stopActiveBoost_title` - Confirmation title shown before stopping an active boost.
+- `baseTitle` - Base title used by booster GUIs.
+- `text_nextPage` and `text_previousPage` - Labels for page navigation.
+
+#### Admin GUI
+
+The `gui.adminGui` section sets the menu title and confirmation titles for the reload and clear-queues actions: `title`, `button_reloadTitle`, and `button_clearQueuesTitle`.
+
+#### Booster Builder
+
+The `gui.boosterBuilder` section customizes the builder title, field labels, and confirmation text. The title accepts `%booster_name%`; the current mode, multiplier, duration, boost type, bucket, and unit values use `%s` for the value supplied by the GUI.
+
+- `boosterBuilder_title`, `boosterBuilder_mode_current`, and `boosterBuilder_mode_notSet` - Builder title and mode status text.
+- `boosterBuilder_noValue` - Text shown for a field that has not been set.
+- `boosterBuilder_multiplier`, `boosterBuilder_duration`, `boosterBuilder_boostType`, `boosterBuilder_bucket`, and `boosterBuilder_unit` - Labels and values for the corresponding boost settings.
+- `boosterBuilder_details` - Details label.
+- `boosterBuilder_label_multiplier`, `boosterBuilder_label_duration`, `boosterBuilder_label_unit`, and `boosterBuilder_label_bucket` - Button labels for selecting builder fields.
+- `boosterBuilder_confirm_title` - Confirmation title for starting or queueing the boost.
+
+#### Queue GUI
+
+The `gui.queueGui` section configures the queue title and the duration and bucket labels. `queue_title` uses `%s` for the queue name; `queue_duration` and `queue_bucket` use `%duration%` and `%bucket%` respectively.
+
+#### Booster Titles
+
+The `gui.boosterTitles` section contains a title, display name, and menu title for each booster type: `catch`, `experience`, `shiny`, and `spawnBucket`. The catch, experience, and shiny titles accept `%multiplier%`; the spawn bucket title accepts `%bucket%`.
+
+#### GUI Buttons
+
+The `gui.buttons` section configures button labels and their text colors. Each `*_color` value must be one of the Minecraft text colors listed in the TOML comments. The label keys are:
+
+- `confirmBoost`, `boostQueueEntry`, and `viewBoostDetails` - Boost confirmation, queue entry, and details actions.
+- `increment` and `decrement` - Value adjustment actions.
+- `spawnBucketBoosters`, `shinyBoosters`, `catchBoosters`, and `experienceBoosters` - Booster category buttons.
+- `viewQueue` and `viewQueue_multiple` - Queue buttons; each uses `%s` for the queue name or count.
+- `adminMenu`, `reloadConfig`, and `clearAllQueues` - Admin actions.
+- `cancel`, `confirm`, `stopActiveBoost`, and `viewActiveBoost` - Confirmation and active-boost actions.
+- `startBoost` - Start action; uses `%s` for the booster name.
+- `pageText` - Page indicator; uses `%s` for the current page and total page count.
+
+Each label's matching `*_color` key controls its color. The sample values are the defaults.
+
+### Messages Configuration
+
+The `messages` section configures chat messages and boost display text. Message strings can use the configured text parser and the placeholders shown in the sample. `prefix` is substituted wherever `%prefix%` appears, and `sidebarTitle` sets the sidebar display title.
+
+- `commandReload` - Confirmation sent after reloading the booster services.
+- `queuePriorityStatus` - Queue-priority status output; uses `%s` for the current settings.
+- `queuePriorityUpdated` - Confirmation after a queue-priority setting changes; uses `%s` for the updated setting.
+
+#### Boost Messages
+
+The `shinyMessages`, `catchBoostMessages`, `experienceBoostMessages`, and `spawnBucketBoostMessages` sections each configure one boost type. They share the following settings:
+
+- `barColor` and `barOverlay` - Boss bar color and overlay style. Allowed values are listed in the TOML comments.
+- `barText` and `sidebarLine` - Text shown in the boss bar or sidebar while the boost is active.
+- `noActiveBoosts` and `noQueuedBoosts` - Messages shown when there are no active or queued boosts of that type.
+- `boostStarted` and `boostAddedToQueue` - Messages shown when a boost starts immediately or is added to the queue.
+- `boostStopped` and `boostQueueCleared` - Messages shown after stopping a boost or clearing its queue.
+- `boostInfo` - Status details for a boost.
+
+The message templates use `%multiplier%`, `%duration%`, `%time_remaining%`, `%time_remaining_short2%`, and `%bucket%` as appropriate for the boost type. Their default colors, text, and formatting are shown in the corresponding TOML entries.
+
+#### Error Messages
+
+The `messages.errorMessages` section customizes validation and command feedback:
+
+- `unknownBoostType` - Shown for an unrecognized boost type; `%s` is replaced with the valid types.
+- `invalidMode` and `invalidDirection` - Shown when an invalid queue mode or time direction is provided.
+- `selectModeFirst` - Shown when a setting requires selecting a field first.
+- `missingFields` - Shown when required builder fields are missing at confirmation.
