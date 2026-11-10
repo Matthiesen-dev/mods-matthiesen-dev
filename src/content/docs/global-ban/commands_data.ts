@@ -20,6 +20,12 @@ export const commands: Commands = [
         usage: "/global-ban import [cleanup boolean]",
     },
     {
+        command: "global-ban export",
+        description: "Exports data from the Global Ban mod.",
+        permissionNode: "global_ban.command.global-ban.export",
+        usage: "/global-ban export",
+    },
+    {
         command: "global-ban banlist",
         description: "Displays the list of banned players and IPs.",
         permissionNode: "global_ban.command.ban_list",
