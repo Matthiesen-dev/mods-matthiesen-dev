@@ -19,6 +19,7 @@ All of the configuration files for Cobblemon Skills are located in the `<game_di
 **Configuration files:**
 - `permissions.toml` - This file contains the configuration related to Command and GUI permissions.
 - `server.toml` - This file contains the configuration related to server settings.
+- `text.toml` - This file contains the configuration related to text and messages displayed by the mod.
 - `professions/<profession>.toml` - This file contains the configuration related to each profession, including rewards and experience gained.
 
 ## Permissions Configuration
@@ -217,6 +218,515 @@ The multiplier for experience required per level.
 - Type: `integer`
 - Default: `20`
 - Range: `> 1`
+
+## Text Configuration
+
+The text configuration file `text.toml` contains all the messages and text displayed by the Cobblemon Skills mod.
+
+```toml title="text.toml"
+#Text Configuration
+[text]
+	#The text parser to use for parsing text in the mod.
+	#Allowed Values: VANILLA, EMBERS, ADVENTURE
+	text_parser = "VANILLA"
+
+	#GUI Configuration
+	[text.gui]
+
+		#Messages displayed in the GUI
+		[text.gui.messages]
+			#The message displayed when a reward is locked and cannot be redeemed.
+			gui_messages_rewardLocked = "You have not unlocked this reward yet. Level up your %profession% profession to unlock it."
+			#The message displayed when a reward has already been redeemed.
+			gui_messages_rewardRedeemed = "You have successfully redeemed the rewards for %tier% in %profession%."
+
+		#Buttons displayed in the GUI
+		[text.gui.buttons]
+			#The text displayed on the back button in the GUI.
+			gui_buttons_backButton = "Back"
+			#The text displayed on the next page button in the GUI.
+			gui_buttons_navigationNext = "Next"
+			#The text displayed on the previous page button in the GUI.
+			gui_buttons_navigationPrevious = "Previous"
+
+		#Leaderboard Configuration
+		[text.gui.leaderboard]
+			#The title displayed on the leaderboard GUI.
+			gui_leaderboard_title = "Cobblemon Skills Leaderboard"
+			#The format for displaying the rank of a player on the leaderboard.
+			gui_leaderboard_rank = "%rank%. %player%"
+			#The lore displayed on the leaderboard GUI.
+			gui_leaderboard_lore = ["Highest Profession Level: %highestLevel%", "Top Profession: %topProfession%"]
+
+		#Main Menu Configuration
+		[text.gui.mainMenu]
+			#The title displayed on the main menu GUI.
+			gui_mainMenu_title = "Cobblemon Skills"
+			#The text displayed on the 'Your Profile' button in the main menu GUI.
+			gui_mainMenu_yourProfileButton = "Your Profile"
+			#The lore displayed on the 'Your Profile' button in the main menu GUI.
+			gui_mainMenu_yourProfileButtonLore = ["View your profession progress", "and unlock status"]
+			#The text displayed on the 'Leaderboard' button in the main menu GUI.
+			gui_mainMenu_leaderboardButton = "Leaderboard"
+			#The lore displayed on the 'Leaderboard' button in the main menu GUI.
+			gui_mainMenu_leaderboardButtonLore = ["See the strongest players", "in the server"]
+
+		#Player Profile Configuration
+		[text.gui.playerProfile]
+			#The title displayed on the player profile GUI.
+			gui_playerProfile_title = "%player%'s Profile"
+			#The lore displayed on the player profile GUI.
+			gui_playerProfile_lore = ["Level: %level%", "Experience: %experience%/%nextLevelExp%"]
+
+		#Profession Entry Configuration
+		[text.gui.professionEntry]
+			#The title displayed on the profession entry GUI.
+			gui_professionEntry_title = "%player% - %profession% | Lvl %level%"
+			#The text displayed for a redeemed reward in the profession entry GUI.
+			gui_professionEntry_status_redeemed = "Redeemed"
+			#The text displayed for a ready-to-redeem reward in the profession entry GUI.
+			gui_professionEntry_status_ready = "Ready"
+			#The text displayed for a locked reward in the profession entry GUI.
+			gui_professionEntry_status_locked = "Locked"
+			#The lore displayed on the profession entry GUI when viewing your own profile.
+			gui_professionEntry_viewingOwnProfileLore = ["Requirement: %levelRequirement%", "Status: %status%", "Reward Count: %rewardCount%"]
+			#The lore displayed on the profession entry GUI when viewing another player's profile.
+			gui_professionEntry_viewingOtherProfileLore = ["Requirement: %levelRequirement%"]
+			#The text displayed when a profession has no rewards configured.
+			gui_professionEntry_noRewardsConfigured = "No rewards configured."
+			#The lore displayed when a profession has no rewards configured.
+			gui_professionEntry_noRewardsConfiguredLore = ["This profession currently has no rewards configured.", "Please ask an Admin to add some."]
+
+	#Command Messages
+	[text.commands]
+		#The message displayed when experience is successfully added to a player.
+		commands_addExpSuccess = "Added %amount% experience to player %player% for profession %profession%. Levels gained: %levelsGained%"
+		#The message displayed to the command source when a player's level is successfully set.
+		commands_setLevelSourceSuccess = "Set level of player %player% for profession %profession% to %level%"
+		#The message displayed to the target player when their level is successfully set by an administrator.
+		commands_setLevelTargetSuccess = "Your level for profession %profession% has been set to %level% by an administrator."
+		#The message displayed when the configuration is successfully reloaded.
+		commands_reloadSuccess = "Cobblemon Skills configuration reloaded successfully."
+		#The message displayed when a player's data is successfully reset.
+		commands_reset_selfSuccess = "Your Cobblemon Skills data has been reset."
+		#The message displayed when a player's data is attempted to be reset but no data exists.
+		commands_reset_selfNoData = "No Cobblemon Skills data found for your player profile."
+		#The message displayed when a player's data is successfully reset by an administrator.
+		commands_reset_playerSuccess = "Cobblemon Skills data for player %target% has been reset."
+		#The message displayed to the target player when their data is successfully reset by an administrator.
+		commands_reset_playerSuccessTarget = "Your Cobblemon Skills data has been reset by an administrator."
+		#The message displayed when a player's data is attempted to be reset by an administrator but no data exists.
+		commands_reset_playerNoData = "No Cobblemon Skills data found for player %target%."
+		#The message displayed when all players' data is successfully reset by an administrator.
+		commands_reset_allSuccess = "Cobblemon Skills data for %count% players has been reset."
+
+	#Reward Messages
+	[text.rewards]
+		#The message displayed when a player levels up in a profession.
+		reward_levelUp_chatMessage = "Congratulations! You have leveled up to level %level% in %profession%!"
+		#The title displayed when a player levels up in a profession.
+		reward_levelUp_title = "&6&lLevel Up!"
+		#The subtitle displayed when a player levels up in a profession.
+		reward_levelUp_subTitle = "&eYou have reached level %level% in %profession%!"
+		#The message displayed when a player gains experience in a profession.
+		reward_experienceProgress_chatMessage = "%profession% +%experience% XP | %nextLevelExperience%"
+		#The message displayed when a player has maxed out their level in a profession.
+		reward_experienceProgress_maxed = "Lvl %d (Max)"
+		#The message displayed when a player is progressing towards the next level in a profession.
+		reward_experienceProgress_progress = "Lvl %d | %.0f/%d"
+
+	#Error Messages
+	[text.errors]
+		#The error message displayed when a menu fails to open.
+		errors_menuError = "An error occurred while trying to open the Cobblemon Skills menu. Please contact an administrator."
+		#The error message displayed when adding experience fails.
+		errors_addExpError = "An error occurred while trying to add experience to the player. Please contact an administrator."
+		#The error message displayed when setting a level fails.
+		errors_setLevelError = "An error occurred while trying to set the level for the player. Please contact an administrator."
+		#The error message displayed when setting a level exceeds the maximum allowed level.
+		errors_setLevelExceedMaxLevel = "The specified level exceeds the maximum allowed level of %maxLevel%."
+		#The error message displayed when reloading the configuration fails.
+		errors_reloadError = "An error occurred while trying to reload the configuration. Please contact an administrator."
+		#The error message displayed when resetting a player's data fails.
+		errors_reset_selfError = "An error occurred while trying to reset your data. Please contact an administrator."
+		#The error message displayed when resetting a player's data by an administrator fails.
+		errors_reset_playerError = "An error occurred while trying to reset the data for player %target%. Please contact an administrator."
+		#The error message displayed when resetting all players' data by an administrator fails.
+		errors_reset_allError = "An error occurred while trying to reset the data for all players. Please contact an administrator."
+		#The error message displayed when a player tries to access a menu they don't have permission for.
+		errors_menuNoPermission = "You do not have permission to access this menu."
+		#The error message displayed when a player tries to redeem a reward they have already redeemed.
+		errors_rewardAlreadyRedeemed = "You have already redeemed this reward."
+		#The error message displayed when a player tries to redeem a reward but the redemption fails.
+		errors_rewardRedeemFailed = "Failed to redeem the rewards for %tier% in %profession%. Please contact an administrator."
+
+```
+
+### text_parser
+
+The text parser used to format text displayed by the mod.
+
+- Type: `enum`
+- Allowed Values: `VANILLA`, `EMBERS`, `ADVENTURE`
+- Default: `VANILLA`
+
+### GUI Text
+
+#### gui_messages_rewardLocked
+
+The message displayed when a reward is locked and cannot be redeemed.
+
+- Type: `string`
+- Default: `You have not unlocked this reward yet. Level up your %profession% profession to unlock it.`
+
+#### gui_messages_rewardRedeemed
+
+The message displayed when a reward has already been redeemed.
+
+- Type: `string`
+- Default: `You have successfully redeemed the rewards for %tier% in %profession%.`
+
+#### gui_buttons_backButton
+
+The text displayed on the back button in the GUI.
+
+- Type: `string`
+- Default: `Back`
+
+#### gui_buttons_navigationNext
+
+The text displayed on the next page button in the GUI.
+
+- Type: `string`
+- Default: `Next`
+
+#### gui_buttons_navigationPrevious
+
+The text displayed on the previous page button in the GUI.
+
+- Type: `string`
+- Default: `Previous`
+
+#### gui_leaderboard_title
+
+The title displayed on the leaderboard GUI.
+
+- Type: `string`
+- Default: `Cobblemon Skills Leaderboard`
+
+#### gui_leaderboard_rank
+
+The format for displaying the rank of a player on the leaderboard.
+
+- Type: `string`
+- Default: `%rank%. %player%`
+
+#### gui_leaderboard_lore
+
+The lore displayed on the leaderboard GUI.
+
+- Type: `list of strings`
+- Default: `["Highest Profession Level: %highestLevel%", "Top Profession: %topProfession%"]`
+
+#### gui_mainMenu_title
+
+The title displayed on the main menu GUI.
+
+- Type: `string`
+- Default: `Cobblemon Skills`
+
+#### gui_mainMenu_yourProfileButton
+
+The text displayed on the "Your Profile" button in the main menu GUI.
+
+- Type: `string`
+- Default: `Your Profile`
+
+#### gui_mainMenu_yourProfileButtonLore
+
+The lore displayed on the "Your Profile" button in the main menu GUI.
+
+- Type: `list of strings`
+- Default: `["View your profession progress", "and unlock status"]`
+
+#### gui_mainMenu_leaderboardButton
+
+The text displayed on the "Leaderboard" button in the main menu GUI.
+
+- Type: `string`
+- Default: `Leaderboard`
+
+#### gui_mainMenu_leaderboardButtonLore
+
+The lore displayed on the "Leaderboard" button in the main menu GUI.
+
+- Type: `list of strings`
+- Default: `["See the strongest players", "in the server"]`
+
+#### gui_playerProfile_title
+
+The title displayed on the player profile GUI.
+
+- Type: `string`
+- Default: `%player%'s Profile`
+
+#### gui_playerProfile_lore
+
+The lore displayed on the player profile GUI.
+
+- Type: `list of strings`
+- Default: `["Level: %level%", "Experience: %experience%/%nextLevelExp%"]`
+
+#### gui_professionEntry_title
+
+The title displayed on the profession entry GUI.
+
+- Type: `string`
+- Default: `%player% - %profession% | Lvl %level%`
+
+#### gui_professionEntry_status_redeemed
+
+The text displayed for a redeemed reward in the profession entry GUI.
+
+- Type: `string`
+- Default: `Redeemed`
+
+#### gui_professionEntry_status_ready
+
+The text displayed for a ready-to-redeem reward in the profession entry GUI.
+
+- Type: `string`
+- Default: `Ready`
+
+#### gui_professionEntry_status_locked
+
+The text displayed for a locked reward in the profession entry GUI.
+
+- Type: `string`
+- Default: `Locked`
+
+#### gui_professionEntry_viewingOwnProfileLore
+
+The lore displayed on the profession entry GUI when viewing your own profile.
+
+- Type: `list of strings`
+- Default: `["Requirement: %levelRequirement%", "Status: %status%", "Reward Count: %rewardCount%"]`
+
+#### gui_professionEntry_viewingOtherProfileLore
+
+The lore displayed on the profession entry GUI when viewing another player's profile.
+
+- Type: `list of strings`
+- Default: `["Requirement: %levelRequirement%"]`
+
+#### gui_professionEntry_noRewardsConfigured
+
+The text displayed when a profession has no rewards configured.
+
+- Type: `string`
+- Default: `No rewards configured.`
+
+#### gui_professionEntry_noRewardsConfiguredLore
+
+The lore displayed when a profession has no rewards configured.
+
+- Type: `list of strings`
+- Default: `["This profession currently has no rewards configured.", "Please ask an Admin to add some."]`
+
+### Command Messages
+
+#### commands_addExpSuccess
+
+The message displayed when experience is successfully added to a player.
+
+- Type: `string`
+- Default: `Added %amount% experience to player %player% for profession %profession%. Levels gained: %levelsGained%`
+
+#### commands_setLevelSourceSuccess
+
+The message displayed to the command source when a player's level is successfully set.
+
+- Type: `string`
+- Default: `Set level of player %player% for profession %profession% to %level%`
+
+#### commands_setLevelTargetSuccess
+
+The message displayed to the target player when their level is successfully set by an administrator.
+
+- Type: `string`
+- Default: `Your level for profession %profession% has been set to %level% by an administrator.`
+
+#### commands_reloadSuccess
+
+The message displayed when the configuration is successfully reloaded.
+
+- Type: `string`
+- Default: `Cobblemon Skills configuration reloaded successfully.`
+
+#### commands_reset_selfSuccess
+
+The message displayed when a player's data is successfully reset.
+
+- Type: `string`
+- Default: `Your Cobblemon Skills data has been reset.`
+
+#### commands_reset_selfNoData
+
+The message displayed when a player's data is attempted to be reset but no data exists.
+
+- Type: `string`
+- Default: `No Cobblemon Skills data found for your player profile.`
+
+#### commands_reset_playerSuccess
+
+The message displayed when a player's data is successfully reset by an administrator.
+
+- Type: `string`
+- Default: `Cobblemon Skills data for player %target% has been reset.`
+
+#### commands_reset_playerSuccessTarget
+
+The message displayed to the target player when their data is successfully reset by an administrator.
+
+- Type: `string`
+- Default: `Your Cobblemon Skills data has been reset by an administrator.`
+
+#### commands_reset_playerNoData
+
+The message displayed when a player's data is attempted to be reset by an administrator but no data exists.
+
+- Type: `string`
+- Default: `No Cobblemon Skills data found for player %target%.`
+
+#### commands_reset_allSuccess
+
+The message displayed when all players' data is successfully reset by an administrator.
+
+- Type: `string`
+- Default: `Cobblemon Skills data for %count% players has been reset.`
+
+### Reward Messages
+
+#### reward_levelUp_chatMessage
+
+The message displayed when a player levels up in a profession.
+
+- Type: `string`
+- Default: `Congratulations! You have leveled up to level %level% in %profession%!`
+
+#### reward_levelUp_title
+
+The title displayed when a player levels up in a profession.
+
+- Type: `string`
+- Default: `&6&lLevel Up!`
+
+#### reward_levelUp_subTitle
+
+The subtitle displayed when a player levels up in a profession.
+
+- Type: `string`
+- Default: `&eYou have reached level %level% in %profession%!`
+
+#### reward_experienceProgress_chatMessage
+
+The message displayed when a player gains experience in a profession.
+
+- Type: `string`
+- Default: `%profession% +%experience% XP | %nextLevelExperience%`
+
+#### reward_experienceProgress_maxed
+
+The message displayed when a player has maxed out their level in a profession.
+
+- Type: `string`
+- Default: `Lvl %d (Max)`
+
+#### reward_experienceProgress_progress
+
+The message displayed when a player is progressing towards the next level in a profession.
+
+- Type: `string`
+- Default: `Lvl %d | %.0f/%d`
+
+### Error Messages
+
+#### errors_menuError
+
+The error message displayed when a menu fails to open.
+
+- Type: `string`
+- Default: `An error occurred while trying to open the Cobblemon Skills menu. Please contact an administrator.`
+
+#### errors_addExpError
+
+The error message displayed when adding experience fails.
+
+- Type: `string`
+- Default: `An error occurred while trying to add experience to the player. Please contact an administrator.`
+
+#### errors_setLevelError
+
+The error message displayed when setting a level fails.
+
+- Type: `string`
+- Default: `An error occurred while trying to set the level for the player. Please contact an administrator.`
+
+#### errors_setLevelExceedMaxLevel
+
+The error message displayed when setting a level exceeds the maximum allowed level.
+
+- Type: `string`
+- Default: `The specified level exceeds the maximum allowed level of %maxLevel%.`
+
+#### errors_reloadError
+
+The error message displayed when reloading the configuration fails.
+
+- Type: `string`
+- Default: `An error occurred while trying to reload the configuration. Please contact an administrator.`
+
+#### errors_reset_selfError
+
+The error message displayed when resetting a player's data fails.
+
+- Type: `string`
+- Default: `An error occurred while trying to reset your data. Please contact an administrator.`
+
+#### errors_reset_playerError
+
+The error message displayed when resetting a player's data by an administrator fails.
+
+- Type: `string`
+- Default: `An error occurred while trying to reset the data for player %target%. Please contact an administrator.`
+
+#### errors_reset_allError
+
+The error message displayed when resetting all players' data by an administrator fails.
+
+- Type: `string`
+- Default: `An error occurred while trying to reset the data for all players. Please contact an administrator.`
+
+#### errors_menuNoPermission
+
+The error message displayed when a player tries to access a menu they don't have permission for.
+
+- Type: `string`
+- Default: `You do not have permission to access this menu.`
+
+#### errors_rewardAlreadyRedeemed
+
+The error message displayed when a player tries to redeem a reward they have already redeemed.
+
+- Type: `string`
+- Default: `You have already redeemed this reward.`
+
+#### errors_rewardRedeemFailed
+
+The error message displayed when a player tries to redeem a reward but the redemption fails.
+
+- Type: `string`
+- Default: `Failed to redeem the rewards for %tier% in %profession%. Please contact an administrator.`
 
 ## Professions Configuration
 
